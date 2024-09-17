@@ -10,7 +10,6 @@ Este é um sistema de
 
 │
 ├── /assets/              # Arquivos estáticos (CSS, JS, imagens, etc.)
-
 │   ├── /css/             # Arquivos de estilo (CSS)
 │   │   └── styles.css    # Arquivo CSS principal
 │   ├── /js/              # Arquivos JavaScript
