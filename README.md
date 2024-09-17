@@ -95,7 +95,7 @@ Antes de rodar o projeto, certifique-se de que tem as seguintes ferramentas inst
 1. **Clone o repositório do projeto:**
 
    ```bash
-   git clone https://github.com/seu-usuario/nome-do-repositorio.git
+   git clone https://github.com/GiulianaFnch/SiteViagens.git
 
 2. **Inicie o XAMPP**:
 
