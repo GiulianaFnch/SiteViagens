@@ -10,4 +10,3 @@
     if ($ligacao->connect_error)
         die(mysqli_error($ligacao));
  ?>
-
