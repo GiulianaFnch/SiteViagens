@@ -1,1 +1,0 @@
-nada não pode apagar
