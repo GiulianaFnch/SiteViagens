@@ -81,6 +81,8 @@ Este é um sistema de
 
 ## Tecnologias Utilizadas
 
+HTML, CSS e JavaScript, PHP. Além de Bootstrap e para a estética
+
 ## Instalação
 
 ### Pré-requisitos
