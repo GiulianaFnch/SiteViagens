@@ -6,11 +6,14 @@ Este é um sistema de
 # Estrutura de Pastas do Projeto de Viagens
 
 ## Estrutura de Diretórios		
-/projeto_viagens/	&nbsp;
+/projeto_viagens/
 │&nbsp;
-├── /assets/              # Arquivos estáticos (CSS, JS, imagens, etc.)&nbsp;
-│   ├── /css/             # Arquivos de estilo (CSS)&nbsp;
-│   │   └── styles.css    # Arquivo CSS principal&nbsp;
+├── /assets/              # Arquivos estáticos (CSS, JS, imagens, etc.)
+&nbsp;
+│   ├── /css/             # Arquivos de estilo (CSS)
+&nbsp;
+│   │   └── styles.css    # Arquivo CSS principal
+&nbsp;
 │   ├── /js/              # Arquivos JavaScript
 │   │   └── scripts.js    # Arquivo JS principal
 │   └── /img/             # Imagens (logo, fotos de destinos, etc.)
