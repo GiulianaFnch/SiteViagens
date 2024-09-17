@@ -3,9 +3,6 @@ Este é um sistema de
 
 ## Organização dos diretórios
 
-# Estrutura de Pastas do Projeto de Viagens
-
-## Estrutura de Diretórios		
       /projeto_viagens/
       ├── /assets/              # Arquivos estáticos (CSS, JS, imagens, etc.)
       │   ├── /css/             # Arquivos de estilo (CSS)
