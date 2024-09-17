@@ -1,6 +1,63 @@
 # Site de Viagens
 Este é um sistema de 
 
+## Organização dos diretórios
+
+/projeto_viagens/
+│
+├── /assets/              # Arquivos estáticos (CSS, JS, imagens, etc.)
+│   ├── /css/             # Arquivos de estilo (CSS)
+│   │   └── styles.css    # Arquivo CSS principal
+│   ├── /js/              # Arquivos JavaScript
+│   │   └── scripts.js    # Arquivo JS principal
+│   └── /img/             # Imagens (logo, fotos de destinos, etc.)
+│       └── logo.png      # Exemplo de imagem
+│
+├── /config/              # Configurações do projeto (banco de dados, variáveis de ambiente)
+│   └── database.php      # Conexão com o banco de dados
+│
+├── /controllers/         # Controladores (lógica de controle das páginas e funções)
+│   ├── UserController.php # Gerencia login, cadastro e perfil do usuário
+│   ├── FlightController.php # Gerencia a busca e reserva de voos
+│   ├── HotelController.php  # Gerencia a busca e reserva de hotéis
+│   └── ActivityController.php # Gerencia a busca e reserva de atividades
+│
+├── /models/              # Modelos (classes que interagem com o banco de dados)
+│   ├── User.php          # Classe do usuário (CRUD do usuário)
+│   ├── Flight.php        # Classe para manipulação de voos
+│   ├── Hotel.php         # Classe para manipulação de hotéis
+│   └── Activity.php      # Classe para manipulação de atividades
+│
+├── /views/               # Templates HTML (onde o conteúdo é exibido)
+│   ├── /partials/        # Componentes reutilizáveis (cabeçalho, rodapé, etc.)
+│   │   ├── header.php    # Cabeçalho do site
+│   │   └── footer.php    # Rodapé do site
+│   ├── /auth/            # Páginas de autenticação
+│   │   ├── login.php     # Página de login
+│   │   └── register.php  # Página de registro
+│   ├── /flights/         # Páginas relacionadas a voos
+│   │   └── search.php    # Página de busca de voos
+│   ├── /hotels/          # Páginas relacionadas a hotéis
+│   │   └── search.php    # Página de busca de hotéis
+│   └── /activities/      # Páginas relacionadas a atividades
+│       └── search.php    # Página de busca de atividades
+│
+├── /public/              # Arquivos acessíveis diretamente pelo navegador (ponto de entrada)
+│   ├── index.php         # Página inicial do site
+│   ├── login.php         # Página de login (se for a rota direta)
+│   ├── register.php      # Página de registro
+│   └── reservas.php      # Página de reservas
+│
+├── /routes/              # Definição de rotas (separação de lógica entre URLs)
+│   └── web.php           # Rotas da aplicação (mapeamento de URLs)
+│
+├── /vendor/              # Dependências externas (caso usem Composer para pacotes)
+│
+├── .gitignore            # Arquivos/pastas a serem ignorados pelo Git
+├── README.md             # Documentação do projeto
+└── composer.json         # Arquivo de configuração do Composer (dependências)
+
+
 ## Funcionalidades
 
 ## Tecnologias Utilizadas
