@@ -1,3 +1,7 @@
+<?php
+session_start(); 
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -37,6 +41,9 @@
 
                 <?php
                 if ($_SERVER['REQUEST_METHOD'] == "POST") {
+                    $nick = $_POST['nick'];
+                    $pass = $_POST['pass'];
+
                     include '../config/liga_bd.php';
 
                     $sql = "SELECT * FROM t_user WHERE nick = '$_POST[nick]'";

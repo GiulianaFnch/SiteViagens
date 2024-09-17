@@ -3,7 +3,11 @@
 	if((!isset ($_SESSION['id']) == true) and (!isset ($_SESSION['nick']) == true))
 	{
 		echo "<h2>Erro no acesso!</h2>";
-		echo "<meta http-equiv='refresh' content='2;url='index.html'>";
+		echo "<meta http-equiv='refresh' content='2;url='../index.html'>";
 
 	}
  ?>
+
+<!-- 
+	Tem que arrumar esse arquivo pq n ta redirecionando :((
+-->

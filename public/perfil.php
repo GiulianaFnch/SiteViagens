@@ -1,5 +1,15 @@
+<!-- 
+    Essa página será inspirada no arquivo do projeto do Rui chamado perfil1.php que está na pasta exemplos/projeto_rui/perfil1.php
+
+    Pra conseguir editar que ainda colocar o perfil2.php
+-->
+
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> <!-- Ainda é preciso ajustar idioma, head, title, etc. -->
 
 <head>
     <meta charset="UTF-8">
@@ -8,10 +18,26 @@
     <link rel="stylesheet" href="../assets/css/styleperfil.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <?php 
+    include '../config/valida.php';
+    ?>
+
 </head>
 
 <body>
+
+    <?php
+    // ligação a base de dados
+    include '../config/liga_bd.php';
+    // crio a instrucao sql para selecionar todos os registros
+    $sql = "SELECT * FROM t_user WHERE id=$_SESSION[id]";
+    // a variavel resultado guarda todos os dados vindos dos clientes
+    $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
+    $linha = mysqli_fetch_array($resultado); ?>
+
     <div class="container light-style flex-grow-1 container-p-y">
+        <h2>Bem vinda(o), <?php echo $linha['nome'];?></h2>
         <h4 class="font-weight-bold py-3 mb-4 text-center">
             Account Settings
         </h4>
@@ -20,7 +46,7 @@
                 <div class="col-md-3 p-3 bg-light rounded-left">
                     <div class="list-group list-group-flush account-settings-links">
                         
-                        <a class="list-group-item list-group-item-action active" data-toggle="list" href="#account-general"><i class="bi bi-house-door"></i></a>
+                        <a class="list-group-item list-group-item-action active" data-toggle="list" href="#account-general"><i class="bi bi-house-door">  Editar perfil</i></a>
                         <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-social-links"><i class="bi bi-layout-wtf"></i></a>
                         <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-connections"><i class="bi bi-chat-dots-fill"></i></a>
                         <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-notifications"><i class="bi bi-gear"></i></a>
