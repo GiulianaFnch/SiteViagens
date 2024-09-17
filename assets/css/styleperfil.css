@@ -1,0 +1,110 @@
+body {
+    background-image: url('images/fundo.png');
+    background-size: cover;
+    background-position: center;
+    font-family: 'San Francisco', 'Helvetica Neue', Arial, sans-serif;
+    margin-top: 30px;
+    color: #333;
+}
+
+.container {
+    max-width: 300px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+h4 {
+    color: #333;
+    font-weight: 600;
+}
+
+.card {
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 20px; /* Padding generoso */
+    margin-bottom: 20px; /* Espaçamento entre cartões */
+}
+
+.list-group-item {
+    border: none;
+    padding: 15px;
+    font-size: 16px;
+    color: #333;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
+    transition: background-color 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+    border-radius: 15px;
+}
+
+.list-group-item.active {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 15px;
+}
+
+.form-control {
+    border: 1px solid #dcdcdc; /* Borda fina e clara */
+    background: #ffffff; /* Fundo branco para inputs */
+    padding: 12px 15px;
+    font-size: 14px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.btn {
+    background: #007aff;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+}
+
+input[type="file"] {
+    border: none; /* Remova bordas dos inputs de arquivo */
+}
+
+.btn-outline-primary {
+    border-color: #007bff;
+    color: #007bff;
+}
+
+
+.card, .btn {
+    border-radius: 12px; /* Bordas arredondadas mais suaves */
+}
+
+
+.btn-light {
+    background: #f1f1f3; 
+}
+
+.rounded-circle {
+    border-radius: 50% !important;
+}
+
+.alert {
+    border-radius: 50px;
+    padding: 15px;
+}
+
+.text-primary {
+    color: #007bff;
+}
+
+.btn:hover {
+    background-color: #005c99; /* Azul mais escuro no hover */
+    transform: scale(1.02); /* Efeito de leve aumento no hover */
+}
+
+.icon {
+    opacity: 0.6; /* Define a opacidade dos ícones */
+    transition: opacity 0.3s ease; /* Suave transição de opacidade */
+}
+
+.icon:hover {
+    opacity: 1; /* Opacidade total ao passar o mouse */
+}
