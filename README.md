@@ -7,9 +7,10 @@ Este é um sistema de
 
 ## Estrutura de Diretórios		
 /projeto_viagens/	
-│
 
+│
 ├── /assets/              # Arquivos estáticos (CSS, JS, imagens, etc.)
+
 │   ├── /css/             # Arquivos de estilo (CSS)
 │   │   └── styles.css    # Arquivo CSS principal
 │   ├── /js/              # Arquivos JavaScript
