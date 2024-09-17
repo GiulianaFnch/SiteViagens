@@ -35,6 +35,56 @@ padding: 30px 18%;
 transition: ease .40s;
 }
 
+/* 
+    A partir daqui é para o formulário de registro
+ */
+ .container-registro {
+    display: flex;
+    height: 100vh;
+}
+
+.formulario {
+    flex: 1;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.formulario h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.imagem-fundo {
+    flex: 1;
+    background-image: url('../images/Eibsee-Lake.jpg'); 
+    background-size: cover;
+    background-position: center;
+} 
+
+.btn {
+    background: var(--main-color);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #005c99;
+    transform: scale(1.02);
+}
+
+/*
+    Até aqui é para o formulário de registro
+*/
+
 .logo{
     font-size: 35px;
     font-weight: 600;
