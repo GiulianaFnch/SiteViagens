@@ -18,7 +18,7 @@
 
     <?php
     if ($_SERVER['REQUEST_METHOD'] == "POST") 
-        include 'include/valida.php';
+        include '../config/valida.php';
     ?>
 </head>
 <body>
@@ -34,8 +34,8 @@
 
             <?php
             if ($_SERVER['REQUEST_METHOD'] == "POST") {
-                include 'include/liga_bd.php';
-                include 'include/valida_foto.php';
+                include '../config/liga_bd.php';
+                include '../config/valida_foto.php';
 
                 if ($uploadOk == 0) {
                     echo "<p>Erro no upload da foto</p>";
