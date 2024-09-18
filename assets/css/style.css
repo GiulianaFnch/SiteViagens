@@ -252,9 +252,9 @@ header.sticky{
     justify-content: space-between;
     padding-top: 24px;
 }
-.stars i{
-    color: var(--main-color);
-    font-size: 20px;
+.stars i{      
+    color: yellow; 
+    font-size: 40px;
 }
 .location h4{
     font-size: 24px;
