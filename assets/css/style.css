@@ -77,7 +77,7 @@ transition: ease .40s;
 }
 
 .btn:hover {
-    background-color: #005c99;
+    background-color: inherit;
     transform: scale(1.02);
 }
 
