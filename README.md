@@ -3,9 +3,6 @@ Este é um sistema de
 
 ## Organização dos diretórios
 
-# Estrutura de Pastas do Projeto de Viagens
-
-## Estrutura de Diretórios		
       /projeto_viagens/
       ├── /assets/              # Arquivos estáticos (CSS, JS, imagens, etc.)
       │   ├── /css/             # Arquivos de estilo (CSS)
@@ -84,6 +81,8 @@ Este é um sistema de
 
 ## Tecnologias Utilizadas
 
+HTML, CSS e JavaScript, PHP. Além de Bootstrap e para a estética
+
 ## Instalação
 
 ### Pré-requisitos
@@ -96,7 +95,7 @@ Antes de rodar o projeto, certifique-se de que tem as seguintes ferramentas inst
 1. **Clone o repositório do projeto:**
 
    ```bash
-   git clone https://github.com/seu-usuario/nome-do-repositorio.git
+   git clone https://github.com/GiulianaFnch/SiteViagens.git
 
 2. **Inicie o XAMPP**:
 
