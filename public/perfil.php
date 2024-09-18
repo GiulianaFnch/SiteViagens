@@ -5,7 +5,7 @@
 -->
 
 <?php
-session_start();
+include '../config/valida.php';
 include '../config/liga_bd.php';
 
 $activeMenu = 'profile';
@@ -102,7 +102,7 @@ mysqli_close($ligacao);
 
         .menu-item:hover {
             background-color: #f0f0f0;
-            transform: translateX(8px); 
+            transform: translateX(8px);
         }
 
         .menu-item i {
@@ -116,7 +116,8 @@ mysqli_close($ligacao);
         }
 
         .menu-item:active {
-            transform: scale(0.98); /* Efeito de clique estilo iOS */
+            transform: scale(0.98);
+            /* Efeito de clique estilo iOS */
         }
 
         .card {
@@ -131,8 +132,6 @@ mysqli_close($ligacao);
         .tab-pane {
             padding: 20px;
         }
-
-        
     </style>
 </head>
 
@@ -144,8 +143,10 @@ mysqli_close($ligacao);
             <div class="row no-gutters">
                 <div class="col-md-3 p-3 bg-light rounded-left menu-container">
                     <nav class="menu">
-                    <a class="menu-item <?php echo $activeMenu === 'profile' ? 'active' : ''; ?>" href="perfil.php#account-general"><i class="bi bi-person-circle"></i> Editar perfil</a>
-                        <a class="menu-item" href="/SiteViagens-main/index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
+                        <a class="menu-item <?php echo $activeMenu === 'profile' ? 'active' : ''; ?>"
+                            href="perfil.php#account-general"><i class="bi bi-person-circle"></i> Editar perfil</a>
+                        <a class="menu-item" href="/SiteViagens-main/index.html"><i class="bi bi-house-door"></i> Página
+                            Inicial</a>
                         <a class="menu-item" href="reservas.php"><i class="bi bi-clipboard2"></i> Reservas</a>
                         <a class="menu-item" href="favoritos.php"><i class="bi bi-heart"></i> Favoritos</a>
                         <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
@@ -161,38 +162,47 @@ mysqli_close($ligacao);
 
                                 <!-- Avatar e upload de nova foto -->
                                 <div class="media align-items-center mb-3">
-                                    <img src="<?php echo $linha['foto'] ? '../assets/images/pics/' . htmlspecialchars($linha['foto']) : 'https://bootdey.com/img/Content/avatar/avatar1.png'; ?>" alt="avatar" class="rounded-circle mr-3" style="width: 80px;">
+                                    <img src="<?php echo $linha['foto'] ? '../assets/images/pics/' . htmlspecialchars($linha['foto']) : 'https://bootdey.com/img/Content/avatar/avatar1.png'; ?>"
+                                        alt="avatar" class="rounded-circle mr-3" style="width: 80px;">
                                     <div class="media-body">
                                         <label class="btn btn-outline-primary rounded-pill">
                                             Upload Nova Foto
-                                            <input type="file" name="ficheiro" class="account-settings-fileinput" accept=".jpg, .jpeg, .png, .gif">
+                                            <input type="file" name="ficheiro" class="account-settings-fileinput"
+                                                accept=".jpg, .jpeg, .png, .gif">
                                         </label>
-                                        <div class="small text-muted mt-1">Permitido JPG, GIF ou PNG. Tamanho máximo de 800K.</div>
+                                        <div class="small text-muted mt-1">Permitido JPG, GIF ou PNG. Tamanho máximo de
+                                            800K.</div>
                                     </div>
                                 </div>
 
-                                <input type="hidden" name="nome_foto" value="<?php echo htmlspecialchars($linha['foto']); ?>">
+                                <input type="hidden" name="nome_foto"
+                                    value="<?php echo htmlspecialchars($linha['foto']); ?>">
 
                                 <!-- Campos de informações pessoais -->
                                 <div class="form-group">
                                     <label for="username" class="form-label">Nick</label>
-                                    <input type="text" id="username" class="form-control rounded-pill" name="nick" value="<?php echo htmlspecialchars($linha['nick']); ?>" required>
+                                    <input type="text" id="username" class="form-control rounded-pill" name="nick"
+                                        value="<?php echo htmlspecialchars($linha['nick']); ?>" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="name" class="form-label">Nome</label>
-                                    <input type="text" id="name" class="form-control rounded-pill" name="nome" value="<?php echo htmlspecialchars($linha['nome']); ?>" required>
+                                    <input type="text" id="name" class="form-control rounded-pill" name="nome"
+                                        value="<?php echo htmlspecialchars($linha['nome']); ?>" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="email" class="form-label">E-mail</label>
-                                    <input type="email" id="email" class="form-control rounded-pill" name="email" value="<?php echo htmlspecialchars($linha['email']); ?>" required>
+                                    <input type="email" id="email" class="form-control rounded-pill" name="email"
+                                        value="<?php echo htmlspecialchars($linha['email']); ?>" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="data_nasc" class="form-label">Data de Nascimento</label>
-                                    <input type="date" id="data_nasc" class="form-control rounded-pill" name="data_nasc" value="<?php echo htmlspecialchars($linha['data_nasc']); ?>" required>
+                                    <input type="date" id="data_nasc" class="form-control rounded-pill" name="data_nasc"
+                                        value="<?php echo htmlspecialchars($linha['data_nasc']); ?>" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="pass" class="form-label">Senha atual</label>
-                                    <input type="password" id="pass" class="form-control rounded-pill" name="pass" required>
+                                    <input type="password" id="pass" class="form-control rounded-pill" name="pass"
+                                        required>
                                 </div>
 
                                 <!-- Botões de ação -->
@@ -208,4 +218,5 @@ mysqli_close($ligacao);
         </div>
     </div>
 </body>
+
 </html>

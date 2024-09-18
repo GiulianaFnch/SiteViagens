@@ -1,5 +1,5 @@
 <?php
-session_start();
+include '../config/valida.php';
 include '../config/liga_bd.php';
 
 $activeMenu = 'settings';
@@ -32,7 +32,7 @@ if (isset($_SESSION['id'])) {
     }
 }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_senha'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_senha'])) {
     $id = $_SESSION['id'];
     $senha_atual = $_POST['senha_atual'];
     $nova_senha = $_POST['nova_senha'];
@@ -61,7 +61,7 @@ if (isset($_SESSION['id'])) {
     } else {
         $mensagem_erro = "Senha atual incorreta.";
 
-}
+    }
 }
 ?>
 
@@ -76,7 +76,7 @@ if (isset($_SESSION['id'])) {
     <link rel="stylesheet" href="../assets/css/styleperfil.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <script>
         function togglePasswordForm() {
             var form = document.getElementById('form-atualizar-senha');
@@ -87,14 +87,14 @@ if (isset($_SESSION['id'])) {
             if (form.style.display === 'none') {
                 form.style.display = 'block';
                 voltarIcon.style.display = 'inline-block';
-                settingsItems.forEach(function(item) {
+                settingsItems.forEach(function (item) {
                     item.style.display = 'none';
                 });
             } else {
                 // Mostra os itens de configuração e esconde o formulário
                 form.style.display = 'none';
                 voltarIcon.style.display = 'none';
-                settingsItems.forEach(function(item) {
+                settingsItems.forEach(function (item) {
                     item.style.display = 'flex';
                 });
             }
@@ -156,7 +156,8 @@ if (isset($_SESSION['id'])) {
         }
 
         .menu-item:active {
-            transform: scale(0.98); /* Efeito de clique estilo iOS */
+            transform: scale(0.98);
+            /* Efeito de clique estilo iOS */
         }
 
         .settings-header {
@@ -230,26 +231,25 @@ if (isset($_SESSION['id'])) {
                 margin: 10px;
             }
         }
-
-      
-
     </style>
 </head>
 
 <body>
     <div class="container light-style flex-grow-1 container-p-y">
-    <h2>Bem-vindo(a), <?php echo htmlspecialchars($linha['nome']); ?></h2>
+        <h2>Bem-vindo(a), <?php echo htmlspecialchars($linha['nome']); ?></h2>
         <h4 class="font-weight-bold py-3 mb-4 text-center">Configurações da Conta</h4>
         <div class="card shadow-sm rounded-lg">
             <div class="row no-gutters">
                 <div class="col-md-3 p-3 bg-light rounded-left menu-container">
                     <nav class="menu">
                         <a class="menu-item" href="perfil.php"><i class="bi bi-person-circle"></i> Editar perfil</a>
-                        <a class="menu-item" href="/SiteViagens-main/index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
+                        <a class="menu-item" href="/SiteViagens-main/index.html"><i class="bi bi-house-door"></i> Página
+                            Inicial</a>
                         <a class="menu-item" href="#reservations"><i class="bi bi-clipboard2"></i> Reservas</a>
                         <a class="menu-item" href="#favorites"><i class="bi bi-heart"></i> Favoritos</a>
                         <a class="menu-item" href="#chat"><i class="bi bi-chat-dots"></i> Chat</a>
-                        <a class="menu-item <?php echo $activeMenu === 'settings' ? 'active' : ''; ?>" href="configuracoes.php#account-general"><i class="bi bi-gear"></i> Configurações</a>
+                        <a class="menu-item <?php echo $activeMenu === 'settings' ? 'active' : ''; ?>"
+                            href="configuracoes.php#account-general"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
                 </div>
 
@@ -258,149 +258,161 @@ if (isset($_SESSION['id'])) {
                         <div id="voltar-icon" onclick="togglePasswordForm()">
                             <i class="bi bi-chevron-compact-left"></i> Voltar
                         </div>
-                        
+
 
                         <div class="settings-section">
-                        <div class="settings-item" id="location-toggle" onclick="toggleLocationService()">
-    <div class="item-left">
-        <i class="bi bi-geo-alt"></i>
-        <span class="item-label">Serviços de Localização</span>
-    </div>
-    <div class="item-right">
-        <!-- Ícone de Toggle Inicial -->
-        <i id="location-icon" class="bi bi-toggle-off"></i>
-    </div>
-</div>
+                            <div class="settings-item" id="location-toggle" onclick="toggleLocationService()">
+                                <div class="item-left">
+                                    <i class="bi bi-geo-alt"></i>
+                                    <span class="item-label">Serviços de Localização</span>
+                                </div>
+                                <div class="item-right">
+                                    <!-- Ícone de Toggle Inicial -->
+                                    <i id="location-icon" class="bi bi-toggle-off"></i>
+                                </div>
+                            </div>
                         </div>
 
                         <script>
-    function toggleLocationService() {
-    var icon = document.getElementById('location-icon');
-    var isEnabled = icon.classList.contains('bi-toggle-on');
+                            function toggleLocationService() {
+                                var icon = document.getElementById('location-icon');
+                                var isEnabled = icon.classList.contains('bi-toggle-on');
 
-    // Alterna o ícone
-    if (isEnabled) {
-        icon.classList.remove('bi-toggle-on');
-        icon.classList.add('bi-toggle-off');
-    } else {
-        icon.classList.remove('bi-toggle-off');
-        icon.classList.add('bi-toggle-on');
-    }
+                                // Alterna o ícone
+                                if (isEnabled) {
+                                    icon.classList.remove('bi-toggle-on');
+                                    icon.classList.add('bi-toggle-off');
+                                } else {
+                                    icon.classList.remove('bi-toggle-off');
+                                    icon.classList.add('bi-toggle-on');
+                                }
 
-    // Envia uma solicitação AJAX para atualizar o estado no servidor
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'configuracoes.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                console.log('Serviço de localização atualizado.');
-                console.log(xhr.responseText); // Para depuração
-            } else {
-                console.error('Erro na solicitação AJAX:', xhr.statusText);
-            }
-        }
-    };
-    xhr.send('toggle_location_service=1&location_service=' + (isEnabled ? 0 : 1));
-}
-</script>
-                            <div class="settings-item">
-                                <div class="item-left">
-                                    <i class="bi bi-bell"></i>
-                                    <span class="item-label">Notificações de Ofertas</span>
-                                </div>
-                                <div class="item-right">
-                                    <i class="bi bi-chevron-right"></i>
-                                </div>
+                                // Envia uma solicitação AJAX para atualizar o estado no servidor
+                                var xhr = new XMLHttpRequest();
+                                xhr.open('POST', 'configuracoes.php', true);
+                                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                                xhr.onreadystatechange = function () {
+                                    if (xhr.readyState === 4) {
+                                        if (xhr.status === 200) {
+                                            console.log('Serviço de localização atualizado.');
+                                            console.log(xhr.responseText); // Para depuração
+                                        } else {
+                                            console.error('Erro na solicitação AJAX:', xhr.statusText);
+                                        }
+                                    }
+                                };
+                                xhr.send('toggle_location_service=1&location_service=' + (isEnabled ? 0 : 1));
+                            }
+                        </script>
+
+                        <div class="settings-item">
+                            <div class="item-left">
+                                <i class="bi bi-bell"></i>
+                                <span class="item-label">Notificações de Ofertas</span>
+                            </div>
+                            <div class="item-right">
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="settings-section">
+                        <div class="settings-item">
+                            <div class="item-left">
+                                <i class="bi bi-clock-history"></i>
+                                <span class="item-label">Histórico de Viagens</span>
+                            </div>
+                            <div class="item-right">
+                                <i class="bi bi-chevron-right"></i>
                             </div>
                         </div>
 
-                        <div class="divider"></div>
-
-                        <div class="settings-section">
-                            <div class="settings-item">
-                                <div class="item-left">
-                                    <i class="bi bi-clock-history"></i>
-                                    <span class="item-label">Histórico de Viagens</span>
-                                </div>
-                                <div class="item-right">
-                                    <i class="bi bi-chevron-right"></i>
-                                </div>
+                        <div class="settings-item">
+                            <div class="item-left">
+                                <i class="bi bi-credit-card"></i>
+                                <span class="item-label">Informações de Pagamento</span>
                             </div>
-
-                            <div class="settings-item">
-                                <div class="item-left">
-                                    <i class="bi bi-credit-card"></i>
-                                    <span class="item-label">Informações de Pagamento</span>
-                                </div>
-                                <div class="item-right">
-                                    <i class="bi bi-chevron-right"></i>
-                                </div>
-                            </div>
-
-                            <div class="settings-item">
-                                <div class="item-left">
-                                    <i class="bi bi-calendar-event"></i>
-                                    <span class="item-label">Lembretes de Viagem</span>
-                                </div>
-                                <div class="item-right">
-                                    <i class="bi bi-chevron-right"></i>
-                                </div>
-                            </div>
-
-                            <div class="settings-item">
-                                <div class="item-left">
-                                    <i class="bi bi-globe"></i>
-                                    <span class="item-label">Idioma e Moeda</span>
-                                </div>
-                                <div class="item-right">
-                                    <i class="bi bi-chevron-right"></i>
-                                </div>
-                            </div>
-
-                            <!-- Botão para Atualizar Senha -->
-                            <div class="settings-item" onclick="togglePasswordForm()">
-                                <div class="item-left">
-                                    <i class="bi bi-shield-lock"></i>
-                                    <span class="item-label">Atualizar Senha</span>
-                                </div>
-                                <div class="item-right">
-                                    <i class="bi bi-chevron-right"></i>
-                                </div>
+                            <div class="item-right">
+                                <i class="bi bi-chevron-right"></i>
                             </div>
                         </div>
 
-                        <div id="form-atualizar-senha">
-                            <h5>Alterar Senha</h5>
-                            <form method="POST" action="">
-                                <div class="form-group">
-                                    <label for="senha_atual">Senha Atual</label>
-                                    <input type="password" name="senha_atual" id="senha_atual" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="nova_senha">Nova Senha</label>
-                                    <input type="password" name="nova_senha" id="nova_senha" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="confirmar_senha">Confirmar Nova Senha</label>
-                                    <input type="password" name="confirmar_senha" id="confirmar_senha" class="form-control" required>
-                                </div>
-                                <button type="submit" name="atualizar_senha" class="btn btn-primary">Atualizar Senha</button>
-                            </form>
-
-                            <!-- Exibir Mensagens -->
-                            <?php if (isset($mensagem_sucesso)): ?>
-                                <div class="alert alert-success"><?php echo $mensagem_sucesso; ?></div>
-                            <?php elseif (isset($mensagem_erro)): ?>
-                                <div class="alert alert-danger"><?php echo $mensagem_erro; ?></div>
-                            <?php endif; ?>
+                        <div class="settings-item">
+                            <div class="item-left">
+                                <i class="bi bi-calendar-event"></i>
+                                <span class="item-label">Lembretes de Viagem</span>
+                            </div>
+                            <div class="item-right">
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
                         </div>
 
+                        <div class="settings-item">
+                            <div class="item-left">
+                                <i class="bi bi-globe"></i>
+                                <span class="item-label">Idioma e Moeda</span>
+                            </div>
+                            <div class="item-right">
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                        </div>
+
+                        <!-- Botão para Atualizar Senha -->
+                        <div class="settings-item" onclick="togglePasswordForm()">
+                            <div class="item-left">
+                                <i class="bi bi-shield-lock"></i>
+                                <span class="item-label">Atualizar Senha</span>
+                            </div>
+                            <div class="item-right">
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                        </div>
+
+                        <div class="settings-item">
+                            <div class="item-left">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <a class="item-label" href="backend/logout.php"> Logout</a>
+                            </div>
+                        </div>
 
                     </div>
+
+                    <div id="form-atualizar-senha">
+                        <h5>Alterar Senha</h5>
+                        <form method="POST" action="">
+                            <div class="form-group">
+                                <label for="senha_atual">Senha Atual</label>
+                                <input type="password" name="senha_atual" id="senha_atual" class="form-control"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nova_senha">Nova Senha</label>
+                                <input type="password" name="nova_senha" id="nova_senha" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmar_senha">Confirmar Nova Senha</label>
+                                <input type="password" name="confirmar_senha" id="confirmar_senha" class="form-control"
+                                    required>
+                            </div>
+                            <button type="submit" name="atualizar_senha" class="btn btn-primary">Atualizar
+                                Senha</button>
+                        </form>
+
+                        <!-- Exibir Mensagens -->
+                        <?php if (isset($mensagem_sucesso)): ?>
+                            <div class="alert alert-success"><?php echo $mensagem_sucesso; ?></div>
+                        <?php elseif (isset($mensagem_erro)): ?>
+                            <div class="alert alert-danger"><?php echo $mensagem_erro; ?></div>
+                        <?php endif; ?>
+                    </div>
+
+
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </body>
 
