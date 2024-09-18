@@ -8,6 +8,8 @@
 session_start();
 include '../config/liga_bd.php';
 
+$activeMenu = 'profile';
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = $_POST['id'];
     $nick = $_POST['nick'];
@@ -77,72 +79,79 @@ mysqli_close($ligacao);
     <link rel="stylesheet" href="../assets/css/styleperfil.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+    <style>
+        .menu-container {
+            background-color: #f8f9fa;
+            border-right: 1px solid #e0e0e0;
+        }
 
-<style>
-.menu-container {
-    background-color: #f8f9fa;
-    border-right: 1px solid #e0e0e0;
-}
+        .menu {
+            display: flex;
+            flex-direction: column;
+        }
 
-.menu {
-    display: flex;
-    flex-direction: column;
-}
+        .menu-item {
+            color: #007AFF;
+            padding: 10px;
+            margin: 5px 0;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+        }
 
-.menu-item {
-    display: flex;
-    align-items: center;
-    padding: 15px;
-    font-size: 16px;
-    color: #333;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: background-color 0.3s, color 0.3s;
-}
+        .menu-item:hover {
+            background-color: #f0f0f0;
+            transform: translateX(8px); 
+        }
 
-.menu-item i {
-    margin-right: 8px;
-    font-size: 20px;
-}
+        .menu-item i {
+            margin-right: 8px;
+            font-size: 20px;
+        }
 
-.menu-item.active, .menu-item:hover {
-    background-color: #007bff;
-    color: #fff;
-}
+        .menu-item.active {
+            background-color: #dfe4ea;
+            font-weight: bold;
+        }
 
-.card {
-    border-radius: 15px;
-    overflow: hidden;
-}
+        .menu-item:active {
+            transform: scale(0.98); /* Efeito de clique estilo iOS */
+        }
 
-.card .tab-content {
-    border-top: 1px solid #e0e0e0;
-}
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+        }
 
-.tab-pane {
-    padding: 20px;
-}
+        .card .tab-content {
+            border-top: 1px solid #e0e0e0;
+        }
 
+        .tab-pane {
+            padding: 20px;
+        }
+
+        
     </style>
+</head>
 
 <body>
     <div class="container light-style flex-grow-1 container-p-y">
-        <h2>Bem vinda(o), <?php echo htmlspecialchars($linha['nome']); ?></h2>
+        <h2>Bem-vindo(a), <?php echo htmlspecialchars($linha['nome']); ?></h2>
         <h4 class="font-weight-bold py-3 mb-4 text-center">Configurações da Conta</h4>
-    <div class="card shadow-sm rounded-lg">
-        <div class="row no-gutters">
-            <div class="col-md-3 p-3 bg-light rounded-left menu-container">
-                <nav class="menu">
-                    <a class="menu-item active" href="#account-general"><i class="bi bi-person-circle"></i> Editar perfil</a>
-                    <a class="menu-item" href="#home"><i class="bi bi-house-door"></i> Página Inicial</a>
-                    <a class="menu-item" href="#reservations"><i class="bi bi-clipboard2"></i> Reservas</a>
-                    <a class="menu-item" href="#favorites"><i class="bi bi-heart"></i> Favoritos</a>
-                    <a class="menu-item" href="#chat"><i class="bi bi-chat-dots"></i> Chat</a>
-                    <a class="menu-item" href="#settings"><i class="bi bi-gear"></i> Configurações</a>
-                </nav>
-            </div>
-            
+        <div class="card shadow-sm rounded-lg">
+            <div class="row no-gutters">
+                <div class="col-md-3 p-3 bg-light rounded-left menu-container">
+                    <nav class="menu">
+                    <a class="menu-item <?php echo $activeMenu === 'profile' ? 'active' : ''; ?>" href="perfil.php#account-general"><i class="bi bi-person-circle"></i> Editar perfil</a>
+                        <a class="menu-item" href="/SiteViagens-main/index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
+                        <a class="menu-item" href="reservas.php"><i class="bi bi-clipboard2"></i> Reservas</a>
+                        <a class="menu-item" href="favoritos.php"><i class="bi bi-heart"></i> Favoritos</a>
+                        <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
+                        <a class="menu-item" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
+                    </nav>
+                </div>
 
                 <div class="col-md-9">
                     <div class="tab-content p-4">
@@ -198,8 +207,5 @@ mysqli_close($ligacao);
             </div>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
