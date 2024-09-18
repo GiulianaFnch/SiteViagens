@@ -39,13 +39,36 @@
                 if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     include '../../config/liga_bd.php';
 
-                    $tmp = password_hash($_POST['pass'], PASSWORD_DEFAULT);
-                    $sql = "INSERT INTO t_user (nick, nome, email, data_nasc, pass, foto) VALUES ('" . $_POST['nick'] . "', '" . $_POST['nome'] . "', '" . $_POST['email'] . "', '" . $_POST['data_nasc'] . "', '" . $tmp . "', '" . $foto . "')";
-                    if (mysqli_query($ligacao, $sql)) {
-                        echo "<h2>Utilizador registado com sucesso</h2>";
-                        mysqli_close($ligacao);
-                    }
+                    if (isset($_POST['tipo_user'])) {
+                        $tipo_user = $_POST['tipo_user'];
+                        switch ($tipo_user) {
+                            case 'hotel':
+                                $tipo_user = 2;
+                                break;
+                            case 'atividades':
+                                $tipo_user = 3;
+                                break;
+                            default:
+                                $tipo_user = 0; // or handle the default case appropriately
+                                break;
+                        }
 
+                        $tmp = password_hash($_POST['pass'], PASSWORD_DEFAULT);
+                        $sql = "INSERT INTO t_user (nick, nome, email, nome_marca, pass, tipo_user) VALUES (?, ?, ?, ?, ?, ?)";
+                        $stmt = mysqli_prepare($ligacao, $sql);
+                        mysqli_stmt_bind_param($stmt, 'sssssi', $_POST['nick'], $_POST['nome'], $_POST['email'], $_POST['nome_marca'], $tmp, $tipo_user);
+
+                        if (mysqli_stmt_execute($stmt)) {
+                            echo "<h2>Utilizador registado com sucesso</h2>";
+                        } else {
+                            echo "<h2>Erro ao registar utilizador</h2>";
+                        }
+
+                        mysqli_stmt_close($stmt);
+                        mysqli_close($ligacao);
+                    } else {
+                        echo "<h2>Erro ao registar utilizador</h2>";
+                    }
 
                 } else {
                     ?>
@@ -63,10 +86,26 @@
                             <input type="email" id="email" name="email" class="form-control" required>
                         </div>
                         <div class="input-group">
+                            <label for="nome_marca">Nome da marca:</label>
+                            <input type="text" id="nome_marca" name="nome_marca" class="form-control" required>
+                        </div>
+                        <div class="input-group">
                             <label for="pass">Senha:</label>
                             <input type="password" id="pass" name="pass" class="form-control" required>
                         </div>
-                        <button type="submit" class="home-btn">Registrar</button>
+
+                        <div class="my-3" bis_skin_checked="1">
+                            <div class="form-check" bis_skin_checked="1">
+                                <input id="hotel" name="tipo_user" type="radio" class="form-check-input" value="hotel" checked="" required="">
+                                <label class="form-check-label" for="hotel">Hotéis</label>
+                            </div>
+                            <div class="form-check" bis_skin_checked="1">
+                                <input id="atividade" name="tipo_user" type="radio" class="form-check-input" value="atividades" required="">
+                                <label class="form-check-label" for="atividade">Atividades</label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="home-btn">Enviar pedido</button>
                     </form>
                     <?php
                 }
