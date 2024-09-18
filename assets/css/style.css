@@ -10,8 +10,8 @@ scroll-behavior: smooth;
 :root{
     --bg-color: #fff;
     --text-color: #221314;
-    --second-color: ##4169E1;
-    --main-color: ##6495ED;
+    --second-color: #4169E1;
+    --main-color: #6495ED;
     --big-font: 6rem;
     --h2-font: 3rem;
     --p-font: 1.1rem; 
@@ -457,7 +457,7 @@ header.sticky{
         width: 270px;
         height: 120vh;
         /* mudar a cor do menu quando ele fica em uma tela menor */
-        background: ##6495ED;
+        background: #6495ED;
         display: flex;
         flex-direction: column;
         align-items: center;
