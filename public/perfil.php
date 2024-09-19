@@ -132,10 +132,47 @@ mysqli_close($ligacao);
         .tab-pane {
             padding: 20px;
         }
+
+        /* Header */
+        .navbar {
+            display: flex;
+        }
+
+        .navbar a {
+            color: var(--bg-color);
+            font-size: var(--p-font);
+            font-weight: 500;
+            padding: 10px 22px;
+            border-radius: 4px;
+            transition: ease .40s;
+        }
+
+        .navbar a:hover {
+            background: var(--bg-color);
+            color: var(--text-color);
+            box-shadow: 5px 10px 30px rgb(85 85 85 / 20%);
+            border-radius: 4px;
+        }
+
+        /*--------*/
     </style>
 </head>
 
 <body>
+
+    <header>
+        <a href="#" class="logo">BestWay</a>
+        <div class="bx bx-menu" id="menu-icon"></div>
+
+        <ul class="navbar">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="#package">Pacotes</a></li>
+            <li><a href="#destination">Destinos</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+
+        </ul>
+    </header>
+
     <div class="container light-style flex-grow-1 container-p-y">
         <h2>Bem-vindo(a), <?php echo htmlspecialchars($linha['nome']); ?></h2>
         <h4 class="font-weight-bold py-3 mb-4 text-center">Configurações da Conta</h4>
@@ -145,7 +182,7 @@ mysqli_close($ligacao);
                     <nav class="menu">
                         <a class="menu-item <?php echo $activeMenu === 'profile' ? 'active' : ''; ?>"
                             href="perfil.php#account-general"><i class="bi bi-person-circle"></i> Editar perfil</a>
-                        <a class="menu-item" href="/SiteViagens-main/index.html"><i class="bi bi-house-door"></i> Página
+                        <a class="menu-item" href="../index.html"><i class="bi bi-house-door"></i> Página
                             Inicial</a>
                         <a class="menu-item" href="reservas.php"><i class="bi bi-clipboard2"></i> Reservas</a>
                         <a class="menu-item" href="favoritos.php"><i class="bi bi-heart"></i> Favoritos</a>
@@ -217,6 +254,7 @@ mysqli_close($ligacao);
             </div>
         </div>
     </div>
+    <?php include '../views/partials/footer.php' ?>
 </body>
 
 </html>

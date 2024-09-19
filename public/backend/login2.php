@@ -31,7 +31,8 @@ if ($linha == NULL) {
             $_SESSION['id'] = $linha['id'];
             $_SESSION['nick'] = $linha['nick'];
             echo "<h2>Utilizador validado!</h2>";
-            echo "<input type='button' value='Continuar' onclick=window.open('../perfil.php','_self')>";
+            echo "<input type='button' value='Continuar' onclick=window.open('../../index.html','_self')>";
+            header("refresh:2;url=../../index.html"); 
             //header("refresh:2;url=../perfil.php"); 
         }
     }
