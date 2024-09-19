@@ -1,3 +1,7 @@
+<?php
+include '../../config/valida.php';
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -40,6 +44,15 @@
             <p>Explore novas atrações e vivências que se ajustam aos seus interesses e ao seu jeito de viajar..</p>
             <!-- Search Section -->
             <section class="search-bar">
+            <!-- 
+            Aqui vai ficar como o arquivo do projeto de exemplo pesq.php
+
+            tem que escolher o que vai pesquisar
+            lugar e data ou nome da atividade e data, por exemplo
+
+            e ele vai mandar para um outro arquivo que vai fazer a pesquisa e mostrar os resultados 
+            pode ser pesquisa_tours.php por exemplo, que vai ser php do pesq2.php do projeto de exemplo
+            -->
                 <form action="#" method="GET">
                     <input type="text" placeholder="O que deseja fazer?" name="destination" required>
                     <input type="date" placeholder="Selecione as datas " name="dates" required>

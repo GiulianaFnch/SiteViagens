@@ -7,7 +7,17 @@ echo "<h2>Bem vindo, " . $_SESSION['nick'] . "</h2>";
 $categoria = 0;
 // $categoria = $_POST['categoria'];
 ?>
-<form action="tours_inicial.php" method="post">
+
+<!--
+    Essa página é apenas para listar todos os passeios disponíveis a partir de uma categoria selecionada.
+    
+    É baseado no comprar.php no exemplo
+-->
+
+<!DOCTYPE html>
+<html>
+
+<form action="listar_tours.php" method="post">
     Categoria: <select name="categoria" id="categoria" onchange="this.form.submit();">
         <?php
         $sql = "SELECT * FROM t_categoria";
@@ -25,7 +35,7 @@ $categoria = 0;
         ?>
     </select>
 </form>
-<h2>Produtos</h2>
+<h2>Passeios</h2>
 <table>
     <tr>
         <td>ID</td>
@@ -42,7 +52,7 @@ $categoria = 0;
         $sql = "SELECT * FROM t_artigo WHERE vendido=0";
     else
         $sql = "SELECT * FROM t_artigo WHERE vendido=0 AND cat=" . $_POST['categoria'];
-    
+
     // a variavel resultado vai guardar todos os dados de todos os clientes
     $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
     // variavel para contar os registros
@@ -81,7 +91,5 @@ $categoria = 0;
     ?>
 </table>
 
-</body>
-</main>
 
 </html>
