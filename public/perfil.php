@@ -80,7 +80,38 @@ mysqli_close($ligacao);
     <link rel="stylesheet" href="../assets/css/styleperfil.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    
+    
     <style>
+        
+        header{
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100%;
+        z-index:100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 30px 18%;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+    display: flex;
+}
+
+.navbar a {
+    color: black; /* Define a cor padrão dos links */
+}
+
+
         .menu-container {
             background-color: #f8f9fa;
             border-right: 1px solid #e0e0e0;
@@ -118,7 +149,7 @@ mysqli_close($ligacao);
 
         .menu-item:active {
             transform: scale(0.98);
-            /* Efeito de clique estilo iOS */
+       
         }
 
         .card {
@@ -145,7 +176,7 @@ mysqli_close($ligacao);
             font-weight: 500;
             padding: 10px 22px;
             border-radius: 4px;
-            transition: ease .40s;
+           
         }
 
         .navbar a:hover {
@@ -160,19 +191,21 @@ mysqli_close($ligacao);
 </head>
 
 <body>
-
-    <header>
-        <a href="#" class="logo">BestWay</a>
+        <!--header-->
+    
+        <header>
+        <a href="../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
         <div class="bx bx-menu" id="menu-icon"></div>
 
         <ul class="navbar">
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="#package">Pacotes</a></li>
-            <li><a href="#destination">Destinos</a></li>
-            <li><a href="#contact">Contact Us</a></li>
-
+            <li><a href="#home" style="color: black;" >Hospedagem</a></li>
+            <li><a href="#package" style="color: black;" >Passagens</a></li>
+            <li><a href="#destination" style="color: black; ">Tours</a></li>
+            <li><a href="#contact" style="color: black;">Pacotes</a></li>
         </ul>
-    </header>
+        </header>
+        
+    <br><br><br><br><br><br>
 
     <div class="container light-style flex-grow-1 container-p-y">
         <h2>Bem-vindo(a), <?php echo htmlspecialchars($linha['nome']); ?></h2>
@@ -255,6 +288,12 @@ mysqli_close($ligacao);
             </div>
         </div>
     </div>
+    
+
+    <!--footer-->
+
+
+
     <?php include '../views/partials/footer.php' ?>
 </body>
 
