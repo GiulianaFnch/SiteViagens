@@ -47,7 +47,7 @@ header {
 
 .formulario {
     flex: 1;
-    padding: 50px;
+    padding: 100px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -65,7 +65,7 @@ header {
 
 .imagem-fundo {
     flex: 1;
-    background-image: url('capadorcia.jpg');
+    background-image: url('../images/Eibsee-Lake.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -150,7 +150,7 @@ section {
     align-items: center;
 }
 
-] .home-text h1 {
+ .home-text h1 {
     font-size: var(--big-font);
     line-height: 1.2;
     color: var(--bg-color);
