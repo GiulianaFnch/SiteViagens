@@ -19,17 +19,7 @@ if (isset($_SESSION['id'])) {
         $linha['nome'] = 'Usuário'; // Valor padrão caso a consulta falhe
     }
 
-    // Processa a atualização do serviço de localização
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['toggle_location_service'])) {
-        $location_service = intval($_POST['location_service']);
-        $sql = "UPDATE t_user SET location_service='$location_service' WHERE id='$id'";
-        if (mysqli_query($ligacao, $sql)) {
-            echo 'Serviço de localização atualizado.';
-        } else {
-            echo 'Erro ao atualizar o serviço de localização: ' . mysqli_error($ligacao);
-        }
-        exit;
-    }
+    
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_senha'])) {
@@ -74,9 +64,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_senha'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configurações</title>
    
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/styleperfil.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
     <script>
         function togglePasswordForm() {
@@ -103,6 +98,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_senha'])) {
     </script>
 
     <style>
+
+header{
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100%;
+        z-index:100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 30px 18%;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+
         body {
             font-family: 'San Francisco', 'Helvetica Neue', Arial, sans-serif;
             background-image: url('../assets/images/fundo.png');
@@ -236,15 +247,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_senha'])) {
 </head>
 
 <body>
+
+<!--header-->
+    
+<header>
+        <a href="../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
+        <div class="bx bx-menu" id="menu-icon"></div>
+
+        <ul class="navbar">
+            <li><a href="#home" style="color: black;" >Hospedagem</a></li>
+            <li><a href="#package" style="color: black;" >Passagens</a></li>
+            <li><a href="#destination" style="color: black; ">Tours</a></li>
+            <li><a href="#contact" style="color: black;">Pacotes</a></li>
+        </ul>
+        </header>
+        
+    <br><br><br><br><br><br>
+
+
     <div class="container light-style flex-grow-1 container-p-y">
-        <h2>Bem-vindo(a), <?php echo htmlspecialchars($linha['nome']); ?></h2>
-        <h4 class="font-weight-bold py-3 mb-4 text-center">Configurações da Conta</h4>
         <div class="card shadow-sm rounded-lg">
             <div class="row no-gutters">
                 <div class="col-md-3 p-3 bg-light rounded-left menu-container">
                     <nav class="menu">
+                        <?php echo htmlspecialchars($linha['nome']); ?>
                         <a class="menu-item" href="perfil.php"><i class="bi bi-person-circle"></i> Editar perfil</a>
-                        <a class="menu-item" href="/SiteViagens-main/index.html"><i class="bi bi-house-door"></i> Página
+                        <a class="menu-item" href="../index.html"><i class="bi bi-house-door"></i> Página
                             Inicial</a>
                         <a class="menu-item" href="#reservations"><i class="bi bi-clipboard2"></i> Reservas</a>
                         <a class="menu-item" href="#favorites"><i class="bi bi-heart"></i> Favoritos</a>
@@ -415,6 +443,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_senha'])) {
         </div>
     </div>
     </div>
+
+    <!--footer-->
+    <?php include '../views/partials/footer.php' ?>
+    
 </body>
 
 </html>
