@@ -149,8 +149,16 @@ section {
     grid-template-columns: repeat(1, 1fr);
     align-items: center;
 }
-
+/* aqui fica o texto grande em cima da foto */
  .home-text h1 {
+    font-size: var(--big-font);
+    line-height: 1.2;
+    color: var(--bg-color);
+    font-family: 'Paytone One', sans-serif;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+}
+ .home-text2 h1 {
     font-size: var(--big-font);
     line-height: 1.2;
     color: var(--bg-color);
