@@ -3,54 +3,70 @@ include '../config/valida.php';
 include '../config/liga_bd.php';
 
 $activeMenu = 'settings';
+$mensagem_sucesso = '';
+$mensagem_erro = '';
 
-// Verifica se a sessão do usuário está ativa
 if (isset($_SESSION['id'])) {
     $id = $_SESSION['id'];
 
-    // Buscar o nome do usuário para exibir na página
-    $sql = "SELECT nome, pass FROM t_user WHERE id='$id'";
-    $resultado = mysqli_query($ligacao, $sql);
+    // Usando prepared statements para segurança
+    $stmt = $ligacao->prepare("SELECT nome, pass, notificacoes_ofertas FROM t_user WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
 
-    // Verificar se a consulta retornou um resultado
-    if ($resultado && mysqli_num_rows($resultado) > 0) {
-        $linha = mysqli_fetch_array($resultado);
+    if ($resultado && $resultado->num_rows > 0) {
+        $linha = $resultado->fetch_assoc();
     } else {
-        $linha['nome'] = 'Usuário'; // Valor padrão caso a consulta falhe
+        $linha['nome'] = 'Usuário';
+        $linha['notificacoes_ofertas'] = 1; // Valor padrão
     }
-
-    
+    $stmt->close();
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_senha'])) {
-    $id = $_SESSION['id'];
-    $senha_atual = $_POST['senha_atual'];
-    $nova_senha = $_POST['nova_senha'];
-    $confirmar_senha = $_POST['confirmar_senha'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_POST['atualizar_senha'])) {
+        $senha_atual = $_POST['senha_atual'];
+        $nova_senha = $_POST['nova_senha'];
+        $confirmar_senha = $_POST['confirmar_senha'];
 
+        // Verifica a senha atual
+        $stmt = $ligacao->prepare("SELECT pass FROM t_user WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $linha = $resultado->fetch_assoc();
 
-
-    // Verificar se a senha atual está correta
-    $sql = "SELECT pass FROM t_user WHERE id='$id'";
-    $resultado = mysqli_query($ligacao, $sql);
-    $linha = mysqli_fetch_array($resultado);
-
-    if (password_verify($senha_atual, $linha['pass'])) {
-        if ($nova_senha == $confirmar_senha) {
-            // Atualizar a senha no banco de dados
-            $hash_senha = password_hash($nova_senha, PASSWORD_DEFAULT);
-            $sql = "UPDATE t_user SET pass='$hash_senha' WHERE id='$id'";
-            if (mysqli_query($ligacao, $sql)) {
-                $mensagem_sucesso = "Senha alterada com sucesso!";
+        if (password_verify($senha_atual, $linha['pass'])) {
+            if ($nova_senha == $confirmar_senha) {
+                $hash_senha = password_hash($nova_senha, PASSWORD_DEFAULT);
+                $stmt = $ligacao->prepare("UPDATE t_user SET pass = ? WHERE id = ?");
+                $stmt->bind_param("si", $hash_senha, $id);
+                if ($stmt->execute()) {
+                    $mensagem_sucesso = "Senha alterada com sucesso!";
+                } else {
+                    $mensagem_erro = "Erro ao atualizar a senha.";
+                }
+                $stmt->close();
             } else {
-                $mensagem_erro = "Erro ao atualizar a senha.";
+                $mensagem_erro = "As novas senhas não coincidem.";
             }
         } else {
-            $mensagem_erro = "As novas senhas não coincidem.";
+            $mensagem_erro = "Senha atual incorreta.";
         }
-    } else {
-        $mensagem_erro = "Senha atual incorreta.";
+    } elseif (isset($_POST['toggle_notificacoes_ofertas'])) {
+        $notificacoes_ofertas = $_POST['notificacoes_ofertas'] ? 1 : 0;
 
+        // Atualiza a configuração de notificações
+        $stmt = $ligacao->prepare("UPDATE t_user SET notificacoes_ofertas = ? WHERE id = ?");
+        $stmt->bind_param("ii", $notificacoes_ofertas, $id);
+        if ($stmt->execute()) {
+            echo "Configuração de notificações atualizada.";
+        } else {
+            echo "Erro ao atualizar configurações.";
+        }
+        $stmt->close();
+        exit(); // Saia após processar o AJAX
     }
 }
 ?>
@@ -63,15 +79,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_senha'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configurações</title>
-   
-    <link rel="stylesheet" href="../assets/css/style.css">
+
     <link rel="stylesheet" href="../assets/css/styleperfil.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
     <script>
         function togglePasswordForm() {
@@ -79,15 +90,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_senha'])) {
             var settingsItems = document.querySelectorAll('.settings-item');
             var voltarIcon = document.getElementById('voltar-icon');
 
-            // Esconde os itens de configuração e mostra o formulário
-            if (form.style.display === 'none') {
+            if (form.style.display === 'none' || form.style.display === '') {
                 form.style.display = 'block';
                 voltarIcon.style.display = 'inline-block';
                 settingsItems.forEach(function (item) {
                     item.style.display = 'none';
                 });
             } else {
-                // Mostra os itens de configuração e esconde o formulário
                 form.style.display = 'none';
                 voltarIcon.style.display = 'none';
                 settingsItems.forEach(function (item) {
@@ -95,25 +104,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_senha'])) {
                 });
             }
         }
+
+        function toggleNotification() {
+            var icon = document.getElementById('notificacoes-ofertas-icon');
+            var currentStatus = icon.classList.contains('bi-file-earmark-check-fill');
+            var newStatus = currentStatus ? 0 : 1;
+
+            icon.classList.toggle('bi-file-earmark');
+            icon.classList.toggle('bi-file-earmark-check-fill');
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'configuracoes.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log('Configuração de notificações atualizada.');
+                }
+            };
+            xhr.send('toggle_notificacoes_ofertas=1&notificacoes_ofertas=' + newStatus);
+        }
     </script>
 
-    <style>
-
-header{
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 100%;
-        z-index:100;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 30px 18%;
-        background-color: white;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-
+<style>
         body {
             font-family: 'San Francisco', 'Helvetica Neue', Arial, sans-serif;
             background-image: url('../assets/images/fundo.png');
@@ -247,38 +259,19 @@ header{
 </head>
 
 <body>
-
-<!--header-->
-    
-<header>
-        <a href="../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
-        <div class="bx bx-menu" id="menu-icon"></div>
-
-        <ul class="navbar">
-            <li><a href="#home" style="color: black;" >Hospedagem</a></li>
-            <li><a href="#package" style="color: black;" >Passagens</a></li>
-            <li><a href="#destination" style="color: black; ">Tours</a></li>
-            <li><a href="#contact" style="color: black;">Pacotes</a></li>
-        </ul>
-        </header>
-        
-    <br><br><br><br><br><br>
-
-
     <div class="container light-style flex-grow-1 container-p-y">
+        <h2>Bem-vindo(a), <?php echo htmlspecialchars($linha['nome']); ?></h2>
+        <h4 class="font-weight-bold py-3 mb-4 text-center">Configurações da Conta</h4>
         <div class="card shadow-sm rounded-lg">
             <div class="row no-gutters">
                 <div class="col-md-3 p-3 bg-light rounded-left menu-container">
                     <nav class="menu">
-                        <?php echo htmlspecialchars($linha['nome']); ?>
                         <a class="menu-item" href="perfil.php"><i class="bi bi-person-circle"></i> Editar perfil</a>
-                        <a class="menu-item" href="../index.html"><i class="bi bi-house-door"></i> Página
-                            Inicial</a>
+                        <a class="menu-item" href="/SiteViagens-main/index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
                         <a class="menu-item" href="#reservations"><i class="bi bi-clipboard2"></i> Reservas</a>
                         <a class="menu-item" href="#favorites"><i class="bi bi-heart"></i> Favoritos</a>
                         <a class="menu-item" href="#chat"><i class="bi bi-chat-dots"></i> Chat</a>
-                        <a class="menu-item <?php echo $activeMenu === 'settings' ? 'active' : ''; ?>"
-                            href="configuracoes.php#account-general"><i class="bi bi-gear"></i> Configurações</a>
+                        <a class="menu-item active" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
                 </div>
 
@@ -288,7 +281,7 @@ header{
                             <i class="bi bi-chevron-compact-left"></i> Voltar
                         </div>
 
-
+                        
                         <div class="settings-section">
                             <div class="settings-item" id="location-toggle" onclick="toggleLocationService()">
                                 <div class="item-left">
@@ -302,52 +295,21 @@ header{
                             </div>
                         </div>
 
-                        <script>
-                            function toggleLocationService() {
-                                var icon = document.getElementById('location-icon');
-                                var isEnabled = icon.classList.contains('bi-toggle-on');
+                       
+                        <div class="settings-item" id="notificacoes-ofertas">
+        <div class="item-left">
+            <i class="bi bi-bell"></i>
+            <span class="item-label">Notificações de Ofertas</span>
+        </div>
+        <div class="item-right">
+            <i id="notificacoes-ofertas-icon" class="bi <?php echo ($linha['notificacoes_ofertas'] ? 'bi-file-earmark-check-fill' : 'bi-file-earmark'); ?>" onclick="toggleNotification()"></i>
+        </div>
+    </div>
+</div>
 
-                                // Alterna o ícone
-                                if (isEnabled) {
-                                    icon.classList.remove('bi-toggle-on');
-                                    icon.classList.add('bi-toggle-off');
-                                } else {
-                                    icon.classList.remove('bi-toggle-off');
-                                    icon.classList.add('bi-toggle-on');
-                                }
+<div class="divider"></div>
 
-                                // Envia uma solicitação AJAX para atualizar o estado no servidor
-                                var xhr = new XMLHttpRequest();
-                                xhr.open('POST', 'configuracoes.php', true);
-                                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                                xhr.onreadystatechange = function () {
-                                    if (xhr.readyState === 4) {
-                                        if (xhr.status === 200) {
-                                            console.log('Serviço de localização atualizado.');
-                                            console.log(xhr.responseText); // Para depuração
-                                        } else {
-                                            console.error('Erro na solicitação AJAX:', xhr.statusText);
-                                        }
-                                    }
-                                };
-                                xhr.send('toggle_location_service=1&location_service=' + (isEnabled ? 0 : 1));
-                            }
-                        </script>
-
-                        <div class="settings-item">
-                            <div class="item-left">
-                                <i class="bi bi-bell"></i>
-                                <span class="item-label">Notificações de Ofertas</span>
-                            </div>
-                            <div class="item-right">
-                                <i class="bi bi-chevron-right"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="divider"></div>
-
-                    <div class="settings-section">
+<div class="settings-section">
                         <div class="settings-item">
                             <div class="item-left">
                                 <i class="bi bi-clock-history"></i>
@@ -388,65 +350,111 @@ header{
                             </div>
                         </div>
 
-                        <!-- Botão para Atualizar Senha -->
+                    
+
                         <div class="settings-item" onclick="togglePasswordForm()">
                             <div class="item-left">
                                 <i class="bi bi-shield-lock"></i>
                                 <span class="item-label">Atualizar Senha</span>
-                            </div>
+                                </div>
                             <div class="item-right">
-                                <i class="bi bi-chevron-right"></i>
+                            <i class="bi bi-chevron-right" onclick="togglePasswordForm()"></i>
                             </div>
                         </div>
-
-                        <div class="settings-item">
-                            <div class="item-left">
-                                <i class="bi bi-box-arrow-right"></i>
-                                <a class="item-label" href="backend/logout.php"> Logout</a>
-                            </div>
-                        </div>
-
-                    </div>
+                     
 
                     <div id="form-atualizar-senha">
-                        <h5>Alterar Senha</h5>
-                        <form method="POST" action="">
+                        <form method="post" action="configuracoes.php">
                             <div class="form-group">
                                 <label for="senha_atual">Senha Atual</label>
-                                <input type="password" name="senha_atual" id="senha_atual" class="form-control"
-                                    required>
+                                <input type="password" id="senha_atual" name="senha_atual" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="nova_senha">Nova Senha</label>
-                                <input type="password" name="nova_senha" id="nova_senha" class="form-control" required>
+                                <input type="password" id="nova_senha" name="nova_senha" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="confirmar_senha">Confirmar Nova Senha</label>
-                                <input type="password" name="confirmar_senha" id="confirmar_senha" class="form-control"
-                                    required>
+                                <input type="password" id="confirmar_senha" name="confirmar_senha" class="form-control" required>
                             </div>
-                            <button type="submit" name="atualizar_senha" class="btn btn-primary">Atualizar
-                                Senha</button>
+                            <button type="submit" name="atualizar_senha" class="btn btn-primary">Atualizar Senha</button>
                         </form>
-
-                        <!-- Exibir Mensagens -->
-                        <?php if (isset($mensagem_sucesso)): ?>
-                            <div class="alert alert-success"><?php echo $mensagem_sucesso; ?></div>
-                        <?php elseif (isset($mensagem_erro)): ?>
-                            <div class="alert alert-danger"><?php echo $mensagem_erro; ?></div>
-                        <?php endif; ?>
+                        <i id="voltar-icon" class="bi bi-arrow-left-circle" onclick="togglePasswordForm()"></i>
                     </div>
 
+                    <?php if ($mensagem_sucesso): ?>
+                        <div class="alert alert-success" role="alert">
+                            <?php echo htmlspecialchars($mensagem_sucesso); ?>
+                        </div>
+                    <?php endif; ?>
 
+                    <?php if ($mensagem_erro): ?>
+                        <div class="alert alert-danger" role="alert">
+                            <?php echo htmlspecialchars($mensagem_erro); ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
-    </div>
 
-    <!--footer-->
-    <?php include '../views/partials/footer.php' ?>
-    
+
+
+                                <script>
+
+                            function toggleLocationService() {
+                                var icon = document.getElementById('location-icon');
+                                var isEnabled = icon.classList.contains('bi-toggle-on');
+
+                                // Alterna o ícone
+                                if (isEnabled) {
+                                    icon.classList.remove('bi-toggle-on');
+                                    icon.classList.add('bi-toggle-off');
+                                } else {
+                                    icon.classList.remove('bi-toggle-off');
+                                    icon.classList.add('bi-toggle-on');
+                                }
+
+                                // Envia uma solicitação AJAX para atualizar o estado no servidor
+                                var xhr = new XMLHttpRequest();
+                                xhr.open('POST', 'configuracoes.php', true);
+                                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                                xhr.onreadystatechange = function () {
+                                    if (xhr.readyState === 4) {
+                                        if (xhr.status === 200) {
+                                            console.log('Serviço de localização atualizado.');
+                                            console.log(xhr.responseText); // Para depuração
+                                        } else {
+                                            console.error('Erro na solicitação AJAX:', xhr.statusText);
+                                        }
+                                    }
+                                };
+                                xhr.send('toggle_location_service=1&location_service=' + (isEnabled ? 0 : 1));
+                            }
+                        </script>
+
+    <script>
+function toggleNotification() {
+    var icon = document.getElementById('notificacoes-ofertas-icon');
+    var currentStatus = icon.classList.contains('bi-file-earmark-check-fill');
+    var newStatus = currentStatus ? 0 : 1;
+
+    icon.classList.toggle('bi-file-earmark');
+    icon.classList.toggle('bi-file-earmark-check-fill');
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'configuracoes.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log(xhr.responseText); // Adiciona log para depuração
+        }
+    };
+    xhr.send('toggle_notificacoes_ofertas=1&notificacoes_ofertas=' + newStatus);
+}
+</script>
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

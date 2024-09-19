@@ -290,9 +290,6 @@ mysqli_close($ligacao);
     
 
     <!--footer-->
-
-
-
     <?php include '../views/partials/footer.php' ?>
 </body>
 
