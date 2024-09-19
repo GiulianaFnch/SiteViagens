@@ -1,5 +1,5 @@
 <header>
-    <a href="#" class="logo">BestWay</a>
+    <a href="../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
     <div class="bx bx-menu" id="menu-icon"></div>
 
     <ul class="navbar">
