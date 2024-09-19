@@ -1,3 +1,10 @@
+# Para usar essa base de dados:
+
+DROP DATABASE site_viagens;
+
+- Depois é só importar o arquivo site_viagens.sql para o PhpMyAdmin
+
+
 Usuários inseridos diretamente PhpMyAdmin:
 
 nick: adm

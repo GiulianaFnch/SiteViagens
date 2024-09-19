@@ -17,8 +17,7 @@ $categoria = 0;
         // enquanto conseguir ler dados do array resultado imprime
         echo "<option value='0'>Todos</option>";
         while ($linha = mysqli_fetch_array($resultado)) {
-            if ($categoria == $linha['id'])
-                //if ($_POST['categoria'] == $linha['id'])
+            if ($_POST['categoria'] == $linha['id'])
                 echo "<option value='" . $linha['id'] . "' selected>" . $linha['categoria'] . "</option>";
             else
                 echo "<option value='" . $linha['id'] . "'>" . $linha['categoria'] . "</option>";
@@ -39,12 +38,10 @@ $categoria = 0;
         <td>Comprar</td>
     </tr>
     <?php
-    if ($categoria == 0)
-        //if ($_POST['categoria'] == 0)
+    if ($_POST['categoria'] == 0)
         $sql = "SELECT * FROM t_artigo WHERE vendido=0";
     else
-        $sql = "SELECT * FROM t_artigo WHERE vendido=0 AND cat=" . $categoria;
-    //$sql = "SELECT * FROM t_artigo WHERE vendido=0 AND cat=" . $_POST['categoria'];
+        $sql = "SELECT * FROM t_artigo WHERE vendido=0 AND cat=" . $_POST['categoria'];
     
     // a variavel resultado vai guardar todos os dados de todos os clientes
     $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
