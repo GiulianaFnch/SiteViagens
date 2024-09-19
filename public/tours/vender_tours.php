@@ -8,6 +8,7 @@ include '../../config/liga_bd.php';
 
 <head>
     <meta charset="utf-8">
+    
     <title>Vender Tours</title>
     <script>
         function atualiza() {

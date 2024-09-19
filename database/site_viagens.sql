@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 17, 2024 at 06:24 PM
+-- Generation Time: Sep 19, 2024 at 08:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `site_viagens`
 --
+CREATE DATABASE IF NOT EXISTS `site_viagens` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `site_viagens`;
 
 -- --------------------------------------------------------
 
@@ -35,6 +37,7 @@ CREATE TABLE `t_artigo` (
   `titulo` varchar(50) NOT NULL,
   `descricao` varchar(255) NOT NULL,
   `preco` float NOT NULL,
+  `localizacao` varchar(150) DEFAULT NULL,
   `estado` int(11) NOT NULL,
   `foto1` varchar(50) NOT NULL,
   `foto2` varchar(50) DEFAULT NULL,
@@ -46,20 +49,9 @@ CREATE TABLE `t_artigo` (
 -- Dumping data for table `t_artigo`
 --
 
-INSERT INTO `t_artigo` (`id`, `id_user`, `cat`, `subcat`, `titulo`, `descricao`, `preco`, `estado`, `foto1`, `foto2`, `foto3`, `vendido`) VALUES
-(1, 1, 1, 3, 'Teste', 'testestestste', 123, 3, 'atv2.png', NULL, NULL, 0),
-(2, 1, 2, 1, 'Teste', 'testestestestes', 1233, 4, 'at1v.png', 'Captura de tela 2024-04-23 184314.png', 'Captura de tela 2024-03-28 220413.png', 0),
-(3, 2, 3, 7, 'Reboque', 'Reboque novo para dois cavalos', 1000, 4, '111.jpeg', '112.jpeg', NULL, 0),
-(4, 2, 1, 3, 'Roupa cavaleiro', 'Roupa para cavalieros', 50, 3, 'cavaleiro.jpeg', 'cavaleiro2.jpeg', NULL, 0),
-(5, 2, 1, 4, 'Toque', 'Toque equitação novo', 500, 5, 'toque1.jpeg', NULL, NULL, 2),
-(6, 2, 1, 4, 'Toque usado', 'Toques usado de equitação', 250, 3, 'toque2.jpeg', 'toque3.jpeg', NULL, 0),
-(7, 2, 1, 5, 'Bota nova', 'Bota nova ariat', 225, 4, 'bota.jpeg', NULL, NULL, 2),
-(8, 2, 2, 1, 'Sela equitação clássica', 'Sela nova', 1000, 5, 'selaeq.jpeg', NULL, NULL, 0),
-(9, 2, 2, 1, 'Arreio à portuguesa', 'Arreio à portuguesa como novo', 1500, 4, 'arreio.jpeg', NULL, NULL, 0),
-(10, 2, 2, 2, 'Suadouro', '', 20, 2, 'manta.jpeg', NULL, NULL, 0),
-(11, 2, 2, 6, 'Caneleiras e cloches', '', 100, 4, 'caneleira.jpeg', 'caneleiro.jpeg', NULL, 0),
-(12, 2, 3, 8, 'Carrinho de mão', 'Carrinho de mão marca sdkjda como novo', 42.99, 2, 'carrinho.jpeg', NULL, NULL, 0),
-(13, 4, 1, 3, 'Roupa equitação', 'Roupa equitação feminina', 100, 1, 'roupa.jpeg', NULL, NULL, 0);
+INSERT INTO `t_artigo` (`id`, `id_user`, `cat`, `subcat`, `titulo`, `descricao`, `preco`, `localizacao`, `estado`, `foto1`, `foto2`, `foto3`, `vendido`) VALUES
+(1, 4, 2, 4, 'Passeio de camelo', 'Passeio de camelo muito bom e barato nos desertos do Saara! Venham conhecer', 100, 'Saara', 2, 'camelo.jpg', NULL, NULL, 0),
+(2, 4, 1, 1, 'Tour de barco', 'Tour de barco no litoral alentejano', 5000, 'Alentejo', 5, 'barco.jpg', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -134,9 +126,10 @@ CREATE TABLE `t_categoria` (
 --
 
 INSERT INTO `t_categoria` (`id`, `categoria`) VALUES
-(1, 'Cavaleiros'),
-(2, 'Cavalos'),
-(3, 'Estabulo');
+(1, 'Cultura'),
+(2, 'Natureza'),
+(3, 'Gastronomia'),
+(4, 'Esporte');
 
 -- --------------------------------------------------------
 
@@ -175,16 +168,12 @@ CREATE TABLE `t_subcat` (
 --
 
 INSERT INTO `t_subcat` (`id`, `categoria`, `subcat`) VALUES
-(1, 2, 'Arreios e selas'),
-(2, 2, 'Suadouros'),
-(3, 1, 'Roupas'),
-(4, 1, 'Toques e proteção'),
-(5, 1, 'Botas'),
-(6, 2, 'Caneleiras e proteções'),
-(7, 3, 'Trailers e veículos'),
-(8, 3, 'Ferramentas'),
-(9, 3, 'Teste'),
-(10, 3, 'Teste');
+(1, 1, 'Tours'),
+(2, 1, 'Shows'),
+(3, 1, 'Museus'),
+(4, 2, 'Passeios'),
+(5, 2, 'Parques'),
+(6, 4, 'Radicais');
 
 -- --------------------------------------------------------
 
@@ -197,9 +186,10 @@ CREATE TABLE `t_user` (
   `nick` varchar(20) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `data_nasc` varchar(10) NOT NULL,
+  `data_nasc` varchar(10) DEFAULT NULL,
+  `nome_marca` varchar(150) NOT NULL,
   `pass` varchar(255) NOT NULL,
-  `foto` varchar(50) NOT NULL,
+  `foto` varchar(50) DEFAULT NULL,
   `tipo_user` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -207,13 +197,12 @@ CREATE TABLE `t_user` (
 -- Dumping data for table `t_user`
 --
 
-INSERT INTO `t_user` (`id`, `nick`, `nome`, `email`, `data_nasc`, `pass`, `foto`, `tipo_user`) VALUES
-(1, 'jujuba', 'Giuliana Finochio1', 'finochio44@gmail.com', '2005-04-13', '$2y$10$Xsz2q.eNP.BzC2FdfP8poe1D727CZaHEL03G.Xuly.WpmGrzNmgXa', '222.png', 0),
-(2, 'jujuba2', 'Giuliana Avelar Finochio 2', 'finochio4@gmail.com', '1223-03-12', '$2y$10$DJ8SZfFDflQVL8n5QknheeLUxkAQge1ef81jeUllzmUB2yoEUgWRa', 'atv2.png', 0),
-(3, 'jujubaTeste', 'GiulianaTeste', 'finochio4@gmail.comteste', '2005-03-02', '$2y$10$sFfP30.RtfrkyRInc1zUGOWX074pC.8laiy8mF7VihipH5W45Phye', 'WIN_20240626_17_24_13_Pro.jpg', 0),
-(4, 'Guilherme', 'Guilherme Silva', 'guidouradosilva2004@gmail.com', '2004-01-20', '$2y$10$HK1nHehtYhAEVkAU3Fx.Yul4g1mb3BO.IzEc0tQ.r4F1H1KIF.aLG', '16530692916287d5ebe00ca_1653069291_3x4_md.jpg', 0),
-(5, 'gui', 'guilherme silva', 'guiguigui@gmail.com', '2024-07-01', '$2y$10$UsCzhT1lc3LF8jQCQbH7Cud52itS5MvrPMvyuVydaWoSJYdI33OCe', 'WIN_20240507_18_36_19_Pro.jpg', 0),
-(6, 'guii', 'Guilherme Silva', 'guidouradosilva2004@gmail.com', '2024-07-09', '$2y$10$lVr6pwxiRjbm.D2uajuI4.sKwo9mRQDeFVgIzGEbE3bHL328bdHh6', 'teste.jpg', 0);
+INSERT INTO `t_user` (`id`, `nick`, `nome`, `email`, `data_nasc`, `nome_marca`, `pass`, `foto`, `tipo_user`) VALUES
+(1, 'adm', 'Adimino Admin', 'admin@gmail.com', NULL, '', '123', NULL, 4),
+(2, 'Gabis', 'Gabrielle', 'reissgabi@hotmail.com', NULL, 'Reis Rooms', '123', NULL, 0),
+(3, 'jujuba', 'Giuliana', 'finochio44@gmail.com', NULL, 'finochios hotels', '123', NULL, 0),
+(4, 'vendedor tours', 'vendedor de tours', 'tours@hotmail.com', NULL, 'Tours Faceis Aqui', '1', NULL, 2),
+(5, 'vendedor hoteis', 'vendedor de hoteis muito bom', 'hoteis@hotmail.com', NULL, 'hoteis BB', '123', NULL, 3);
 
 --
 -- Indexes for dumped tables
@@ -263,7 +252,7 @@ ALTER TABLE `t_user`
 -- AUTO_INCREMENT for table `t_artigo`
 --
 ALTER TABLE `t_artigo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `t_art_comen`
@@ -281,19 +270,19 @@ ALTER TABLE `t_art_comen_v`
 -- AUTO_INCREMENT for table `t_categoria`
 --
 ALTER TABLE `t_categoria`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `t_subcat`
 --
 ALTER TABLE `t_subcat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `t_user`
 --
 ALTER TABLE `t_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
