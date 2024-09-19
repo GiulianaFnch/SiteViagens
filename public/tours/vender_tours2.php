@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-br">
 
 <head>
     <meta charset="utf-8">
-    <link type="text/css" rel="stylesheet" href="style.css">
-    <title>Horsed</title>
+    <title>Vender Passeios</title>
 </head>
 
 <body>
@@ -17,7 +16,7 @@
 
     // Verificar e validar a primeira foto
     $_FILES["ficheiro"] = $_FILES["ficheiro1"];
-    include '../../config/valida_fotoa.php';
+    include 'valida_fotoa.php';
 
     if ($uploadOk == 0) {
         echo "O seu ficheiro não foi enviado.";
@@ -38,7 +37,7 @@
                 $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
                 $linha = mysqli_fetch_assoc($resultado);
                 $_FILES["ficheiro"] = $_FILES["ficheiro2"];
-                include '../../config/valida_fotoa.php';
+                include 'valida_fotoa.php';
                 if ($uploadOk == 1) {
                     move_uploaded_file($_FILES["ficheiro"]["tmp_name"], $target_file);
                     $sql2 = "UPDATE t_artigo SET foto2='" . $foto . "' WHERE id= $linha[id];";
@@ -53,7 +52,7 @@
                 $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
                 $linha = mysqli_fetch_assoc($resultado);
                 $_FILES["ficheiro"] = $_FILES["ficheiro3"];
-                include '../../config/valida_fotoa.php';
+                include 'valida_fotoa.php';
                 if ($uploadOk == 1) {
                     move_uploaded_file($_FILES["ficheiro"]["tmp_name"], $target_file);
                     $sql3 = "UPDATE t_artigo SET foto3='" . $foto . "' WHERE id= $linha[id];";
@@ -66,7 +65,7 @@
     mysqli_close($ligacao);
     ?>
     <br />
-    <a href="login2.php" target="_self">Volta ao Menu</a>
+    <a href="tours_inicial.php" target="_self">Volta ao Menu</a>
 </body>
 
 </html>

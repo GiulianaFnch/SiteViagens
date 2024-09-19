@@ -4,15 +4,13 @@ include '../../config/liga_bd.php';
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 
 <head>
     <meta charset="utf-8">
     <title>Vender Tours</title>
-    <link href="style/dashboard.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript">
+    <script>
         function atualiza() {
-
             document.getElementById("f2").elements.namedItem("valor_cat").value =
                 document.getElementById("f1").elements.namedItem("categoria").value;
             document.getElementById("f2").elements.namedItem("valor_subcat").value =
@@ -24,7 +22,7 @@ include '../../config/liga_bd.php';
 </head>
 
 <body onload="atualiza();">
-    <h1 class="h2">Vender Passeioss</h1>
+    <h1 class="h2">Vender Passeios</h1>
     <?php
 
     $categoria = 1;
@@ -43,7 +41,7 @@ include '../../config/liga_bd.php';
             //enquanto conseguir ler dados do array resultado imprime
             while ($linha = mysqli_fetch_assoc($resultado)) {
                 if ($categoria == $linha['id'])
-                /*if ($_POST['categoria'] == $linha['id'])*/
+                    /*if ($_POST['categoria'] == $linha['id'])*/
                     echo "<option value='" . $linha['id'] . "' selected>" . $linha['categoria'] . "</option>";
                 else
                     echo "<option value='" . $linha['id'] . "'>" . $linha['categoria'] . "</option>";
@@ -86,7 +84,7 @@ include '../../config/liga_bd.php';
         Foto3:<input type="file" name="ficheiro3"><br><br>
         <input type="submit" value="Vender">
     </form>
-    <form action="vender.php" method="post">
+    <form action="vender_tours.php" method="post">
         <input type="hidden" name="categoria" value="1">
         <input type="submit" value="Limpar">
     </form>
