@@ -69,6 +69,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit(); // Saia após processar o AJAX
     }
 }
+
+if (isset($_POST['logout'])) {
+    // Destroi a sessão atual
+    session_destroy();
+
+    // Redireciona para a página de login (index.html)
+    header('Location: ../index.html');
+    exit();
+}
+
 ?>
 
 
@@ -408,6 +418,21 @@ header{
                             <i class="bi bi-chevron-right" onclick="togglePasswordForm()"></i>
                             </div>
                         </div>
+
+
+                        <div class="settings-item" id="logout-item">
+    <div class="item-left">
+        <i class="bi bi-box-arrow-right"></i>
+        <span class="item-label">Logout</span>
+    </div>
+    <div class="item-right">
+        <form method="POST" style="display: inline;">
+            <button type="submit" name="logout" class="btn btn-link" style="color: #007AFF; padding: 0; font-size: 18px;">
+             <i class="bi bi-chevron-right"></i>
+            </button>
+        </form>
+    </div>
+</div>
                      
 
                     <div id="form-atualizar-senha">
