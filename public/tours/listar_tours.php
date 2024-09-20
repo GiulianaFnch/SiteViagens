@@ -74,7 +74,7 @@ $categoria = 0;
             echo "<td>" . $linha['id_user'] . "- " . $linha_user['nick'] . "</td>";
             echo "<td><img src='imagens/" . $linha['foto1'] . "' width='100px' ></td><td>";
             ?>
-            <form action="comprar2.php" method="post">
+            <form action="detalhes_tours.php" method="post">
                 <input type="hidden" name="id_artigo" value="<?php echo $linha['id']; ?>">
                 <input type="submit" value="Ver comentários / Comprar">
             </form>
