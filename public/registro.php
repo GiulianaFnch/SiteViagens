@@ -28,7 +28,7 @@
                 <p class="lead">Preencha esse formulário para registrar um novo usuário no banco de dados</p>
             </div>
 
-            <form action="backend/registro2.php" method="post" enctype="multipart/form-data">
+            <form action="registro2.php" method="post" enctype="multipart/form-data">
                 <div class="input-group">
                     <label for="nick">Nick:</label>
                     <input type="text" id="nick" name="nick" class="form-control" required>
