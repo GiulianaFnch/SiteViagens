@@ -1,3 +1,4 @@
+
 * {
     padding: 0;
     margin: 0;
@@ -175,6 +176,60 @@ section {
     margin-bottom: 50px;
 }
 
+/* Estilo geral da seção da barra de pesquisa começo da aba tours  */
+.search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #e4e1d2; /* Cor de fundo da barra de pesquisa */
+    border-radius: 8px;
+    margin: 20px auto;
+    width: 75%; /* Ocupa 75% da largura da tela */
+    max-width: 800px; /* Limita a largura máxima */
+    min-width: 600px; /* Limita a largura mínima */
+}
+
+.search-bar form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.search-bar input[type="text"],
+.search-bar input[type="date"] {
+    padding: 10px;
+    border: 1px solid #e4e1d2;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: 14px;
+    font-style: var(--text-color);
+    font: var(--text-color);
+    flex: 5; /* Faz com que os campos cresçam proporcionalmente */
+}
+
+.search-bar input[type="date"] {
+    width: 200px; 
+    color: rgb(116, 114, 114);
+    /* Define uma largura fixa para a data */
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    background-color: #ffffff; /* Cor do botão pesquisar */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.search-bar button:hover {
+    background-color: #0c0c0c; /* Cor ao passar o mouse sobre o botão aqui acaba a aba tours */
+}
+
+
 .home-btn {
     display: inline-block;
     font-size: 16px;
@@ -218,12 +273,61 @@ header.sticky {
     margin-top: 5rem;
 }
 
-.package-content {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* cards da aba tours  */
+.package-content2 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 cards por linha */
+    grid-gap: 2rem; /* Espaçamento entre os cards */
+    align-items: start;
+    margin-top: 5rem;
 }
+
+.box {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.box:hover {
+    transform: translateY(-5px);
+}
+
+.thum img {
+    width: 100%;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.dest-content {
+    padding: 1rem;
+}
+
+.dest-content h3 {
+    font-size: 1.1rem;
+    color: gray;
+    margin-bottom: 0.5rem;
+}
+
+.dest-content h5 {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.stars i {
+    color: #FFD700;
+    margin-right: 0.2rem;
+}
+
+.stars h4 {
+    font-size: 1rem;
+    color: #0073ff;
+}
+/* aqui acaba package-content */
 
 .container-box {
     background: var(--bg-color);
@@ -606,3 +710,22 @@ header.sticky {
         transition: .2s;
     }
 }
+/* Media Queries para responsividade */
+@media screen and (max-width: 1200px) {
+    .package-content {
+        grid-template-columns: repeat(3, 1fr); /* 3 cards por linha */
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .package-content {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards por linha */
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .package-content {
+        grid-template-columns: 1fr; /* 1 card por linha */
+    }
+}
+
