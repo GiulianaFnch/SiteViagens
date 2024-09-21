@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 19, 2024 at 08:02 PM
+-- Generation Time: Sep 21, 2024 at 11:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -36,8 +36,10 @@ CREATE TABLE `t_artigo` (
   `subcat` int(11) NOT NULL,
   `titulo` varchar(50) NOT NULL,
   `descricao` varchar(255) NOT NULL,
-  `preco` float NOT NULL,
+  `preco` decimal(10,2) NOT NULL,
   `localizacao` varchar(150) DEFAULT NULL,
+  `data_inicio` date NOT NULL,
+  `data_fim` date NOT NULL,
   `estado` int(11) NOT NULL,
   `foto1` varchar(50) NOT NULL,
   `foto2` varchar(50) DEFAULT NULL,
@@ -49,9 +51,22 @@ CREATE TABLE `t_artigo` (
 -- Dumping data for table `t_artigo`
 --
 
-INSERT INTO `t_artigo` (`id`, `id_user`, `cat`, `subcat`, `titulo`, `descricao`, `preco`, `localizacao`, `estado`, `foto1`, `foto2`, `foto3`, `vendido`) VALUES
-(1, 4, 2, 4, 'Passeio de camelo', 'Passeio de camelo muito bom e barato nos desertos do Saara! Venham conhecer', 100, 'Saara', 2, 'camelo.jpg', NULL, NULL, 0),
-(2, 4, 1, 1, 'Tour de barco', 'Tour de barco no litoral alentejano', 5000, 'Alentejo', 5, 'barco.jpg', NULL, NULL, 0);
+INSERT INTO `t_artigo` (`id`, `id_user`, `cat`, `subcat`, `titulo`, `descricao`, `preco`, `localizacao`, `data_inicio`, `data_fim`, `estado`, `foto1`, `foto2`, `foto3`, `vendido`) VALUES
+(1, 4, 1, 1, 'Tour Histórico pela Cidade Velha', 'Um passeio pelos pontos históricos da cidade velha com um guia especializado.', 50.00, 'Lisboa, Portugal', '2024-09-01', '2024-09-30', 5, 'tour_hist_1.jpg', 'tour_hist_2.jpg', 'tour_hist_3.jpg', 0),
+(2, 6, 2, 4, 'Passeio de Balão ao Nascer do Sol', 'Desfrute de uma incrível vista do nascer do sol em um passeio de balão pela região vinícola.', 150.00, 'Toscana, Itália', '2024-09-01', '2024-09-30', 4, 'balao_1.jpg', 'balao_2.jpg', 'balao_3.jpg', 0),
+(3, 7, 3, 3, 'Visita Guiada ao Museu do Vinho', 'Conheça a história e produção dos vinhos locais com degustação incluída.', 80.00, 'Bordeaux, França', '2024-10-01', '2024-10-31', 5, 'museu_vinho_1.jpg', 'museu_vinho_2.jpg', 'museu_vinho_3.jpg', 0),
+(4, 8, 1, 2, 'Show de Fado Tradicional', 'Aprecie uma noite de Fado com artistas locais em uma das casas de show mais renomadas.', 35.00, 'Porto, Portugal', '2024-10-01', '2024-10-31', 5, 'fado_1.jpg', 'fado_2.jpg', 'fado_3.jpg', 0),
+(5, 4, 4, 6, 'Rapel em Montanha', 'Rapel em montanhas para aventureiros com instrutores experientes.', 200.00, 'Patagônia, Argentina', '2024-09-01', '2024-09-30', 4, 'rapel_1.jpg', 'rapel_2.jpg', 'rapel_3.jpg', 0),
+(6, 6, 3, 4, 'Passeio Gastronômico pelos Mercados Locais', 'Uma jornada gastronômica pelos mercados locais com degustação de pratos tradicionais.', 45.00, 'São Paulo, Brasil', '2024-10-01', '2024-10-31', 5, 'mercado_gastr_1.jpg', 'mercado_gastr_2.jpg', 'mercado_gastr_3.jpg', 0),
+(7, 7, 2, 5, 'Visita ao Parque Nacional', 'Explore as trilhas do parque nacional com guias locais e observe a fauna nativa.', 120.00, 'Kruger, África do Sul', '2024-09-01', '2024-09-30', 3, 'parque_kruger_1.jpg', 'parque_kruger_2.jpg', 'parque_kruger_3.jpg', 0),
+(8, 8, 1, 3, 'Museu de Arte Moderna', 'Visite uma das maiores coleções de arte moderna com um guia especializado.', 60.00, 'Nova York, EUA', '2024-10-01', '2024-10-31', 5, 'museu_arte_moderna_1.jpg', 'museu_arte_moderna_2.jpg', 'museu_arte_moderna_3.jpg', 0),
+(9, 4, 4, 6, 'Rafting em Rápidos', 'Uma emocionante aventura em rios com águas rápidas e guias profissionais.', 180.00, 'Colorado, EUA', '2024-10-05', '2024-10-05', 4, 'rafting_1.jpg', 'rafting_2.jpg', 'rafting_3.jpg', 0),
+(10, 6, 2, 4, 'Passeio de Bicicleta na Floresta', 'Descubra paisagens naturais enquanto pedala por trilhas seguras na floresta.', 95.00, 'Amazônia, Brasil', '2024-10-25', '2024-10-25', 5, 'bicicleta_1.jpg', 'bicicleta_2.jpg', 'bicicleta_3.jpg', 0),
+(11, 4, 1, 1, 'Passeio Cultural pelo Centro Histórico', 'Um passeio guiado pelas ruas históricas e monumentos icônicos da cidade.', 40.00, 'Lisboa, Portugal', '2024-09-21', '2024-10-15', 5, 'centro_hist_1.jpg', 'centro_hist_2.jpg', 'centro_hist_3.jpg', 0),
+(12, 6, 3, 4, 'Tour Gastronômico pelos Restaurantes Típicos', 'Descubra os melhores restaurantes locais com pratos tradicionais.', 70.00, 'Lisboa, Portugal', '2024-09-22', '2024-10-20', 5, 'tour_gastro_1.jpg', 'tour_gastro_2.jpg', 'tour_gastro_3.jpg', 0),
+(13, 7, 2, 2, 'Show de Música Tradicional', 'Aprecie um show de música tradicional em um dos melhores teatros da cidade.', 55.00, 'Lisboa, Portugal', '2024-09-25', '2024-10-25', 4, 'musica_trad_1.jpg', 'musica_trad_2.jpg', 'musica_trad_3.jpg', 0),
+(14, 8, 4, 6, 'Aventura de Escalada em Penhascos', 'Desfrute de uma aventura de escalada com vistas deslumbrantes e guias experientes.', 180.00, 'Lisboa, Portugal', '2024-10-01', '2024-10-31', 4, 'escalada_1.jpg', 'escalada_2.jpg', 'escalada_3.jpg', 0),
+(15, 4, 2, 4, 'Passeio de Caiaque no Rio Tejo', 'Explore as águas do Rio Tejo em uma emocionante aventura de caiaque.', 90.00, 'Lisboa, Portugal', '2024-09-30', '2024-10-20', 5, 'caiaque_1.jpg', 'caiaque_2.jpg', 'caiaque_3.jpg', 0);
 
 -- --------------------------------------------------------
 
@@ -190,19 +205,22 @@ CREATE TABLE `t_user` (
   `nome_marca` varchar(150) NOT NULL,
   `pass` varchar(255) NOT NULL,
   `foto` varchar(50) DEFAULT NULL,
-  `tipo_user` int(11) NOT NULL DEFAULT 0
+  `tipo_user` int(11) NOT NULL DEFAULT 0,
+  `notificacoes_ofertas` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `t_user`
 --
 
-INSERT INTO `t_user` (`id`, `nick`, `nome`, `email`, `data_nasc`, `nome_marca`, `pass`, `foto`, `tipo_user`) VALUES
-(1, 'adm', 'Adimino Admin', 'admin@gmail.com', NULL, '', '123', NULL, 4),
-(2, 'Gabis', 'Gabrielle', 'reissgabi@hotmail.com', NULL, 'Reis Rooms', '123', NULL, 0),
-(3, 'jujuba', 'Giuliana', 'finochio44@gmail.com', NULL, 'finochios hotels', '123', NULL, 0),
-(4, 'vendedor tours', 'vendedor de tours', 'tours@hotmail.com', NULL, 'Tours Faceis Aqui', '1', NULL, 2),
-(5, 'vendedor hoteis', 'vendedor de hoteis muito bom', 'hoteis@hotmail.com', NULL, 'hoteis BB', '123', NULL, 3);
+INSERT INTO `t_user` (`id`, `nick`, `nome`, `email`, `data_nasc`, `nome_marca`, `pass`, `foto`, `tipo_user`, `notificacoes_ofertas`) VALUES
+(1, 'adm', 'Adimino Admin', 'admin@gmail.com', NULL, '', '123', NULL, 4, 1),
+(2, 'Gabis', 'Gabrielle', 'reissgabi@hotmail.com', '2024-09-26', 'Reis Rooms', '123', 'camelo.jpg', 0, 1),
+(4, 'vendedor tours', 'vendedor de tours', 'tours@hotmail.com', NULL, 'Tours Faceis Aqui', '1', NULL, 2, 1),
+(5, 'vendedor hoteis', 'vendedor de hoteis muito bom', 'hoteis@hotmail.com', NULL, 'hoteis BB', '123', NULL, 3, 1),
+(6, 'jujuba', 'jujubas', 'finochio@gmail.com', '0002-03-20', '', '$2y$10$FO8sLuzGb48wK.RdmhUNnuef1309Ajc2aFiPlvDsvdPHiYLPL9Cw.', 'teste.jpg', 0, 1),
+(7, 'Karol', 'Karoline', 'karol@gmail.com', '2024-09-19', '', '$2y$10$AeZm1fuqUb8cmWag2DboEejr8eDak/qD5PQuxRh.HcFhgqUlIAP/2', 'barco.jpg', 0, 1),
+(8, 'teste', 'teste', 'teste@gmail.com', '2024-09-19', '', '$2y$10$UHhzzR4.fT4zRVFxaDQlr.D4MlSuxUCXiUr3IMupWrNzD0jGNAnn.', 'barco.jpg', 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -252,7 +270,7 @@ ALTER TABLE `t_user`
 -- AUTO_INCREMENT for table `t_artigo`
 --
 ALTER TABLE `t_artigo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `t_art_comen`
@@ -282,7 +300,7 @@ ALTER TABLE `t_subcat`
 -- AUTO_INCREMENT for table `t_user`
 --
 ALTER TABLE `t_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,4 +1,5 @@
-<?php
+<?php 
+include '../../config/liga_bd.php';
 include '../../config/valida.php';
 ?>
 
@@ -38,27 +39,21 @@ include '../../config/valida.php';
 
     <!--Home section-->
     <section class="home-tours" id="home">
- <!--colocar o nome grande -->  
+        <!--colocar o nome grande -->
         <div class="home-text2">
-            <h1>"Atrações. Atividades. " <br> Experiências</h1>
-            <p>Explore novas atrações e vivências que se ajustam aos seus interesses e ao seu jeito de viajar..</p>
-            <!-- Search Section -->
+            <h1>Atrações. Atividades. <br> Experiências.</h1>
+            <p style="color: aliceblue;">Explore novas atrações e vivências que se ajustam aos seus interesses e ao seu
+                jeito de viajar..</p>
+            <!-- Search Section botão pesquisar  -->
+
             <section class="search-bar">
-            <!-- 
-            Aqui vai ficar como o arquivo do projeto de exemplo pesq.php
-
-            tem que escolher o que vai pesquisar
-            lugar e data ou nome da atividade e data, por exemplo
-
-            e ele vai mandar para um outro arquivo que vai fazer a pesquisa e mostrar os resultados 
-            pode ser pesquisa_tours.php por exemplo, que vai ser php do pesq2.php do projeto de exemplo
-            -->
-                <form action="#z" method="GET">
-                    <input type="text" placeholder="O que deseja fazer?" name="destination" required>
-                    <input type="date" placeholder="Selecione as datas " name="dates" required>
-                    <button type="submit">Search</button>
+                <form action="pesquisa2_tours.php" method="get">
+                    <input type="text" placeholder="Para onde?" name="localizacao" required>
+                    <input type="date" placeholder="Selecione as datas " name="data" required>
+                    <button style="color: grey;" type="submit">Pesquisar</button>
                 </form>
             </section>
+
         </div>
     </section>
 
@@ -74,7 +69,7 @@ include '../../config/valida.php';
         <div class="title">
             <h2>Aventuras de tirar o fôlego</h2>
         </div>
-        <div class="package-content">
+        <div class="package-content2">
             <div class="box">
                 <div class="thum">
                     <img src="imagens/australia.jpg">
@@ -149,9 +144,34 @@ include '../../config/valida.php';
             </div>
 
 
+
+            <div class="box">
+                <div class="thum">
+                    <img src="imagens/Geysir.jpg">
+
+                </div>
+
+                <div class="dest-content">
+                    <div class="stars">
+                        <h3 style="color: gray;">De Geysir: snowmobile na geleira Langjökull</h3>
+                        <h5>Embarque em um passeio de snowmobiling em Geysir e descubra o cenário deslumbrante da
+                            geleira Langjökull </h5>
+
+                    </div>
+                    <div class="stars">
+                        <i class='bx bxs-star'></i></a>
+                        <i class='bx bxs-star'></i></a>
+                        <i class='bx bxs-star'></i></a>
+                        <a href="#">
+                            <h4> A partir de 208,00 € por pessoa</h4>
+                        </a><br>
+
+
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
-
     <!--destination section-->
     <section class="destination" id="destination">
         <div class="title">

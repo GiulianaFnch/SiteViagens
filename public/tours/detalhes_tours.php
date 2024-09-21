@@ -2,14 +2,9 @@
 include_once "../../config/valida.php";
 include_once "../../config/liga_bd.php";
 
-//$id_artigo = $_POST['id_artigo'];
-
-$id_artigo = 1;
-?>
-
-<?php
+$id_artigo = $_POST['id_artigo'];
 $sql = "SELECT * FROM t_artigo WHERE id=" . $id_artigo;
-// echo $sql;
+
 // a variavel resultado vai guardar todos os dados de todos os clientes
 $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
 $linha = mysqli_fetch_array($resultado);
@@ -38,37 +33,48 @@ $linha = mysqli_fetch_array($resultado);
             /* Mantém a proporção da altura */
         }
     </style>
+
 </head>
 <main>
     <!-- 
         Aqui é que precisa ajustar para ficar bonito
-
     -->
-    <h2>Comprar</h2>
-    ID: <?php echo $linha['id']; ?><br>
-    Título: <?php echo $linha['titulo']; ?><br>
-    Descrição: <?php echo $linha['descricao']; ?><br>
-    Preço: <?php echo $linha['preco']; ?><br>
-    Estado: <?php echo $linha['estado']; ?><br>
 
-    <img src="artigos/<?php echo $linha['foto1']; ?>" class="artigo-img"><br>
-    <?php
+    <h2>Comprar</h2>
+    
+    <img src="imagens/<?php echo $linha['foto1']; ?>" class="artigo-img"><br>
+
+    <?php // Se houver mais fotos, mostra: 
+    
     if ($linha['foto2'] != NULL)
         echo "<img src='artigos/" . $linha['foto2'] . "' class='artigo-img'><br>";
     if ($linha['foto3'] != NULL)
         echo "<img src='artigos/" . $linha['foto3'] . "' class='artigo-img'><br>";
     ?>
+    Título: <?php echo $linha['titulo']; ?><br>
+    Descrição: <?php echo $linha['descricao']; ?><br>
+    Preço: <?php echo $linha['preco']; ?><br>
+    Estado: <?php echo $linha['estado']; ?><br>
+    Data de início: <?php echo $linha['data_inicio']; ?><br>
+    Data de fim: <?php echo $linha['data_fim']; ?><br>
+    Localização: <?php echo $linha['localizacao']; ?><br>
+    Vendedor: <?php echo $linha['id_user']; ?><br> <!-- Depois arrumar para mostrar o nome do vendedor, não só o ID -->
 
+    <!-- 
+        Ignorar essa parte, é para futuramente adicionar comentários (??)
+        (não apagar pra já pfv)
+    -->
+    
     <!--
-<h3>Comentários</h3>
-<table>
-    <tr>
-        <td>ID</td>
-        <td>Comentário</td>
-        <td>Classificação</td>
-        <td>Data</td>
-        <td>Utilizador</td>
-    </tr>
+    <h3>Comentários</h3>
+    <table>
+        <tr>
+            <td>ID</td>
+            <td>Comentário</td>
+            <td>Classificação</td>
+            <td>Data</td>
+            <td>Utilizador</td>
+        </tr>
 
     <?php
     /*
@@ -89,19 +95,21 @@ $linha = mysqli_fetch_array($resultado);
         */
     ?>
 
-</table>
-<form action="comprar3.php" method="post">
-    <input type="hidden" name="id_artigo" value="<?php echo $id_artigo; ?>">
-    Novo comentário:<br> <textarea cols="80" rows="5" name="comentario"></textarea><br>
-    Classificação: <input type="number" min="1" max="5" name="classificacao" required><br>
-    Data: <input type="text" readonly name="data" value="<?php echo date("h:i:sa"); ?>"><br>
-    Público: <select name="publico">
-        <option value="0">Público</option>
-        <option value="1">Privado</option>
-    </select>
-    <input type="submit" value="Comentar">
+    </table>
+    <form action="comprar3.php" method="post">
+        <input type="hidden" name="id_artigo" value="<?php echo $id_artigo; ?>">
+        Novo comentário:<br> <textarea cols="80" rows="5" name="comentario"></textarea><br>
+        Classificação: <input type="number" min="1" max="5" name="classificacao" required><br>
+        Data: <input type="text" readonly name="data" value="<?php echo date("h:i:sa"); ?>"><br>
+        Público: <select name="publico">
+            <option value="0">Público</option>
+            <option value="1">Privado</option>
+        </select>
+        <input type="submit" value="Comentar">
 
--->
+    -->
+
 </main>
+</body>
 
 </html>
