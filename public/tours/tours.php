@@ -24,7 +24,18 @@ include '../../config/valida.php';
 
 <body>
     <!--header-->
-    <?php include '../../views/partials/header.php'; ?>
+    <header>
+        <a href="#" class="logo">BestWay</a>
+        <div class="bx bx-menu" id="menu-icon"></div>
+
+        <ul class="navbar">
+            <li><a href="#home">Hospedagem</a></li>
+            <li><a href="#package">Passagens</a></li>
+            <li><a href="#package">Tours</a></li>
+            <li><a href="#contact">Pacotes</a></li>
+            <li><a href="public/login.php">Fazer login</a></li>
+        </ul>
+    </header>
 
     <!--Home section-->
     <section class="home-tours" id="home">
@@ -47,11 +58,57 @@ include '../../config/valida.php';
     </section>
 
     <!--container-->
-    <section class="container">
-        <div class="text">
-            <h2>Atividades mais procuradas. </h2>
+    <section class="destinos" id="destinos">
+        <div class="title">
+            <h2>Passeios mais procurados</h2>
+        </div>
+        <div class="destinos">
+        <div class="destino">
+            <img src="img/coliseu.jpg" alt="Tour Coliseu ">
+            <div class="descricao">
+                <h3>Roma</h3>
+                            </div>
+        </div>
 
-    </section>
+        <div class="destino">
+            <img src="img/riosena.jpg" alt="Passeio de barco pelo Rio Sena">
+            <div class="descricao">
+                <h3>paris</h3>
+                            </div>
+        </div>
+
+        <div class="destino">
+            <img src="img/cristoredentor.jpg" alt="Cristo Redentor">
+            <div class="descricao">
+                <h3>Rio de Janeiro</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="linha">
+        <div class="destino">
+            <img src="img/piramides.jpg" alt="Pirâmides de Gizé">
+            <div class="descricao">
+                <h3>Cairo</h3>
+            </div>
+        </div>
+
+        <div class="destino">
+            <img src="img/centralpark.jpg" alt="Tour pelo Central Park">
+            <div class="descricao">
+                <h3>Nova York</h3>
+            </div>
+        </div>
+
+        <div class="destino">
+            <img src="img/santorini.jpg" alt="Cruzeiro pelas ilhas vucânicas">
+            <div class="descricao">
+                <h3>Santorini</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
 
     <!--Package section-->
     <section class="package" id="package">
@@ -68,7 +125,7 @@ include '../../config/valida.php';
                 <div class="dest-content">
                     <div class="stars">
                         <h3 style="color: gray;">Gold Coast: aula de surf</h3>
-                        <h5>Experimente a emoção de pegar uma onda com uma aula de surf na Gold Coast. </h5>
+                        <h5>Experimente a emoção de pegar uma onda com uma aula de surf na Gold Coast. </h5><br><br>
 
                     </div>
                     <div class="stars">
@@ -93,8 +150,8 @@ include '../../config/valida.php';
 
                 <div class="dest-content">
                     <div class="location">
-                        <h3 style="color: gray;">Dia de ski em Chamonix</h3>
-                        <h5>Experimente esquiar nos Alpes franceses, no famoso resort de Chamonix.</h5>
+                        <h3 style="color: gray;">Chamonix: Dia de ski em.</h3>
+                        <h5>Experimente esquiar nos Alpes franceses, no famoso resort de Chamonix.</h5><br><br>
 
                     </div>
                     <div class="stars">
@@ -103,6 +160,28 @@ include '../../config/valida.php';
                         <a href="#"><i class='bx bxs-star'></i></a>
                         <a href="#">
                             <h4> A partir de 41,98 € por pessoa</h4>
+                        </a><br>
+                    </div>
+                </div>
+            </div>
+            <div class="box">
+                <div class="thum">
+                    <img src="imagens/Antalya.jpg">
+
+                </div>
+
+                <div class="dest-content">
+                    <div class="location">
+                        <h3 style="color: gray;">Antalya: Safári de Buggy no Deserto</h3>
+                        <h5>Experimente a emoção de percorrer paisagens desérticas</h5><br><br>
+
+                    </div>
+                    <div class="stars">
+                        <a href="#"><i class='bx bxs-star'></i></a>
+                        <a href="#"><i class='bx bxs-star'></i></a>
+                        <a href="#"><i class='bx bxs-star'></i></a>
+                        <a href="#">
+                            <h4> A partir de 46,43 € por pessoa</h4>
                         </a><br>
                     </div>
                 </div>
@@ -116,9 +195,9 @@ include '../../config/valida.php';
 
                 <div class="dest-content">
                     <div class="location">
-                        <h3 style="color: gray;">Paraquedismo no deserto de Dubai</h3>
+                        <h3 style="color: gray;">Dubai: Paraquedismo no deserto de Dubai</h3>
                         <h5>Contemple as dunas de Dubai enquanto despenca do céu a uma velocidade de 192 km/h.</h5>
-
+<br>
                     </div>
                     <div class="stars">
                         <a href="#"><i class='bx bxs-star'></i></a>
@@ -132,19 +211,43 @@ include '../../config/valida.php';
                 </div>
             </div>
 
+            <div class="box">
+                <div class="thum">
+                    <img src="imagens/saara.jpg">
 
+                </div>
+ 
+                <div class="dest-content">
+                    <div class="stars">
+                        <h3 style="color: gray;"> Saara: Passeio de quadriciclo pelo deserto.</h3>
+                        <h5>Explore as paisagens deslumbrantes de Erg Chebbi em uma emocionante aventura de quadriciclo 
+             </h5>
+
+                    </div>
+                    <div class="stars">
+                        <i class='bx bxs-star'></i></a>
+                        <i class='bx bxs-star'></i></a>
+                        <i class='bx bxs-star'></i></a>
+                        <a href="#">
+                            <h4> A partir de 266,00 € por pessoa</h4>
+                        </a><br>
+
+
+                    </div>
+                </div>
+            </div>
 
             <div class="box">
                 <div class="thum">
                     <img src="imagens/Geysir.jpg">
 
                 </div>
-
+ 
                 <div class="dest-content">
                     <div class="stars">
-                        <h3 style="color: gray;">De Geysir: snowmobile na geleira Langjökull</h3>
-                        <h5>Embarque em um passeio de snowmobiling em Geysir e descubra o cenário deslumbrante da
-                            geleira Langjökull </h5>
+                        <h3 style="color: gray;">Geysir: snowmobile na geleira Langjökull</h3>
+                        <h5>Embarque em um passeio de snowmobiling em Geysir
+             </h5><br><br>
 
                     </div>
                     <div class="stars">
@@ -159,12 +262,62 @@ include '../../config/valida.php';
                     </div>
                 </div>
             </div>
+            <div class="box">
+                <div class="thum">
+                    <img src="imagens/tenefire.jpg">
+
+                </div>
+ 
+                <div class="dest-content">
+                    <div class="stars">
+                        <h3 style="color: gray;">Tenerife: Voo duplo de parapente</h3>
+                        <h5>Experimente o incrível e emocionante mundo do parapente com uma equipe experiente e profissional. 
+             </h5>
+
+                    </div>
+                    <div class="stars">
+                        <i class='bx bxs-star'></i></a>
+                        <i class='bx bxs-star'></i></a>
+                        <i class='bx bxs-star'></i></a>
+                        <a href="#">
+                            <h4> A partir de 110,00 € por pessoa</h4>
+                        </a><br>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="box">
+                <div class="thum">
+                    <img src="imagens/puntacana.jpg">
+
+                </div>
+ 
+                <div class="dest-content">
+                    <div class="stars">
+                        <h3 style="color: gray;">Punta Cana: Jet Ski a melhor experiência de adrenalina</h3>
+                        <h5>levará a lugares deslumbrantes como Cayo Bocaina, Cayo Esteban, a praia El Mono e a piscina natural de Miches. 
+             </h5>
+
+                    </div>
+                    <div class="stars">
+                        <i class='bx bxs-star'></i></a>
+                        <i class='bx bxs-star'></i></a>
+                        <i class='bx bxs-star'></i></a>
+                        <a href="#">
+                            <h4> A partir de 266,00 € por pessoa</h4>
+                        </a><br>
+
+
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
     <!--destination section-->
     <section class="destination" id="destination">
         <div class="title">
-            <h2>Tours Incr</h2>
+            <h2>Cidades mais visitadas</h2>
         </div>
 
         <div class="destination-content">
