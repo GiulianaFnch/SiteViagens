@@ -272,7 +272,29 @@ section {
   color: #666;
   font-size: 0.9em;
 }
+/* botão ver todos da aba tours */
+.link-titulopasseios {
+  color: inherit; /* Mantém a cor original do <h2> */
+  transition: transform 0.3s ease; /* para crescer a letra */
+}
+.link-titulopasseios:hover {
+  transform: scale(
+    1.1
+  ); /* Aumenta o tamanho da letra em 20% ao passar o mouse */
+}
 /* tours */
+.botao-vertodostours {
+  background-color: #000000; /* Cor de fundo preta */
+  color: white; /* Cor do texto branca */
+  border: none; /* Remover bordas */
+  border-radius: 25px; /* Deixa o botão arredondado */
+  padding: 10px 20px; /* Espaçamento interno */
+  font-size: 16px; /* Tamanho do texto */
+  cursor: pointer; /* Cursor de ponteiro quando passar o mouse */
+  text-align: center; /* Centralizar o texto */
+  text-decoration: none; /* Remover sublinhado do link */
+  display: inline-block; /* Para o link se comportar como botão */
+}
 
 .home-btn {
   display: inline-block;
