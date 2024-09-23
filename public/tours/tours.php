@@ -57,57 +57,65 @@ include '../../config/valida.php';
         </div>
     </section>
 
-    <!--container-->
-    <section class="destinos" id="destinos">
-        <div class="title">
-            <h2>Passeios mais procurados</h2>
-        </div>
-        <div class="destinos">
+   <!--container-->
+<section class="destinos" id="destinos">
+    <div class="title">
+    <h2><a href="listar_tours.php" class="link-titulopasseios">Passeios mais procurados</a></h2>
+
+    </div>
+    
+    <div class="linha">
         <div class="destino">
-            <img src="imagens/coliseu.jpg" alt="Tour Coliseu ">
+            <img src="imagens/coliseu.jpg" alt="Tour Coliseu">
             <div class="descricao">
-                <h3>Roma</h3>
-                            </div>
+                <h3>Visite o icônico Coliseu de Roma, um marco da história.</h3>
+            </div>
         </div>
 
         <div class="destino">
             <img src="imagens/riosena.jpg" alt="Passeio de barco pelo Rio Sena">
             <div class="descricao">
-                <h3>paris</h3>
-                            </div>
+                <h3>Desfrute de um passeio romântico pelo Rio Sena.</h3>
+            </div>
         </div>
 
         <div class="destino">
             <img src="imagens/cristoredentor.jpg" alt="Cristo Redentor">
             <div class="descricao">
-                <h3>Rio de Janeiro</h3>
+                <h3>Admire o Cristo Redentor, uma das maravilhas do mundo moderno.</h3>
             </div>
         </div>
-    </div>
+    </div> <!-- Fim da primeira linha -->
 
     <div class="linha">
         <div class="destino">
             <img src="imagens/piramides.jpg" alt="Pirâmides de Gizé">
             <div class="descricao">
-                <h3>Cairo</h3>
+                <h3>Descubra as enigmáticas Pirâmides de Gizé.</h3>
             </div>
         </div>
 
         <div class="destino">
             <img src="imagens/centralpark.jpg" alt="Tour pelo Central Park">
             <div class="descricao">
-                <h3>Nova York</h3>
+                <h3>Caminhe pelo famoso Central Park em Nova York </h3>
             </div>
         </div>
 
         <div class="destino">
-            <img src="imagens/santorini.jpg" alt="Cruzeiro pelas ilhas vucânicas">
+            <img src="imagens/santorini.jpg" alt="Cruzeiro pelas ilhas vulcânicas">
             <div class="descricao">
-                <h3>Santorini</h3>
+                <h3>Cruzeiro pelas ilhas vulcânicas de Santorini</h3>
             </div>
         </div>
-    </div>
-</div>
+    </div> <!-- Fim da segunda linha -->
+    <a href="listar_tours.php" class="botao-vertodostours">Ver todos</a>
+
+</section>
+
+
+</section>
+
 
 
     <!--Package section-->
@@ -264,7 +272,7 @@ include '../../config/valida.php';
             </div>
             <div class="box">
                 <div class="thum">
-                    <img src="imagens/tenefire.jpg">
+                    <img src="imagens/tenerife.jpg">
 
                 </div>
  
@@ -314,51 +322,7 @@ include '../../config/valida.php';
             </div>
         </div>
     </section>
-    <!--destination section-->
-    <section class="destination" id="destination">
-        <div class="title">
-            <h2>Cidades mais visitadas</h2>
-        </div>
-
-        <div class="destination-content">
-            <div class="col-content">
-                <img src="../../assets/images/paris.jpg">
-                <h5>Paris</h5>
-                <p>França</p>
-            </div>
-
-            <div class="col-content">
-                <img src="../../assets/images/roma.jpg">
-                <h5>Roma</h5>
-                <p>Itália</p>
-            </div>
-
-            <div class="col-content">
-                <img
-                    src="../../assets/images/boa-parte-de-nova-york-pode-ser-vista-da-estatua-da-liberdade-1665501171075_v2_1x1.jpg">
-                <h5>Nova York</h5>
-                <p>EUA</p>
-            </div>
-
-            <div class="col-content">
-                <img src="../../assets/images/tokyo.jpg">
-                <h5>Tokyo</h5>
-                <p>Japão</p>
-            </div>
-
-            <div class="col-content">
-                <img src="../../assets/images/sidney.jpg">
-                <h5>Sydney</h5>
-                <p>Austrália</p>
-            </div>
-
-            <div class="col-content">
-                <img src="../../assets/images/londres.jpg">
-                <h5>Londres</h5>
-                <p>Inglaterra</p>
-            </div>
-        </div>
-    </section>
+   
 
     <!--Newsletter-->
     <section class="newsletter">
