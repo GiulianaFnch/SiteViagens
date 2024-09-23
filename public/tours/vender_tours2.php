@@ -1,71 +1,75 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<?php
+include '../../config/liga_bd.php';
+session_start();
 
-<head>
-    <meta charset="utf-8">
-    <title>Vender Passeios</title>
-</head>
+$uploadOk = 1;
+$target_dir = "uploads/";
 
-<body>
-    <h1>Registo de venda</h1>
-    <?php
-    include '../../config/liga_bd.php';
-
-    // Inicializar a variável $uploadOk
-    $uploadOk = 1;
-
-    // Verificar e validar a primeira foto
-    $_FILES["ficheiro"] = $_FILES["ficheiro1"];
-    include 'valida_fotoa.php';
-
+function processar_foto($file, $id_artigo, $numero_foto) {
+    global $uploadOk, $ligacao, $target_dir;
+    
     if ($uploadOk == 0) {
-        echo "O seu ficheiro não foi enviado.";
-    } else {
-        if ($uploadOk == 1) {
-            move_uploaded_file($_FILES["ficheiro"]["tmp_name"], $target_file);
-            //crio a instrução sql para adicionar um registo na base de dados
-            $sql = "INSERT INTO t_artigo (id_user, cat, subcat, titulo, descricao, preco, estado, foto1) VALUES ($_POST[id_user], $_POST[valor_cat], $_POST[valor_subcat], '$_POST[titulo]', '$_POST[descricao]', $_POST[preco], $_POST[estado], '" . $foto . "');";
-            // tento inserir na base de dados
-            //echo $sql;
-
-            if (mysqli_query($ligacao, $sql))
-                echo "<h2>Registo efetuado com sucesso! </h2>";
-
-            // Validação da foto 2
-            if (!empty($_FILES['ficheiro2']['name'])) {
-                $sql = "SELECT id FROM t_artigo ORDER BY id DESC LIMIT 1";
-                $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
-                $linha = mysqli_fetch_assoc($resultado);
-                $_FILES["ficheiro"] = $_FILES["ficheiro2"];
-                include 'valida_fotoa.php';
-                if ($uploadOk == 1) {
-                    move_uploaded_file($_FILES["ficheiro"]["tmp_name"], $target_file);
-                    $sql2 = "UPDATE t_artigo SET foto2='" . $foto . "' WHERE id= $linha[id];";
-                    //echo $sql2;
-                    mysqli_query($ligacao, $sql2);
-                }
-            }
-
-            // Validação da foto 3
-            if (!empty($_FILES['ficheiro3']['name'])) {
-                $sql = "SELECT id FROM t_artigo ORDER BY id DESC LIMIT 1";
-                $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
-                $linha = mysqli_fetch_assoc($resultado);
-                $_FILES["ficheiro"] = $_FILES["ficheiro3"];
-                include 'valida_fotoa.php';
-                if ($uploadOk == 1) {
-                    move_uploaded_file($_FILES["ficheiro"]["tmp_name"], $target_file);
-                    $sql3 = "UPDATE t_artigo SET foto3='" . $foto . "' WHERE id= $linha[id];";
-                    mysqli_query($ligacao, $sql3);
-                }
-            }
-        }
+        return;
     }
 
-    mysqli_close($ligacao);
-    ?>
-    <br />
-    <a href="tours_inicial.php" target="_self">Volta ao Menu</a>
-</body>
+    $target_file = $target_dir . basename($file["name"]);
+    $check = getimagesize($file["tmp_name"]);
+    if($check === false) {
+        echo "O arquivo não é uma imagem.";
+        $uploadOk = 0;
+        return;
+    }
 
-</html>
+    if (move_uploaded_file($file["tmp_name"], $target_file)) {
+        if ($numero_foto == 1) {
+            return $target_file; 
+        } else {
+            $sql = "UPDATE t_artigo SET foto{$numero_foto}='{$target_file}' WHERE id={$id_artigo};";
+            mysqli_query($ligacao, $sql);
+        }
+    } else {
+        echo "O seu ficheiro não foi enviado.";
+        $uploadOk = 0;
+    }
+}
+
+// Captura os dados do formulário com verificações
+$id_user = $_POST['id_user'];
+$valor_cat = $_POST['valor_cat'];
+$valor_subcat = $_POST['valor_subcat'];
+$titulo = $_POST['titulo'];
+$descricao = $_POST['descricao'];
+$preco = $_POST['preco'];
+$estado = $_POST['estado'];
+$localizacao = isset($_POST['localizacao']) ? $_POST['localizacao'] : '';
+$data_inicio = isset($_POST['data_inicio']) ? $_POST['data_inicio'] : '';
+$data_fim = isset($_POST['data_fim']) ? $_POST['data_fim'] : '';
+
+$sql = "INSERT INTO t_artigo (id_user, cat, subcat, titulo, descricao, preco, estado, localizacao, data_inicio, data_fim, foto1) 
+        VALUES ('$id_user', '$valor_cat', '$valor_subcat', '$titulo', '$descricao', '$preco', '$estado', '$localizacao', 
+        '$data_inicio', '$data_fim', '');";
+
+if (mysqli_query($ligacao, $sql)) {
+    $id_artigo = mysqli_insert_id($ligacao);
+    echo "<h2>Registro efetuado com sucesso! </h2>";
+
+    $_FILES["ficheiro"] = $_FILES["ficheiro1"];
+    processar_foto($_FILES["ficheiro"], $id_artigo, 1);
+
+    if (!empty($_FILES['ficheiro2']['name'])) {
+        $_FILES["ficheiro"] = $_FILES["ficheiro2"];
+        processar_foto($_FILES["ficheiro"], $id_artigo, 2);
+    }
+
+    if (!empty($_FILES['ficheiro3']['name'])) {
+        $_FILES["ficheiro"] = $_FILES["ficheiro3"];
+        processar_foto($_FILES["ficheiro"], $id_artigo, 3);
+    }
+} else {
+    echo "Erro: " . mysqli_error($ligacao);
+}
+
+mysqli_close($ligacao);
+?>
+<br />
+<a href="tours_inicial.php" target="_self">Volta ao Menu</a>
