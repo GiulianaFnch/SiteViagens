@@ -1,9 +1,9 @@
 <?php
+include 'valida_vendedor.php';
 include '../../config/liga_bd.php';
-session_start();
 
 $uploadOk = 1;
-$target_dir = "uploads/";
+$target_dir = "../../public/tours/imagens/";
 
 function processar_foto($file, $id_artigo, $numero_foto) {
     global $uploadOk, $ligacao, $target_dir;
@@ -72,4 +72,4 @@ if (mysqli_query($ligacao, $sql)) {
 mysqli_close($ligacao);
 ?>
 <br />
-<a href="tours_inicial.php" target="_self">Volta ao Menu</a>
+<a href="admin.php" target="_self">Volta ao Menu</a>

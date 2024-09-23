@@ -1,5 +1,6 @@
 <?php
-include '../../config/valida.php';
+
+include 'valida_vendedor.php';
 include '../../config/liga_bd.php';
 
 function getUserData() {

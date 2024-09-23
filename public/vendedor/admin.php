@@ -1,7 +1,5 @@
 <?php
-
-session_start();
-
+include 'valida_vendedor.php';
 include '../../config/liga_bd.php';
 
 $activeMenu = 'profile';
@@ -75,7 +73,9 @@ mysqli_close($ligacao);
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
 
 
 
@@ -146,20 +146,21 @@ mysqli_close($ligacao);
 </head>
 
 <body>
-<!--header-->
-    
-<header>
- 
-        <a href="../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
+    <!--header-->
+
+    <header>
+
+        <a href="../index.html"
+            style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
         <div class="bx bx-menu" id="menu-icon"></div>
 
         <ul class="navbar">
-            <li><a href="#home" style="color: black;" >Hospedagem</a></li>
-            <li><a href="#package" style="color: black;" >Passagens</a></li>
+            <li><a href="#home" style="color: black;">Hospedagem</a></li>
+            <li><a href="#package" style="color: black;">Passagens</a></li>
             <li><a href="#destination" style="color: black; ">Tours</a></li>
             <li><a href="#contact" style="color: black;">Pacotes</a></li>
         </ul>
-        </header>
+    </header>
 
     <br><br><br><br><br><br><br>
 
@@ -168,9 +169,11 @@ mysqli_close($ligacao);
             <div class="row no-gutters">
                 <div class="col-md-3 p-3 bg-light rounded-left menu-container">
                     <nav class="menu">
-                        <a class="menu-item" href="#" onclick="showContent('profile');"><i class="bi bi-person-circle"></i> Editar Perfil</a>
+                        <a class="menu-item" href="#" onclick="showContent('profile');"><i
+                                class="bi bi-person-circle"></i> Editar Perfil</a>
                         <a class="menu-item" href="../../index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
-                        <a class="menu-item" href="../tours\vender_tours.php" onclick="showContent('vender-tours');"><i class="bi bi-bag"></i> Vender Tours</a>
+                        <a class="menu-item" href="vender_tours.php" onclick="showContent('vender-tours');"><i
+                                class="bi bi-bag"></i> Vender Tours</a>
                         <a class="menu-item" href="#chat"><i class="bi bi-chat-dots"></i> Chat</a>
                         <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
@@ -178,54 +181,63 @@ mysqli_close($ligacao);
 
                 <div class="col-md-9">
                     <div class="tab-content p-4">
-                            <form action="admin.php" method="POST" enctype="multipart/form-data">
-                                <input type="hidden" name="id" value="<?php echo htmlspecialchars($linha['id']); ?>">
+                        <form action="admin.php" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="id" value="<?php echo htmlspecialchars($linha['id']); ?>">
 
-                                <div class="media align-items-center mb-3">
-                                    <img src="<?php echo $linha['foto'] ? '../assets/images/pics/' . htmlspecialchars($linha['foto']) : 'https://bootdey.com/img/Content/avatar/avatar1.png'; ?>" alt="avatar" class="rounded-circle mr-3" style="width: 80px;">
-                                    <div class="media-body">
-                                        <label class="btn btn-outline-primary rounded-pill">
-                                            Upload Nova Foto
-                                            <input type="file" name="ficheiro" class="account-settings-fileinput" accept=".jpg, .jpeg, .png, .gif">
-                                        </label>
-                                        <div class="small text-muted mt-1">Permitido JPG, GIF ou PNG. Tamanho máximo de 800K.</div>
-                                    </div>
+                            <div class="media align-items-center mb-3">
+                                <img src="<?php echo $linha['foto'] ? '../assets/images/pics/' . htmlspecialchars($linha['foto']) : 'https://bootdey.com/img/Content/avatar/avatar1.png'; ?>"
+                                    alt="avatar" class="rounded-circle mr-3" style="width: 80px;">
+                                <div class="media-body">
+                                    <label class="btn btn-outline-primary rounded-pill">
+                                        Upload Nova Foto
+                                        <input type="file" name="ficheiro" class="account-settings-fileinput"
+                                            accept=".jpg, .jpeg, .png, .gif">
+                                    </label>
+                                    <div class="small text-muted mt-1">Permitido JPG, GIF ou PNG. Tamanho máximo de
+                                        800K.</div>
                                 </div>
+                            </div>
 
-                                <input type="hidden" name="nome_foto" value="<?php echo htmlspecialchars($linha['foto']); ?>">
+                            <input type="hidden" name="nome_foto"
+                                value="<?php echo htmlspecialchars($linha['foto']); ?>">
 
-                                <div class="form-group">
-                                    <label for="username" class="form-label">Nick</label>
-                                    <input type="text" id="username" class="form-control rounded-pill" name="nick" value="<?php echo htmlspecialchars($linha['nick']); ?>" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name" class="form-label">Nome</label>
-                                    <input type="text" id="name" class="form-control rounded-pill" name="nome" value="<?php echo htmlspecialchars($linha['nome']); ?>" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email" class="form-label">E-mail</label>
-                                    <input type="email" id="email" class="form-control rounded-pill" name="email" value="<?php echo htmlspecialchars($linha['email']); ?>" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="data_nasc" class="form-label">Data de Nascimento</label>
-                                    <input type="date" id="data_nasc" class="form-control rounded-pill" name="data_nasc" value="<?php echo htmlspecialchars($linha['data_nasc']); ?>" required>
-                                </div>
+                            <div class="form-group">
+                                <label for="username" class="form-label">Nick</label>
+                                <input type="text" id="username" class="form-control rounded-pill" name="nick"
+                                    value="<?php echo htmlspecialchars($linha['nick']); ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="name" class="form-label">Nome</label>
+                                <input type="text" id="name" class="form-control rounded-pill" name="nome"
+                                    value="<?php echo htmlspecialchars($linha['nome']); ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="form-label">E-mail</label>
+                                <input type="email" id="email" class="form-control rounded-pill" name="email"
+                                    value="<?php echo htmlspecialchars($linha['email']); ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="data_nasc" class="form-label">Data de Nascimento</label>
+                                <input type="date" id="data_nasc" class="form-control rounded-pill" name="data_nasc"
+                                    value="<?php echo htmlspecialchars($linha['data_nasc']); ?>" required>
+                            </div>
 
-                                <div class="text-right mt-3">
-                                    <input type="submit" class="btn btn-primary rounded-pill" value="Alterar">
-                                    <a href="index.html" class="btn btn-light rounded-pill">Voltar ao menu</a>
-                                </div>
-                            </form>
-                        </div>
-
+                            <div class="text-right mt-3">
+                                <input type="submit" class="btn btn-primary rounded-pill" value="Alterar">
+                                <a href="index.html" class="btn btn-light rounded-pill">Voltar ao menu</a>
+                            </div>
+                        </form>
                     </div>
+
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <br><br>
 
     <?php include '../../views/partials/footer.php' ?>
 
 </body>
+
 </html>
