@@ -30,6 +30,8 @@ if ($linha == NULL) {
             echo "<h2>Bem vindo, " . $linha['nome'] . "</h2>";
             $_SESSION['id'] = $linha['id'];
             $_SESSION['nick'] = $linha['nick'];
+            $_SESSION['logged_in'] = true; // Define a variável de sessão logged_in como true
+            
             echo "<h2>Utilizador validado!</h2>";
             echo "<input type='button' value='Continuar' onclick=window.open('../../index.html','_self')>";
             header("refresh:2;url=../../index.html"); 

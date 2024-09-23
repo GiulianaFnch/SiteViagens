@@ -31,56 +31,75 @@ if (!$resultado_artigos) {
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <title>Meu Carrinho</title>
+
+    <link rel="stylesheet" href="../../assets/css/style.css">
     <style>
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        table, th, td {
+
+        table,
+        th,
+        td {
             border: 1px solid black;
         }
-        th, td {
+
+        th,
+        td {
             padding: 10px;
             text-align: left;
         }
+        main {
+            padding-top: 100px; /* pra evitar a sobreposição do header */
+        }
     </style>
 </head>
+
 <body>
-    <h2>Meu Carrinho</h2>
-    <table>
-        <tr>
-            <th>Título</th>
-            <th>Preço</th>
-            <th>Quantidade</th>
-            <th>Total</th>
-            <th>Tipo de Item</th>
-            <th>Ações</th>
-        </tr>
-        <?php
-        while ($linha = $resultado_artigos->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>" . htmlspecialchars($linha['titulo']) . "</td>";
-            echo "<td>" . htmlspecialchars($linha['preco']) . " €</td>";
-            echo "<td>" . htmlspecialchars($linha['quantidade']) . "</td>";
-            echo "<td>" . htmlspecialchars($linha['total']) . " €</td>";
-            echo "<td>" . htmlspecialchars($linha['tipo_item']) . "</td>";
-            echo "<td>";
-            ?>
-            <form action="remover_do_carrinho.php" method="post" style="display:inline;">
-                <input type="hidden" name="id_carrinho" value="<?php echo htmlspecialchars($linha['id']); ?>">
-                <input type="submit" value="Remover">
-            </form>
+    <?php include '../../views/partials/header.php'; ?>
+    
+    <main>
+        <h2>Meu Carrinho</h2>
+        <table>
+            <tr>
+                <th>Título</th>
+                <th>Preço</th>
+                <th>Quantidade</th>
+                <th>Total</th>
+                <th>Tipo de Item</th>
+                <th>Ações</th>
+            </tr>
             <?php
-            echo "</td>";
-            echo "</tr>";
-        }
-        ?>
-    </table>
-    <h3>Total do Carrinho: <?php echo isset($_SESSION['total_carrinho']) ? htmlspecialchars($_SESSION['total_carrinho']) . " €" : "0 €"; ?></h3>
+            while ($linha = $resultado_artigos->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . htmlspecialchars($linha['titulo']) . "</td>";
+                echo "<td>" . htmlspecialchars($linha['preco']) . " €</td>";
+                echo "<td>" . htmlspecialchars($linha['quantidade']) . "</td>";
+                echo "<td>" . htmlspecialchars($linha['total']) . " €</td>";
+                echo "<td>" . htmlspecialchars($linha['tipo_item']) . "</td>";
+                echo "<td>";
+                ?>
+                <form action="remover_do_carrinho.php" method="post" style="display:inline;">
+                    <input type="hidden" name="id_carrinho" value="<?php echo htmlspecialchars($linha['id']); ?>">
+                    <input type="submit" value="Remover">
+                </form>
+                <?php
+                echo "</td>";
+                echo "</tr>";
+            }
+            ?>
+        </table>
+        <h3>Total do Carrinho:
+            <?php echo isset($_SESSION['total_carrinho']) ? htmlspecialchars($_SESSION['total_carrinho']) . " €" : "0 €"; ?>
+        </h3>
+    </main>
 </body>
+
 </html>
 
 <?php

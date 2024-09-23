@@ -24,18 +24,7 @@ include '../../config/valida.php';
 
 <body>
     <!--header-->
-    <header>
-        <a href="#" class="logo">BestWay</a>
-        <div class="bx bx-menu" id="menu-icon"></div>
-
-        <ul class="navbar">
-            <li><a href="#home">Hospedagem</a></li>
-            <li><a href="#package">Passagens</a></li>
-            <li><a href="#package">Tours</a></li>
-            <li><a href="#contact">Pacotes</a></li>
-            <li><a href="public/login.php">Fazer login</a></li>
-        </ul>
-    </header>
+    <?php include '../../views/partials/header.php'; ?>
 
     <!--Home section-->
     <section class="home-tours" id="home">
