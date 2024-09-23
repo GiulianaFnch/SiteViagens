@@ -64,21 +64,21 @@ include '../../config/valida.php';
         </div>
         <div class="destinos">
         <div class="destino">
-            <img src="img/coliseu.jpg" alt="Tour Coliseu ">
+            <img src="imagens/coliseu.jpg" alt="Tour Coliseu ">
             <div class="descricao">
                 <h3>Roma</h3>
                             </div>
         </div>
 
         <div class="destino">
-            <img src="img/riosena.jpg" alt="Passeio de barco pelo Rio Sena">
+            <img src="imagens/riosena.jpg" alt="Passeio de barco pelo Rio Sena">
             <div class="descricao">
                 <h3>paris</h3>
                             </div>
         </div>
 
         <div class="destino">
-            <img src="img/cristoredentor.jpg" alt="Cristo Redentor">
+            <img src="imagens/cristoredentor.jpg" alt="Cristo Redentor">
             <div class="descricao">
                 <h3>Rio de Janeiro</h3>
             </div>
@@ -87,21 +87,21 @@ include '../../config/valida.php';
 
     <div class="linha">
         <div class="destino">
-            <img src="img/piramides.jpg" alt="Pirâmides de Gizé">
+            <img src="imagens/piramides.jpg" alt="Pirâmides de Gizé">
             <div class="descricao">
                 <h3>Cairo</h3>
             </div>
         </div>
 
         <div class="destino">
-            <img src="img/centralpark.jpg" alt="Tour pelo Central Park">
+            <img src="imagens/centralpark.jpg" alt="Tour pelo Central Park">
             <div class="descricao">
                 <h3>Nova York</h3>
             </div>
         </div>
 
         <div class="destino">
-            <img src="img/santorini.jpg" alt="Cruzeiro pelas ilhas vucânicas">
+            <img src="imagens/santorini.jpg" alt="Cruzeiro pelas ilhas vucânicas">
             <div class="descricao">
                 <h3>Santorini</h3>
             </div>
