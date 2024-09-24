@@ -323,9 +323,10 @@ header{
             <div class="row no-gutters">
                 <div class="col-md-3 p-3 bg-light rounded-left menu-container">
                     <nav class="menu">
+                        <?php echo htmlspecialchars($linha['nome']); ?>
                         <a class="menu-item" href="perfil.php"><i class="bi bi-person-circle"></i> Editar perfil</a>
                         <a class="menu-item" href="/SiteViagens-main/index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
-                        <a class="menu-item" href="#reservations"><i class="bi bi-clipboard2"></i> Reservas</a>
+                        <a class="menu-item" href="reservas.php"><i class="bi bi-clipboard2"></i> Reservas</a>
                         <a class="menu-item" href="#favorites"><i class="bi bi-heart"></i> Favoritos</a>
                         <a class="menu-item" href="#chat"><i class="bi bi-chat-dots"></i> Chat</a>
                         <a class="menu-item active" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
