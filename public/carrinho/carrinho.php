@@ -75,6 +75,7 @@ if (!$resultado_artigos) {
                 <th>Ações</th>
             </tr>
             <?php
+<<<<<<< Updated upstream
             while ($linha = $resultado_artigos->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>" . htmlspecialchars($linha['titulo']) . "</td>";
@@ -98,6 +99,19 @@ if (!$resultado_artigos) {
             <?php echo isset($_SESSION['total_carrinho']) ? htmlspecialchars($_SESSION['total_carrinho']) . " €" : "0 €"; ?>
         </h3>
     </main>
+=======
+            echo "</td>";
+            echo "</tr>";
+        }
+        ?>
+    </table>
+    <h3>Total do Carrinho:
+        <?php echo isset($_SESSION['total_carrinho']) ? htmlspecialchars($_SESSION['total_carrinho']) . " €" : "0 €"; ?>
+    </h3>
+    <form action="efetuar_reserva.php" method="post">
+        <input type="submit" value="Efetuar reserva">
+    </form>
+>>>>>>> Stashed changes
 </body>
 
 </html>
