@@ -1,22 +1,807 @@
-/* Estilo para a tabela do carrinho */
-table {
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    text-decoration: none;
+    list-style: none;
+    scroll-behavior: smooth;
+  }
+  
+  :root {
+    --bg-color: #fff;
+    --text-color: #221314;
+    --second-color: #4169e1;
+    --main-color: #6495ed;
+    --big-font: 6rem;
+    --h2-font: 3rem;
+    --p-font: 1.1rem;
+  }
+  
+  body {
+    background: var(--bg-color);
+    color: var(--text-color);
+  }
+  
+  header {
+    position: fixed;
+    top: 0;
+    right: 0;
     width: 100%;
-    border-collapse: collapse;
-}
-
-table,
-th,
-td {
-    border: 1px solid black;
-}
-
-th,
-td {
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: transparent;
+    padding: 30px 18%;
+    transition: ease 0.4s;
+  }
+  
+  /* 
+      A partir daqui é para o formulário de registro
+   */
+  
+  .container-registro {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .formulario {
+    flex: 1;
+    padding: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+  
+  .formulario h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+  }
+  
+  .imagem-fundo {
+    flex: 1;
+    background-image: url("../images/Eibsee-Lake.jpg");
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .btn {
+    background: var(--main-color);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background-color: #005c99;
+    transform: scale(1.02);
+  }
+  
+  /*
+      Até aqui é para o formulário de registro
+  */
+  
+  .logo {
+    font-size: 35px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--bg-color);
+  }
+  
+  .navbar {
+    display: flex;
+  }
+  
+  .navbar a {
+    color: var(--bg-color);
+    font-size: var(--p-font);
+    font-weight: 500;
+    padding: 10px 22px;
+    border-radius: 4px;
+    transition: ease 0.4s;
+  }
+  
+  .navbar a:hover {
+    background: var(--bg-color);
+    color: var(--text-color);
+    box-shadow: 5px 10px 30px rgb(85 85 85 / 20%);
+    border-radius: 4px;
+  }
+  
+  #menu-icon {
+    color: var(--text-color);
+    font-size: 35px;
+    z-index: 10001;
+    cursor: pointer;
+    display: none;
+  }
+  
+  section {
+    padding: 80px 18%;
+  }
+  
+  .home {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: url(../images/Eibsee-Lake.jpg);
+    background-size: cover;
+    background-position: center;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    align-items: center;
+  }
+  
+  .home-tours {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: url(../../public/tours/imagens/capadorcia.jpg);
+    background-size: cover;
+    background-position: center;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    align-items: center;
+  }
+  .listar-tours {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: url(../../public/tours/imagens/passeios.jpg);
+    background-size: cover;
+    background-position: center;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    align-items: center;
+  }
+  /* aqui fica o texto grande em cima da foto */
+  .home-text h1 {
+    font-size: var(--big-font);
+    line-height: 1.2;
+    color: var(--bg-color);
+    font-family: "Paytone One", sans-serif;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+  }
+  .home-text2 h1 {
+    font-size: var(--big-font);
+    line-height: 1.2;
+    color: var(--bg-color);
+    font-family: "Paytone One", sans-serif;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+  }
+  
+  .home-text p {
+    color: #ffffffbf;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 38px;
+    margin-bottom: 50px;
+  }
+  
+  /* Estilo geral da seção da barra de pesquisa começo da aba tours  */
+  .search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 10px;
-    text-align: left;
-}
-
-main {
-    padding-top: 100px;
-    /* pra evitar a sobreposição do header */
-}
+    background-color: #e4e1d2; /* Cor de fundo da barra de pesquisa */
+    border-radius: 8px;
+    margin: 20px auto;
+    width: 75%; /* Ocupa 75% da largura da tela */
+    max-width: 800px; /* Limita a largura máxima */
+    min-width: 600px; /* Limita a largura mínima */
+  }
+  
+  .search-bar form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .search-bar input[type="text"],
+  .search-bar input[type="date"] {
+    padding: 10px;
+    border: 1px solid #e4e1d2;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: 14px;
+    font-style: var(--text-color);
+    font: var(--text-color);
+    flex: 5; /* Faz com que os campos cresçam proporcionalmente */
+  }
+  
+  .search-bar input[type="date"] {
+    width: 200px;
+    color: rgb(116, 114, 114);
+    /* Define uma largura fixa para a data */
+  }
+  
+  .search-bar button {
+    padding: 10px 20px;
+    background-color: #ffffff; /* Cor do botão pesquisar */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .search-bar button:hover {
+    background-color: #0c0c0c; /* Cor ao passar o mouse sobre o botão aqui acaba a aba tours */
+  }
+  /* fotos da aba tours precisa ser editado  */
+  .destinos {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .linha {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .destino {
+    flex: 1;
+    margin: 10px;
+    text-align: center;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .destino img {
+    width: 100%;
+    height: auto;
+    border-bottom: 2px solid #eee;
+  }
+  
+  .descricao {
+    padding: 10px;
+  }
+  
+  .descricao h3 {
+    margin: 0;
+    font-size: 1.2em;
+  }
+  
+  .descricao p {
+    margin: 5px 0 0;
+    color: #666;
+    font-size: 0.9em;
+  }
+  /* botão ver todos da aba tours */
+  .link-titulopasseios {
+    color: inherit; /* Mantém a cor original do <h2> */
+    transition: transform 0.3s ease; /* para crescer a letra */
+  }
+  .link-titulopasseios:hover {
+    transform: scale(
+      1.1
+    ); /* Aumenta o tamanho da letra em 20% ao passar o mouse */
+  }
+  /* tours */
+  .botao-vertodostours {
+    background-color: #000000; /* Cor de fundo preta */
+    color: white; /* Cor do texto branca */
+    border: none; /* Remover bordas */
+    border-radius: 25px; /* Deixa o botão arredondado */
+    padding: 10px 20px; /* Espaçamento interno */
+    font-size: 16px; /* Tamanho do texto */
+    cursor: pointer; /* Cursor de ponteiro quando passar o mouse */
+    text-align: center; /* Centralizar o texto */
+    text-decoration: none; /* Remover sublinhado do link */
+    display: inline-block; /* Para o link se comportar como botão */
+  }
+  
+  .home-btn {
+    display: inline-block;
+    font-size: 16px;
+    padding: 15px 30px;
+    background: #ffffffbf;
+    color: var(--main-color);
+    border-radius: 4px;
+    transition: ease 0.4s;
+  }
+  
+  .home-btn:hover {
+    background: var(--bg-color);
+    transform: scale(1.1);
+  }
+  
+  header.sticky {
+    background: var(--bg-color);
+    padding: 10px 18%;
+    box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+  }
+  
+  .sticky .logo {
+    color: var(--text-color);
+  }
+  
+  .sticky .navbar a {
+    color: var(--text-color);
+  }
+  
+  .text h2 {
+    font-size: var(--h2-font);
+    line-height: 1.1;
+  }
+  
+  .row-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, auto));
+    grid-gap: 2rem;
+    align-items: center;
+    text-align: center;
+    margin-top: 5rem;
+  }
+  
+  /* cards da aba tours  */
+  .package-content2 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 cards por linha */
+    grid-gap: 2rem; /* Espaçamento entre os cards */
+    align-items: start;
+    margin-top: 5rem;
+  }
+  
+  .box {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .box:hover {
+    transform: translateY(-5px);
+  }
+  
+  .thum img {
+    width: 100%;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .dest-content {
+    padding: 1rem;
+  }
+  
+  .dest-content h3 {
+    font-size: 1.1rem;
+    color: gray;
+    margin-bottom: 0.5rem;
+  }
+  
+  .dest-content h5 {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .stars i {
+    color: #ffd700;
+    margin-right: 0.2rem;
+  }
+  
+  .stars h4 {
+    font-size: 1rem;
+    color: #0073ff;
+  }
+  /* aqui acaba package-content */
+  
+  .container-box {
+    background: var(--bg-color);
+    border: 1px solid #f0eded;
+    padding: 50px 10px;
+    border-radius: 4px;
+    transition: all 1s ease 0s;
+    cursor: pointer;
+  }
+  
+  .container-img img {
+    height: 85px;
+    width: 85px;
+    padding: 15px;
+    background: var(--bg-color);
+    box-shadow: 5px 10px 30px rgb(85 85 85 / 20%);
+    border-radius: 4px;
+    margin-bottom: 15px;
+    cursor: pointer;
+  }
+  
+  .container-box h4 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  
+  .container-box p {
+    font-size: 15px;
+    color: var(--second-color);
+  }
+  
+  .container-box:hover {
+    box-shadow: 5px30px 56.1276px rgb(55 55 55 / 12%);
+    border: 1px solid transparent;
+    transform: translateY(-3px);
+  }
+  
+  .title {
+    text-align: center;
+  }
+  
+  .title h2 {
+    font-size: var(--h2-font);
+    line-height: 1.2;
+  }
+  
+  .package-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, auto));
+    grid-gap: 2rem;
+    align-items: center;
+    margin-top: 5rem;
+  }
+  
+  .thum {
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    will-change: filter;
+    cursor: pointer;
+  }
+  
+  .thum img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .thum h3 {
+    position: absolute;
+    font-size: 30px;
+    font-weight: 600;
+    text-align: right;
+    color: var(--bg-color);
+    top: 36px;
+    right: 40px;
+  }
+  
+  .dest-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 24px;
+  }
+  
+  .stars i {
+    color: #ffd700;
+    font-size: 25px;
+  }
+  
+  .location h4 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  
+  .location p {
+    font-size: 15px;
+    color: var(--second-color);
+  }
+  
+  .thum:hover {
+    filter: brightness(100%) hue-rotate(45deg);
+    transform: scale(1.04);
+  }
+  
+  .destination-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, auto));
+    grid-gap: 2rem;
+    align-items: center;
+    margin-top: 5rem;
+  }
+  
+  .col-content {
+    position: relative;
+  }
+  
+  .col-content img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 15px;
+    filter: brightness(80%);
+    transition: all 0.3s cubic-bezier(cubic-bezier(0.445, 0.05, 0.55, 0.95));
+    will-change: filter;
+  }
+  
+  .col-content h5 {
+    position: absolute;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--bg-color);
+    left: 15px;
+    bottom: 60px;
+  }
+  
+  .col-content p {
+    position: absolute;
+    font-size: 15px;
+    color: var(--bg-color);
+    left: 15px;
+    bottom: 30px;
+    letter-spacing: 2px;
+  }
+  
+  .color-content img:hover {
+    filter: brightness(100%) hue-rotate(45deg);
+    transform: scale(1.04);
+    cursor: pointer;
+  }
+  
+  .newsletter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    grid-gap: 3rem;
+  }
+  
+  .news-text h2 {
+    font-size: var(--h2-font);
+    margin-bottom: 5px;
+  }
+  
+  .news-text p {
+    font-size: var(--p-font);
+    color: var(--second-color);
+    line-height: 30px;
+  }
+  
+  .newsletter form {
+    max-width: 100%;
+    width: 450px;
+    position: relative;
+  }
+  
+  .newsletter form input:first-child {
+    display: inline-block;
+    width: 100%;
+    padding: 20px 150px 20px 30px;
+    box-shadow: 5px 10px 30px rgb(85 85 85 / 20%);
+    outline: none;
+    border: none;
+    border-radius: 15px;
+  }
+  
+  .newsletter form input:last-child {
+    display: inline-block;
+    position: absolute;
+    outline: none;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 15px;
+    background: 15px;
+    background: var(--main-color);
+    color: var(--bg-color);
+    top: 6px;
+    right: 6px;
+    cursor: pointer;
+  }
+  
+  #contact {
+    background: var(--main-color);
+  }
+  
+  .main {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .footer {
+    padding: 20px 0;
+  }
+  
+  .list {
+    width: 25%;
+  }
+  
+  .list h4 {
+    font-size: 21px;
+    color: var(--bg-color);
+    margin-bottom: 30px;
+    position: relative;
+  }
+  
+  .list h4::before {
+    content: "";
+    position: absolute;
+    height: 2px;
+    width: 60px;
+    left: 0;
+    bottom: -10px;
+    background: var(--bg-color);
+  }
+  
+  .list ul li:not(:last-child) {
+    margin-bottom: 16px;
+  }
+  
+  .list ul li a {
+    color: #ffffffbf;
+    font-size: var(--p-font);
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .list ul li a:hover {
+    color: var(--bg-color);
+    transform: translateX(14px);
+  }
+  
+  .list.social a {
+    height: 40px;
+    width: 40px;
+    background: var(--bg-color);
+    color: var(--main-color);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    border-radius: 15px;
+    transition: 0.3s;
+    margin-right: 10px;
+  }
+  
+  .list.social a:hover {
+    transform: scale(1.1);
+  }
+  
+  .end-text {
+    text-align: center;
+    padding-top: 90px;
+  }
+  
+  .end-text p {
+    color: var(--bg-color);
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+  
+  @media (max-width: 1400px) {
+    header {
+      padding: 17px 3%;
+      transition: 0.2s;
+    }
+  
+    header.sticky {
+      padding: 10px 3%;
+      transition: 0.2s;
+    }
+  
+    section {
+      padding: 80px 3%;
+      transition: 0.2s;
+    }
+  
+    :root {
+      --big-font: 4.5rem;
+      --h2-font: 2.3rem;
+      --p-font: 1rem;
+      transition: 0.2s;
+    }
+  }
+  
+  @media (max-width: 1040px) {
+    #menu-icon {
+      display: block;
+    }
+  
+    .sticky #menu-icon {
+      color: var(--text-color);
+    }
+  
+    .home {
+      height: 88vh;
+    }
+  
+    .navbar {
+      position: absolute;
+      top: 0;
+      right: -100%;
+      width: 270px;
+      height: 120vh;
+      /* mudar a cor do menu quando ele fica em uma tela menor */
+      background: #6495ed;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px 30px;
+      transition: 0.5s all;
+    }
+  
+    .navbar a {
+      display: block;
+      margin: 1.2rem 0;
+    }
+  
+    .sticky .navbar a {
+      color: var(--bg-color);
+    }
+  
+    .navbar a:hover {
+      color: var(--text-color);
+    }
+  
+    .open {
+      right: 0;
+    }
+  
+    .list {
+      width: 50%;
+      margin-bottom: 12px;
+    }
+  }
+  
+  @media (max-width: 575px) {
+    .list {
+      width: 100%;
+    }
+  
+    .newsletter form {
+      width: 350px;
+    }
+  
+    :root {
+      --big-font: 4.5rem;
+      --h2-font: 2.3rem;
+      --p-font: 1rem;
+      transition: 0.2s;
+    }
+  
+    .text {
+      text-align: center;
+    }
+  
+    .home {
+      height: 85vh;
+      transition: 0.2s;
+    }
+  }
+  /* Media Queries para responsividade */
+  @media screen and (max-width: 1200px) {
+    .package-content {
+      grid-template-columns: repeat(3, 1fr); /* 3 cards por linha */
+    }
+  }
+  
+  @media screen and (max-width: 900px) {
+    .package-content {
+      grid-template-columns: repeat(2, 1fr); /* 2 cards por linha */
+    }
+  }
+  
+  @media screen and (max-width: 600px) {
+    .package-content {
+      grid-template-columns: 1fr; /* 1 card por linha */
+    }
+  }
+  

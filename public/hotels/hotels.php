@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewpoert" content="width=device-width, inicial-scale=1">
     <title>BestWay</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="../../assets/css/style.css">
 
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 
@@ -34,7 +34,7 @@
     </header>
 
     <!--Home section-->
-<section class="home" id="home">
+<section class="home-hotels" id="home">
     <div class="home-text">
         <h1>Seu próximo cantinho para relaxar está a um clique!</h1>
         
