@@ -50,7 +50,7 @@ if (!$resultado_artigos) {
 <body>
     <?php include '../../views/partials/header.php'; ?>
 
-    <main class="container mt-5 ">
+    <main class="container mt-5 main-content">
         <h2 class="mb-4">Meu Carrinho</h2>
         <div class="table-responsive">
             <table class="table table-bordered">
