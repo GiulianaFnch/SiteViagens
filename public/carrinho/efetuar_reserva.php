@@ -42,6 +42,9 @@ $stmt_limpar = $ligacao->prepare("DELETE FROM t_carrinho WHERE id_user = ?");
 $stmt_limpar->bind_param("i", $id_user);
 $stmt_limpar->execute();
 
+// Zera a variável de sessão do total do carrinho
+$_SESSION['total_carrinho'] = 0;
+
 echo "Reserva efetuada com sucesso!";
 header("refresh:2;url=../reservas.php");
 

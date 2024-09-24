@@ -1,19 +1,18 @@
 <?php
-session_start();
-include '../../config/valida.php';
+include 'valida_vendedor.php';
 include '../../config/liga_bd.php';
 
 $vendedor_id = $_SESSION['id'];
 
 $sql = "SELECT r.id, r.item_id, r.tipo_reserva, r.data_reserva, r.quantidade, r.user_id,
         CASE 
-            WHEN r.tipo_reserva = 'atividade' THEN (SELECT titulo FROM t_artigos WHERE id = r.item_id)
+            WHEN r.tipo_reserva = 'atividade' THEN (SELECT titulo FROM t_artigo WHERE id = r.item_id)
             /*WHEN r.tipo_reserva = 'voo' THEN (SELECT titulo FROM t_voos WHERE id = r.item_id)
             WHEN r.tipo_reserva = 'hospedagem' THEN (SELECT titulo FROM t_hospedagem WHERE id = r.item_id)
             WHEN r.tipo_reserva = 'pacote' THEN (SELECT titulo FROM t_pacotes WHERE id = r.item_id)*/
         END AS titulo
         FROM t_reservas r 
-        WHERE r.tipo_reserva = 'atividade' AND r.item_id IN (SELECT id FROM t_artigos WHERE vendedor_id = ?)";
+        WHERE r.tipo_reserva = 'atividade' AND r.item_id IN (SELECT id FROM t_artigo WHERE id_user = ?)";
 $stmt = $ligacao->prepare($sql);
 $stmt->bind_param("i", $vendedor_id);
 $stmt->execute();

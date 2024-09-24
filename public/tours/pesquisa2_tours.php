@@ -66,7 +66,8 @@ while ($linha = $resultado->fetch_array()) {
     <form action="../carrinho/adicionar_ao_carrinho.php" id="f2" method="post">
         <input type="hidden" size="20" name="id_artigo" value="<?php echo $linha['id']; ?>">
         <input type="hidden" name="tipo_item" value="atividade">
-        <input type="hidden" name="return_url" value="Adicionar ao carrinho">
+        <input type="hidden" name="return_url" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
+        <input type="submit" value="Adicionar ao carrinho">
     </form>
     <?php
 

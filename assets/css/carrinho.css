@@ -1,0 +1,22 @@
+/* Estilo para a tabela do carrinho */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: left;
+}
+
+main {
+    padding-top: 100px;
+    /* pra evitar a sobreposição do header */
+}
