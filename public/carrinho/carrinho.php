@@ -96,9 +96,9 @@ if (!$resultado_artigos) {
             </form>
         </div>
     </main>
-    <?php include '../../views/partials/footer.php'; ?>
 </body>
 
+<?php include '../../views/partials/footer.php'; ?>
 </html>
 
 <?php

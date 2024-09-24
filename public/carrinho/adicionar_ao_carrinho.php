@@ -37,12 +37,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $linha = $resultado->fetch_assoc();
         $_SESSION['total_carrinho'] = $linha['total'];
 
-        // Exibe mensagem de sucesso e redireciona após 2 segundos
+        // Exibe mensagem de sucesso e redireciona conforme a escolha do usuário
         echo "<script>
-                alert('Item adicionado ao carrinho com sucesso.');
-                setTimeout(function() {
-                    window.location.href = '$return_url';
-                }, 1000);
+                if (confirm('Item adicionado ao carrinho com sucesso. Deseja ir para o carrinho?')) {
+                    window.location.href = 'carrinho.php'; // Substitua pelo caminho correto para o carrinho
+                } else {
+                    setTimeout(function() {
+                        window.location.href = '$return_url';
+                    }, 1000);
+                }
               </script>";
     } else {
         echo "Erro ao adicionar item ao carrinho: " . $stmt->error;
