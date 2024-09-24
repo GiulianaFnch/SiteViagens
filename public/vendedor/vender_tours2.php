@@ -13,6 +13,7 @@ function processar_foto($file, $id_artigo, $numero_foto) {
     }
 
     $target_file = $target_dir . basename($file["name"]);
+    $file_name = basename($file["name"]);
     $check = getimagesize($file["tmp_name"]);
     if($check === false) {
         echo "O arquivo não é uma imagem.";
@@ -22,9 +23,10 @@ function processar_foto($file, $id_artigo, $numero_foto) {
 
     if (move_uploaded_file($file["tmp_name"], $target_file)) {
         if ($numero_foto == 1) {
-            return $target_file; 
+            $sql = "UPDATE t_artigo SET foto1='{$file_name}' WHERE id={$id_artigo};";
+            mysqli_query($ligacao, $sql);
         } else {
-            $sql = "UPDATE t_artigo SET foto{$numero_foto}='{$target_file}' WHERE id={$id_artigo};";
+            $sql = "UPDATE t_artigo SET foto{$numero_foto}='{$file_name}' WHERE id={$id_artigo};";
             mysqli_query($ligacao, $sql);
         }
     } else {
