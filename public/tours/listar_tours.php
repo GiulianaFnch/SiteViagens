@@ -24,7 +24,8 @@ include '../../config/liga_bd.php';
 
         .passeios-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 passeios por linha */
+            grid-template-columns: repeat(3, 1fr);
+            /* 3 passeios por linha */
             gap: 20px;
             margin: 20px 0;
         }
@@ -112,13 +113,15 @@ include '../../config/liga_bd.php';
 
         @media (max-width: 768px) {
             .passeios-grid {
-                grid-template-columns: repeat(2, 1fr); /* 2 por linha em telas menores */
+                grid-template-columns: repeat(2, 1fr);
+                /* 2 por linha em telas menores */
             }
         }
 
         @media (max-width: 480px) {
             .passeios-grid {
-                grid-template-columns: 1fr; /* 1 por linha em telas bem pequenas */
+                grid-template-columns: 1fr;
+                /* 1 por linha em telas bem pequenas */
             }
         }
     </style>
@@ -159,7 +162,7 @@ include '../../config/liga_bd.php';
     <div class="passeios-grid">
         <?php
 
-        $categoria = isset($_POST['categoria']) ? (int)$_POST['categoria'] : 0;
+        $categoria = isset($_POST['categoria']) ? (int) $_POST['categoria'] : 0;
 
         $sql = "SELECT * FROM t_artigo WHERE vendido = 0";
         if ($categoria != 0) {
