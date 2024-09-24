@@ -1,3 +1,8 @@
+<?php
+include '../../config/valida.php';
+include '../../config/liga_bd.php';
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -153,8 +158,6 @@
     <!-- Lista de passeios -->
     <div class="passeios-grid">
         <?php
-        include '../../config/valida.php';
-        include '../../config/liga_bd.php';
 
         $categoria = isset($_POST['categoria']) ? (int)$_POST['categoria'] : 0;
 
