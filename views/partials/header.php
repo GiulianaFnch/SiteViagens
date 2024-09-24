@@ -8,5 +8,6 @@
         <li><a href="/SiteViagens/public/tours/tours.php">Passeios</a></li>
         <li><a href="#contact">Pacotes</a></li>
         <li><a href="/SiteViagens/public/login.php">Fazer login</a></li>
+        <li><a href="/SiteViagens/public/carrinho/carrinho.php"><i class='bx bx-cart'></i></a></li>
     </ul>
 </header>
