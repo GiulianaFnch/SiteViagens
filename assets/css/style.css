@@ -142,7 +142,7 @@ section {
   position: relative;
   width: 100%;
   height: 100vh;
-  background: url(../);
+  background: url(../images/hotels.jpg);
   background-size: cover;
   background-position: center;
   display: grid;
@@ -196,7 +196,51 @@ section {
   line-height: 38px;
   margin-bottom: 50px;
 }
+/* Estilo da barra de pesquisa personalizada para hotéis */
+.hotels-search-bar {
+  display: flex;
+  background-color: #e4e1d2; /* Cor de fundo da barra de pesquisa */
+  border-radius: 8px;
+  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto; /* Centraliza a barra na página */
+}
 
+/* Estilo dos inputs personalizados */
+.hotels-input-container {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.hotels-input-container input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e4e1d2; /* Mesma cor do fundo da barra de pesquisa */
+  border-radius: 5px;
+  font-size: 14px;
+  color: rgb(116, 114, 114); /* Cor do texto */
+  background-color: #ffffff; /* Cor do fundo dos inputs */
+}
+
+/* Estilo do botão Pesquisar personalizado */
+.hotels-search-button {
+  background-color: #ffffff; /* Cor do botão pesquisar */
+  color: black; /* Cor do texto no botão */
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.hotels-search-button:hover {
+  background-color: #0c0c0c; /* Cor do botão ao passar o mouse */
+  color: white; /* Cor do texto ao passar o mouse */
+}
 /* Estilo geral da seção da barra de pesquisa começo da aba tours  */
 .search-bar {
   display: flex;
