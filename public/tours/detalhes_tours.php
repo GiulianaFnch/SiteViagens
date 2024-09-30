@@ -204,10 +204,12 @@ $linha = mysqli_fetch_array($resultado);
 
         <!-- Botões de Comprar e Voltar -->
         <div class="button-container">
-            <form action="comprar3.php" method="post" style="margin: 0;">
-                <input type="hidden" name="id_artigo" value="<?php echo $id_artigo; ?>">
-                <button type="submit" class="buy-button">Verificar disponibilidade</button>
-            </form>
+        <form action="../carrinho/adicionar_ao_carrinho.php" id="f2" method="post">
+        <input type="hidden" size="20" name="id_artigo" value="<?php echo $linha['id']; ?>">
+        <input type="hidden" name="tipo_item" value="atividade">
+        <input type="hidden" name="return_url" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
+        <input type="submit" value="Adicionar ao carrinho">
+    </form>
             <button class="back-button" onclick="history.back()">Voltar</button>
         </div>
     </div>
