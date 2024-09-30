@@ -181,7 +181,7 @@ include '../../config/valida.php';
                 <div class="dest-content">
                     <div class="location">
                         <h3 style="color: gray;">Antalya: Safári de Buggy no Deserto</h3>
-                        <h5>Experimente a emoção de percorrer paisagens desérticas</h5><br><br>
+                        <h5>Experimente a emoção de percorrer paisagens desérticas</h5><br>
 
                     </div>
                     <div class="stars">
