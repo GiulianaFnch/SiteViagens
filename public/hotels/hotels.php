@@ -57,7 +57,7 @@
     <!--container-->
     <section class="container">
         <div class="text">
-            <h2>Dê play nas suas férias <br> conosco!</h2>
+            <h2>Pesquisar por tipo de alojamento</h2>
         </div>
 
         <div class="row-items">
@@ -65,36 +65,38 @@
                 <div class="conteiner-img">
                     <img src="assets/images/aviaoicon.png">
                 </div>
-                <h4> Passagens </h4>
-                <p>25 Destinos</p>
+                <h4> Apartamentos </h4>
+                
+                <div class="container-box">
+                <div class="conteiner-img">
+                    <img src="assets/images/aviaoicon.png">
+                     <img src="assets/images/hotelicon.png">
+                     <img src="assets/images/landicon.png">
+                </div>
+                <h4>Cabanas</h4>
+               
+            </div>
+
             </div>
             <div class="container-box">
                 <div class="conteiner-img">
                     <img src="assets/images/hotelicon.png">
                 </div>
-                <h4>Hospedagens</h4>
-                <p>150 Propiedades</p>
+                <h4>hotéis</h4>
+                
             </div>
 
             <div class="container-box">
                 <div class="conteiner-img">
                     <img src="assets/images/landicon.png">
                 </div>
-                <h4> Passeios</h4>
-                <p>100 Opções</p>
+                <h4> Hostel</h4>
+                
             </div>
 
           
 
-            <div class="container-box">
-                <div class="conteiner-img">
-                    <img src="assets/images/aviaoicon.png">
-                     <img src="assets/images/hotelicon.png">
-                     <img src="assets/images/landicon.png">
-                </div>
-                <h4>Pacotes</h4>
-                <p>30 Opções</p>
-            </div>
+            
 
         </div>
     </section>
