@@ -21,7 +21,7 @@
 <body>
     <!--header-->
     <header>
-        <a href="#" class="logo">BestWay</a>
+        <a href="/SiteViagens/" class="logo">BestWay</a>
         <div class="bx bx-menu" id="menu-icon"></div>
 
         <ul class="navbar">
