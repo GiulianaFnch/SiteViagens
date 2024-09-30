@@ -133,7 +133,7 @@ include '../../config/liga_bd.php';
         <a href="/SiteViagens/" class="logo">BestWay</a>
         <div class="bx bx-menu" id="menu-icon"></div>
         <ul class="navbar">
-            <li><a href="#home">Hospedagem</a></li>
+            <li><a href="/SiteViagens/public/hotels/hotels.php">Hospedagem</a></li>
             <li><a href="#package">Passagens</a></li>
             <li><a href="#package">Passeios</a></li>
             <li><a href="#contact">Pacotes</a></li>
