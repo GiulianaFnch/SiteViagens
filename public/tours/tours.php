@@ -31,7 +31,7 @@ include '../../config/valida.php';
         <ul class="navbar">
             <li><a href="#home">Hospedagem</a></li>
             <li><a href="#package">Passagens</a></li>
-            <li><a href="#package">Tours</a></li>
+            <li><a href="#package">Passeios</a></li>
             <li><a href="#contact">Pacotes</a></li>
             <li><a href="public/login.php">Fazer login</a></li>
         </ul>
