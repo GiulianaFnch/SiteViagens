@@ -67,16 +67,6 @@
                 </div>
                 <h4> Apartamentos </h4>
                 
-                <div class="container-box">
-                <div class="conteiner-img">
-                    <img src="assets/images/aviaoicon.png">
-                     <img src="assets/images/hotelicon.png">
-                     <img src="assets/images/landicon.png">
-                </div>
-                <h4>Cabanas</h4>
-               
-            </div>
-
             </div>
             <div class="container-box">
                 <div class="conteiner-img">
@@ -96,7 +86,15 @@
 
           
 
-            
+            <div class="container-box">
+                <div class="conteiner-img">
+                    <img src="assets/images/aviaoicon.png">
+                     <img src="assets/images/hotelicon.png">
+                     <img src="assets/images/landicon.png">
+                </div>
+                <h4>Cabanas</h4>
+               
+            </div>
 
         </div>
     </section>
