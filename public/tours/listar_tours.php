@@ -130,14 +130,15 @@ include '../../config/liga_bd.php';
 <body>
     <!--header-->
     <header>
-        <a href="#" class="logo">BestWay</a>
+        <a href="/SiteViagens/" class="logo">BestWay</a>
         <div class="bx bx-menu" id="menu-icon"></div>
         <ul class="navbar">
             <li><a href="#home">Hospedagem</a></li>
             <li><a href="#package">Passagens</a></li>
             <li><a href="#package">Passeios</a></li>
             <li><a href="#contact">Pacotes</a></li>
-            <li><a href="public/login.php">Fazer login</a></li>
+            <li><a href="/SiteViagens/public/login.php">Fazer login</a></li>
+            <li><a href="/SiteViagens/public/carrinho/carrinho.php"><i class='bx bx-cart'></i></a></li>
         </ul>
     </header>
     <!--container-->
