@@ -354,29 +354,8 @@ header{
                         </div>
 
                        
-                        <div class="settings-item" id="notificacoes-ofertas">
-        <div class="item-left">
-            <i class="bi bi-bell"></i>
-            <span class="item-label">Notificações de Ofertas</span>
-        </div>
-        <div class="item-right">
-            <i id="notificacoes-ofertas-icon" class="bi <?php echo ($linha['notificacoes_ofertas'] ? 'bi-file-earmark-check-fill' : 'bi-file-earmark'); ?>" onclick="toggleNotification()"></i>
-        </div>
-    </div>
-</div>
 
-<div class="divider"></div>
 
-<div class="settings-section">
-                        <div class="settings-item">
-                            <div class="item-left">
-                                <i class="bi bi-clock-history"></i>
-                                <span class="item-label">Histórico de Viagens</span>
-                            </div>
-                            <div class="item-right">
-                                <i class="bi bi-chevron-right"></i>
-                            </div>
-                        </div>
 
                         <div class="settings-item">
                             <div class="item-left">
