@@ -135,82 +135,124 @@ include '../../config/liga_bd.php';
         <ul class="navbar">
             <li><a href="#home">Hospedagem</a></li>
             <li><a href="#package">Passagens</a></li>
-            <li><a href="#package">Passeios</a></li>
+            <li><a href="#package">Tours</a></li>
             <li><a href="#contact">Pacotes</a></li>
             <li><a href="public/login.php">Fazer login</a></li>
         </ul>
     </header>
-
-    <!--Home section-->
-    <section class="listar-tours" id="home">
-        <div class="home-text2">
-            <h1>Atividades <br> Mais <br> Procuradas.</h1>
-            <p style="color: aliceblue;">"Encontre destinos e experiências que combinam com você!"</p>
-        </div>
-    </section>
-
     <!--container-->
-    <section class="container">
-        <div class="text">
-            <center>
-                <h2>Atividades mais procuradas.</h2>
-            </center>
-        </div>
-    </section>
+    <section class="listar-tours" id="home">
+    <div class="home-text2">
+        <h1>Atividades <br> Mais <br> Procuradas.</h1>
+        <p style="color: aliceblue;">"Encontre destinos e experiências que combinam com você!"</p>
+    </div>
+</section>
 
-    <!-- Lista de passeios -->
-    <div class="passeios-grid">
+<!-- Container de Título -->
+<section class="container">
+    <div class="text">
+        <center>
+            <h2>Atividades mais procuradas.</h2>
+        </center>
+    </div>
+</section>
+
+<!-- Formulário de seleção de categorias -->
+<form action="" method="post">
+    Categoria: 
+    <select name="categoria" id="categoria" onchange="this.form.submit();">
         <?php
-
-        $categoria = isset($_POST['categoria']) ? (int) $_POST['categoria'] : 0;
-
-        $sql = "SELECT * FROM t_artigo WHERE vendido = 0";
-        if ($categoria != 0) {
-            $sql .= " AND cat = " . $categoria;
-        }
-
+        // Conecte-se ao banco de dados e busque as categorias
+        $sql = "SELECT * FROM t_categoria";
         $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
 
-        if (mysqli_num_rows($resultado) > 0) {
-            while ($linha = mysqli_fetch_array($resultado)) {
-                $sql_user = "SELECT nick, email FROM t_user WHERE id = " . $linha['id_user'];
-                $res_user = mysqli_query($ligacao, $sql_user) or die(mysqli_error($ligacao));
-                $linha_user = mysqli_fetch_assoc($res_user);
+        // Adiciona a opção "Todos" com valor 0
+        echo "<option value='0'>Todos</option>";
 
-                if ($linha_user) {
-                    echo '<div class="box">';
-                    echo '    <div class="thum">';
-                    echo "        <img src='imagens/" . htmlspecialchars($linha['foto1']) . "' alt='Foto do passeio'>";
-                    echo '    </div>';
-                    echo '    <div class="dest-content">';
-                    echo '        <div class="location">';
-                    echo "            <h3>" . htmlspecialchars($linha['titulo']) . "</h3>";
-                    echo "            <h5>" . htmlspecialchars($linha['descricao']) . "</h5>";
-                    echo '        </div>';
-                    echo '        <div class="stars">';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
-                    echo "            <h4>A partir de " . htmlspecialchars($linha['preco']) . " € por pessoa</h4>";
-                    echo '        </div>';
-                    echo '        <div class="btn-container">';
-                    echo '            <form action="detalhes_tours.php" method="post">';
-                    echo '                <input type="hidden" name="id_artigo" value="' . htmlspecialchars($linha['id']) . '">';
-                    echo '                <input type="submit" value="Comprar" class="btn-comprar">';
-                    echo '            </form>';
-                    echo '            <button class="btn-ver-comentarios">Ver mais</button>'; //*o btn-ver-comentários é o ver mais, porém não alterei o nome no css*//
-                    echo '        </div>';
-                    echo '    </div>';
-                    echo '</div>';
-                } else {
-                    echo "<div class='box'><p>Erro ao buscar dados do utilizador com ID: " . htmlspecialchars($linha['id_user']) . "</p></div>";
-                }
-            }
-        } else {
-            echo "<p>Nenhum passeio encontrado.</p>";
+        // Preenche as opções do select com as categorias vindas do banco de dados
+        while ($linha = mysqli_fetch_array($resultado)) {
+            // Verifica se a categoria selecionada é a atual
+            if (isset($_POST['categoria']) && $_POST['categoria'] == $linha['id'])
+                echo "<option value='" . $linha['id'] . "' selected>" . $linha['categoria'] . "</option>";
+            else
+                echo "<option value='" . $linha['id'] . "'>" . $linha['categoria'] . "</option>";
         }
         ?>
+    </select>
+</form>
+
+<!-- Lista de passeios -->
+<div class="passeios-grid">
+    <?php
+    // Verifica se uma categoria foi selecionada no formulário
+    $categoria = isset($_POST['categoria']) ? (int) $_POST['categoria'] : 0;
+
+    // Define o SQL de acordo com a categoria selecionada
+    if ($categoria == 0) {
+        // Se "Todos" for selecionado, exibe todos os artigos não vendidos
+        $sql = "SELECT * FROM t_artigo WHERE vendido = 0";
+    } else {
+        // Caso contrário, exibe apenas os artigos da categoria selecionada
+        $sql = "SELECT * FROM t_artigo WHERE vendido = 0 AND cat = " . $categoria;
+    }
+
+    // Executa a consulta
+    $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
+
+    // Verifica se existem passeios disponíveis
+    if (mysqli_num_rows($resultado) > 0) {
+        // Itera sobre os resultados e exibe cada passeio
+        while ($linha = mysqli_fetch_array($resultado)) {
+            $sql_user = "SELECT nick, email FROM t_user WHERE id = " . $linha['id_user'];
+            $res_user = mysqli_query($ligacao, $sql_user) or die(mysqli_error($ligacao));
+            $linha_user = mysqli_fetch_assoc($res_user);
+
+            if ($linha_user) {
+                echo '<div class="box">';
+                echo '    <div class="thum">';
+                echo "        <img src='imagens/" . htmlspecialchars($linha['foto1']) . "' alt='Foto do passeio'>";
+                echo '    </div>';
+                echo '    <div class="dest-content">';
+                echo '        <div class="location">';
+                echo "            <h3>" . htmlspecialchars($linha['titulo']) . "</h3>";
+                echo "            <h5>" . htmlspecialchars($linha['descricao']) . "</h5>";
+                echo '        </div>';
+                echo '        <div class="stars">';
+                echo '            <a href="#"><i class="bx bxs-star"></i></a>';
+                echo '            <a href="#"><i class="bx bxs-star"></i></a>';
+                echo '            <a href="#"><i class="bx bxs-star"></i></a>';
+                echo '            <a href="#"><i class="bx bxs-star"></i></a>';
+                echo "            <h4>A partir de " . htmlspecialchars($linha['preco']) . " € por pessoa</h4>";
+                echo '        </div>';
+                echo '        <div class="btn-container">';
+
+                // Botão "Comprar" que redireciona para a página carrinho.php
+                echo '            <form action="carrinho.php" method="post">';
+                echo '                <input type="hidden" name="id_artigo" value="' . htmlspecialchars($linha['id']) . '">';
+                echo '                <input type="submit" value="Comprar" class="btn-comprar">';
+                echo '            </form>';
+
+                // Botão "Ver mais" que redireciona para a página detalhes_tour.php
+                echo '            <form action="detalhes_tours.php" method="post">';
+                echo '                <input type="hidden" name="id_artigo" value="' . htmlspecialchars($linha['id']) . '">';
+                echo '                <input type="submit" value="Ver Mais" class="btn-ver-comentarios">';
+                echo '            </form>';
+
+                echo '        </div>';
+                echo '    </div>';
+                echo '</div>';
+            } else {
+                echo "<div class='box'><p>Erro ao buscar dados do utilizador com ID: " . htmlspecialchars($linha['id_user']) . "</p></div>";
+            }
+        }
+    } else {
+        echo "<p>Nenhum passeio encontrado.</p>";
+    }
+    ?>
+</div>
+
+</div>
+
     </div>
     <section class="newsletter">
         <div class="news-text">
