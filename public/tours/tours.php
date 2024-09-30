@@ -33,7 +33,7 @@ include '../../config/valida.php';
             <li><a href="#package">Passagens</a></li>
             <li><a href="#package">Passeios</a></li>
             <li><a href="#contact">Pacotes</a></li>
-            <li><a href="public/login.php">Fazer login</a></li>
+            <li><a href="/SiteViagens/public/login.php">Fazer login</a></li>
         </ul>
     </header>
 
