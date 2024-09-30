@@ -286,7 +286,7 @@ Você receberá e-mails promocionais da BestWay. Para mais informações, consul
     </section>
 
     <!--link to js-->
-    <script type="text/javascript" src="assets/js/script.js"></script>
+    <script type="text/javascript" src="../../assets/js/script.js"></script>
 
 </body>
 
