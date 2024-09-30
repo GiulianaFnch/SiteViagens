@@ -421,9 +421,11 @@ header.sticky {
   transition: transform 0.2s ease-in-out;
 }
 
+
 .box:hover {
   transform: translateY(-5px);
 }
+
 
 .thum img {
   width: 100%;
@@ -496,6 +498,7 @@ header.sticky {
   border: 1px solid transparent;
   transform: translateY(-3px);
 }
+  
 
 .title {
   text-align: center;
@@ -557,11 +560,12 @@ header.sticky {
 
 .location p {
   font-size: 15px;
-  color: var(--second-color);
+  color: var(--second-color); 
 }
 
+
 .thum:hover {
-  filter: brightness(100%) hue-rotate(45deg);
+  /*filter: brightness(100%) hue-rotate(45deg);*/ /* EFEITO VAGABUNDO!!! */
   transform: scale(1.04);
 }
 
