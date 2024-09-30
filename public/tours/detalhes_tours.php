@@ -120,24 +120,39 @@ $linha = mysqli_fetch_array($resultado);
         }
 
         .buy-button {
-            background-color: #6495ed;
-            color: white;
-            width: 100%;
-        }
+    background-color: #6495ed; /* Cor de fundo azul */
+    color: white; /* Cor do texto branco */
+    width: 100%; /* O botão ocupa 100% da largura do container */
+    border: none; /* Remove a borda */
+    padding: 10px 0; /* Adiciona preenchimento vertical ao botão */
+    font-size: 16px; /* Define o tamanho da fonte */
+    cursor: pointer; /* Mostra o ícone de cursor de "mão" ao passar o mouse */
+    text-align: center; /* Centraliza o texto */
+    border-radius: 5px; /* Bordas arredondadas */
+    transition: background-color 0.3s ease; /* Efeito de transição na mudança de cor */
+}
 
         .buy-button:hover {
-            background-color: #0056b3;
-        }
+    background-color: #4169e1; /* Cor de fundo mais escura ao passar o mouse */
+}
 
         .back-button {
-            background-color: #f0f0f0;
-            color: #333;
-            width: 100%;
+    background-color:#d1d1d1; 
+    color: white; 
+    width: 100%; 
+    border: none; 
+    padding: 10px 0; 
+    font-size: 16px; 
+    cursor: pointer; 
+    text-align: center; 
+    border-radius: 5px; 
+    transition: background-color 0.3s ease;
         }
 
-        .back-button:hover {
-            background-color: #e0e0e0;
-        }
+.back-button:hover {
+    background-color: #4169e1; 
+}
+
 
     </style>
 </head>
@@ -204,12 +219,14 @@ $linha = mysqli_fetch_array($resultado);
 
         <!-- Botões de Comprar e Voltar -->
         <div class="button-container">
-        <form action="../carrinho/adicionar_ao_carrinho.php" id="f2" method="post">
-        <input type="hidden" size="20" name="id_artigo" value="<?php echo $linha['id']; ?>">
+    <form action="../carrinho/adicionar_ao_carrinho.php" id="f2" method="post">
+        <input type="hidden" name="id_artigo" value="<?php echo $linha['id']; ?>">
         <input type="hidden" name="tipo_item" value="atividade">
         <input type="hidden" name="return_url" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
-        <input type="submit" value="Adicionar ao carrinho">
+        <input type="submit" class="buy-button" value="Adicionar ao carrinho">
     </form>
+</div>
+<br>
             <button class="back-button" onclick="history.back()">Voltar</button>
         </div>
     </div>
@@ -458,4 +475,5 @@ $linha = mysqli_fetch_array($resultado);
         <input type="submit" value="Comentar">
 
     -->
+
 
