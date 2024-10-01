@@ -63,14 +63,14 @@
         <div class="row-items">
             <div class="container-box">
                 <div class="conteiner-img">
-                    <img src="SiteViagens/public/hotels/imagens/hotel.jpg">
+                    <img src="apartamento/hotel.jpg">
                 </div>
                 <h4> Apartamentos </h4>
                 
             </div>
             <div class="container-box">
                 <div class="conteiner-img">
-                    <img src="assets/images/hotelicon.png">
+                    <img src="images/hotel.jpg">
                 </div>
                 <h4>hotéis</h4>
                 
@@ -78,7 +78,7 @@
 
             <div class="container-box">
                 <div class="conteiner-img">
-                    <img src="assets/images/landicon.png">
+                    <img src="images/hostel.jpg">
                 </div>
                 <h4> Hostel</h4>
                 
@@ -88,13 +88,21 @@
 
             <div class="container-box">
                 <div class="conteiner-img">
-                    <img src="assets/images/aviaoicon.png">
-                     <img src="assets/images/hotelicon.png">
-                     <img src="assets/images/landicon.png">
+                    <img src="images/cabana.jpg">
+                     
                 </div>
                 <h4>Cabanas</h4>
                
             </div>
+            <div class="container-box">
+                <div class="conteiner-img">
+                    <img src="images/resort.jpg">
+                     
+                </div>
+                <h4>Resorts</h4>
+               
+            </div>
+
 
         </div>
     </section>
