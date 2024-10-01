@@ -1,5 +1,5 @@
 <?php
-include '../../config/valida.php';
+/*include '../../config/valida.php';*/
 include '../../config/liga_bd.php';
 ?>
 
