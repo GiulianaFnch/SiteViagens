@@ -455,7 +455,10 @@ header.sticky {
   color: #ffd700;
   margin-right: 0.2rem;
 }
-
+.calendar i {
+  color: #ff0000;
+  margin-right: 0.2rem;
+}
 .stars h4 {
   font-size: 1rem;
   color: #000000;
