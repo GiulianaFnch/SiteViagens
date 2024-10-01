@@ -115,76 +115,152 @@
         </div>
     </section>
 
-    <!--Package section-->
-    <section class="package" id="package">
-        <div class="title">
-            <h2>Escolha entre os  <br> melhores</h2>
+   <!--Package section-->
+<section class="package" id="package">
+    <div class="title">
+        <h2>Escolha entre os <br> melhores</h2>
+    </div>
+
+    <div class="package-content">
+        <!-- Package 1 -->
+        <div class="box">
+            <div class="thum">
+                <img src="assets/images/Rio de janeiro.jpg" alt="Crowne Plaza Paris République">
+            </div>
+            <div class="dest-content">
+                <h4>Crowne Plaza Paris République</h4>
+                <div class="stars">
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                </div>
+            </div>
         </div>
 
-        <div class="package-content">
-            <div class="box">
-                <div class="thum">
-                    <img src="assets/images/Rio de janeiro.jpg">
-                   
-                </div>
-
-                <div class="dest-content">
-                    <div class="stars">
-                        <h4>Rio de Janeiro</h4>
-                       
-                    </div>
-                    <div class="stars">
-                        <a href="#"><i class='bx bxs-star'></i></a>
-                        <a href="#"><i class='bx bxs-star'></i></a>
-                        <a href="#"><i class='bx bxs-star'></i></a>
-                        <a href="#"><i class='bx bxs-star'></i></a>
-                        <a href="#"><i class='bx bxs-star'></i></a>
-                    </div>
+        <!-- Package 2 -->
+        <div class="box">
+            <div class="thum">
+                <img src="assets/images/Tailandia.jpg" alt="Bangkok">
+            </div>
+            <div class="dest-content">
+                <h4>Bangkok</h4>
+                <div class="stars">
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
             </div>
-
-            <div class="box">
-                <div class="thum">
-                    <img src="assets/images/Tailandia.jpg">
-                  
-                </div>
-
-                <div class="dest-content">
-                    <div class="location">
-                        <h4>Bangkok</h4>
-                       
-                    </div>
-                    <div class="stars">
-                        <a href="#"><i class='bx bxs-star'></i></a>
-                        <a href="#"><i class='bx bxs-star'></i></a>
-                        <a href="#"><i class='bx bxs-star'></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="box">
-                <div class="thum">
-                    <img src="assets/images/Viena.jpg">
-                 
-                </div>
-
-                <div class="dest-content">
-                    <div class="location">
-                        <h4>Vienna</h4>
-                      
-                    </div>
-                    <div class="stars">
-                        <a href="#"><i class='bx bxs-star'></i></a>
-                        <a href="#"><i class='bx bxs-star'></i></a>
-                        <a href="#"><i class='bx bxs-star'></i></a>
-                        <a href="#"><i class='bx bxs-star'></i></a>
-                    </div>
-                </div>
-            </div>
-
-            
         </div>
-    </section>
+
+ <!-- Package 3 -->
+ <div class="box">
+            <div class="thum">
+                <img src="assets/images/Rio de janeiro.jpg" alt="Crowne Plaza Paris République">
+            </div>
+            <div class="dest-content">
+                <h4>Crowne Plaza Paris République</h4>
+                <div class="stars">
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Package 4 -->
+        <div class="box">
+            <div class="thum">
+                <img src="assets/images/Tailandia.jpg" alt="Bangkok">
+            </div>
+            <div class="dest-content">
+                <h4>Bangkok</h4>
+                <div class="stars">
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                </div>
+            </div>
+        </div>
+
+<!-- Package 5 -->
+<div class="box">
+            <div class="thum">
+                <img src="assets/images/Tailandia.jpg" alt="Bangkok">
+            </div>
+            <div class="dest-content">
+                <h4>Bangkok</h4>
+                <div class="stars">
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                </div>
+            </div>
+        </div>
+
+<!-- Package 6 -->
+<div class="box">
+            <div class="thum">
+                <img src="assets/images/Tailandia.jpg" alt="Bangkok">
+            </div>
+            <div class="dest-content">
+                <h4>Bangkok</h4>
+                <div class="stars">
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                </div>
+            </div>
+        </div>
+<!-- Package 7 -->
+<div class="box">
+            <div class="thum">
+                <img src="assets/images/Tailandia.jpg" alt="Bangkok">
+            </div>
+            <div class="dest-content">
+                <h4>Bangkok</h4>
+                <div class="stars">
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                </div>
+            </div>
+        </div>
+<!-- Package 8 -->
+<div class="box">
+            <div class="thum">
+                <img src="assets/images/Tailandia.jpg" alt="Bangkok">
+            </div>
+            <div class="dest-content">
+                <h4>Bangkok</h4>
+                <div class="stars">
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- Package 9 -->
+        <div class="box">
+            <div class="thum">
+                <img src="assets/images/Viena.jpg" alt="Vienna">
+            </div>
+            <div class="dest-content">
+                <h4>Vienna</h4>
+                <div class="stars">
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 
     
 
