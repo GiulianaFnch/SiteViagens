@@ -462,6 +462,70 @@ header.sticky {
 }
 /* aqui acaba package-content */
 
+/*container HOTEL*/
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+.container-hotel {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Estilizando o título */
+.text h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  color: #333;
+}
+
+/* Estilizando a linha de itens */
+.row-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Estilo para cada box */
+.container-box-hotel {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 10px; /* Margin já é aplicado em cima e embaixo */
+  text-align: center;
+  flex: 0 0 calc(20% - 20px); /* 5 cards por fileira */
+  transition: transform 0.3s;
+}
+
+.container-box-hotel:hover {
+  transform: translateY(-5px);
+}
+
+/* Estilizando as imagens */
+.container-hotel-img {
+  overflow: hidden;
+  border-radius: 8px 8px 0 0;
+}
+
+.container-hotel-img img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Estilizando o título dentro de cada box */
+.container-box-hotel h4 {
+  margin: 15px 0;
+  font-size: 1.25rem;
+  color: #555;
+}
+/*ACABA CONTAINER HOTEL*/
+
 .container-box {
   background: var(--bg-color);
   border: 1px solid #f0eded;
@@ -844,6 +908,19 @@ header.sticky {
     transition: 0.2s;
   }
 }
+
+@media (max-width: 768px) {
+  .container-box-hotel {
+      flex: 0 0 calc(33.33% - 20px); /* 3 cards por fileira em telas menores */
+  }
+}
+
+@media (max-width: 480px) {
+  .container-box-hotel {
+      flex: 0 0 100%; /* 1 card por fileira em telas muito pequenas */
+  }
+}
+
 /* Media Queries para responsividade */
 @media screen and (max-width: 1200px) {
   .package-content {
