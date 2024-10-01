@@ -125,7 +125,7 @@
         <!-- Package 1 -->
         <div class="box">
             <div class="thum">
-                <img src="assets/images/Rio de janeiro.jpg" alt="Crowne Plaza Paris République">
+                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
             </div>
             <div class="dest-content">
                 <h4>Crowne Plaza Paris République</h4>
@@ -244,6 +244,20 @@
             </div>
         </div>
         <!-- Package 9 -->
+<div class="box">
+            <div class="thum">
+                <img src="assets/images/Tailandia.jpg" alt="Bangkok">
+            </div>
+            <div class="dest-content">
+                <h4>Bangkok</h4>
+                <div class="stars">
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- Package 10 -->
         <div class="box">
             <div class="thum">
                 <img src="assets/images/Viena.jpg" alt="Vienna">
