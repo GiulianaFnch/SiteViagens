@@ -2,8 +2,26 @@
 include 'valida_adm.php';
 include '../config/liga_bd.php';
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $id = $_POST['id'];
+
+    // Atualizar o tipo_user para 2
+    $sql = "UPDATE t_user SET tipo_user = 2 WHERE id = ?";
+    $stmt = $ligacao->prepare($sql);
+    $stmt->bind_param("i", $id);
+
+    if ($stmt->execute()) {
+        echo "<script>alert('Vendedor ativado com sucesso!'); window.location.href='verifica_vendedores.php';</script>";
+    } else {
+        echo "<script>alert('Erro ao ativar vendedor.'); window.location.href='verifica_vendedores.php';</script>";
+    }
+
+    $stmt->close();
+    $ligacao->close();
+}
 // Consulta para obter todos os usuários
-$sql = "SELECT id, nick, nome, email, data_nasc, nome_marca, foto, tipo_user FROM t_user";
+include '../config/liga_bd.php';
+$sql = "SELECT id, nick, nome, email, data_nasc, nome_marca, foto, tipo_user FROM t_user WHERE tipo_user = '3'";
 $result = $ligacao->query($sql);
 
 include 'views/header.php';
@@ -12,7 +30,7 @@ include 'views/header.php';
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <div
         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Gestão de Usuários </h1>
+        <h1 class="h2">Gerir Novos Vendedores </h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group me-2">
                 <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
@@ -21,7 +39,7 @@ include 'views/header.php';
             <button type="button"
                 class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
                 <svg class="bi">
-                    <use xlink:href="#calendar3" />
+                    <use xlink:href="#calendar3"/>
                 </svg>
                 This week
             </button>
@@ -37,7 +55,6 @@ include 'views/header.php';
                     <th>Nick</th>
                     <th>Nome</th>
                     <th>Email</th>
-                    <th>Data Nascimento</th>
                     <th>Nome Marca</th>
                     <th>Foto</th>
                     <th>Tipo de Usuário</th>
@@ -51,15 +68,14 @@ include 'views/header.php';
                         <td><?php echo htmlspecialchars($row['nick']); ?></td>
                         <td><?php echo htmlspecialchars($row['nome']); ?></td>
                         <td><?php echo htmlspecialchars($row['email']); ?></td>
-                        <td><?php echo htmlspecialchars($row['data_nasc']); ?></td>
                         <td><?php echo htmlspecialchars($row['nome_marca']); ?></td>
                         <td><img src="../assets/images/pics/<?php echo htmlspecialchars($row['foto']); ?>" alt="Foto"
                                 width="50"></td>
                         <td class="text-center"><?php echo htmlspecialchars($row['tipo_user']); ?></td>
                         <td>
-                            <form action="excluir_usuario.php" method="post" style="display:inline;">
+                            <form action="verifica_vendedores.php" method="post" style="display:inline;">
                                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
-                                <button type="submit" class="btn ">Editar</button>
+                                <button type="submit" class="btn ">Ativar</button>
                             </form>
                             <form action="desativar_usuario.php" method="post" style="display:inline;">
                                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">

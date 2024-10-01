@@ -63,7 +63,11 @@
         <div class="row-items">
             <div class="container-box">
                 <div class="conteiner-img">
+<<<<<<< Updated upstream
                     <img src="imagens/apartamento.jpg">
+=======
+                    <img src="imagens/hotel.jpg">
+>>>>>>> Stashed changes
                 </div>
                 <h4> Apartamentos </h4>
                 

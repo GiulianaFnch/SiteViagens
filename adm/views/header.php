@@ -217,7 +217,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="#">
+                                <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="/siteviagens/adm/">
                                     <svg class="bi">
                                         <use xlink:href="#house-fill" />
                                     </svg>
@@ -282,16 +282,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                 </svg>
                             </a>
                         </h6>
-                        <!--
+                        
                         <ul class="nav flex-column mb-auto">
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center gap-2" href="#">
+                                <a class="nav-link d-flex align-items-center gap-2" href="/siteviagens/adm/verifica_vendedores.php">
                                     <svg class="bi">
                                         <use xlink:href="#file-earmark-text" />
                                     </svg>
-                                    Current month
+                                    Verificar vendedores
                                 </a>
                             </li>
+                        </ul>
+                            <!--
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center gap-2" href="#">
                                     <svg class="bi">

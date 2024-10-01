@@ -1,6 +1,19 @@
 <?php
 include 'valida_vendedor.php';
 include '../../config/liga_bd.php';
+
+// Obter o ID do usuário logado
+$id_user_logado = $_SESSION['id'];
+
+// Consulta para obter os artigos do usuário logado
+$sql = "SELECT titulo, descricao, preco, localizacao, data_inicio, data_fim, foto1, foto2, foto3 
+        FROM t_artigo 
+        WHERE id_user = ?";
+$stmt = $ligacao->prepare($sql);
+$stmt->bind_param("i", $id_user_logado);
+$stmt->execute();
+$result = $stmt->get_result();
+$stmt->close();
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +30,6 @@ include '../../config/liga_bd.php';
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
-
         body {
             margin-top: 100px;
         }
@@ -214,10 +226,14 @@ include '../../config/liga_bd.php';
                         <thead>
                             <tr>
                                 <th>Título</th>
-                                <th>Usuário</th>
-                                <th>Tipo de Reserva</th>
-                                <th>Data da Reserva</th>
-                                <th>Quantidade</th>
+                                <th>Descrição</th>
+                                <th>Preço</th>
+                                <th>Localização</th>
+                                <th>Data Início</th>
+                                <th>Data Fim</th>
+                                <th>Foto 1</th>
+                                <th>Foto 2</th>
+                                <th>Foto 3</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
@@ -225,10 +241,15 @@ include '../../config/liga_bd.php';
                             <?php while ($row = $result->fetch_assoc()): ?>
                             <tr>
                                 <td><?php echo htmlspecialchars($row['titulo']); ?></td>
-                                <td><?php echo htmlspecialchars($row['user_id']); ?></td>
-                                <td><?php echo htmlspecialchars($row['tipo_reserva']); ?></td>
-                                <td><?php echo htmlspecialchars($row['data_reserva']); ?></td>
-                                <td><?php echo htmlspecialchars($row['quantidade']); ?></td>
+                                <td><?php echo htmlspecialchars($row['descricao']); ?></td>
+                                <td><?php echo htmlspecialchars($row['preco']); ?></td>
+                                <td><?php echo htmlspecialchars($row['localizacao']); ?></td>
+                                <td><?php echo htmlspecialchars($row['data_inicio']); ?></td>
+                                <td><?php echo htmlspecialchars($row['data_fim']); ?></td>
+                                <td><?php echo htmlspecialchars($row['foto1']); ?></td>
+                                <td><?php echo htmlspecialchars($row['foto2']); ?></td>
+                                <td><?php echo htmlspecialchars($row['foto3']); ?></td>
+                                
                             <td class="action-btns">
                                 <!-- Botão de Editar -->
                                 <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#editModal" data-reserva-id="<?php echo $row['id']; ?>">
