@@ -260,6 +260,3 @@ $result = $stmt->get_result();
     <?php include '../../views/partials/footer.php' ?>
 </body>
 </html>
-
-
-
