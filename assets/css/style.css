@@ -494,11 +494,11 @@ body {
 /* Estilo para cada box */
 .container-box-hotel {
   background-color: #fff;
-  border-radius: 8px;
+  border-radius: 1px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin: 10px; /* Margin já é aplicado em cima e embaixo */
   text-align: center;
-  flex: 0 0 calc(20% - 20px); /* 5 cards por fileira */
+  flex: 0 0 calc(50% - 300px); /* 5 cards por fileira */
   transition: transform 0.3s;
 }
 
