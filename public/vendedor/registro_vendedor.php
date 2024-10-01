@@ -49,6 +49,7 @@
 
                     if (mysqli_stmt_execute($stmt)) {
                         echo "<h2>Utilizador registado com sucesso</h2>";
+                        echo "<p>Por favor, aguarde a validação do administrador</p>";
                     } else {
                         echo "<h2>Erro ao registar utilizador</h2>";
                     }
