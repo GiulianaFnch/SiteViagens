@@ -23,7 +23,7 @@ $resultado = $stmt->get_result();
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;900&family=Roboto:wght@400&display=swap" rel="stylesheet">
 
     <style>
 
@@ -44,6 +44,13 @@ $resultado = $stmt->get_result();
             text-align: center;
             color: #333;
             margin: 20px 0;
+        }
+
+        .location {
+            font-family: 'Roboto', sans-serif; /* Fonte diferente para a localização */
+            font-weight: bold; /* Pode ser alterado conforme desejado */
+            color: #2c3e50; /* Cor opcional para destacar a localização */
+            text-transform: uppercase; /* Transforma o texto em maiúsculas */
         }
 
         .passeios-grid {
@@ -139,31 +146,46 @@ $resultado = $stmt->get_result();
 
 <body>
     <header>
-        <a href="../index.html"
-            style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
+        <a href="/SiteViagens/"  style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;" class="logo">BestWay</a>
         <div class="bx bx-menu" id="menu-icon"></div>
 
         <ul class="navbar">
-            <li><a href="#home" style="color: black;">Hospedagem</a></li>
+            <li><a href="/SiteViagens/public/hotels/hotels.php" style="color: black;">Hospedagem</a></li>
             <li><a href="#package" style="color: black;">Passagens</a></li>
-            <li><a href="#destination" style="color: black;">Tours</a></li>
+            <li><a href="#package" style="color: black;">Passeios</a></li>
             <li><a href="#contact" style="color: black;">Pacotes</a></li>
+            <li><a href="/SiteViagens/public/login.php" style="color: black;">Fazer login</a></li>
+            <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a></li>
         </ul>
     </header>
-<br><br>
+<br><br><br><br><br><br>
     <!--container-->
-    <section class="destinos" id="destinos">
-    <div class="home-text2">
-            <h2><a href="listar_tours.php" class="link-titulopasseios">Passeios mais procurados</a></h2>
-        </div>
-
         <section class="search-bar">
             <form action="pesquisa2_tours.php" method="get">
-                <input type="text" placeholder="Para onde?" name="localizacao" required>
-                <input type="date" placeholder="Selecione as datas" name="data" required>
+                <!-- Preserva os valores de localização e data nos campos de pesquisa -->
+                <input type="text" placeholder="Para onde?" name="localizacao" value="<?php echo htmlspecialchars($_GET['localizacao'] ?? ''); ?>" required>
+                <input type="date" placeholder="Selecione as datas" name="data" value="<?php echo htmlspecialchars($_GET['data'] ?? ''); ?>" required>
                 <button style="color: grey;" type="submit">Pesquisar</button>
             </form>
-        </section>
+            </section>
+            <section class="destinos" id="destinos">
+        <div class="title">
+            <h2>
+                Coisas para fazer em 
+                <span class="location">
+                    <?php
+                        // Verifica se a localização foi definida
+                        if (isset($_GET['localizacao']) && !empty($_GET['localizacao'])) {
+                            echo htmlspecialchars($_GET['localizacao']);
+                        } else {
+                            echo "a sua localidade"; // Mensagem padrão se a localização não for especificada
+                        }
+                    ?>
+                </span>
+            </h2>
+        </div>
+
+        
     </section>
 
     <div class="passeios-grid">
@@ -203,27 +225,12 @@ $resultado = $stmt->get_result();
     <script>
         window.addEventListener('scroll', function() {
             const header = document.querySelector('header');
-            header.classList.toggle('scrolled', window.scrollY > 50);
+            header.classList.toggle('scrolled', window.scrollY > 0);
         });
     </script>
 
-    <!-- Outros scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.artigo-carousel').slick({
-                dots: true,
-                infinite: true,
-                speed: 300,
-                slidesToShow: 1,
-                adaptiveHeight: true
-            });
-        });
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
 
 </html>
-
-
 
