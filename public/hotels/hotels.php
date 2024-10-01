@@ -118,7 +118,7 @@
     <!--Package section-->
     <section class="package" id="package">
         <div class="title">
-            <h2>Próximos Pacotes <br> de Viagens</h2>
+            <h2>Escolha entre os  <br> melhores</h2>
         </div>
 
         <div class="package-content">
@@ -186,51 +186,7 @@
         </div>
     </section>
 
-    <!--destination section-->
-    <section class="destination" id="destination">
-        <div class="title">
-            <h2>Destinos Populares</h2>
-        </div>
-
-        <div class="destination-content">
-            <div class="col-content">
-                <img src="assets/images/paris.jpg">
-                <h5>Paris</h5>
-                <p>França</p>
-            </div>
-
-            <div class="col-content">
-                <img src="assets/images/roma.jpg">
-                <h5>Roma</h5>
-                <p>Itália</p>
-            </div>
-
-            <div class="col-content">
-                <img
-                    src="assets/images/boa-parte-de-nova-york-pode-ser-vista-da-estatua-da-liberdade-1665501171075_v2_1x1.jpg">
-                <h5>Nova York</h5>
-                <p>EUA</p>
-            </div>
-
-            <div class="col-content">
-                <img src="assets/images/tokyo.jpg">
-                <h5>Tokyo</h5>
-                <p>Japão</p>
-            </div>
-
-            <div class="col-content">
-                <img src="assets/images/sidney.jpg">
-                <h5>Sydney</h5>
-                <p>Austrália</p>
-            </div>
-
-            <div class="col-content">
-                <img src="assets/images/londres.jpg">
-                <h5>Londres</h5>
-                <p>Inglaterra</p>
-            </div>
-        </div>
-    </section>
+    
 
     <!--Newsletter-->
     <section class="newsletter">
