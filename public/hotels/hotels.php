@@ -63,7 +63,7 @@
         <div class="row-items">
             <div class="container-box">
                 <div class="conteiner-img">
-                    <img src="imagens/apartamento/hotel.jpg">
+                    <img src="imagens/apartamento.jpg">
                 </div>
                 <h4> Apartamentos </h4>
                 
