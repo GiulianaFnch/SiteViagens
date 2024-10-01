@@ -327,7 +327,7 @@ header{
                         <a class="menu-item" href="../../../SiteViagens-main/index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
                         <a class="menu-item" href="vender_tours.php"><i class="bi bi-bag"></i> Vender Tours</a>
                         <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Gestão de Rervas</a>
-                        <a class="menu-item" href="vender_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de Tours</a>
+                        <a class="menu-item" href="gestao_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de Tours</a>
                         <a class="menu-item" href="#chat"><i class="bi bi-chat-dots"></i> Chat</a>
                         <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
@@ -339,6 +339,7 @@ header{
                             <i class="bi bi-chevron-compact-left"></i> Voltar
                         </div>
 
+                        <br>
                         
                         <div class="settings-section">
                             <div class="settings-item" id="location-toggle" onclick="toggleLocationService()">
@@ -351,32 +352,12 @@ header{
                                     <i id="location-icon" class="bi bi-toggle-off"></i>
                                 </div>
                             </div>
-                        </div>
-
-                       
-                        <div class="settings-item" id="notificacoes-ofertas">
-        <div class="item-left">
-            <i class="bi bi-bell"></i>
-            <span class="item-label">Notificações de Ofertas</span>
-        </div>
-        <div class="item-right">
-            <i id="notificacoes-ofertas-icon" class="bi <?php echo ($linha['notificacoes_ofertas'] ? 'bi-file-earmark-check-fill' : 'bi-file-earmark'); ?>" onclick="toggleNotification()"></i>
-        </div>
-    </div>
-</div>
+                        </div>               
+                    </div>
 
 <div class="divider"></div>
 
 <div class="settings-section">
-                        <div class="settings-item">
-                            <div class="item-left">
-                                <i class="bi bi-clock-history"></i>
-                                <span class="item-label">Histórico de Viagens</span>
-                            </div>
-                            <div class="item-right">
-                                <i class="bi bi-chevron-right"></i>
-                            </div>
-                        </div>
 
                         <div class="settings-item">
                             <div class="item-left">
