@@ -204,15 +204,17 @@
 <!-- Package 6 -->
 <div class="box">
             <div class="thum">
-                <img src="assets/images/Tailandia.jpg" alt="Bangkok">
+                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
             </div>
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
-                    
+                    <h4>Crowne Plaza Paris République</h4><br>
                 </div>
-            <h4>Bangkok</h4>
+                <p> Paris, França </p><br>
+                
                 <div class="stars">
+                    
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
