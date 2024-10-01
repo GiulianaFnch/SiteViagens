@@ -207,9 +207,12 @@
                 <img src="assets/images/Tailandia.jpg" alt="Bangkok">
             </div>
             <div class="dest-content">
-                <h4>Bangkok</h4>
+            <div class="calendar">
+                    <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
+                    
+                </div>
+            <h4>Bangkok</h4>
                 <div class="stars">
-                    <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
