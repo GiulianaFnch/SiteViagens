@@ -122,17 +122,20 @@
     </div>
 
     <div class="package-content">
-        <!-- Package 1 -->
-        <div class="box">
+       <!-- Package 1 -->
+<div class="box">
             <div class="thum">
                 <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
             </div>
             <div class="dest-content">
-                <h4>Crowne Plaza Paris République</h4>
+            <div class="calendar">
+                    <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
+                   
+                </div><h4 >Crowne Plaza Paris République</h4><br>
+                <p> Paris, França </p><br>
+                
                 <div class="stars">
-                    <a href="#"><i class='bx bxs-star'></i></a>
-                    <a href="#"><i class='bx bxs-star'></i></a>
-                    <a href="#"><i class='bx bxs-star'></i></a>
+                    
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
@@ -140,46 +143,58 @@
         </div>
 
         <!-- Package 2 -->
-        <div class="box">
+<div class="box">
             <div class="thum">
-                <img src="assets/images/Tailandia.jpg" alt="Bangkok">
+                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
             </div>
             <div class="dest-content">
-                <h4>Bangkok</h4>
+            <div class="calendar">
+                    <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
+                   
+                </div><h4 >Crowne Plaza Paris République</h4><br>
+                <p> Paris, França </p><br>
+                
                 <div class="stars">
-                    <a href="#"><i class='bx bxs-star'></i></a>
+                    
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
             </div>
         </div>
-
  <!-- Package 3 -->
- <div class="box">
+<div class="box">
             <div class="thum">
-                <img src="assets/images/Rio de janeiro.jpg" alt="Crowne Plaza Paris République">
+                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
             </div>
             <div class="dest-content">
-                <h4>Crowne Plaza Paris République</h4>
+            <div class="calendar">
+                    <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
+                   
+                </div><h4 >Crowne Plaza Paris République</h4><br>
+                <p> Paris, França </p><br>
+                
                 <div class="stars">
-                    <a href="#"><i class='bx bxs-star'></i></a>
-                    <a href="#"><i class='bx bxs-star'></i></a>
-                    <a href="#"><i class='bx bxs-star'></i></a>
+                    
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
             </div>
         </div>
 
-        <!-- Package 4 -->
-        <div class="box">
+<!-- Package 4 -->
+<div class="box">
             <div class="thum">
-                <img src="assets/images/Tailandia.jpg" alt="Bangkok">
+                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
             </div>
             <div class="dest-content">
-                <h4>Bangkok</h4>
+            <div class="calendar">
+                    <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
+                   
+                </div><h4 >Crowne Plaza Paris République</h4><br>
+                <p> Paris, França </p><br>
+                
                 <div class="stars">
-                    <a href="#"><i class='bx bxs-star'></i></a>
+                    
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
@@ -189,12 +204,17 @@
 <!-- Package 5 -->
 <div class="box">
             <div class="thum">
-                <img src="assets/images/Tailandia.jpg" alt="Bangkok">
+                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
             </div>
             <div class="dest-content">
-                <h4>Bangkok</h4>
+            <div class="calendar">
+                    <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
+                   
+                </div><h4 >Crowne Plaza Paris République</h4><br>
+                <p> Paris, França </p><br>
+                
                 <div class="stars">
-                    <a href="#"><i class='bx bxs-star'></i></a>
+                    
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
@@ -209,8 +229,8 @@
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
-                    <h4>Crowne Plaza Paris République</h4><br>
-                </div>
+                   
+                </div><h4 >Crowne Plaza Paris République</h4><br>
                 <p> Paris, França </p><br>
                 
                 <div class="stars">
@@ -223,12 +243,17 @@
 <!-- Package 7 -->
 <div class="box">
             <div class="thum">
-                <img src="assets/images/Tailandia.jpg" alt="Bangkok">
+                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
             </div>
             <div class="dest-content">
-                <h4>Bangkok</h4>
+            <div class="calendar">
+                    <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
+                   
+                </div><h4 >Crowne Plaza Paris République</h4><br>
+                <p> Paris, França </p><br>
+                
                 <div class="stars">
-                    <a href="#"><i class='bx bxs-star'></i></a>
+                    
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
@@ -237,41 +262,55 @@
 <!-- Package 8 -->
 <div class="box">
             <div class="thum">
-                <img src="assets/images/Tailandia.jpg" alt="Bangkok">
+                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
             </div>
             <div class="dest-content">
-                <h4>Bangkok</h4>
+            <div class="calendar">
+                    <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
+                   
+                </div><h4 >Crowne Plaza Paris République</h4><br>
+                <p> Paris, França </p><br>
+                
                 <div class="stars">
-                    <a href="#"><i class='bx bxs-star'></i></a>
+                    
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
             </div>
         </div>
-        <!-- Package 9 -->
+       <!-- Package 9 -->
 <div class="box">
             <div class="thum">
-                <img src="assets/images/Tailandia.jpg" alt="Bangkok">
+                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
             </div>
             <div class="dest-content">
-                <h4>Bangkok</h4>
+            <div class="calendar">
+                    <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
+                   
+                </div><h4 >Crowne Plaza Paris République</h4><br>
+                <p> Paris, França </p><br>
+                
                 <div class="stars">
-                    <a href="#"><i class='bx bxs-star'></i></a>
+                    
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
             </div>
         </div>
-        <!-- Package 10 -->
-        <div class="box">
+       <!-- Package 10 -->
+<div class="box">
             <div class="thum">
-                <img src="assets/images/Viena.jpg" alt="Vienna">
+                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
             </div>
             <div class="dest-content">
-                <h4>Vienna</h4>
+            <div class="calendar">
+                    <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
+                   
+                </div><h4 >Crowne Plaza Paris République</h4><br>
+                <p> Paris, França </p><br>
+                
                 <div class="stars">
-                    <a href="#"><i class='bx bxs-star'></i></a>
-                    <a href="#"><i class='bx bxs-star'></i></a>
+                    
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
