@@ -1,3 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BestWay</title>
+    <link rel="stylesheet" type="text/css" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* Estilos para garantir a estrutura da página */
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        /* Conteúdo principal */
+        .message-container {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        input[type="button"] {
+            padding: 10px 20px;
+            background-color: #6495ed;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="button"]:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilo do footer fixo na parte inferior */
+        footer {
+            width: 100%;
+            background-color: #6495ed;
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            bottom: 0;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 0;
+            color: white;
+        }
+    </style>
+</head>
+
+<header>
+    <a href="/SiteViagens/index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
+    <ul class="navbar">
+        <li><a href="/SiteViagens/index.html#home" style="color: black;">Hospedagem</a></li>
+        <li><a href="#package" style="color: black;">Passagens</a></li>
+        <li><a href="/SiteViagens/public/tours/tours.php" style="color: black;">Passeios</a></li>
+        <li><a href="#contact" style="color: black;">Pacotes</a></li>
+        <li><a href="public/login.php" style="color: black;"><i class='bx bx-user'></i></a></li>
+        <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a></li>
+    </ul>
+</header>
+<br><br><br><br><br><br><br><br><br>
+<body>
 <?php
 include "../../config/valida.php";
 include "../../config/liga_bd.php";
@@ -6,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_user = $_SESSION['id']; // Assumindo que o ID do usuário está armazenado na sessão
     $id_artigo = $_POST['id_artigo']; 
     $tipo_item = isset($_POST['tipo_item']) ? $_POST['tipo_item'] : 'atividade'; // Verifica se o tipo_item está definido
-    $quantidade = 1; // Você pode permitir que o usuário escolha a quantidade
+    $quantidade = 1; // Quantidade fixa, pode ser alterada se desejado
     $return_url = $_POST['return_url']; // URL da página anterior
 
     // Verifica se o item já está no carrinho
@@ -16,11 +98,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $resultado = $stmt->get_result();
 
     if ($resultado->num_rows > 0) {
-        // Se o item já está no carrinho, atualiza a quantidade
+        // Atualiza a quantidade se o item já está no carrinho
         $stmt = $ligacao->prepare("UPDATE t_carrinho SET quantidade = quantidade + ? WHERE id_user = ? AND id_artigo = ? AND tipo_item = ?");
         $stmt->bind_param("iiis", $quantidade, $id_user, $id_artigo, $tipo_item);
     } else {
-        // Se o item não está no carrinho, insere um novo registro
+        // Insere um novo registro se o item não está no carrinho
         $stmt = $ligacao->prepare("INSERT INTO t_carrinho (id_user, id_artigo, tipo_item, quantidade) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("iisi", $id_user, $id_artigo, $tipo_item, $quantidade);
     }
@@ -37,21 +119,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $linha = $resultado->fetch_assoc();
         $_SESSION['total_carrinho'] = $linha['total'];
 
-        // Exibe mensagem de sucesso e redireciona conforme a escolha do usuário
-        echo "<script>
-                if (confirm('Item adicionado ao carrinho com sucesso. Deseja ir para o carrinho?')) {
-                    window.location.href = 'carrinho.php'; // Substitua pelo caminho correto para o carrinho
-                } else {
-                    setTimeout(function() {
-                        window.location.href = '$return_url';
-                    }, 1000);
-                }
-              </script>";
+        // Exibe a mensagem de sucesso e redireciona
+        echo "<div class='message-container'>
+                <h2>Item adicionado ao carrinho com sucesso!</h2>
+                <input type='button' value='Ir para o Carrinho' onclick='window.location.href=\"carrinho.php\"'>
+                <input type='button' value='Continuar Comprando' onclick='setTimeout(function(){window.location.href=\"$return_url\"}, 1000);'>
+              </div>";
     } else {
-        echo "Erro ao adicionar item ao carrinho: " . $stmt->error;
+        echo "<h2>Erro ao adicionar item ao carrinho: " . $stmt->error . "</h2>";
     }
 
     $stmt->close();
     $ligacao->close();
 }
 ?>
+
+</body>
+
+<!-- Footer fixo -->
+<footer>
+    <p>© 2024 BestWay. Todos os direitos reservados.</p>
+</footer>
+
+</html>
