@@ -20,15 +20,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (in_array($_FILES['ficheiro']['type'], $allowed_types) && $_FILES['ficheiro']['size'] <= $max_size) {
             $fotoNova = $_FILES['ficheiro']['name'];
-            $destino = '../assets/images/pics/' . $fotoNova;
+            $destino = '../../assets/images/pics/' . $fotoNova;
 
-            if (!is_dir('../assets/images/pics')) {
-                mkdir('../assets/images/pics', 0777, true);
+            if (!is_dir('../../assets/images/pics')) {
+                mkdir('../../assets/images/pics', 0777, true);
             }
 
             if (move_uploaded_file($_FILES['ficheiro']['tmp_name'], $destino)) {
                 if ($fotoAntiga && file_exists('../assets/images/pics/' . $fotoAntiga)) {
-                    unlink('../assets/images/pics/' . $fotoAntiga);
+                    unlink('../../assets/images/pics/' . $fotoAntiga);
                 }
             } else {
                 echo "Erro ao fazer upload da imagem!";
@@ -170,11 +170,14 @@ mysqli_close($ligacao);
                 <div class="col-md-3 p-3 bg-light rounded-left menu-container">
                     <nav class="menu">
                         <a class="menu-item" href="#" onclick="showContent('profile');"><i
-                        class="bi bi-person-circle"></i> Editar Perfil</a>
+                                class="bi bi-person-circle"></i> Editar Perfil</a>
                         <a class="menu-item" href="../../index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
-                        <a class="menu-item" href="vender_tours.php" onclick="showContent('vender-tours');"><i class="bi bi-bag"></i> Vender Tours</a>
-                        <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Gestão de Rervas</a>
-                        <a class="menu-item" href="gestao_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de Tours</a>
+                        <a class="menu-item" href="vender_tours.php" onclick="showContent('vender-tours');"><i
+                                class="bi bi-bag"></i> Vender Tours</a>
+                        <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Gestão de
+                            Rervas</a>
+                        <a class="menu-item" href="gestao_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de
+                            Tours</a>
                         <a class="menu-item" href="#chat"><i class="bi bi-chat-dots"></i> Chat</a>
                         <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
@@ -186,7 +189,7 @@ mysqli_close($ligacao);
                             <input type="hidden" name="id" value="<?php echo htmlspecialchars($linha['id']); ?>">
 
                             <div class="media align-items-center mb-3">
-                                <img src="<?php echo $linha['foto'] ? '../assets/images/pics/' . htmlspecialchars($linha['foto']) : 'https://bootdey.com/img/Content/avatar/avatar1.png'; ?>"
+                                <img src="<?php echo $linha['foto'] ? '../../assets/images/pics/' . htmlspecialchars($linha['foto']) : 'https://bootdey.com/img/Content/avatar/avatar1.png'; ?>"
                                     alt="avatar" class="rounded-circle mr-3" style="width: 80px;">
                                 <div class="media-body">
                                     <label class="btn btn-outline-primary rounded-pill">
