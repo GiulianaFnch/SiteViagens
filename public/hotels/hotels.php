@@ -63,7 +63,7 @@
         <div class="row-items">
             <div class="container-box">
                 <div class="conteiner-img">
-                    <img src="assets/images/aviaoicon.png">
+                    <img src="SiteViagens/public/hotels/imagens/hotel.jpg">
                 </div>
                 <h4> Apartamentos </h4>
                 
