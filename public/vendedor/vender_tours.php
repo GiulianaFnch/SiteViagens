@@ -16,6 +16,7 @@ include '../../config/liga_bd.php';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
+    <br><br>
     <style>
 
         body {
@@ -91,7 +92,6 @@ include '../../config/liga_bd.php';
 
         .menu-item:active {
             transform: scale(0.98);
-            /* Efeito de clique estilo iOS */
         }
 
         .settings-header {
@@ -149,22 +149,75 @@ include '../../config/liga_bd.php';
             transition: transform 0.3s ease;
         }
 
-        /* Responsividade */
-        @media (max-width: 768px) {
-            .menu-container {
-                border-right: none;
-                border-bottom: 1px solid #e0e0e0;
-            }
+        input[type="text"], 
+input[type="date"], 
+input[type="file"], 
+select, 
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
 
-            .col-md-3 {
-                width: 100%;
-                padding: 0;
-            }
+input[type="text"]:focus, 
+input[type="date"]:focus, 
+input[type="file"]:focus, 
+select:focus, 
+textarea:focus {
+    border-color: #007AFF;
+    box-shadow: 0 0 8px rgba(0, 122, 255, 0.3);
+    outline: none;
+}
 
-            .settings-container {
-                margin: 10px;
-            }
-        }
+textarea {
+    resize: none;
+    height: 100px;
+}
+
+input[type="submit"] {
+    width: auto; 
+    background-color: #007AFF;
+    color: white;
+    padding: 10px 20px; 
+    margin: 8px 0;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px; 
+    font-weight: 600;
+    transition: background-color 0.3s ease-in-out;
+}
+
+input[type="submit"]:hover {
+    background-color: #005bb5;
+}
+
+
+
+select option {
+    padding: 10px;
+}
+
+/* Adicionando espaço e estilo ao formulário */
+form {
+    margin-top: 20px;
+}
+
+label {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+    color: #333;
+}
     </style>
 
     <script>
@@ -242,26 +295,41 @@ include '../../config/liga_bd.php';
                         <input type="hidden" name="valor_cat" value="<?php echo $categoria; ?>" id="valor_cat" required>
                         <input type="hidden" name="valor_subcat" value="" id="valor_subcat" required>
 
-                        Titulo: <input type="text" size="50" name="titulo" required><br /><br />
-                        Descrição:<br>
-                        <textarea cols="88" rows="5" name="descricao"></textarea><br /><br />
-                        Preço: <input type="text" size="18" name="preco" required><br /><br />
-                        Estado:
-                        <select name="estado">
+                        <label for="titulo">Título:</label>
+                        <input type="text" id="titulo" name="titulo" required>
+
+                        <label for="descricao">Descrição:</label>
+                        <textarea id="descricao" name="descricao"></textarea>
+
+                        <label for="preco">Preço:</label>
+                        <input type="text" id="preco" name="preco" required>
+
+                        <label for="estado">Estado:</label>
+                        <select id="estado" name="estado">
                             <option value="1">1 estrela</option>
                             <option value="2">2 estrelas</option>
                             <option value="3">3 estrelas</option>
                             <option value="4">4 estrelas</option>
                             <option value="5">5 estrelas</option>
-                        </select><br /><br />
+                        </select>
 
-                        Localização: <input type="text" name="localizacao" required><br /><br />
-                        Data de Início: <input type="date" name="data_inicio" required><br /><br />
-                        Data de Fim: <input type="date" name="data_fim" required><br /><br />
+                        <label for="localizacao">Localização:</label>
+                        <input type="text" id="localizacao" name="localizacao" required>
 
-                        Foto 1: <input type="file" name="ficheiro1"><br><br>
-                        Foto 2: <input type="file" name="ficheiro2"><br><br>
-                        Foto 3: <input type="file" name="ficheiro3"><br><br>
+                        <label for="data_inicio">Data de Início:</label>
+                        <input type="date" id="data_inicio" name="data_inicio" required>
+
+                        <label for="data_fim">Data de Fim:</label>
+                        <input type="date" id="data_fim" name="data_fim" required>
+
+                        <label for="ficheiro1">Foto 1:</label>
+                        <input type="file" id="ficheiro1" name="ficheiro1">
+
+                        <label for="ficheiro2">Foto 2:</label>
+                        <input type="file" id="ficheiro2" name="ficheiro2">
+
+                        <label for="ficheiro3">Foto 3:</label>
+                        <input type="file" id="ficheiro3" name="ficheiro3">
 
                         <input type="submit" value="Vender">
                     </form>
