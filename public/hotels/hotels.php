@@ -55,57 +55,61 @@
 </section>
 
     <!--container-->
-    <section class="container">
+    <section class="container-hotel">
         <div class="text">
-            <h2>Pesquisar por tipo de alojamento</h2>
+            <h2>Pesquisar por tipo </h2>
         </div>
 
         <div class="row-items">
-            <div class="container-box">
+            <div class="container-box-hotel">
                 <div class="conteiner-img">
-<<<<<<< Updated upstream
-                    <img src="imagens/apartamento.jpg">
-=======
-                    <img src="imagens/hotel.jpg">
->>>>>>> Stashed changes
+                    <img src="imagens/apartamento.jpg" style="width: 300px; height: auto;">
                 </div>
                 <h4> Apartamentos </h4>
                 
             </div>
-            <div class="container-box">
+            <div class="container-box-hotel">
                 <div class="conteiner-img">
-                    <img src="imagens/hotel.jpg">
+                    <img src="imagens/hotel.jpg"  style="width: 300px; height: auto;">
                 </div>
                 <h4>hotéis</h4>
                 
             </div>
 
-            <div class="container-box">
+            <div class="container-box-hotel">
                 <div class="conteiner-img">
-                    <img src="imagens/hostel.jpg">
+                    <img src="imagens/hostel.jpg" style="width: 300px; height: auto;">
                 </div>
                 <h4> Hostel</h4>
                 
             </div>
 
-          
-
-            <div class="container-box">
+            <div class="container-box-hotel">
                 <div class="conteiner-img">
-                    <img src="imagens/cabana.jpg">
+                    <img src="imagens/castelo.jpg" style="width: 300px; height: auto;">
+                     
+                </div>
+                <h4>Castelo</h4>
+               
+            </div>
+
+            <div class="container-box-hotel">
+                <div class="conteiner-img">
+                    <img src="imagens/cabana.jpg" style="width: 300px; height: auto;">
                      
                 </div>
                 <h4>Cabanas</h4>
                
             </div>
-            <div class="container-box">
+            <div class="container-box-hotel">
                 <div class="conteiner-img">
-                    <img src="imagens/resort.jpg">
+                    <img src="imagens/resort.jpg" style="width: 300px; height: auto;">
                      
                 </div>
                 <h4>Resorts</h4>
                
             </div>
+
 
 
         </div>
