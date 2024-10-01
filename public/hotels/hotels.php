@@ -70,7 +70,7 @@
             </div>
             <div class="container-box">
                 <div class="conteiner-img">
-                    <img src="images/hotel.jpg">
+                    <img src="imagens/hotel.jpg">
                 </div>
                 <h4>hotéis</h4>
                 
@@ -78,7 +78,7 @@
 
             <div class="container-box">
                 <div class="conteiner-img">
-                    <img src="images/hostel.jpg">
+                    <img src="imagens/hostel.jpg">
                 </div>
                 <h4> Hostel</h4>
                 
@@ -88,7 +88,7 @@
 
             <div class="container-box">
                 <div class="conteiner-img">
-                    <img src="images/cabana.jpg">
+                    <img src="imagens/cabana.jpg">
                      
                 </div>
                 <h4>Cabanas</h4>
@@ -96,7 +96,7 @@
             </div>
             <div class="container-box">
                 <div class="conteiner-img">
-                    <img src="images/resort.jpg">
+                    <img src="imagens/resort.jpg">
                      
                 </div>
                 <h4>Resorts</h4>
