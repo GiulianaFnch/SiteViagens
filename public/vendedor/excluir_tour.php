@@ -11,6 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("i", $id);
         if ($stmt->execute()) {
             echo "Sucesso";
+            header("refresh:1;url=gestao_tours.php");
+
         } else {
             echo "Erro";
         }

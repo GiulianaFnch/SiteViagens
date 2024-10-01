@@ -19,7 +19,7 @@ session_destroy();
     <h1>Logout - Best Way</h1>
     <h2>Sessão terminada com sucesso! Até à próxima</h2>
     <input type="button" value="Voltar ao início" onclick="window.open('../../index.html','_self')">
-    <?php header("refresh:3;url=../../index.html"); ?>
+    <?php header("refresh:3;url=/siteviagens/index.html"); ?>
 </body>
 
 </html>
