@@ -615,7 +615,10 @@ body {
   color: #ffd700;
   font-size: 25px;
 }
-
+.calendar i {
+  color: #e92005;
+  font-size: 25px;
+}
 .location h4 {
   font-size: 24px;
   font-weight: 600;
