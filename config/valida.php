@@ -34,5 +34,5 @@ if ($user['tipo_user'] == 1) {
 }
 
 $stmt->close();
-$ligacao->close();
+//$ligacao->close();
 ?>

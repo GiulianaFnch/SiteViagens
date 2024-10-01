@@ -5,15 +5,31 @@ include '../config/liga_bd.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = $_POST['id'];
 
-    // Atualizar o tipo_user para 1 (desativado)
-    $sql = "UPDATE t_user SET tipo_user = 1 WHERE id = ?";
+    // Verificar o estado atual do tipo_user
+    $sql = "SELECT tipo_user FROM t_user WHERE id = ?";
+    $stmt = $ligacao->prepare($sql);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->bind_result($tipo_user);
+    $stmt->fetch();
+    $stmt->close();
+
+    // Atualizar o tipo_user com base no estado atual
+    if ($tipo_user == 1) {
+        // Se o usuário estiver desativado, ativar (tipo_user = 0)
+        $sql = "UPDATE t_user SET tipo_user = 0 WHERE id = ?";
+    } else {
+        // Se o usuário estiver ativo, desativar (tipo_user = 1)
+        $sql = "UPDATE t_user SET tipo_user = 1 WHERE id = ?";
+    }
+
     $stmt = $ligacao->prepare($sql);
     $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {
-        echo "<script>alert('Usuário desativado com sucesso!'); window.location.href='index.php';</script>";
+        echo "<script>alert('Status do usuário atualizado com sucesso!'); window.location.href='index.php';</script>";
     } else {
-        echo "<script>alert('Erro ao desativar usuário.'); window.location.href='index.php';</script>";
+        echo "<script>alert('Erro ao atualizar status do usuário.'); window.location.href='index.php';</script>";
     }
 
     $stmt->close();
