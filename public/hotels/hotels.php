@@ -99,7 +99,7 @@
                     <img src="images/resort.jpg">
                      
                 </div>
-                <h4>Rsorts</h4>
+                <h4>Resorts</h4>
                
             </div>
 
