@@ -29,6 +29,12 @@ $linha = mysqli_fetch_array($resultado);
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
 
     <style>
+        
+        /* Header com fundo branco ao rolar */
+        header.scrolled {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f9f9f9;
@@ -166,7 +172,8 @@ $linha = mysqli_fetch_array($resultado);
         <li><a href="#package">Passagens</a></li>
         <li><a href="/SiteViagens/public/tours/tours.php">Passeios</a></li>
         <li><a href="#contact">Pacotes</a></li>
-        <li><a href="/SiteViagens/public/login.php">Fazer login</a></li>
+        <li><a href="public/login.php"><i class='bx bx-user'></i></a></li>
+            <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a></li>
     </ul>
 </header>
 <br><br><br><br><br>
@@ -404,6 +411,14 @@ $linha = mysqli_fetch_array($resultado);
 
     <!--link to js-->
     <script type="text/javascript" src="assets/js/script.js"></script>
+    <!-- Script para mudar a cor do header ao rolar a página -->
+    <script>
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            header.classList.toggle('scrolled', window.scrollY > 0);
+        });
+    </script>
+
 
 
 <!-- Script do Slick Carousel -->

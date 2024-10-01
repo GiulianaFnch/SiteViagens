@@ -18,6 +18,22 @@ include '../../config/liga_bd.php';
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;900&display=swap" rel="stylesheet">
 
     <style>
+        /* Header com fundo branco e letras pretas ao rolar */
+header.scrolled {
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Links e logo no header ficam pretos quando a classe 'scrolled' está ativa */
+header.scrolled a,
+header.scrolled .logo {
+    color: black;
+}
+
+header a, header .logo {
+    color: white; /* Cor branca para o estado normal (sem scroll) */
+}
+
         body {
             font-family: Arial, sans-serif;
         }
@@ -132,12 +148,13 @@ include '../../config/liga_bd.php';
     <header>
         <a href="/SiteViagens/" class="logo">BestWay</a>
         <div class="bx bx-menu" id="menu-icon"></div>
+
         <ul class="navbar">
             <li><a href="/SiteViagens/public/hotels/hotels.php">Hospedagem</a></li>
             <li><a href="#package">Passagens</a></li>
-            <li><a href="#package">Passeios</a></li>
+            <li><a href="/SiteViagens/public/tours/tours.php">Passeios</a></li>
             <li><a href="#contact">Pacotes</a></li>
-            <li><a href="/SiteViagens/public/login.php">Fazer login</a></li>
+            <li><a href="public/perfil.php"><i class='bx bx-user'></i></a></li>
             <li><a href="/SiteViagens/public/carrinho/carrinho.php"><i class='bx bx-cart'></i></a></li>
         </ul>
     </header>
@@ -324,6 +341,14 @@ include '../../config/liga_bd.php';
 
     <!--link to js-->
     <script type="text/javascript" src="assets/js/script.js"></script>
+    
+    <!-- Script para mudar a cor do header ao rolar a página -->
+    <script>
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            header.classList.toggle('scrolled', window.scrollY > 0);
+        });
+    </script>
 
 </body>
 

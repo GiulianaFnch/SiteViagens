@@ -152,9 +152,9 @@ $resultado = $stmt->get_result();
         <ul class="navbar">
             <li><a href="/SiteViagens/public/hotels/hotels.php" style="color: black;">Hospedagem</a></li>
             <li><a href="#package" style="color: black;">Passagens</a></li>
-            <li><a href="#package" style="color: black;">Passeios</a></li>
+            <li><a href="/SiteViagens/public/tours/tours.php" style="color: black;">Passeios</a></li>
             <li><a href="#contact" style="color: black;">Pacotes</a></li>
-            <li><a href="/SiteViagens/public/login.php" style="color: black;">Fazer login</a></li>
+            <li><a href="public/perfil.php" style="color: black;"><i class='bx bx-user'></i></a></li>
             <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a></li>
         </ul>
     </header>
