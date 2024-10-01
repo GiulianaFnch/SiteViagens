@@ -6,7 +6,7 @@ include '../../config/liga_bd.php';
 $id_user_logado = $_SESSION['id'];
 
 // Consulta para obter os artigos do usuário logado
-$sql = "SELECT titulo, descricao, preco, localizacao, data_inicio, data_fim, foto1, foto2, foto3 
+$sql = "SELECT id, titulo, descricao, preco, localizacao, data_inicio, data_fim, foto1, foto2, foto3 
         FROM t_artigo 
         WHERE id_user = ?";
 $stmt = $ligacao->prepare($sql);
@@ -18,16 +18,14 @@ $stmt->close();
 
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="utf-8">
     <title>Gestão Passeios</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
 
     <style>
         body {
@@ -54,7 +52,6 @@ $stmt->close();
 
         .navbar a {
             color: black;
-            /* Define a cor padrão dos links */
         }
 
         .card {
@@ -101,100 +98,51 @@ $stmt->close();
             font-weight: bold;
         }
 
-        .menu-item:active {
-            transform: scale(0.98);
-            /* Efeito de clique estilo iOS */
+        .container {
+            overflow: hidden;
         }
 
-        .settings-header {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #333;
+        .table-responsive {
+            overflow-x: auto;
         }
 
-        .settings-item {
+        .table {
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        .table th,
+        .table td {
+            word-wrap: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .btn-edit {
+            background-color: transparent;
+            color: #28a745;
+            border-radius: 50px;
+            margin-right: 5px;
+            background-color: transparent;
+            border: 3px solid #00d7c3;
+
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50px;
+            margin-right: 5px;
+        }
+        .action-btns {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px 0;
-            border-bottom: 1px solid #d1d1d6;
-            color: #333;
-            transition: background-color 0.3s ease;
-        }
-
-        .settings-item:hover {
-            background-color: #f0f0f5;
-            cursor: pointer;
-        }
-
-        .settings-item i {
-            font-size: 20px;
-            color: #007AFF;
-            margin-right: 15px;
-        }
-
-        .settings-item .item-label {
-            font-size: 17px;
-        }
-
-        .settings-item .item-right {
-            display: flex;
-            align-items: center;
-        }
-
-        .settings-item .item-right i {
-            color: #c7c7cc;
-        }
-
-        #form-atualizar-senha {
-            display: none;
-            transition: opacity 0.3s ease;
-        }
-
-        #voltar-icon {
-            display: none;
-            font-size: 24px;
-            color: #007AFF;
-            cursor: pointer;
-            margin-bottom: 15px;
-            transition: transform 0.3s ease;
-        }
-
-        /* Responsividade */
-        @media (max-width: 768px) {
-            .menu-container {
-                border-right: none;
-                border-bottom: 1px solid #e0e0e0;
-            }
-
-            .col-md-3 {
-                width: 100%;
-                padding: 0;
-            }
-
-            .settings-container {
-                margin: 10px;
-            }
+            gap: 10px;
         }
     </style>
-
-    <script>
-        function atualiza() {
-            var categoria = document.getElementById("categoria").value;
-            var subcategoria = document.getElementById("subcategoria").value;
-
-            document.getElementById("valor_cat").value = categoria;
-            document.getElementById("valor_subcat").value = subcategoria;
-        }
-        window.onload = atualiza; 
-    </script>
 </head>
 
 <body>
     <header>
         <a href="../index.html" style="font-size: 35px; font-weight: 600; color: black;">BestWay</a>
-        <div class="bx bx-menu" id="menu-icon"></div>
         <ul class="navbar">
             <li><a href="#home">Hospedagem</a></li>
             <li><a href="#package">Passagens</a></li>
@@ -213,7 +161,7 @@ $stmt->close();
                         <a class="menu-item" href="../vendedor/admin.php"><i class="bi bi-person-circle"></i> Editar perfil</a>
                         <a class="menu-item" href="../../../SiteViagens-main/index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
                         <a class="menu-item" href="vender_tours.php"><i class="bi bi-bag"></i> Vender Tours</a>
-                        <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Gestão de Rervas</a>
+                        <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Gestão de Reservas</a>
                         <a class="menu-item" href="gestao_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de Tours</a>
                         <a class="menu-item" href="#chat"><i class="bi bi-chat-dots"></i> Chat</a>
                         <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
@@ -222,22 +170,20 @@ $stmt->close();
 
                 <div class="col-md-9 p-4">
                     <h2>Gerenciar Passeios</h2>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Título</th>
-                                <th>Descrição</th>
-                                <th>Preço</th>
-                                <th>Localização</th>
-                                <th>Data Início</th>
-                                <th>Data Fim</th>
-                                <th>Foto 1</th>
-                                <th>Foto 2</th>
-                                <th>Foto 3</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Título</th>
+                                    <th>Descrição</th>
+                                    <th>Preço</th>
+                                    <th>Local</th>
+                                    <th>Início</th>
+                                    <th>Fim</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                             <?php while ($row = $result->fetch_assoc()): ?>
                             <tr>
                                 <td><?php echo htmlspecialchars($row['titulo']); ?></td>
@@ -246,20 +192,14 @@ $stmt->close();
                                 <td><?php echo htmlspecialchars($row['localizacao']); ?></td>
                                 <td><?php echo htmlspecialchars($row['data_inicio']); ?></td>
                                 <td><?php echo htmlspecialchars($row['data_fim']); ?></td>
-                                <td><?php echo htmlspecialchars($row['foto1']); ?></td>
-                                <td><?php echo htmlspecialchars($row['foto2']); ?></td>
-                                <td><?php echo htmlspecialchars($row['foto3']); ?></td>
-                                
-                            <td class="action-btns">
-                                <!-- Botão de Editar -->
+                                <td class="action-btns">
                                 <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#editModal" data-reserva-id="<?php echo $row['id']; ?>">
-                                        <i class="bi bi-pencil-square"></i> Editar
-                                    </button>
+    <i class="bi bi-pencil-square"></i> Editar
+</button>
 
-                                    <!-- Botão de Excluir -->
-                                    <button type="button" class="btn btn-delete" data-toggle="modal" data-target="#confirmDeleteModal" data-reserva-id="<?php echo $row['id']; ?>">
-                                        <i class="bi bi-trash"></i> Excluir
-                                    </button>
+<button type="button" class="btn btn-delete" data-toggle="modal" data-target="#confirmDeleteModal" data-reserva-id="<?php echo $row['id']; ?>">
+    <i class="bi bi-trash"></i> Excluir
+</button>
                                 </td>
                             </tr>
                             <?php endwhile; ?>
@@ -288,12 +228,15 @@ $stmt->close();
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <form id="deleteForm" method="post" action="reservas.php">
                         <input type="hidden" name="reserva_id" id="reservaId">
-                        <button type="submit" name="delete" class="btn btn-danger">Excluir</button>
+                        <button type="button" class="btn btn-delete" data-toggle="modal" data-target="#confirmDeleteModal" data-reserva-id="<?php echo $row['id']; ?>">
+                        <i class="bi bi-trash"></i> Excluir
+                    </button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- Modal de edição -->
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -307,50 +250,68 @@ $stmt->close();
                 </div>
                 <div class="modal-body">
                     <!-- Formulário de edição -->
-                    <form id="editForm" method="post" action="editar_reserva.php">
-                        <input type="hidden" name="reserva_id" id="editReservaId">
+                    <form id="editForm" method="post" action="editar_tour.php">
+    <input type="hidden" name="reserva_id" id="editReservaId">
 
-                        <div class="form-group">
+    <div class="form-group">
+        <label for="titulo">Título</label>
+        <input type="text" class="form-control" name="titulo" id="titulo" required>
+    </div>
 
+    <div class="form-group">
+        <label for="descricao">Descrição</label>
+        <input type="text" class="form-control" name="descricao" id="descricao" required>
+    </div>
 
+    <div class="form-group">
+        <label for="preco">Preço</label>
+        <input type="text" class="form-control" name="preco" id="preco" required>
+    </div>
 
+    <div class="form-group">
+        <label for="local">Local</label>
+        <input type="text" class="form-control" name="local" id="local" required>
+    </div>
 
-                            <label for="quantidade">Quantidade</label>
-                            <input type="number" class="form-control" name="quantidade" id="quantidade" required>
-                        </div>
+    <div class="form-group">
+        <label for="data_inicio">Data Início</label>
+        <input type="date" class="form-control" name="data_inicio" id="data_inicio" required>
+    </div>
 
-                        <button type="submit" name="edit" class="btn btn-success">Salvar Alterações</button>
-                    </form>
+    <div class="form-group">
+        <label for="data_fim">Data Fim</label>
+        <input type="date" class="form-control" name="data_fim" id="data_fim" required>
+    </div>
+
+    <button type="submit" name="edit" class="btn btn-success">Salvar Alterações</button>
+</form>
+
                 </div>
             </div>
         </div>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
     <script>
-        // Captura o clique no botão de excluir e configura o ID da reserva no modal de exclusão
-       // Configura o ID da reserva no modal de exclusão
-        $('#confirmDeleteModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var reservaId = button.data('reserva-id');
-            var modal = $(this);
-            modal.find('#reservaId').val(reservaId);
-        });
+       // Configura o ID do passeio no modal de exclusão
+$('#confirmDeleteModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var passeioId = button.data('reserva-id'); // Alterar para 'data-reserva-id'
+    var modal = $(this);
+    modal.find('#reservaId').val(passeioId); // Alterar para '#reservaId'
+});
 
-        // Captura o clique no botão de editar e configura o ID da reserva no modal de edição
-       
-        $('#editModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var reservaId = button.data('reserva-id');
-            var modal = $(this);
-            modal.find('#editReservaId').val(reservaId);
-        });
+// Configura o ID do passeio no modal de edição
+$('#editModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var passeioId = button.data('reserva-id'); // Alterar para 'data-reserva-id'
+    var modal = $(this);
+    modal.find('#editReservaId').val(passeioId); // Alterar para '#editReservaId'
+});
     </script>
-                    
-<br><br>
+
+    <br><br>
     <?php include '../../views/partials/footer.php' ?>
 </body>
-
 </html>

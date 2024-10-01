@@ -203,11 +203,6 @@ include '../../config/liga_bd.php';
                         <a class="menu-item" href="gestao_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de Tours</a>
                         <a class="menu-item" href="#chat"><i class="bi bi-chat-dots"></i> Chat</a>
                         <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
-
-
-
-
-
                     </nav>
                 </div>
 
