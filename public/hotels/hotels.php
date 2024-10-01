@@ -145,14 +145,14 @@
         <!-- Package 2 -->
 <div class="box">
             <div class="thum">
-                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
+                <img src="imagens/novayork.jpg" alt="The Ritz-Carlton, Central Park">
             </div>
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
                    
-                </div><h4 >Crowne Plaza Paris République</h4><br>
-                <p> Paris, França </p><br>
+                </div><h4 >The Ritz-Carlton, Central Park</h4><br>
+                <p> New York, EUA </p><br>
                 
                 <div class="stars">
                     
@@ -164,14 +164,14 @@
  <!-- Package 3 -->
 <div class="box">
             <div class="thum">
-                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
+                <img src="imagens/porto.jpg" alt="Torel Avantgarde">
             </div>
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
                    
-                </div><h4 >Crowne Plaza Paris République</h4><br>
-                <p> Paris, França </p><br>
+                </div><h4 >Torel Avantgarde</h4><br><br>
+                <p> Porto, Portugal </p><br>
                 
                 <div class="stars">
                     
@@ -184,14 +184,14 @@
 <!-- Package 4 -->
 <div class="box">
             <div class="thum">
-                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
+                <img src="imagens/seul.jpg" alt="Signiel Seoul">
             </div>
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
                    
-                </div><h4 >Crowne Plaza Paris République</h4><br>
-                <p> Paris, França </p><br>
+                </div><h4 >Signiel Seoul</h4><br>
+                <p>  Seul, Coreia do Sul  </p><br>
                 
                 <div class="stars">
                     
@@ -204,14 +204,14 @@
 <!-- Package 5 -->
 <div class="box">
             <div class="thum">
-                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
+                <img src="imagens/londres.jpg" alt="7 Four Seasons">
             </div>
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
                    
-                </div><h4 >Crowne Plaza Paris République</h4><br>
-                <p> Paris, França </p><br>
+                </div><h4 >7 Four Seasons</h4><br>
+                <p> Londres, Reino Unido </p><br>
                 
                 <div class="stars">
                     
@@ -224,14 +224,14 @@
 <!-- Package 6 -->
 <div class="box">
             <div class="thum">
-                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
+                <img src="imagens/Marrakech.jpg" alt="Pestana CR7 ">
             </div>
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
                    
-                </div><h4 >Crowne Plaza Paris République</h4><br>
-                <p> Paris, França </p><br>
+                </div><h4 >Pestana CR7</h4><br>
+                <p>  Marrakech, Marrocos</p><br>
                 
                 <div class="stars">
                     
@@ -243,14 +243,14 @@
 <!-- Package 7 -->
 <div class="box">
             <div class="thum">
-                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
+                <img src="imagens/mexico.jpg" alt="Majestic Elegance Costa Mujeres - All Inclusive">
             </div>
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
                    
-                </div><h4 >Crowne Plaza Paris République</h4><br>
-                <p> Paris, França </p><br>
+                </div><h4 >Majestic Elegance Costa Mujeres - All Inclusive</h4><br>
+                <p> Cancun, Mexico </p><br>
                 
                 <div class="stars">
                     
@@ -262,14 +262,14 @@
 <!-- Package 8 -->
 <div class="box">
             <div class="thum">
-                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
+                <img src="imagens/suica.jpg" alt="Hotel Walhalla">
             </div>
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
                    
-                </div><h4 >Crowne Plaza Paris République</h4><br>
-                <p> Paris, França </p><br>
+                </div><h4 >Hotel Walhalla</h4><br>
+                <p> Gallen, Suíça  </p><br>
                 
                 <div class="stars">
                     
