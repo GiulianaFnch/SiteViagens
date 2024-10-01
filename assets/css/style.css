@@ -458,7 +458,7 @@ header.sticky {
 
 .stars h4 {
   font-size: 1rem;
-  color: #0073ff;
+  color: #000000;
 }
 /* aqui acaba package-content */
 
@@ -522,7 +522,7 @@ body {
 .container-box-hotel h4 {
   margin: 15px 0;
   font-size: 1.25rem;
-  color: #555;
+  color: #000000;
 }
 /*ACABA CONTAINER HOTEL*/
 
@@ -533,6 +533,7 @@ body {
   border-radius: 4px;
   transition: all 1s ease 0s;
   cursor: pointer;
+ 
 }
 
 .container-img img {
@@ -550,11 +551,12 @@ body {
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 8px;
+  color: black; 
 }
 
 .container-box p {
   font-size: 15px;
-  color: var(--second-color);
+  color: black; /* Adiciona esta linha */
 }
 
 .container-box:hover {
@@ -587,6 +589,7 @@ body {
   transition: all 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
   will-change: filter;
   cursor: pointer;
+  color: black; 
 }
 
 .thum img {
@@ -610,6 +613,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding-top: 24px;
+  color: black;
 }
 
 .stars i {
