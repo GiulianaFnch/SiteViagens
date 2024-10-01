@@ -22,14 +22,16 @@ $stmt->close();
 <head>
     <meta charset="utf-8">
     <title>Gestão Passeios</title>
+    <link rel="stylesheet" href="../assets/css/styleperfil.css">
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
+<br><br><br>
 <style>
     body {
         margin-top: 100px;
+        font-family: 'Poppins', sans-serif;
     }
 
     header {
@@ -100,35 +102,45 @@ $stmt->close();
 
     .container {
         overflow: hidden;
+        
+        padding: 0 15px;
     }
 
     .table-responsive {
-        overflow-x: auto;
-    }
+    overflow-x: auto; 
+    -webkit-overflow-scrolling: touch; 
+    max-width: 100%; 
+}
 
     .table {
         width: 100%;
         table-layout: fixed;
     }
 
+
+
     .table th,
     .table td {
         word-wrap: break-word;
         overflow: hidden;
-        text-overflow: ellipsis;
+        text-overflow: ellipsis; 
+        white-space: nowrap;
     }
 
     .btn-edit {
         border: 3px solid #00d7c3;
+        border-radius: 20px;
     }
 
     .btn-delete {
         background-color: #dc3545;
+        border-radius: 20px;
     }
 
     .action-btns {
         display: flex;
         gap: 10px;
+        flex-wrap: wrap;
     }
 </style>
 
@@ -147,10 +159,13 @@ $stmt->close();
         <div class="row">
             <div class="col-md-3 menu-container">
                 <div class="menu">
-                    <a class="menu-item" href="vender_tours.php"><i class="bi bi-bag"></i> Vender Tours</a>
-                    <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Gestão de Reservas</a>
-                    <a class="menu-item active" href="gestao_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de Tours</a>
-                    <a class="menu-item" href="#chat"><i class="bi bi-chat-dots"></i> Chat</a>
+                        <a class="menu-item" href="admin.php" onclick="showContent('profile');"><i class="bi bi-person-circle"></i> Editar Perfil</a>
+                        <a class="menu-item" href="../../index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
+                        <a class="menu-item" href="vender_tours.php" onclick="showContent('vender-tours');"><i class="bi bi-bag"></i> Vender Tours</a>
+                        <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Gestão de Reservas</a>
+                        <a class="menu-item" href="gestao_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de Tours</a>      
+                        <a class="menu-item" href="#chat"><i class="bi bi-chat-dots"></i> Chat</a>
+                        <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
                 </div>
             </div>
 
