@@ -81,7 +81,7 @@ if (!isset($_SESSION['id']) || !isset($_SESSION['nick'])) {
         <div class="message-container">
             <h1>Erro no Acesso</h1>
             <h2>Você precisa estar logado para acessar esta página.</h2>
-            <input type="button" value="Voltar ao Início" onclick="window.location.href='<?php echo BASE_URL; ?>index.html'">
+            <input type="button" value="Fazer login" onclick="window.location.href='<?php echo BASE_URL; ?>public/login.php'">
         </div>
 
         <footer>
