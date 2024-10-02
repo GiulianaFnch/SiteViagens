@@ -27,11 +27,19 @@ $resultado = $stmt->get_result();
 // Verificando se há mensagens
 if ($resultado && mysqli_num_rows($resultado) > 0) {
     while ($linha = mysqli_fetch_assoc($resultado)) {
-        echo "<div class='message'><img src='../../assets/images/pics/" . htmlspecialchars($linha['foto']) . "' class='user-icon-message' alt='" . htmlspecialchars($linha['nick']) . "'>
-              <b>" . htmlspecialchars($linha['nick']) . ":</b> " . htmlspecialchars($linha['comentario']) . "</div>";
+         // Verificar se a mensagem é do usuário logado ou do destinatário
+         $isSender = ($linha['nick'] === $_SESSION['nick']); // Assumindo que 'nick' está salvo na sessão
+
+          // Adicionar classes diferentes dependendo de quem enviou a mensagem
+        $messageClass = $isSender ? 'sent-message' : 'received-message';
+
+
+         echo "<div class='message $messageClass'>
+                <img src='../../assets/images/pics/" . htmlspecialchars($linha['foto']) . "' class='user-icon-message' alt='" . htmlspecialchars($linha['nick']) . "'>
+                <b>" . htmlspecialchars($linha['nick']) . ":</b> " . htmlspecialchars($linha['comentario']) . "</div>";
     }
 } else {
-    echo "<br><br><br>";
+    echo "";
 }
 
 // Fechando a declaração
