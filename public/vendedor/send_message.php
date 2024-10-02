@@ -13,6 +13,6 @@ $sql = "INSERT INTO t_art_comen (comentario, id_remetente, id_destinatario)
 mysqli_query($ligacao, $sql);
 
 // Exibindo as mensagens atualizadas
-include 'get_chat2.php';
+include 'get_chat.php';
 ?>
 

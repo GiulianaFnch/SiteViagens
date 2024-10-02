@@ -1,8 +1,14 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+session_start(); 
+}
+
 
 // Defina a URL base do seu site
+if (!defined('BASE_URL')) {
 define('BASE_URL', 'http://localhost/siteviagens/');
+}
+
 
 // Validação das variáveis de sessão
 if (!isset($_SESSION['id']) || !isset($_SESSION['nick'])) {

@@ -178,7 +178,7 @@ mysqli_close($ligacao);
                             Rervas</a>
                         <a class="menu-item" href="gestao_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de
                             Tours</a>
-                        <a class="menu-item" href="#chat"><i class="bi bi-chat-dots"></i> Chat</a>
+                        <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
                         <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
                 </div>
@@ -228,7 +228,6 @@ mysqli_close($ligacao);
 
                             <div class="text-right mt-3">
                                 <input type="submit" class="btn btn-primary rounded-pill" value="Alterar">
-                                <a href="index.html" class="btn btn-light rounded-pill">Voltar ao menu</a>
                             </div>
                         </form>
                     </div>

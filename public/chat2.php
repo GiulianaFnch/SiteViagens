@@ -2,6 +2,7 @@
 include '../config/valida.php'; // Validação do usuário logado
 include '../config/liga_bd.php'; // Conexão com o banco de dados
 
+
 $id_user = $_SESSION['id']; // ID do usuário logado
 
 // Buscar todos os usuários
@@ -28,8 +29,8 @@ while ($linha = mysqli_fetch_assoc($resultado)) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
     <style>
-
 header{
         position: fixed;
         top: 0;
@@ -264,7 +265,7 @@ header{
         <div class="row no-gutters">
             <div class="col-md-3 p-3 bg-light rounded-left menu-container">
                 <nav class="menu">
-                    <a class="menu-item" href="perfil.php#account-general"><i class="bi bi-person-circle"></i> Editar perfil</a>
+                    <a class="menu-item" href="perfil.php"><i class="bi bi-person-circle"></i> Editar perfil</a>
                     <a class="menu-item" href="../index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
                     <a class="menu-item" href="reservas.php"><i class="bi bi-clipboard2"></i> Reservas</a>
                     <a class="menu-item" href="favoritos.php"><i class="bi bi-heart"></i> Favoritos</a>
@@ -300,9 +301,8 @@ header{
     <span onclick="insertEmoji('😊')">😊</span>
     <span onclick="insertEmoji('🏳️‍🌈')">🏳️‍🌈</span>
     <span onclick="insertEmoji('👍')">👍</span>
-</div>
-
-</div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

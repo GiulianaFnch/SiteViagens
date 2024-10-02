@@ -126,12 +126,12 @@ $result = $stmt->get_result();
             <div class="row no-gutters">
                 <div class="col-md-3 p-3 bg-light rounded-left menu-container">
                     <nav class="menu">
-                        <a class="menu-item" href="#" onclick="showContent('profile');"><i class="bi bi-person-circle"></i> Editar Perfil</a>
+                        <a class="menu-item" href="admin.php" onclick="showContent('profile');"><i class="bi bi-person-circle"></i> Editar Perfil</a>
                         <a class="menu-item" href="../../index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
                         <a class="menu-item" href="vender_tours.php" onclick="showContent('vender-tours');"><i class="bi bi-bag"></i> Vender Tours</a>
                         <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Gestão de Reservas</a>
                         <a class="menu-item" href="gestao_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de Tours</a>      
-                        <a class="menu-item" href="#chat"><i class="bi bi-chat-dots"></i> Chat</a>
+                        <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
                         <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
                 </div>

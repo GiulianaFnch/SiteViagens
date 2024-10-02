@@ -29,20 +29,111 @@ while ($linha = mysqli_fetch_assoc($resultado)) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* Estilos ajustados para o chat */
+header{
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100%;
+        z-index:100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 30px 18%;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+    display: flex;
+}
+
+.navbar a {
+    color: black; 
+
+} .menu-container {
+            background-color: #f8f9fa;
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-item {
+            color: #007AFF;
+            padding: 10px;
+            margin: 5px 0;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        .menu-item:hover {
+            background-color: #f0f0f0;
+            transform: translateX(8px);
+        }
+
+        .menu-item i {
+            margin-right: 8px;
+            font-size: 20px;
+        }
+
+        .menu-item.active {
+            background-color: #dfe4ea;
+            font-weight: bold;
+        }
+
+        .menu-item:active {
+            transform: scale(0.98);
+       
+        }
+
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .card .tab-content {
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .tab-pane {
+            padding: 20px;
+        }
+
+        .navbar {
+            display: flex;
+        }
+
+        .navbar a {
+            color: var(--bg-color);
+            font-size: var(--p-font);
+            font-weight: 500;
+            padding: 10px 22px;
+            border-radius: 4px;
+           
+        }
+
+        .navbar a:hover {
+            background: var(--bg-color);
+            color: var(--text-color);
+            box-shadow: 5px 10px 30px rgb(85 85 85 / 20%);
+            border-radius: 4px;
+        }
 
         body {
     font-family: 'Poppins', sans-serif;
-    background-color: #f0f0f5; /* Fundo mais claro */
-    color: #333; /* Cor do texto mais suave */
+
+   
 }
 
 #chat-container {
-    background-color: #ffffff; /* Fundo branco para o chat */
+   
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
 
         #user-list {
             width: 30%;
@@ -116,10 +207,6 @@ while ($linha = mysqli_fetch_assoc($resultado)) {
             cursor: pointer;
         }
 
-
-      
-
-
         .message {
     padding: 5px;
     margin-bottom: 10px;
@@ -131,12 +218,11 @@ while ($linha = mysqli_fetch_assoc($resultado)) {
 }
 
 .user-icon-message {
-    width: 30px; /* Ajuste o tamanho conforme necessário */
-    height: 30px; /* Ajuste o tamanho conforme necessário */
+    width: 30px; 
+    height: 30px; 
     border-radius: 50%;
     margin-right: 10px;
 }
-
 
 #emoji-panel {
     display: flex;
@@ -145,19 +231,47 @@ while ($linha = mysqli_fetch_assoc($resultado)) {
     border: 1px solid #ccc;
     border-radius: 10px;
     padding: 10px;
-    position: absolute; /* Para posicionar o painel */
-    z-index: 100; /* Para garantir que o painel fique acima */
+    position: absolute; 
+    z-index: 100; 
 }
 
 #emoji-panel span {
-    font-size: 20px; /* Ajuste o tamanho dos emojis */
+    font-size: 20px; 
     cursor: pointer;
     margin-right: 10px;
 }
     </style>
 </head>
-
 <body>
+
+<header>
+    <a href="../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
+    <ul class="navbar">
+        <li><a href="#home" style="color: black;" >Hospedagem</a></li>
+        <li><a href="#package" style="color: black;" >Passagens</a></li>
+        <li><a href="#destination" style="color: black; ">Tours</a></li>
+        <li><a href="#contact" style="color: black;">Pacotes</a></li>
+    </ul>
+</header>
+
+<br><br><br><br><br><br>
+
+<div class="container light-style flex-grow-1 container-p-y">
+    <div class="card shadow-sm rounded-lg">
+        <div class="row no-gutters">
+            <div class="col-md-3 p-3 bg-light rounded-left menu-container">
+                <nav class="menu">
+                    <a class="menu-item" href="admin.php"><i class="bi bi-person-circle"></i> Editar perfil</a>
+                    <a class="menu-item" href="../../../SiteViagens-main/index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
+                    <a class="menu-item" href="vender_tours.php"><i class="bi bi-bag"></i> Vender Tours</a>
+                    <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Gestão de Rervas</a>
+                    <a class="menu-item" href="gestao_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de Tours</a>
+                    <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
+                    <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
+                </nav>
+            </div>
+
+            <div class="col-md-9 p-4">
     <div id="chat-container">
         <div id="user-list">
             <h2>Conversas</h2>
@@ -184,6 +298,10 @@ while ($linha = mysqli_fetch_assoc($resultado)) {
     <span onclick="insertEmoji('😊')">😊</span>
     <span onclick="insertEmoji('🏳️‍🌈')">🏳️‍🌈</span>
     <span onclick="insertEmoji('👍')">👍</span>
+                 </div>
+            </div>
+        </div>
+    </div>
 </div>
 
     <script>
@@ -251,6 +369,10 @@ function insertEmoji(emoji) {
 }
     </script>
 
+<br>
+
+<!--footer-->
+<?php include '../../views/partials/footer.php' ?>
     
 </body>
 </html>
