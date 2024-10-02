@@ -142,6 +142,8 @@ mysqli_close($ligacao);
         .tab-pane {
             padding: 20px;
         }
+
+    
     </style>
 </head>
 
@@ -164,11 +166,13 @@ mysqli_close($ligacao);
 
     <br><br><br><br><br><br><br>
 
+
     <div class="container light-style flex-grow-1 container-p-y">
         <div class="card shadow-sm rounded-lg">
             <div class="row no-gutters">
                 <div class="col-md-3 p-3 bg-light rounded-left menu-container">
                     <nav class="menu">
+                        <a class="menu-item" style="color: #3A506B"><strong>Painel de Vendedor</strong></a>
                         <a class="menu-item" href="#" onclick="showContent('profile');"><i
                                 class="bi bi-person-circle"></i> Editar Perfil</a>
                         <a class="menu-item" href="../../index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
