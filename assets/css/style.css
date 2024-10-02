@@ -436,13 +436,15 @@ header.sticky {
 }
 
 .dest-content {
-  padding: 1rem;
+  padding: 2rem;
 }
 
 .dest-content h3 {
   font-size: 1.1rem;
-  color: gray;
-  margin-bottom: 0.5rem;
+  color: rgb(0, 0, 0);
+  margin-bottom: 1.0rem;
+  margin-left: 0.2rem;
+  margin-right: 0.2rem;
 }
 
 .dest-content h5 {
@@ -451,9 +453,16 @@ header.sticky {
   color: #333;
 }
 
+.dest-content p {
+  font-size: 0.9rem;
+  margin-bottom: 2.0rem;
+  color: #333;
+}
+
 .stars i {
   color: #ffd700;
-  margin-right: 0.2rem;
+  margin-right: 1.2rem;
+ font-size: 5px; 
 }
 .calendar i {
   color: #ff0000;
