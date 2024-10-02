@@ -31,7 +31,7 @@ if ($resultado && mysqli_num_rows($resultado) > 0) {
               <b>" . htmlspecialchars($linha['nick']) . ":</b> " . htmlspecialchars($linha['comentario']) . "</div>";
     }
 } else {
-    echo "<div class='message'>Nenhuma mensagem encontrada.</div>";
+    echo "<br><br><br>";
 }
 
 // Fechando a declaração

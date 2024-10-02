@@ -249,6 +249,7 @@ label {
             <div class="row no-gutters">
                 <div class="col-md-3 p-3 bg-light rounded-left menu-container">
                     <nav class="menu">
+                        <a class="menu-item" style="color: #3A506B"><strong>Painel de Vendedor</strong></a>
                         <a class="menu-item" href="../vendedor/admin.php"><i class="bi bi-person-circle"></i> Editar perfil</a>
                         <a class="menu-item" href="../../../SiteViagens-main/index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
                         <a class="menu-item" href="vender_tours.php"><i class="bi bi-bag"></i> Vender Tours</a>

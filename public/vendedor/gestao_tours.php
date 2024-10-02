@@ -159,6 +159,7 @@ $stmt->close();
         <div class="row">
             <div class="col-md-3 menu-container">
                 <div class="menu">
+                        <a class="menu-item" style="color: #3A506B"><strong>Painel de Vendedor</strong></a>
                         <a class="menu-item" href="admin.php" onclick="showContent('profile');"><i class="bi bi-person-circle"></i> Editar Perfil</a>
                         <a class="menu-item" href="../../index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
                         <a class="menu-item" href="vender_tours.php" onclick="showContent('vender-tours');"><i class="bi bi-bag"></i> Vender Tours</a>
