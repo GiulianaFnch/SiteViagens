@@ -131,12 +131,13 @@
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
-                   
-                </div><h4 >Crowne Plaza Paris République</h4><br>
-                <p> Paris, França </p><br>
+                        <h3 >Crowne Plaza Paris République</h3>
+                </div>
+                <p> Paris, França </p>
                 
                 <div class="stars">
                     
+                    <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
@@ -151,12 +152,14 @@
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
-                   
-                </div><h4 >The Ritz-Carlton, Central Park</h4><br>
-                <p> New York, EUA </p><br>
+                        <h3 >The Ritz-Carlton, Central Park</h3>
+                </div>
+                <p> New York, EUA </p>
                 
                 <div class="stars">
                     
+                    
+                    <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
@@ -170,12 +173,13 @@
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
-                   
-                </div><h4 >Torel Avantgarde</h4><br><br>
-                <p> Porto, Portugal </p><br>
+                        <h3 >Torel Avantgarde</h3>
+                </div>
+                <p> Porto, Portugal </p>
                 
                 <div class="stars">
                     
+                    <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
@@ -190,14 +194,16 @@
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
-                   
-                </div><h4 >Signiel Seoul</h4><br>
-                <p>  Seul, Coreia do Sul  </p><br>
+                        <h3>Signiel Seoul</h3>
+                </div>
+                <p>  Seul, Coreia do Sul  </p>
                 
                 <div class="stars">
                     
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    
                 </div>
             </div>
         </div>
@@ -210,14 +216,16 @@
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
-                   
-                </div><h4 >7 Four Seasons</h4><br>
-                <p> Londres, Reino Unido </p><br>
+                        <h3>7 Four Seasons</h3>
+                </div>
+                <p> Londres, Reino Unido </p>
                 
                 <div class="stars">
                     
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                   
                 </div>
             </div>
         </div>
@@ -230,12 +238,13 @@
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
-                   
-                </div><h4 >Pestana CR7</h4><br>
-                <p>  Marrakech, Marrocos</p><br>
+                        <h3>Pestana CR7</h3>
+                </div>
+                <p>  Marrakech, Marrocos</p>
                 
                 <div class="stars">
                     
+                    <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
@@ -249,14 +258,16 @@
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
-                   
-                </div><h4 >Majestic Elegance Costa Mujeres - All Inclusive</h4><br>
-                <p> Cancun, Mexico </p><br>
+                        <h3>Majestic Elegance Costa Mujeres</h3>
+                </div>
+                <p> Cancun, Mexico </p>
                 
                 <div class="stars">
                     
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                    
                 </div>
             </div>
         </div>
@@ -267,13 +278,13 @@
             </div>
             <div class="dest-content">
             <div class="calendar">
-                    <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
-                   
-                </div><h4 >Hotel Walhalla</h4><br>
-                <p> Gallen, Suíça  </p><br>
+                    <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i><br>
+                        <h3>Hotel Walhalla</h3>
+                </div>
+                <p> Gallen, Suíça      </p><br>
                 
                 <div class="stars">
-                    
+                    <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
@@ -282,36 +293,40 @@
        <!-- Package 9 -->
 <div class="box">
             <div class="thum">
-                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
+                <img src="imagens/maldivas.jpg" alt="Kandima Maldives">
             </div>
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
-                   
-                </div><h4 >Crowne Plaza Paris République</h4><br>
-                <p> Paris, França </p><br>
+                        <h3>Kandima Maldives</h3>
+                </div>
+                <p> Kudahuvadhoo, Maldivas </p>
                 
                 <div class="stars">
                     
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
+                    <a href="#"><i class='bx bxs-star'></i></a>
+                   
                 </div>
             </div>
         </div>
        <!-- Package 10 -->
 <div class="box">
             <div class="thum">
-                <img src="imagens/paris.jpg" alt="Crowne Plaza Paris République">
+                <img src="imagens/turquia.jpg" alt="Pera Palace Hotel">
             </div>
             <div class="dest-content">
             <div class="calendar">
                     <a href="#"><i class='bx bxs-calendar-star bx-tada bx-rotate-90' ></i>
-                   
-                </div><h4 >Crowne Plaza Paris République</h4><br>
-                <p> Paris, França </p><br>
+                        <h3>Pera Palace Hotel</h3>
+                        <p> Istambu, Turquia </p>
+                </div>
+                
                 
                 <div class="stars">
                     
+                    <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                     <a href="#"><i class='bx bxs-star'></i></a>
                 </div>
