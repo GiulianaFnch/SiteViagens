@@ -36,7 +36,7 @@
     <!--Home section-->
 <section class="home-hotels" id="home">
     <div class="home-text">
-        <h1>Seu próximo cantinho para relaxar está a um clique!</h1>
+        <h3>Os melhores pacotes, estão a um click.</h3>
         
         <!-- Barra de pesquisa de hotéis -->
         <form class="hotels-search-bar">
