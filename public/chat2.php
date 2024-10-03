@@ -354,6 +354,7 @@ header{
     <span onclick="insertEmoji('😊')">😊</span>
     <span onclick="insertEmoji('🏳️‍🌈')">🏳️‍🌈</span>
     <span onclick="insertEmoji('👍')">👍</span>
+    <span onclick="insertEmoji('✈️')">✈️</span>
                 </div>
             </div>
         </div>
