@@ -1,7 +1,6 @@
 <?php
-include '../config/valida.php'; // Validação do usuário logado
-include '../config/liga_bd.php'; // Conexão com o banco de dados
-
+require_once '../config/valida.php'; // Validação do usuário logado
+require_once '../config/liga_bd.php'; // Conexão com o banco de dados
 
 $id_user = $_SESSION['id']; // ID do usuário logado
 
@@ -137,6 +136,7 @@ header{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+
         #user-list {
             width: 30%;
             border-right: 1px solid #ccc;
@@ -165,11 +165,13 @@ header{
         }
 
         #chat-box {
-            width: 70%;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-        }
+    width: 100%;
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+      
 
         #back-arrow {
             font-size: 24px;
@@ -183,6 +185,8 @@ header{
             padding: 10px;
             background-color: #f9f9f9;
             border-radius: 10px;
+            max-width: 100%;
+            scroll-behavior: smooth;
         }
 
         #message-input {
@@ -191,33 +195,45 @@ header{
         }
 
         #message-input input {
-            width: 80%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 20px;
-        }
+    width: 85%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    margin-right: 10px;
+    font-size: 16px;
+}
 
 
-        #message-input button {
-            width: 20%;
-            padding: 10px;
-            background-color: #007AFF;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            margin-left: 10px;
-            cursor: pointer;
-        }
+       #message-input button {
+    width: auto;
+    padding: 12px;
+    background-color: #007AFF;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#message-input button i {
+    font-size: 18px;
+}
 
         .message {
-    padding: 5px;
+    padding: 10px;
     margin-bottom: 10px;
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    max-width: 60%;
+    border-radius: 10px;
     display: flex;
     align-items: center;
 }
+
+#messages {
+    display: flex;
+    flex-direction: column;
+}
+
 
 .user-icon-message {
     width: 30px; 
@@ -228,19 +244,56 @@ header{
 
 #emoji-panel {
     display: flex;
-    margin-top: 10px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+    flex-wrap: wrap;
+    position: absolute;
+    bottom: 50px;
+    right: 10px;
+    background: white;
     padding: 10px;
-    position: absolute; 
-    z-index: 100; 
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 #emoji-panel span {
     font-size: 20px; 
     cursor: pointer;
     margin-right: 10px;
+}
+
+.sent-message {
+    background-color: #DCF8C6;
+    align-self: flex-end; /* Alinha à direita */
+    border-top-right-radius: 0px;
+}
+
+.received-message {
+    background-color: #ffffff;
+    align-self: flex-start; /* Alinha à esquerda */
+    border-top-left-radius: 0px;
+}
+
+.notification-dot {
+    height: 10px;
+    width: 10px;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+@media (max-width: 768px) {
+    #user-list, #chat-box {
+        width: 100%;
+        padding: 10px;
+    }
+
+    #message-input input {
+        width: 70%;
+    }
+
+    #message-input button {
+        width: 30%;
+    }
 }
     </style>
 </head>
@@ -292,7 +345,7 @@ header{
             <div id="message-input">
                 <input type="text" id="message" placeholder="Escreva uma mensagem...">
                 <i class="bi bi-app-indicator" onclick="toggleEmojiPanel()"></i>
-                <button onclick="sendMessage()">Enviar</button>
+                <button onclick="sendMessage()"><i class="bi bi-send"></i></button>
             </div>
         </div>
     </div>
@@ -307,75 +360,115 @@ header{
     </div>
 </div>
 
-    <script>
-        let selectedUserId = null;
-        let refreshInterval = null;
 
-        // Função para exibir a lista de usuários
-        function showUserList() {
-            document.getElementById('user-list').style.display = 'block';
-            document.getElementById('chat-box').style.display = 'none';
-            clearInterval(refreshInterval);
-        }
+<script>
+    let selectedUserId = null;
+    let refreshInterval = null;
 
-        // Função para carregar o chat de um usuário específico
-        function loadChat(userId) {
-            selectedUserId = userId;
-            document.getElementById('user-list').style.display = 'none';
-            document.getElementById('chat-box').style.display = 'block';
+    // Função para exibir a lista de usuários
+    function showUserList() {
+        document.getElementById('user-list').style.display = 'block';
+        document.getElementById('chat-box').style.display = 'none';
+        clearInterval(refreshInterval);
+    }
 
-            // Carregar mensagens do banco de dados
+    // Função para carregar o chat de um usuário específico
+    function loadChat(userId) {
+        selectedUserId = userId;
+        document.getElementById('user-list').style.display = 'none';
+        document.getElementById('chat-box').style.display = 'block';
+
+        // Carregar mensagens do banco de dados
+        fetch('get_chat2.php?user_id=' + userId)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('messages').innerHTML = data;
+                scrollToBottom(); // Rola para o final após inserir as mensagens
+            });
+
+        // Atualizar as mensagens a cada 3 segundos
+        refreshInterval = setInterval(function () {
             fetch('get_chat2.php?user_id=' + userId)
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById('messages').innerHTML = data;
+                    scrollToBottom(); // Rola para o final a cada atualização
                 });
+        }, 3000); // Atualiza a cada 3 segundos
+    }
 
-            // Atualizar as mensagens a cada 3 segundos
-            refreshInterval = setInterval(function () {
-                fetch('get_chat2.php?user_id=' + userId)
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById('messages').innerHTML = data;
-                    });
-            }, 3000); // Atualiza a cada 3 segundos
-        }
-
-        // Função para enviar mensagem
-        function sendMessage() {
-            const message = document.getElementById('message').value;
-
-            if (message.trim() !== '') {
-                fetch('send_message2.php', {
-                    method: 'POST',
-                    body: new URLSearchParams({
-                        'user_id': selectedUserId,
-                        'message': message
-                    })
-                }).then(response => response.text())
-                  .then(data => {
-                      document.getElementById('messages').innerHTML = data;
-                      document.getElementById('message').value = ''; // Limpa o campo de texto
-                  });
-            }
-        }
-
-        function toggleEmojiPanel() {
-    const panel = document.getElementById('emoji-panel');
-    panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
+    // Função para enviar mensagem
+    function sendMessage() {
+    const message = document.getElementById('message').value;
+    if (message.trim() !== '') {
+        fetch('send_message2.php', {
+            method: 'POST',
+            body: new URLSearchParams({
+                'user_id': selectedUserId,
+                'message': message
+            })
+        }).then(response => response.text())
+          .then(data => {
+              // Apenas adiciona a nova mensagem ao final
+              document.getElementById('messages').insertAdjacentHTML('beforeend', data);
+              document.getElementById('message').value = ''; // Limpa o campo de texto
+              scrollToBottom();
+          });
+    }
 }
 
-function insertEmoji(emoji) {
-    const messageInput = document.getElementById('message');
-    messageInput.value += emoji; // Adiciona o emoji ao campo de entrada
-    toggleEmojiPanel(); // Fecha o painel de emojis
-}
-    </script>
+    // Função para exibir/esconder o painel de emojis
+    function toggleEmojiPanel() {
+        const panel = document.getElementById('emoji-panel');
+        panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
+    }
 
+    // Função para inserir um emoji no campo de mensagem
+    function insertEmoji(emoji) {
+        const messageInput = document.getElementById('message');
+        messageInput.value += emoji; // Adiciona o emoji ao campo de entrada
+        toggleEmojiPanel(); // Fecha o painel de emojis
+    }
 
-           
+    // Função para verificar novas mensagens
+    function checkNewMessages() {
+        fetch('check_new_messages.php?user_id=' + selectedUserId)
+            .then(response => response.json())
+            .then(data => {
+                if (data.new_messages) {
+                    // Exibe a notificação com ponto vermelho
+                    document.querySelector('.notification-dot').style.display = 'inline-block';
+                } else {
+                    // Esconde o ponto vermelho caso não haja novas mensagens
+                    document.querySelector('.notification-dot').style.display = 'none';
+                }
+            });
+    }
+
+    // Chama a função para verificar novas mensagens a cada 5 segundos
+    setInterval(checkNewMessages, 5000);
+
+    // Função para rolar a lista de mensagens para o final
+    function scrollToBottom() {
+        const messagesDiv = document.getElementById("messages");
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    // Atualiza o chat automaticamente a cada 3 segundos e rola para o final
+    refreshInterval = setInterval(function () {
+        fetch('get_chat2.php?user_id=' + selectedUserId)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('messages').innerHTML = data;
+                scrollToBottom(); // Rola para o final a cada atualização
+            });
+    }, 3000); // Atualiza a cada 3 segundos
+</script>
+
+<br>
+
 <!--footer-->
 <?php include '../views/partials/footer.php' ?>
-
+    
 </body>
 </html>
