@@ -215,11 +215,10 @@ mysqli_close($ligacao);
                          <?php echo htmlspecialchars($linha['nome']); ?>
                         <a class="menu-item <?php echo $activeMenu === 'profile' ? 'active' : ''; ?>"
                             href="perfil.php#account-general"><i class="bi bi-person-circle"></i> Editar perfil</a>
-                        <a class="menu-item" href="../index.html"><i class="bi bi-house-door"></i> Página
-                            Inicial</a>
+                        <a class="menu-item" href="../index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
                         <a class="menu-item" href="reservas.php"><i class="bi bi-clipboard2"></i> Reservas</a>
                         <a class="menu-item" href="favoritos.php"><i class="bi bi-heart"></i> Favoritos</a>
-                        <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
+                        <a class="menu-item" href="chat2.php"><i class="bi bi-chat-dots"></i> Chat</a>
                         <a class="menu-item" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
                 </div>
