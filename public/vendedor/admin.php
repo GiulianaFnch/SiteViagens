@@ -152,7 +152,7 @@ mysqli_close($ligacao);
 
     <header>
 
-        <a href="../index.html"
+        <a href="../../index.html"
             style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
         <div class="bx bx-menu" id="menu-icon"></div>
 
@@ -175,11 +175,9 @@ mysqli_close($ligacao);
                         <a class="menu-item" style="color: #3A506B"><strong>Painel de Vendedor</strong></a>
                         <a class="menu-item" href="#" onclick="showContent('profile');"><i
                                 class="bi bi-person-circle"></i> Editar Perfil</a>
-                        <a class="menu-item" href="../../index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
                         <a class="menu-item" href="vender_tours.php" onclick="showContent('vender-tours');"><i
                                 class="bi bi-bag"></i> Vender Tours</a>
-                        <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Gestão de
-                            Rervas</a>
+                        <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Gestão de Reservas</a>
                         <a class="menu-item" href="gestao_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de
                             Tours</a>
                         <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
@@ -235,13 +233,14 @@ mysqli_close($ligacao);
                             </div>
                         </form>
                     </div>
+                    
 
                 </div>
             </div>
         </div>
     </div>
     </div>
-    <br><br>
+    <br><br><br>
 
     <?php include '../../views/partials/footer.php' ?>
 

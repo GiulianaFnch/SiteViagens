@@ -298,7 +298,7 @@ header{
 <body>
 
 <header>
-    <a href="../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
+    <a href="../../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
     <ul class="navbar">
         <li><a href="#home" style="color: black;" >Hospedagem</a></li>
         <li><a href="#package" style="color: black;" >Passagens</a></li>
@@ -316,9 +316,8 @@ header{
                 <nav class="menu">
                     <a class="menu-item" style="color: #3A506B"><strong>Painel de Vendedor</strong></a>
                     <a class="menu-item" href="admin.php"><i class="bi bi-person-circle"></i> Editar perfil</a>
-                    <a class="menu-item" href="../../../SiteViagens-main/index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
                     <a class="menu-item" href="vender_tours.php"><i class="bi bi-bag"></i> Vender Tours</a>
-                    <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Gestão de Rervas</a>
+                    <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Gestão de Reservas</a>
                     <a class="menu-item" href="gestao_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de Tours</a>
                     <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
                     <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>

@@ -81,6 +81,8 @@ mysqli_close($ligacao);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -198,10 +200,12 @@ mysqli_close($ligacao);
         <div class="bx bx-menu" id="menu-icon"></div>
 
         <ul class="navbar">
-            <li><a href="#home" style="color: black;" >Hospedagem</a></li>
+            <li><a href="/SiteViagens/public/hotels/hotels.php" style="color: black;" >Hospedagem</a></li>
             <li><a href="#package" style="color: black;" >Passagens</a></li>
-            <li><a href="#destination" style="color: black; ">Tours</a></li>
+            <li><a href="/SiteViagens/public/tours/tours.php" style="color: black; ">Tours</a></li>
             <li><a href="#contact" style="color: black;">Pacotes</a></li>
+            <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
+
         </ul>
         </header>
         
@@ -215,7 +219,6 @@ mysqli_close($ligacao);
                          <?php echo htmlspecialchars($linha['nome']); ?>
                         <a class="menu-item <?php echo $activeMenu === 'profile' ? 'active' : ''; ?>"
                             href="perfil.php#account-general"><i class="bi bi-person-circle"></i> Editar perfil</a>
-                        <a class="menu-item" href="../index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
                         <a class="menu-item" href="reservas.php"><i class="bi bi-clipboard2"></i> Reservas</a>
                         <a class="menu-item" href="favoritos.php"><i class="bi bi-heart"></i> Favoritos</a>
                         <a class="menu-item" href="chat2.php"><i class="bi bi-chat-dots"></i> Chat</a>
@@ -277,7 +280,7 @@ mysqli_close($ligacao);
                                 <!-- Botões de ação -->
                                 <div class="text-right mt-3">
                                     <input type="submit" class="btn btn-primary rounded-pill" value="Alterar">
-                                    <a href="index.html" class="btn btn-light rounded-pill">Voltar ao menu</a>
+                                   
                                 </div>
                             </form>
                         </div>

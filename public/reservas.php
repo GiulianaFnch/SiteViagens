@@ -53,7 +53,7 @@ $result = $stmt->get_result();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
     <style>
          header{
         position: fixed;
@@ -157,11 +157,15 @@ $result = $stmt->get_result();
 <body>
 <header>
     <a href="../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
+    <div class="bx bx-menu" id="menu-icon"></div>
     <ul class="navbar">
-        <li><a href="#home" style="color: black;" >Hospedagem</a></li>
-        <li><a href="#package" style="color: black;" >Passagens</a></li>
-        <li><a href="#destination" style="color: black; ">Tours</a></li>
-        <li><a href="#contact" style="color: black;">Pacotes</a></li>
+    <li><a href="/SiteViagens/public/hotels/hotels.php" style="color: black;" >Hospedagem</a></li>
+            <li><a href="#package" style="color: black;" >Passagens</a></li>
+            <li><a href="/SiteViagens/public/tours/tours.php" style="color: black; ">Tours</a></li>
+            <li><a href="#contact" style="color: black;">Pacotes</a></li>
+            <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
+
+
     </ul>
 </header>
 
@@ -174,10 +178,9 @@ $result = $stmt->get_result();
                 <nav class="menu">
                     <?php echo htmlspecialchars($linha['nome']); ?>
                     <a class="menu-item" href="perfil.php#account-general"><i class="bi bi-person-circle"></i> Editar perfil</a>
-                    <a class="menu-item" href="../index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
                     <a class="menu-item" href="reservas.php"><i class="bi bi-clipboard2"></i> Reservas</a>
                     <a class="menu-item" href="favoritos.php"><i class="bi bi-heart"></i> Favoritos</a>
-                    <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
+                    <a class="menu-item" href="chat2.php"><i class="bi bi-chat-dots"></i> Chat</a>
                     <a class="menu-item" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
                 </nav>
             </div>

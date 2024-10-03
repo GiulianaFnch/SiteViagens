@@ -75,7 +75,7 @@ if (isset($_POST['logout'])) {
     session_destroy();
 
     // Redireciona para a página de login (index.html)
-    header('Location: ../../../index.html');
+    header('Location: ../../index.html');
     exit();
 }
 
@@ -305,7 +305,7 @@ header{
     
 <header>
  
-        <a href="../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
+        <a href="../../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
         <div class="bx bx-menu" id="menu-icon"></div>
 
         <ul class="navbar">
@@ -325,9 +325,8 @@ header{
                     <nav class="menu">
                     <a class="menu-item" style="color: #3A506B"><strong>Painel de Vendedor</strong></a>
                         <a class="menu-item" href="admin.php"><i class="bi bi-person-circle"></i> Editar perfil</a>
-                        <a class="menu-item" href="../../../SiteViagens-main/index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
                         <a class="menu-item" href="vender_tours.php"><i class="bi bi-bag"></i> Vender Tours</a>
-                        <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Gestão de Rervas</a>
+                        <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Gestão de Reservas</a>
                         <a class="menu-item" href="gestao_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de Tours</a>
                         <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
                         <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
@@ -404,18 +403,18 @@ header{
 
 
                         <div class="settings-item" id="logout-item">
-    <div class="item-left">
-        <i class="bi bi-box-arrow-right"></i>
-        <span class="item-label">Logout</span>
-    </div>
-    <div class="item-right">
-        <form method="POST" style="display: inline;">
-            <button type="submit" name="logout" class="btn btn-link" style="color: #007AFF; padding: 0; font-size: 18px;">
-             <i class="bi bi-chevron-right"></i>
-            </button>
-        </form>
-    </div>
-</div>
+                            <div class="item-left">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span class="item-label">Logout</span>
+                            </div>
+                            <div class="item-right">
+                                <form method="POST" style="display: inline;">
+                                    <button type="submit" name="logout" class="btn btn-link" style="color: #007AFF; padding: 0; font-size: 18px;">
+                                    <i class="bi bi-chevron-right"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                      
 
                     <div id="form-atualizar-senha">
@@ -492,28 +491,28 @@ header{
                             }
                         </script>
 
-    <script>
-function toggleNotification() {
-    var icon = document.getElementById('notificacoes-ofertas-icon');
-    var currentStatus = icon.classList.contains('bi-file-earmark-check-fill');
-    var newStatus = currentStatus ? 0 : 1;
+                            <script>
+                        function toggleNotification() {
+                            var icon = document.getElementById('notificacoes-ofertas-icon');
+                            var currentStatus = icon.classList.contains('bi-file-earmark-check-fill');
+                            var newStatus = currentStatus ? 0 : 1;
 
-    icon.classList.toggle('bi-file-earmark');
-    icon.classList.toggle('bi-file-earmark-check-fill');
+                            icon.classList.toggle('bi-file-earmark');
+                            icon.classList.toggle('bi-file-earmark-check-fill');
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'configuracoes.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log(xhr.responseText); // Adiciona log para depuração
-        }
-    };
-    xhr.send('toggle_notificacoes_ofertas=1&notificacoes_ofertas=' + newStatus);
-}
-</script>
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('POST', 'configuracoes.php', true);
+                            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState === 4 && xhr.status === 200) {
+                                    console.log(xhr.responseText); // Adiciona log para depuração
+                                }
+                            };
+                            xhr.send('toggle_notificacoes_ofertas=1&notificacoes_ofertas=' + newStatus);
+                        }
+                        </script>
+                            <script src="../assets/js/jquery.min.js"></script>
+                            <script src="../assets/js/bootstrap.bundle.min.js"></script>
 
 
 </body>

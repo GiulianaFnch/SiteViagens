@@ -28,6 +28,7 @@ while ($linha = mysqli_fetch_assoc($resultado)) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
     
     <style>
 header{
@@ -303,10 +304,11 @@ header{
 <header>
     <a href="../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
     <ul class="navbar">
-        <li><a href="#home" style="color: black;" >Hospedagem</a></li>
-        <li><a href="#package" style="color: black;" >Passagens</a></li>
-        <li><a href="#destination" style="color: black; ">Tours</a></li>
-        <li><a href="#contact" style="color: black;">Pacotes</a></li>
+    <li><a href="/SiteViagens/public/hotels/hotels.php" style="color: black;" >Hospedagem</a></li>
+            <li><a href="#package" style="color: black;" >Passagens</a></li>
+            <li><a href="/SiteViagens/public/tours/tours.php" style="color: black; ">Tours</a></li>
+            <li><a href="#contact" style="color: black;">Pacotes</a></li>
+            <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
     </ul>
 </header>
 
@@ -319,7 +321,6 @@ header{
             <div class="col-md-3 p-3 bg-light rounded-left menu-container">
                 <nav class="menu">
                     <a class="menu-item" href="perfil.php"><i class="bi bi-person-circle"></i> Editar perfil</a>
-                    <a class="menu-item" href="../index.html"><i class="bi bi-house-door"></i> Página Inicial</a>
                     <a class="menu-item" href="reservas.php"><i class="bi bi-clipboard2"></i> Reservas</a>
                     <a class="menu-item" href="favoritos.php"><i class="bi bi-heart"></i> Favoritos</a>
                     <a class="menu-item" href="chat2.php"><i class="bi bi-chat-dots"></i> Chat</a>
