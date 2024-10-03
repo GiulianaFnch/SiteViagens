@@ -87,7 +87,10 @@ header {
 /*
     Até aqui é para o formulário de registro
 */
-
+.logo-image {
+  max-width: 100%; /* Para ser responsiva */
+  height: auto; /* Mantém a proporção da imagem */
+}
 .logo {
   font-size: 35px;
   font-weight: 600;
@@ -114,6 +117,8 @@ header {
   box-shadow: 5px 10px 30px rgb(85 85 85 / 20%);
   border-radius: 4px;
 }
+
+
 
 #menu-icon {
   color: var(--text-color);
@@ -414,8 +419,8 @@ header.sticky {
 }
 
 .box {
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
@@ -542,9 +547,15 @@ body {
   background: var(--bg-color);
   border: 1px solid #f0eded;
   padding: 50px 10px;
-  border-radius: 4px;
+  border-radius: 10px;
   transition: all 1s ease 0s;
   cursor: pointer;
+  width: 200px;
+  height: 200px;
+  box-shadow: 5px 10px 30px rgb(85 85 85 / 20%);
+  /*responsividade*/
+  max-width: 100%;
+  box-sizing: border-box;
  
 }
 
@@ -557,6 +568,7 @@ body {
   border-radius: 4px;
   margin-bottom: 15px;
   cursor: pointer;
+
 }
 
 .container-box h4 {
