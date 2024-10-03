@@ -1,6 +1,6 @@
 <?php
-include '../config/valida.php';
-include '../config/liga_bd.php';
+require_once '../config/valida.php';
+require_once '../config/liga_bd.php';
 
 $id_remetente = $_SESSION['id']; // ID do usuário logado
 $id_destinatario = $_POST['user_id']; // ID do usuário para quem a mensagem é enviada
@@ -15,4 +15,3 @@ mysqli_query($ligacao, $sql);
 // Exibindo as mensagens atualizadas
 include 'get_chat2.php';
 ?>
-
