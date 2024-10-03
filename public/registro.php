@@ -9,6 +9,8 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="../assets/css/style.css">
     <!--<link rel="stylesheet" href="../assets/css/styleperfil.css"> -->
         
@@ -48,7 +50,15 @@
                 <div class="input-group">
                     <label for="pass">Senha:</label>
                     <input type="password" id="pass" name="pass" class="form-control" required>
+                    <span class="input-group-text" id="toggle-password" style="cursor: pointer;">
+                                <i class="bi bi-eye-slash" id="toggle-icon"></i>
+                        </span>
+
                 </div>
+
+
+
+
                 <div class="input-group">
                     <label for="ficheiro">Foto:</label>
                     <input type="file" id="ficheiro" name="ficheiro" class="form-control" required>
@@ -63,6 +73,23 @@
 </main>
 
 <?php include '../views/partials/footer.php'; ?>
+
+<!-- Script para alternar entre mostrar e ocultar a senha -->
+<script>
+        const togglePassword = document.getElementById('toggle-password');
+        const passwordField = document.getElementById('pass');
+        const toggleIcon = document.getElementById('toggle-icon');
+
+        togglePassword.addEventListener('click', function () {
+            // Alternar o tipo do campo de senha
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+
+            // Alternar o ícone entre olho aberto e fechado
+            toggleIcon.classList.toggle('bi-eye');
+            toggleIcon.classList.toggle('bi-eye-slash');
+        });
+    </script>
 
 </body>
 </html>
