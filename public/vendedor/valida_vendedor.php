@@ -115,8 +115,7 @@ if (!isset($_SESSION['id']) || !isset($_SESSION['nick'])) {
             <div class='message-container'>
                 <h1>Erro no acesso!</h1>
                 <h2>Você precisa estar logado para acessar esta página.</h2>
-                <input type='button' value='Voltar para Login' onclick=\"window.open('" . BASE_URL
-                    . "public/login.php','_self')\">
+                <input type='button' value='Voltar para Login' onclick="window.open('<?php echo BASE_URL; ?>public/login.php', '_self')">
             </div>
             <?php header("refresh:5;url=" . BASE_URL . "public/login.php");
 
