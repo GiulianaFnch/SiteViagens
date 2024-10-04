@@ -148,9 +148,10 @@ $linha = mysqli_fetch_array($resultado);
             <div class="description">Classificação: <?php echo htmlspecialchars($linha['classificacao']); ?> estrelas</div>
             <div class="description">Quartos disponíveis: <?php echo htmlspecialchars($linha['n_quartos']); ?></div>
             <div class="button-container">
-                <form action="carrinho.php" method="post">
-                    <input type="hidden" name="id_hospedagem" value="<?php echo htmlspecialchars($linha['id']); ?>">
-                    <input type="submit" value="Reservar" class="buy-button">
+                <form action="../carrinho/adicionar_ao_carrinho.php" method="post">
+                    <input type="hidden" name="id_artigo" value="<?php echo htmlspecialchars($linha['id']); ?>">
+                    <input type="hidden" name="tipo_item" value="hospedagem">
+                    <input type="submit" value="Adicionar ao carrinho" class="buy-button">
                 </form>
             </div>
         </div>
