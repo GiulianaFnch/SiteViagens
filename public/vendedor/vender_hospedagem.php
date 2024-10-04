@@ -1,6 +1,73 @@
 <?php
 include 'valida_vendedor.php';
 include '../../config/liga_bd.php';
+
+$uploadOk = 1;
+$target_dir = "../../public/hotels/imagens/";
+
+function processar_foto($file, $id_hospedagem, $numero_foto) {
+    global $uploadOk, $ligacao, $target_dir;
+    
+    if ($uploadOk == 0) {
+        return;
+    }
+
+    $target_file = $target_dir . basename($file["name"]);
+    $file_name = basename($file["name"]);
+    $check = getimagesize($file["tmp_name"]);
+    if($check === false) {
+        echo "O arquivo não é uma imagem.";
+        $uploadOk = 0;
+        return;
+    }
+
+    if (move_uploaded_file($file["tmp_name"], $target_file)) {
+        $sql = "UPDATE t_hospedagem SET foto{$numero_foto}='{$file_name}' WHERE id={$id_hospedagem};";
+        mysqli_query($ligacao, $sql);
+    } else {
+        echo "O seu ficheiro não foi enviado.";
+        $uploadOk = 0;
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Captura os dados do formulário com verificações
+    $id_user = $_POST['id_user'];
+    $nome = $_POST['titulo'];
+    $descricao = $_POST['descricao'];
+    $n_quartos = $_POST['n_quartos'];
+    $preco_diaria = $_POST['preco'];
+    $classificacao = $_POST['estado'];
+    $localizacao = isset($_POST['localizacao']) ? $_POST['localizacao'] : '';
+    $horario_checkin = $_POST['horario_checkin'];
+    $horario_checkout = $_POST['horario_checkout'];
+    $tipo_hospedagem = $_POST['tipo_hospedagem'];
+
+    $sql = "INSERT INTO t_hospedagem (id_user, nome, descricao, n_quartos, preco_diaria, classificacao, localizacao, horario_checkin, horario_checkout, tipo_hospedagem, foto1) 
+            VALUES ('$id_user', '$nome', '$descricao', '$n_quartos', '$preco_diaria', '$classificacao', '$localizacao', '$horario_checkin', '$horario_checkout', '$tipo_hospedagem', '');";
+
+    if (mysqli_query($ligacao, $sql)) {
+        $id_hospedagem = mysqli_insert_id($ligacao);
+        echo "<h2>Registro efetuado com sucesso! </h2>";
+
+        $_FILES["ficheiro"] = $_FILES["ficheiro1"];
+        processar_foto($_FILES["ficheiro"], $id_hospedagem, 1);
+
+        if (!empty($_FILES['ficheiro2']['name'])) {
+            $_FILES["ficheiro"] = $_FILES["ficheiro2"];
+            processar_foto($_FILES["ficheiro"], $id_hospedagem, 2);
+        }
+
+        if (!empty($_FILES['ficheiro3']['name'])) {
+            $_FILES["ficheiro"] = $_FILES["ficheiro3"];
+            processar_foto($_FILES["ficheiro"], $id_hospedagem, 3);
+        }
+    } else {
+        echo "Erro: " . mysqli_error($ligacao);
+    }
+
+    mysqli_close($ligacao);
+}
 ?>
 
 <!DOCTYPE html>
@@ -8,7 +75,7 @@ include '../../config/liga_bd.php';
 
 <head>
     <meta charset="utf-8">
-    <title>Vender Tours</title>
+    <title>Vender Hospedagem</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -42,7 +109,6 @@ include '../../config/liga_bd.php';
 
         .navbar a {
             color: black;
-            /* Define a cor padrão dos links */
         }
 
         .card {
@@ -148,10 +214,11 @@ include '../../config/liga_bd.php';
             transition: transform 0.3s ease;
         }
 
-        input[type="text"],
-        input[type="date"],
-        input[type="file"],
-        select,
+        input[type="text"], 
+        input[type="date"], 
+        input[type="file"], 
+        input[type="time"],
+        select, 
         textarea {
             width: 100%;
             padding: 12px;
@@ -166,10 +233,11 @@ include '../../config/liga_bd.php';
             transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
 
-        input[type="text"]:focus,
-        input[type="date"]:focus,
-        input[type="file"]:focus,
-        select:focus,
+        input[type="text"]:focus, 
+        input[type="date"]:focus, 
+        input[type="file"]:focus, 
+        input[type="time"]:focus,
+        select:focus, 
         textarea:focus {
             border-color: #007AFF;
             box-shadow: 0 0 8px rgba(0, 122, 255, 0.3);
@@ -182,15 +250,15 @@ include '../../config/liga_bd.php';
         }
 
         input[type="submit"] {
-            width: auto;
+            width: auto; 
             background-color: #007AFF;
             color: white;
-            padding: 10px 20px;
+            padding: 10px 20px; 
             margin: 8px 0;
             border: none;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 14px; 
             font-weight: 600;
             transition: background-color 0.3s ease-in-out;
         }
@@ -199,13 +267,10 @@ include '../../config/liga_bd.php';
             background-color: #005bb5;
         }
 
-
-
         select option {
             padding: 10px;
         }
 
-        /* Adicionando espaço e estilo ao formulário */
         form {
             margin-top: 20px;
         }
@@ -218,17 +283,6 @@ include '../../config/liga_bd.php';
             color: #333;
         }
     </style>
-
-    <script>
-        function atualiza() {
-            var categoria = document.getElementById("categoria").value;
-            var subcategoria = document.getElementById("subcategoria").value;
-
-            document.getElementById("valor_cat").value = categoria;
-            document.getElementById("valor_subcat").value = subcategoria;
-        }
-        window.onload = atualiza; 
-    </script>
 </head>
 
 <body>
@@ -249,53 +303,20 @@ include '../../config/liga_bd.php';
                 <div class="col-md-3 p-3 bg-light rounded-left menu-container">
                     <nav class="menu">
                         <a class="menu-item" style="color: #3A506B"><strong>Painel de Vendedor</strong></a>
-                        <a class="menu-item" href="../vendedor/admin.php"><i class="bi bi-person-circle"></i> Editar
-                            perfil</a>
-                        <a class="menu-item" href="vender_tours.php"><i class="bi bi-bag"></i> Vender Tours</a>
-                        <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i>Gestão de
-                            Reservas</a>
-                        <a class="menu-item" href="gestao_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de
-                            Tours</a>
+                        <a class="menu-item" href="../vendedor/admin.php"><i class="bi bi-person-circle"></i> Editar perfil</a>
+                        <a class="menu-item" href="vender_hospedagem.php"><i class="bi bi-bag"></i> Vender Hospedagem</a>
+                        <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i>Gestão de Reservas</a>
+                        <a class="menu-item" href="gestao_hospedagem.php"><i class="bi bi-train-freight-front"></i> Gestão de Hospedagem</a>
                         <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
                         <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
                 </div>
 
                 <div class="col-md-9 p-4">
-                    <h1 class="h2">Vender Passeios</h1>
-                    <?php
-                    $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : 1;
-                    ?>
+                    <h1 class="h2">Vender Hospedagem</h1>
 
-                    <form action="vender_tours.php" id="f1" method="post">
-                        Categoria:
-                        <select name="categoria" id="categoria" onchange="this.form.submit();">
-                            <?php
-                            $sql = "SELECT * FROM t_categoria";
-                            $resultado = mysqli_query($ligacao, $sql);
-                            while ($linha = mysqli_fetch_assoc($resultado)) {
-                                $selected = ($categoria == $linha['id']) ? 'selected' : '';
-                                echo "<option value='" . $linha['id'] . "' $selected>" . $linha['categoria'] . "</option>";
-                            }
-                            ?>
-                        </select>
-                        <br>Subcategoria:
-                        <select name="subcategoria" id="subcategoria" onchange="atualiza();">
-                            <?php
-                            $sql2 = "SELECT * FROM t_subcat WHERE categoria = " . $categoria;
-                            $resultado2 = mysqli_query($ligacao, $sql2);
-                            while ($linha2 = mysqli_fetch_assoc($resultado2)) {
-                                echo "<option value='" . $linha2['id'] . "'>" . $linha2['subcat'] . "</option>";
-                            }
-                            ?>
-                        </select>
-                    </form>
-
-
-                    <form action="vender_tours2.php" id="f2" method="post" enctype="multipart/form-data">
+                    <form action="vender_hospedagem.php" id="f2" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="id_user" value="<?php echo $_SESSION['id']; ?>" required>
-                        <input type="hidden" name="valor_cat" value="<?php echo $categoria; ?>" id="valor_cat" required>
-                        <input type="hidden" name="valor_subcat" value="" id="valor_subcat" required>
 
                         <label for="titulo">Título:</label>
                         <input type="text" id="titulo" name="titulo" required>
@@ -303,10 +324,17 @@ include '../../config/liga_bd.php';
                         <label for="descricao">Descrição:</label>
                         <textarea id="descricao" name="descricao"></textarea>
 
-                        <label for="preco">Preço:</label>
+                        <label for="n_quartos">Número de Quartos:</label>
+                        <select id="n_quartos" name="n_quartos" required>
+                            <?php for ($i = 1; $i <= 100; $i++): ?>
+                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                            <?php endfor; ?>
+                        </select>
+
+                        <label for="preco">Valor diária:</label>
                         <input type="text" id="preco" name="preco" required>
 
-                        <label for="estado">Estado:</label>
+                        <label for="estado">Classificação:</label>
                         <select id="estado" name="estado">
                             <option value="1">1 estrela</option>
                             <option value="2">2 estrelas</option>
@@ -318,11 +346,21 @@ include '../../config/liga_bd.php';
                         <label for="localizacao">Localização:</label>
                         <input type="text" id="localizacao" name="localizacao" required>
 
-                        <label for="data_inicio">Data de Início:</label>
-                        <input type="date" id="data_inicio" name="data_inicio" required>
+                        <label for="horario_checkin">Horário de Check-in:</label>
+                        <input type="time" id="horario_checkin" name="horario_checkin" required>
 
-                        <label for="data_fim">Data de Fim:</label>
-                        <input type="date" id="data_fim" name="data_fim" required>
+                        <label for="horario_checkout">Horário de Check-out:</label>
+                        <input type="time" id="horario_checkout" name="horario_checkout" required>
+
+                        <label for="tipo_hospedagem">Tipo de Hospedagem:</label>
+                        <select id="tipo_hospedagem" name="tipo_hospedagem" required>
+                            <option value="hotel">Hotel</option>
+                            <option value="apartamento">Apartamento</option>
+                            <option value="hostel">Hostel</option>
+                            <option value="castelo">Castelo</option>
+                            <option value="cabana">Cabana</option>
+                            <option value="resort">Resort</option>
+                        </select>
 
                         <label for="ficheiro1">Foto 1:</label>
                         <input type="file" id="ficheiro1" name="ficheiro1">

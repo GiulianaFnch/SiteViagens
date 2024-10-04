@@ -5,9 +5,10 @@ include '../../config/liga_bd.php';
 $uploadOk = 1;
 $target_dir = "../../public/tours/imagens/";
 
-function processar_foto($file, $id_artigo, $numero_foto) {
+function processar_foto($file, $id_artigo, $numero_foto)
+{
     global $uploadOk, $ligacao, $target_dir;
-    
+
     if ($uploadOk == 0) {
         return;
     }
@@ -15,7 +16,7 @@ function processar_foto($file, $id_artigo, $numero_foto) {
     $target_file = $target_dir . basename($file["name"]);
     $file_name = basename($file["name"]);
     $check = getimagesize($file["tmp_name"]);
-    if($check === false) {
+    if ($check === false) {
         echo "O arquivo não é uma imagem.";
         $uploadOk = 0;
         return;
