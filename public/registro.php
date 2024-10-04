@@ -50,8 +50,6 @@
                 <div class="input-group">
                     <label for="pass">Senha:</label>
                     <input type="password" id="pass" name="pass" class="form-control" required>
-                    <span class="input-group-text" id="toggle-password" style="cursor: pointer;">
-                                <i class="bi bi-eye-slash" id="toggle-icon"></i>
                         </span>
 
                 </div>
