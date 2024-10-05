@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewpoert" content="width=device-width, inicial-scale=1">
     <title>BestWay</title>
-    <link rel="stylesheet" type="text/css" href="../../assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 
@@ -115,6 +115,52 @@
         </div>
     </section>
 
+    <section class="travel-suggestions">
+        <h2>Outras sugestões de viagens</h2>
+        <h1>Conheça pacotes incríveis em nossos conteúdos exclusivos</h1>
+        
+        <div class="carrossel-container">
+            <button class="prev">&lt;</button>
+            <div class="destinos-container">
+                <div class="destino-card">
+                    <img src="img1.jpg" alt="Imagem 1">
+                    <div class="destino-nome">Pacote 1</div>
+                </div>
+                <div class="destino-card">
+                    <img src="img2.jpg" alt="Imagem 2">
+                    <div class="destino-nome">Pacote 2</div>
+                </div>
+                <div class="destino-card">
+                    <img src="img3.jpg" alt="Imagem 3">
+                    <div class="destino-nome">Pacote 3</div>
+                </div>
+                <div class="destino-card">
+                    <img src="img3.jpg" alt="Imagem 3">
+                    <div class="destino-nome">Pacote 3</div>
+                </div>
+                <div class="destino-card">
+                    <img src="img3.jpg" alt="Imagem 3">
+                    <div class="destino-nome">Pacote 3</div>
+                </div>
+                <div class="destino-card">
+                    <img src="img3.jpg" alt="Imagem 3">
+                    <div class="destino-nome">Pacote 3</div>
+                </div>
+                <div class="destino-card">
+                    <img src="img3.jpg" alt="Imagem 3">
+                    <div class="destino-nome">Pacote 3</div>
+                </div>
+                <div class="destino-card">
+                    <img src="img3.jpg" alt="Imagem 3">
+                    <div class="destino-nome">Pacote 3</div>
+                </div>
+                <!-- Adicione mais cartões conforme necessário -->
+            </div>
+            <button class="next">&gt;</button>
+        </div>
+        
+    </section>
+    
 
 
     
@@ -183,13 +229,17 @@ Você receberá e-mails promocionais da BestWay. Para mais informações, consul
             </div>
         </div>
 
+
+
         <div class="end-text">
             <p>© 2024 BestWay. Todos os direitos reservados.</p>
         </div>
     </section>
 
     <!--link to js-->
-    <script type="text/javascript" src="../../assets/js/script.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="scriptpacotes.js"></script>
+    
 
 </body>
 
