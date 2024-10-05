@@ -408,6 +408,92 @@ header.sticky {
   text-align: center;
   margin-top: 5rem;
 }
+/* INICIO DO CARROSSEL ABA PACOTES */
+/* Estilo básico */
+.travel-suggestions {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.travel-suggestions h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.travel-suggestions h2 {
+  color: #4a4a4a;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+/* Carrossel */
+.carrossel-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.destinos-container {
+  display: flex;
+  overflow-x: hidden; /* remove a rolagem horizontal */
+  scroll-behavior: smooth; /* Rolagem suave */
+}
+
+.destino-card {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 200px;
+  min-width: 200px;
+  margin-right: 20px;
+  text-align: left;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.destino-card img {
+  width: 100%;
+  height: auto;
+}
+
+.destino-nome {
+  padding: 15px;
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Botões de navegação */
+.prev, .next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  font-size: 2em;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+  transition: background-color 0.3s;
+}
+
+.prev:hover, .next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.prev {
+  left: 10px;
+}
+
+.next {
+  right: 10px;
+}
+
+/* FIM DO CARROSEL ABA PACOTES */
 
 /* cards da aba tours  */
 .package-content2 {
@@ -914,6 +1000,30 @@ body {
     margin-bottom: 12px;
   }
 }
+/* PACOTES*/
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+  .destino-card {
+      width: 150px;
+      min-width: 150px;
+  }
+
+  .prev, .next {
+      font-size: 1.5em;
+  }
+}
+
+@media (max-width: 480px) {
+  .destino-card {
+      width: 120px;
+      min-width: 120px;
+  }
+
+  .prev, .next {
+      font-size: 1.2em;
+  }
+}
+/* PACOTES*/
 
 @media (max-width: 575px) {
   .list {
