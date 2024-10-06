@@ -143,6 +143,70 @@ mysqli_close($ligacao);
             padding: 20px;
         }
 
+        .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 80%;
+    max-width: 1600px;
+    height: 90vh;
+    max-height: 800px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    overflow: hidden;
+    transition: 1s;
+    opacity: 0;
+}
+
+.popup.active {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+.top-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: #000;
+    color: #fff;
+    text-align: center;
+    line-height: 50px;
+    font-weight: 300;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #f00;
+    cursor: pointer;
+}
+
+.large-image {
+    margin-top: 5%;
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+}
+
+.index {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 80px;
+    font-weight: 100;
+    color: rgba(255, 255, 255, 0.4);
+}
     
     </style>
 </head>
@@ -173,13 +237,10 @@ mysqli_close($ligacao);
                 <div class="col-md-3 p-3 bg-light rounded-left menu-container">
                     <nav class="menu">
                         <a class="menu-item" style="color: #3A506B"><strong>Painel de Vendedor</strong></a>
-                        <a class="menu-item" href="#" onclick="showContent('profile');"><i
-                                class="bi bi-person-circle"></i> Editar Perfil</a>
-                        <a class="menu-item" href="vender_tours.php" onclick="showContent('vender-tours');"><i
-                                class="bi bi-bag"></i> Vender Tours</a>
+                        <a class="menu-item" href="#" onclick="showContent('profile');"><i class="bi bi-person-circle"></i> Editar Perfil</a>
+                        <a class="menu-item" href="vender_opcoes.php"><i class="bi bi-bag"></i> Vender</a>
                         <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Gestão de Reservas</a>
-                        <a class="menu-item" href="gestao_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de
-                            Tours</a>
+                        <a class="menu-item" href="gestao_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de Tours</a>
                         <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
                         <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
@@ -191,8 +252,8 @@ mysqli_close($ligacao);
                             <input type="hidden" name="id" value="<?php echo htmlspecialchars($linha['id']); ?>">
 
                             <div class="media align-items-center mb-3">
-                                <img src="<?php echo $linha['foto'] ? '../../assets/images/pics/' . htmlspecialchars($linha['foto']) : 'https://bootdey.com/img/Content/avatar/avatar1.png'; ?>"
-                                    alt="avatar" class="rounded-circle mr-3" style="width: 80px;">
+                            <img src="<?php echo $linha['foto'] ? '../../assets/images/pics/' . htmlspecialchars($linha['foto']) : 'https://bootdey.com/img/Content/avatar/avatar1.png'; ?>"
+                            alt="avatar" class="rounded-circle mr-3 image" style="width: 80px;">
                                 <div class="media-body">
                                     <label class="btn btn-outline-primary rounded-pill">
                                         Upload Nova Foto
@@ -202,6 +263,17 @@ mysqli_close($ligacao);
                                     <div class="small text-muted mt-1">Permitido JPG, GIF ou PNG. Tamanho máximo de
                                         800K.</div>
                                 </div>
+                            </div>
+
+                            <!-- Popup container -->
+                            <div class="popup">
+                                <div class="top-bar">
+                                    <span class="image-name"></span>
+                                    <div class="close-btn"></div>
+                                </div>
+                                <img class="large-image" src="" alt="Imagem Grande">
+                                
+                                <div class="index"></div>
                             </div>
 
                             <input type="hidden" name="nome_foto"
@@ -243,6 +315,40 @@ mysqli_close($ligacao);
     <br><br><br>
 
     <?php include '../../views/partials/footer.php' ?>
+
+
+        <script>
+    const images = [...document.querySelectorAll('.image')];
+    const popup = document.querySelector('.popup');
+    const closeBtn = document.querySelector('.close-btn');
+    const largeImage = document.querySelector('.large-image');
+    const imageName = document.querySelector('.image-name');
+    const imageIndex = document.querySelector('.index');
+    let index = 0;
+
+    images.forEach((item, i) => {
+        item.addEventListener('click', () => {
+            updateImage(i);
+            popup.classList.add('active');
+        });
+    });
+
+    const updateImage = (i) => {
+        let path = images[i].src;
+        largeImage.src = path;
+        imageName.innerHTML = path.split('/').pop();
+        imageIndex.innerHTML = `0${i+1}`;
+        index = i;
+    };
+
+    closeBtn.addEventListener('click', () => {
+        popup.classList.remove('active');
+    });
+
+    
+        
+</script>
+
 
 </body>
 
