@@ -25,10 +25,8 @@ $linha = mysqli_fetch_array($resultado);
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;900&display=swap" rel="stylesheet">
 
     <!-- Estilos do Slick Carousel -->
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
 
     <style>
         /* Header com fundo branco ao rolar */
@@ -36,7 +34,6 @@ $linha = mysqli_fetch_array($resultado);
             background-color: white;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f9f9f9;
@@ -86,6 +83,11 @@ $linha = mysqli_fetch_array($resultado);
             font-size: 22px;
         }
 
+        h4 {
+            margin-bottom: 10px;
+            font-size: 10px;
+        }
+
         .price-container {
             margin: 20px 0;
             font-size: 20px;
@@ -118,13 +120,29 @@ $linha = mysqli_fetch_array($resultado);
         .buy-button:hover {
             background-color: #4169e1;
         }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
     </style>
 </head>
 
 <body>
     <header>
-        <a href="/SiteViagens/index.html"
-            style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
+        <a href="/SiteViagens/index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
         <ul class="navbar">
             <li><a href="/SiteViagens/index.html#home">Hospedagem</a></li>
             <li><a href="#package">Passagens</a></li>
@@ -132,51 +150,218 @@ $linha = mysqli_fetch_array($resultado);
             <li><a href="#contact">Pacotes</a></li>
         </ul>
     </header>
-
+    <br><br><br><br><br>
     <main>
         <div class="carousel-container">
             <div class="artigo-carousel">
-                <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto1']); ?>"
-                        alt="Foto 1"></div>
+                <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto1']); ?>" alt="Foto 1"></div>
                 <?php if (!empty($linha['foto2'])): ?>
-                    <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto2']); ?>"
-                            alt="Foto 2"></div>
+                    <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto2']); ?>" alt="Foto 2"></div>
                 <?php endif; ?>
                 <?php if (!empty($linha['foto3'])): ?>
-                    <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto3']); ?>"
-                            alt="Foto 3"></div>
+                    <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto3']); ?>" alt="Foto 3"></div>
                 <?php endif; ?>
             </div>
         </div>
         <div class="details-container">
             <h2><?php echo htmlspecialchars($linha['nome']); ?></h2>
-            <div class="price-container">A partir de <?php echo htmlspecialchars($linha['preco_diaria']); ?> € por noite
-            </div>
+            <div class="price-container">A partir de <?php echo htmlspecialchars($linha['preco_diaria']); ?> € por noite</div>
             <div class="description"><?php echo htmlspecialchars($linha['descricao']); ?></div>
-            <div class="description">Classificação: <?php echo htmlspecialchars($linha['classificacao']); ?> estrelas
-            </div>
+            <div class="description">Classificação: <?php echo htmlspecialchars($linha['classificacao']); ?> estrelas</div>
             <div class="description">Quartos disponíveis: <?php echo htmlspecialchars($linha['n_quartos']); ?></div>
             <div class="button-container">
-                <form action="../carrinho/adicionar_ao_carrinho.php" method="post">
-                    <input type="hidden" name="id_hospedagem" value="<?php echo htmlspecialchars($linha['id']); ?>">
-
-                    <input type="hidden" name="return_url" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                <form action="../carrinho/adicionar_ao_carrinho.php" method="post" id="reservaForm">
+                    <input type="hidden" name="id_artigo" value="<?php echo htmlspecialchars($linha['id']); ?>">
                     <input type="hidden" name="tipo_item" value="hospedagem">
+
+                    <div class="form-group">
+                        <label for="data-checkin">Data de início:</label>
+                        <input type="date" id="data-checkin" name="data_checkin" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data-checkout">Data de término:</label>
+                        <input type="date" id="data-checkout" name="data_checkout" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="n_quartos">Número de quartos:</label>
+                        <select id="n_quartos" name="n_quartos" required>
+                            <?php
+                            for ($i = 1; $i <= $linha['n_quartos']; $i++) {
+                                echo "<option value='$i'>$i</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+
                     <input type="submit" value="Adicionar ao carrinho" class="buy-button">
                 </form>
             </div>
         </div>
     </main>
 
+    <!-- Scripts do Slick Carousel -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.artigo-carousel').slick({
+                dots: true,
+                infinite: true,
+                speed: 300,
+                slidesToShow: 1,
+                adaptiveHeight: true
+            });
+        });
+
+        document.getElementById('reservaForm').addEventListener('submit', function (e) {
+            const checkin = new Date(document.getElementById('data-checkin').value);
+            const checkout = new Date(document.getElementById('data-checkout').value);
+            const dailyRate = <?php echo $linha['preco_diaria']; ?>;
+            const numQuartos = document.getElementById('n_quartos').value;
+
+            // Calcular a diferença de dias
+            const timeDifference = checkout.getTime() - checkin.getTime();
+            const days = timeDifference / (1000 * 3600 * 24); // Converter milissegundos em dias
+
+            if (days <= 0) {
+                alert("A data de término deve ser posterior à data de início.");
+                e.preventDefault();
+                return;
+            }
+
+            const total = dailyRate * days * numQuartos;
+
+            // Confirmação para o usuário
+            const confirmMessage = `Você está prestes a adicionar ao carrinho:\n${days} dias de hospedagem, com ${numQuartos} quarto(s).\nTotal: €${total.toFixed(2)}.`;
+            if (!confirm(confirmMessage)) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
+
+<!--Package section-->
+<section class="package" id="package">
+        <div class="title">
+            <h2>Você também pode gostar...</h2>
+        </div>
+        <div class="package-content2">
+            <div class="box">
+                <div class="thum">
+                    <img src="imagens/montefiore.jpg">
+
+                </div>
+
+                <div class="dest-content">
+                    <div class="stars">
+                        <h3 style="color: gray;">Montefiore Hotel</h3>
+                        <h5>Jerusalém | Israel</h5>
+                        <h5>Experimente o melhor da Terra Santa. </h5><br><br>
+
+                    </div>
+                    <div class="stars">
+                        <i class='bx bxs-star'></i></a>
+                        <i class='bx bxs-star'></i></a>
+                        <i class='bx bxs-star'></i></a>
+                        <a href="#">
+                            <h4> Diárias a partir de 250€</h4>
+                        </a><br>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="box">
+                <div class="thum">
+                    <img src="imagens/star_in.jpeg">
+
+                </div>
+
+                <div class="dest-content">
+                    <div class="location">
+                        <h3 style="color: gray;">Star In Porto</h3>
+                        <h5>Porto | Portugal</h5>
+                        <h5>Desfrute a Cidade Invicta </h5><br><br>
+
+                    </div>
+                    <div class="stars">
+                        <a href="#"><i class='bx bxs-star'></i></a>
+                        <a href="#"><i class='bx bxs-star'></i></a>
+                        <a href="#"><i class='bx bxs-star'></i></a>
+                        <a href="#">
+                            <h4> Diária a partir de 67€</h4>
+                        </a><br>
+                    </div>
+                </div>
+            </div>
+            <div class="box">
+                <div class="thum">
+                    <img src="imagens/hilton.jpg">
+
+                </div>
+
+                <div class="dest-content">
+                    <div class="location">
+                        <h3 style="color: gray;">Hilton</h3>
+                        <h5>Rio de Janeiro | Brasil</h5>
+                        <h5>Aproveite a Cidade Maravilhosa</h5><br><br>
+
+                    </div>
+                    <div class="stars">
+                        <a href="#"><i class='bx bxs-star'></i></a>
+                        <a href="#"><i class='bx bxs-star'></i></a>
+                        <a href="#"><i class='bx bxs-star'></i></a>
+                        <a href="#"><i class='bx bxs-star'></i></a>
+                        <a href="#">
+                            <h4> Diária a partir de 250€</h4>
+                        </a><br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <div class="thum">
+                    <img src="imagens/hiad.jpg">
+
+                </div>
+
+                <div class="dest-content">
+                    <div class="location">
+                        <h3 style="color: gray;">Hiad Hadda</h3>
+                        <h5>Marrakech | Marrocos</h5>
+                        <h5>Contemple um autêntico Riad</h5>
+<br>
+                    </div>
+                    <div class="stars">
+                        <a href="#"><i class='bx bxs-star'></i></a>
+                        <a href="#"><i class='bx bxs-star'></i></a>
+                        <a href="#">
+                            <h4> Diária a partir de 40€</h4>
+                        </a><br>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </section>
+
+    <!--Newsletter-->
     <section class="newsletter">
         <div class="news-text">
             <h2>Inscreva-se para receber nossas ofertas</h2>
-            <p>Você receberá e-mails promocionais da BestWay. Para mais informações, consulte as <a href="#">Politica de
-                    privacidade.</a>.</p>
+            <p>
+                Você receberá e-mails promocionais da BestWay. Para mais informações, consulte as <a href="#">Politica
+                    de privacidade.</a>.</p>
         </div>
+
+
         <div class="send">
             <form>
-                <input type="email" placeholder="Insira seu e-mail aqui" required>
+                <input type text="email" placeholder="Insira seu e-mail aqui" required>
                 <input type="submit" value="Quero recebê-las!">
             </form>
         </div>
@@ -187,21 +372,26 @@ $linha = mysqli_fetch_array($resultado);
         <div class="footer">
             <div class="main">
                 <div class="list">
-                    <h4>Minha Conta</h4>
+
+                    <h4> Minha Conta</h4>
                     <ul>
                         <li><a href="#">Minhas Viagens</a></li>
                         <li><a href="public/perfil.php">Meu Perfil</a></li>
                         <li><a href="#">Deletar minha conta</a></li>
+
                     </ul>
                 </div>
+
                 <div class="list">
                     <h4>Suporte</h4>
                     <ul>
                         <li><a href="#">Contatos</a></li>
                         <li><a href="#">Termos & Condições</a></li>
                         <li><a href="#">Politica de privacidade</a></li>
+
                     </ul>
                 </div>
+
                 <div class="list">
                     <h4>Trabalhe conosco</h4>
                     <ul>
@@ -209,15 +399,19 @@ $linha = mysqli_fetch_array($resultado);
                         <li><a href="public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
                     </ul>
                 </div>
+
                 <div class="list">
                     <h4>Connect</h4>
                     <div class="social">
                         <a href="#"><i class='bx bxl-facebook'></i></a>
                         <a href="#"><i class='bx bxl-instagram'></i></a>
+
+                        <a href="#"></a>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="end-text">
             <p>© 2024 BestWay. Todos os direitos reservados.</p>
         </div>
@@ -225,22 +419,30 @@ $linha = mysqli_fetch_array($resultado);
 
     <!--link to js-->
     <script type="text/javascript" src="assets/js/script.js"></script>
-
-    <!-- Script do Slick Carousel -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <!-- Script para mudar a cor do header ao rolar a página -->
     <script>
-        $(document).ready(function () {
-            $('.artigo-carousel').slick({
-                dots: true,
-                infinite: true,
-                speed: 300,
-                slidesToShow: 1,
-                adaptiveHeight: true
-            });
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            header.classList.toggle('scrolled', window.scrollY > 0);
         });
     </script>
 
-</body>
 
+
+<!-- Script do Slick Carousel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.artigo-carousel').slick({
+            dots: true,
+            infinite: true,
+            speed: 300,
+            slidesToShow: 1,
+            adaptiveHeight: true
+        });
+    });
+</script>
+
+</body>
 </html>

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewpoert" content="width=device-width, inicial-scale=1">
     <title>BestWay</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="../../assets/css/style.css">
 
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 
@@ -34,9 +34,9 @@
     </header>
 
     <!--Home section-->
-<section class="home-hotels" id="home">
+<section class="home-pacotes" id="home">
     <div class="home-text">
-        <h3>Os melhores pacotes, estão a um click.</h3>
+        <h3 >Os melhores pacotes, estão a um click.</h3>
         
         <!-- Barra de pesquisa de hotéis -->
         <form class="hotels-search-bar">
@@ -55,62 +55,99 @@
 </section>
 
     <!--container-->
-    <section class="container-hotel">
+    <section class="container-pacotes">
         <div class="text">
             <h2>Pesquisar por tipo </h2>
         </div>
 
         <div class="row-items">
-            <div class="container-box-hotel">
+            <div class="container-box-pacotes">
                 <div class="conteiner-img">
-                    <img src="imagens/apartamento.jpg" style="width: 300px; height: auto;">
+                    <img src="images/1.png" style="width: 300px; height: auto;">
                 </div>
-                <h4> Apartamentos </h4>
+                
                 
             </div>
-            <div class="container-box-hotel">
+            <div class="container-box-pacotes">
                 <div class="conteiner-img">
-                    <img src="imagens/hotel.jpg"  style="width: 300px; height: auto;">
+                    <img src="images/2.png"  style="width: 300px; height: auto;">
                 </div>
-                <h4>hotéis</h4>
-                
-            </div>
-
-            <div class="container-box-hotel">
-                <div class="conteiner-img">
-                    <img src="imagens/hostel.jpg" style="width: 300px; height: auto;">
-                </div>
-                <h4> Hostel</h4>
-                
-            </div>
-
-            <div class="container-box-hotel">
-                <div class="conteiner-img">
-                    <img src="imagens/castelo.jpg" style="width: 300px; height: auto;">
-                     
-                </div>
-                <h4>Castelo</h4>
                
             </div>
 
-            <div class="container-box-hotel">
+            <div class="container-box-pacotes">
                 <div class="conteiner-img">
-                    <img src="imagens/cabana.jpg" style="width: 300px; height: auto;">
-                     
+                    <img src="images/3.png" style="width: 300px; height: auto;">
                 </div>
-                <h4>Cabanas</h4>
-               
+                
+                
             </div>
-            <div class="container-box-hotel">
+
+            <div class="container-box-pacotes">
                 <div class="conteiner-img">
-                    <img src="imagens/resort.jpg" style="width: 300px; height: auto;">
+                    <img src="images/4.png" style="width: 300px; height: auto;">
                      
                 </div>
-                <h4>Resorts</h4>
+                
                
             </div>
 
+            <div class="container-box-pacotes">
+                <div class="conteiner-img">
+                    <img src="images/5.png" style="width: 300px; height: auto;">
+                     
+                </div>
+                
+               
+            </div>
+            <div class="container-box-pacotes">
+                <div class="conteiner-img">
+                    <img src="images/6.png" style="width: 300px; height: auto;">
+                     
+                </div>
+                
+               
+            </div>
+            <div class="container-box-pacotes">
+                <div class="conteiner-img">
+                    <img src="images/7.png" style="width: 300px; height: auto;">
+                     
+                </div>
+                
+               
+            </div>
+            <div class="container-box-pacotes">
+                <div class="conteiner-img">
+                    <img src="images/8.png" style="width: 300px; height: auto;">
+                     
+                </div>
+               
+            </div>
+            <div class="container-box-pacotes">
+                <div class="conteiner-img">
+                    <img src="images/9.png" style="width: 300px; height: auto;">
+                     
+                </div>
+            </div>
 
+            <div class="container-box-pacotes">
+                <div class="conteiner-img">
+                    <img src="images/10.png" style="width: 300px; height: auto;">
+                     
+                </div>
+            </div>
+            <div class="container-box-pacotes">
+                <div class="conteiner-img">
+                    <img src="images/11.png" style="width: 300px; height: auto;">
+                     
+                </div>
+            </div>
+            <div class="container-box-pacotes">
+                <div class="conteiner-img">
+                    <img src="images/12.png" style="width: 300px; height: auto;">
+                     
+                </div>
+            </div>
 
         </div>
     </section>
@@ -123,35 +160,47 @@
             <button class="prev">&lt;</button>
             <div class="destinos-container">
                 <div class="destino-card">
-                    <img src="img1.jpg" alt="Imagem 1">
+                    <img src="images/1.png" alt="Imagem 1">
                     <div class="destino-nome">Pacote 1</div>
                 </div>
                 <div class="destino-card">
-                    <img src="img2.jpg" alt="Imagem 2">
+                    <img src="images/2.png" alt="Imagem 2">
                     <div class="destino-nome">Pacote 2</div>
                 </div>
                 <div class="destino-card">
-                    <img src="img3.jpg" alt="Imagem 3">
+                    <img src="images/3.png" alt="Imagem 3">
                     <div class="destino-nome">Pacote 3</div>
                 </div>
                 <div class="destino-card">
-                    <img src="img3.jpg" alt="Imagem 3">
+                    <img src="images/4.png" alt="Imagem 4">
                     <div class="destino-nome">Pacote 3</div>
                 </div>
                 <div class="destino-card">
-                    <img src="img3.jpg" alt="Imagem 3">
+                    <img src="images/5.png" alt="Imagem 5">
                     <div class="destino-nome">Pacote 3</div>
                 </div>
                 <div class="destino-card">
-                    <img src="img3.jpg" alt="Imagem 3">
+                    <img src="images/6.png" alt="Imagem 6.">
                     <div class="destino-nome">Pacote 3</div>
                 </div>
                 <div class="destino-card">
-                    <img src="img3.jpg" alt="Imagem 3">
+                    <img src="images/7.png" alt="Imagem 7">
                     <div class="destino-nome">Pacote 3</div>
                 </div>
                 <div class="destino-card">
-                    <img src="img3.jpg" alt="Imagem 3">
+                    <img src="images/8.png" alt="Imagem 8">
+                    <div class="destino-nome">Pacote 8</div>
+                </div>
+                <div class="destino-card">
+                    <img src="images/9.png" alt="Imagem 9">
+                    <div class="destino-nome">Pacote 3</div>
+                </div>
+                <div class="destino-card">
+                    <img src="images/10.png" alt="Imagem 10">
+                    <div class="destino-nome">Pacote 3</div>
+                </div>
+                <div class="destino-card">
+                    <img src="images/11.png" alt="Imagem 11">
                     <div class="destino-nome">Pacote 3</div>
                 </div>
                 <!-- Adicione mais cartões conforme necessário -->
@@ -237,8 +286,8 @@ Você receberá e-mails promocionais da BestWay. Para mais informações, consul
     </section>
 
     <!--link to js-->
-    <script type="text/javascript" src="script.js"></script>
-    <script type="text/javascript" src="scriptpacotes.js"></script>
+    <script type="text/javascript" src="assets/js/script.js"></script>
+    <script type="text/javascript" src="assests/js/scriptpacotes.js"></script>
     
 
 </body>
