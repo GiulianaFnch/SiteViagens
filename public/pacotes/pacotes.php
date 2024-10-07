@@ -38,7 +38,21 @@
     <div class="home-text">
         <h3 >Os melhores pacotes, estão a um click.</h3>
         
-       
+        <!-- Barra de pesquisa de hotéis -->
+        <form class="hotels-search-bar">
+            <div class="hotels-input-container">
+                <input type="text" placeholder="Para onde vai?" aria-label="Destino" />
+            </div>
+            <div class="hotels-input-container">
+                <input type="text" placeholder="Data de check-in - Data de check-out" aria-label="Datas de check-in e check-out" />
+            </div>
+            <div class="hotels-input-container">
+                <input type="text" placeholder="2 adultos · 0 criança · 1 quarto" aria-label="Pessoas e quarto" />
+            </div>
+            <button class="hotels-search-button" type="submit">Pesquisar</button>
+        </form>
+    </div>
+</section>
 
     <!--container-->
     <section class="container-pacotes">
