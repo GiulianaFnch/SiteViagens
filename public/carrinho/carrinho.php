@@ -11,10 +11,27 @@ if ($ligacao->connect_error) {
 }
 
 // Consulta para obter itens do carrinho
-$stmt = $ligacao->prepare("SELECT c.id, a.titulo, a.preco, c.quantidade, c.tipo_item, (a.preco * c.quantidade) AS total
-                           FROM t_carrinho c
-                           JOIN t_artigo a ON c.id_artigo = a.id
-                           WHERE c.id_user = ?");
+$stmt = $ligacao->prepare("
+    SELECT c.id, 
+           CASE 
+               WHEN c.tipo_item = 'atividade' THEN a.titulo 
+               WHEN c.tipo_item = 'hospedagem' THEN h.nome 
+           END AS titulo, 
+           CASE 
+               WHEN c.tipo_item = 'atividade' THEN a.preco 
+               WHEN c.tipo_item = 'hospedagem' THEN h.preco_diaria * h.n_quartos 
+           END AS preco, 
+           c.quantidade, 
+           c.tipo_item, 
+           CASE 
+               WHEN c.tipo_item = 'atividade' THEN (a.preco * c.quantidade) 
+               WHEN c.tipo_item = 'hospedagem' THEN (h.preco_diaria * c.quantidade * h.n_quartos) 
+           END AS total
+    FROM t_carrinho c
+    LEFT JOIN t_artigo a ON c.id_artigo = a.id AND c.tipo_item = 'atividade'
+    LEFT JOIN t_hospedagem h ON c.id_artigo = h.id AND c.tipo_item = 'hospedagem'
+    WHERE c.id_user = ?
+");
 if (!$stmt) {
     die("Erro na preparação da consulta: " . $ligacao->error);
 }

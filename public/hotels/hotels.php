@@ -40,15 +40,20 @@
         <h1>Seu próximo cantinho para relaxar está a um clique!</h1>
         
         <!-- Barra de pesquisa de hotéis -->
-        <form class="hotels-search-bar">
+        <form class="hotels-search-bar" action="pesquisa_hospedagem.php" method="get">
             <div class="hotels-input-container">
-                <input type="text" placeholder="Para onde vai?" aria-label="Destino" />
+                <input type="text" placeholder="Para onde vai?" name="localizacao" />
             </div>
             <div class="hotels-input-container">
-                <input type="text" placeholder="Data de check-in - Data de check-out" aria-label="Datas de check-in e check-out" />
+                <input type="date"
+                name="data_inicio">
             </div>
             <div class="hotels-input-container">
-                <input type="text" placeholder="2 adultos · 0 criança · 1 quarto" aria-label="Pessoas e quarto" />
+                <input type="date"
+                name="data_fim">
+            </div>
+            <div class="hotels-input-container">
+                <input type="number" placeholder="Nº quartos" name="quartos"/>
             </div>
             <button class="hotels-search-button" type="submit">Pesquisar</button>
         </form>

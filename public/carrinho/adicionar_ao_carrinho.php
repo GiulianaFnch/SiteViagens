@@ -12,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;900&display=swap" rel="stylesheet">
 
     <style>
-        /* Estilos para garantir a estrutura da página */
         body {
             margin: 0;
             padding: 0;
@@ -25,7 +24,6 @@
             background-color: #f9f9f9;
         }
 
-        /* Conteúdo principal */
         .message-container {
             text-align: center;
             flex-grow: 1;
@@ -49,7 +47,6 @@
             background-color: #0056b3;
         }
 
-        /* Estilo do footer fixo na parte inferior */
         footer {
             width: 100%;
             background-color: #6495ed;
@@ -86,10 +83,16 @@ include "../../config/liga_bd.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_user = $_SESSION['id'];
-    $id_artigo = $_POST['id_artigo']; 
     $tipo_item = isset($_POST['tipo_item']) ? $_POST['tipo_item'] : 'atividade'; // Verifica se o tipo_item está definido
     $quantidade = 1; // Quantidade fixa, pode ser alterada se desejado
     $return_url = $_POST['return_url']; // URL da página anterior
+
+    // Verifica se o tipo_item é hospedagem ou atividade e define o id_artigo correspondente
+    if ($tipo_item == 'hospedagem') {
+        $id_artigo = $_POST['id_hospedagem'];
+    } else {
+        $id_artigo = $_POST['id_artigo'];
+    }
 
     // Verifica se o item já está no carrinho
     $stmt = $ligacao->prepare("SELECT * FROM t_carrinho WHERE id_user = ? AND id_artigo = ? AND tipo_item = ?");
@@ -118,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt = $ligacao->prepare("SELECT SUM(a.preco * c.quantidade) AS total
                                        FROM t_carrinho c
                                        JOIN t_artigo a ON c.id_artigo = a.id
-                                       WHERE c.id_user = ? AND c.tipo_item = 'atividade'");
+                                       WHERE c.id_user = ?");
         }
         $stmt->bind_param("i", $id_user);
         $stmt->execute();
@@ -143,7 +146,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 </body>
 
-<!-- Footer fixo -->
 <footer>
     <p>© 2024 BestWay. Todos os direitos reservados.</p>
 </footer>

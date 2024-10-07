@@ -25,8 +25,10 @@ $linha = mysqli_fetch_array($resultado);
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;900&display=swap" rel="stylesheet">
 
     <!-- Estilos do Slick Carousel -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
 
     <style>
         /* Header com fundo branco ao rolar */
@@ -34,6 +36,7 @@ $linha = mysqli_fetch_array($resultado);
             background-color: white;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f9f9f9;
@@ -120,7 +123,8 @@ $linha = mysqli_fetch_array($resultado);
 
 <body>
     <header>
-        <a href="/SiteViagens/index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
+        <a href="/SiteViagens/index.html"
+            style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
         <ul class="navbar">
             <li><a href="/SiteViagens/index.html#home">Hospedagem</a></li>
             <li><a href="#package">Passagens</a></li>
@@ -132,24 +136,31 @@ $linha = mysqli_fetch_array($resultado);
     <main>
         <div class="carousel-container">
             <div class="artigo-carousel">
-                <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto1']); ?>" alt="Foto 1"></div>
+                <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto1']); ?>"
+                        alt="Foto 1"></div>
                 <?php if (!empty($linha['foto2'])): ?>
-                    <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto2']); ?>" alt="Foto 2"></div>
+                    <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto2']); ?>"
+                            alt="Foto 2"></div>
                 <?php endif; ?>
                 <?php if (!empty($linha['foto3'])): ?>
-                    <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto3']); ?>" alt="Foto 3"></div>
+                    <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto3']); ?>"
+                            alt="Foto 3"></div>
                 <?php endif; ?>
             </div>
         </div>
         <div class="details-container">
             <h2><?php echo htmlspecialchars($linha['nome']); ?></h2>
-            <div class="price-container">A partir de <?php echo htmlspecialchars($linha['preco_diaria']); ?> € por noite</div>
+            <div class="price-container">A partir de <?php echo htmlspecialchars($linha['preco_diaria']); ?> € por noite
+            </div>
             <div class="description"><?php echo htmlspecialchars($linha['descricao']); ?></div>
-            <div class="description">Classificação: <?php echo htmlspecialchars($linha['classificacao']); ?> estrelas</div>
+            <div class="description">Classificação: <?php echo htmlspecialchars($linha['classificacao']); ?> estrelas
+            </div>
             <div class="description">Quartos disponíveis: <?php echo htmlspecialchars($linha['n_quartos']); ?></div>
             <div class="button-container">
                 <form action="../carrinho/adicionar_ao_carrinho.php" method="post">
-                    <input type="hidden" name="id_artigo" value="<?php echo htmlspecialchars($linha['id']); ?>">
+                    <input type="hidden" name="id_hospedagem" value="<?php echo htmlspecialchars($linha['id']); ?>">
+
+                    <input type="hidden" name="return_url" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
                     <input type="hidden" name="tipo_item" value="hospedagem">
                     <input type="submit" value="Adicionar ao carrinho" class="buy-button">
                 </form>
@@ -160,7 +171,8 @@ $linha = mysqli_fetch_array($resultado);
     <section class="newsletter">
         <div class="news-text">
             <h2>Inscreva-se para receber nossas ofertas</h2>
-            <p>Você receberá e-mails promocionais da BestWay. Para mais informações, consulte as <a href="#">Politica de privacidade.</a>.</p>
+            <p>Você receberá e-mails promocionais da BestWay. Para mais informações, consulte as <a href="#">Politica de
+                    privacidade.</a>.</p>
         </div>
         <div class="send">
             <form>
@@ -218,7 +230,7 @@ $linha = mysqli_fetch_array($resultado);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.artigo-carousel').slick({
                 dots: true,
                 infinite: true,
@@ -230,4 +242,5 @@ $linha = mysqli_fetch_array($resultado);
     </script>
 
 </body>
+
 </html>
