@@ -187,6 +187,17 @@ section {
   grid-template-columns: repeat(1, 1fr);
   align-items: center;
 }
+.listar-hospedagens {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: url(../../public/hotels/imagens/hotel1.jpg);
+  background-size: cover;
+  background-position: center;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  align-items: center;
+}
 /* aqui fica o texto grande em cima da foto */
 .home-text h1 {
   font-size: var(--big-font);
