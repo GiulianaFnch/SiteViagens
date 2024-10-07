@@ -1,19 +1,116 @@
 <?php
-include 'valida_vendedor.php';
 include '../../config/liga_bd.php';
 
-// Obter o ID do usuário logado
-$id_user_logado = $_SESSION['id'];
+// Verifica se a sessão está iniciada e obtém o ID do usuário
+session_start();
+if (!isset($_SESSION['id'])) {
+    die("Usuário não está logado.");
+}
 
-// Consulta para obter os artigos do usuário logado
-$sql = "SELECT * 
-        FROM t_hospedagem 
-        WHERE id_user = ?";
+$vendedor_id = $_SESSION['id']; // ID do vendedor logado
+
+// Obter as hospedagens do usuário
+$sql = "SELECT * FROM t_hospedagem WHERE id_user = ?";
 $stmt = $ligacao->prepare($sql);
-$stmt->bind_param("i", $id_user_logado);
+$stmt->bind_param("i", $vendedor_id);
 $stmt->execute();
-$result = $stmt->get_result();
+$result = $stmt->get_result(); // O resultado é atribuído à variável $result
 $stmt->close();
+
+// Processar a atualização de uma hospedagem
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit'])) {
+    $id = $_POST['reserva_id'];
+
+    // Obter campos enviados do formulário
+    $nome = !empty($_POST['nome']) ? $_POST['nome'] : null;
+    $descricao = !empty($_POST['descricao']) ? $_POST['descricao'] : null;
+    $n_quartos = !empty($_POST['n_quartos']) ? $_POST['n_quartos'] : null;
+    $preco_diaria = !empty($_POST['preco_diaria']) ? $_POST['preco_diaria'] : null;
+    $local = !empty($_POST['local']) ? $_POST['local'] : null;
+    $checkin = !empty($_POST['horario_checkin']) ? $_POST['horario_checkin'] : null;
+    $checkout = !empty($_POST['horario_checkout']) ? $_POST['horario_checkout'] : null;
+    $data_inicio = !empty($_POST['data_inicio']) ? $_POST['data_inicio'] : null;
+    $data_fim = !empty($_POST['data_fim']) ? $_POST['data_fim'] : null;
+
+    // Criar a query base para atualização
+    $sql = "UPDATE t_hospedagem SET ";
+    $fields = [];
+    $params = [];
+
+    // Adiciona apenas os campos que não estão vazios
+    if ($nome !== null) {
+        $fields[] = "nome = ?";
+        $params[] = $nome;
+    }
+    if ($descricao !== null) {
+        $fields[] = "descricao = ?";
+        $params[] = $descricao;
+    }
+    if ($n_quartos !== null) {
+        $fields[] = "n_quartos = ?";
+        $params[] = $n_quartos;
+    }
+    if ($preco_diaria !== null) {
+        $fields[] = "preco_diaria = ?";
+        $params[] = $preco_diaria;
+    }
+    if ($local !== null) {
+        $fields[] = "localizacao = ?";
+        $params[] = $local;
+    }
+    if ($checkin !== null) {
+        $fields[] = "horario_checkin = ?";
+        $params[] = $checkin;
+    }
+    if ($checkout !== null) {
+        $fields[] = "horario_checkout = ?";
+        $params[] = $checkout;
+    }
+    if ($data_inicio !== null) {
+        $fields[] = "data_inicio = ?";
+        $params[] = $data_inicio;
+    }
+    if ($data_fim !== null) {
+        $fields[] = "data_fim = ?";
+        $params[] = $data_fim;
+    }
+
+    // Verifica se há campos para atualizar
+    if (!empty($fields)) {
+        $sql .= implode(", ", $fields) . " WHERE id = ?";
+        $params[] = $id;
+
+        $stmt = $ligacao->prepare($sql);
+        $stmt->bind_param(str_repeat("s", count($params) - 1) . "i", ...$params); // Último parâmetro é o ID (inteiro)
+        
+        if ($stmt->execute()) {
+            echo "Hospedagem atualizada com sucesso!";
+        } else {
+            echo "Erro ao atualizar: " . $stmt->error;
+        }
+
+        $stmt->close();
+    } else {
+        echo "Nenhuma alteração feita.";
+    }
+}
+
+// Excluir hospedagem
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
+    $id = $_POST['id'];
+
+    $sql = "DELETE FROM t_hospedagem WHERE id = ?";
+    $stmt = $ligacao->prepare($sql);
+    $stmt->bind_param("i", $id);
+    
+    if ($stmt->execute()) {
+        echo "Hospedagem excluída com sucesso!";
+    } else {
+        echo "Erro ao excluir: " . $stmt->error;
+    }
+
+    $stmt->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -185,27 +282,38 @@ $stmt->close();
                             </tr>
                         </thead>
                         <tbody>
+                        <?php if ($result->num_rows > 0): ?>
                             <?php while ($row = $result->fetch_assoc()): ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($row['nome']); ?></td>
-                                   
                                     <td><?php echo htmlspecialchars($row['n_quartos']); ?></td>
                                     <td><?php echo htmlspecialchars($row['preco_diaria']); ?></td>
                                     <td><?php echo htmlspecialchars($row['localizacao']); ?></td>
                                     <td><?php echo htmlspecialchars($row['horario_checkin']); ?></td>
                                     <td><?php echo htmlspecialchars($row['horario_checkout']); ?></td>
-                      
                                     <td class="action-btns">
-                                        <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#editModal" data-reserva-id="<?php echo $row['id']; ?>" data-titulo="<?php echo htmlspecialchars($row['titulo']); ?>" data-descricao="<?php echo htmlspecialchars($row['descricao']); ?>" data-preco="<?php echo htmlspecialchars($row['preco']); ?>" data-localizacao="<?php echo htmlspecialchars($row['localizacao']); ?>" data-data_inicio="<?php echo htmlspecialchars($row['data_inicio']); ?>" data-data_fim="<?php echo htmlspecialchars($row['data_fim']); ?>">
+                                        <!-- Botões de ação -->
+                                        <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#editModal"
+                                            data-reserva-id="<?php echo $row['id']; ?>"
+                                            data-nome="<?php echo htmlspecialchars($row['nome']); ?>"
+                                            data-n_quartos="<?php echo htmlspecialchars($row['n_quartos']); ?>"
+                                            data-preco_diaria="<?php echo htmlspecialchars($row['preco_diaria']); ?>"
+                                            data-localizacao="<?php echo htmlspecialchars($row['localizacao']); ?>"
+                                            data-horario_checkin="<?php echo htmlspecialchars($row['horario_checkin']); ?>"
+                                            data-horario_checkout="<?php echo htmlspecialchars($row['horario_checkout']); ?>">
                                             <i class="bi bi-pencil"></i> Editar
                                         </button>
-                                        <button type="button" class="btn btn-delete" data-toggle="modal" data-target="#confirmDeleteModal" data-reserva-id="<?php echo $row['id']; ?>">
+                                        <button type="button" class="btn btn-delete" data-toggle="modal" data-target="#confirmDeleteModal"
+                                            data-reserva-id="<?php echo $row['id']; ?>">
                                             <i class="bi bi-trash"></i> Excluir
                                         </button>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>
-                        </tbody>
+                        <?php else: ?>
+                            <tr><td colspan="7">Nenhuma hospedagem encontrada.</td></tr>
+                        <?php endif; ?>
+                    </tbody>
                     </table>
                 </div>
             </div>
@@ -227,10 +335,10 @@ $stmt->close();
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <form id="deleteForm" method="post" action="excluir_tour.php">
-                        <input type="hidden" name="id" id="reservaId">
-                        <button type="submit" class="btn btn-delete">Excluir</button>
-                    </form>
+                    <form method="POST" action="excluir_tour.php" style="display:inline;">
+                    <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                    <button type="submit" name="delete" class="btn btn-delete">Excluir</button>
+                </form>
                 </div>
             </div>
         </div>
@@ -247,43 +355,44 @@ $stmt->close();
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="editForm" method="post" action="editar_tour.php">
+                    <form id="editForm" method="post" action="gerir_hospedagem.php">
                         <input type="hidden" name="reserva_id" id="editReservaId">
                         <div class="form-group">
-                            <label for="nome">Título</label>
-                            <input type="text" class="form-control" name="nome" id="editNome" required>
+                       <label for="nome">Título</label>
+                     <input type="text" class="form-control" name="nome" id="editNome">
                         </div>
                         <div class="form-group">
                             <label for="descricao">Descrição</label>
-                            <input type="text" class="form-control" name="descricao" id="editDescricao" required>
+                            <input type="text" class="form-control" name="descricao" id="editDescricao">
                         </div>
                         <div class="form-group">
                             <label for="quartos">Nº Quartos</label>
-                            <input type="number" class="form-control" name="n_quartos" id="editQuartos" required>
+                            <input type="number" class="form-control" name="n_quartos" id="editQuartos">
                         </div>
                         <div class="form-group">
                             <label for="preco">Diária</label>
-                            <input type="number" class="form-control" name="preco_diaria" id="editPreco" required>
+                            <input type="number" class="form-control" name="preco_diaria" id="editPreco">
                         </div>
                         <div class="form-group">
                             <label for="local">Local</label>
-                            <input type="text" class="form-control" name="local" id="editLocal" required>
+                            <input type="text" class="form-control" name="local" id="editLocal" >
                         </div>
                         <div class="form-group">
                             <label for="horario_checkin">Check In</label>
-                            <input type="number" class="form-control" name="horario_checkin" id="editCheckIn" required>
+                            <input type="number" class="form-control" name="horario_checkin" id="editCheckIn" >
                         </div>
                         <div class="form-group">
-                            <label for="horario_checkout">Check Out</label>
-                            <input type="number" class="form-control" name="horario_checkin" id="editCheckOut" required>
+                        <label for="horario_checkout">Check Out</label>
+                        <input type="number" class="form-control" name="horario_checkout" id="editCheckOut" >
                         </div>
+
                         <div class="form-group">
                             <label for="data_inicio">Data Início</label>
-                            <input type="date" class="form-control" name="data_inicio" id="editDataInicio" required>
+                            <input type="date" class="form-control" name="data_inicio" id="editDataInicio" >
                         </div>
                         <div class="form-group">
                             <label for="data_fim">Data Fim</label>
-                            <input type="date" class="form-control" name="data_fim" id="editDataFim" required>
+                            <input type="date" class="form-control" name="data_fim" id="editDataFim" >
                         </div>
                         <button type="submit" name="edit" class="btn btn-success">Salvar Alterações</button>
                     </form>
@@ -306,23 +415,23 @@ $stmt->close();
 
         // Configura os dados do passeio no modal de edição
         $('#editModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var passeioId = button.data('reserva-id');
-            var titulo = button.data('titulo');
-            var descricao = button.data('descricao');
-            var preco = button.data('preco');
+            var button = $(event.relatedTarget); 
+            var id = button.data('reserva-id');
+            var nome = button.data('nome');
+            var n_quartos = button.data('n_quartos');
+            var preco_diaria = button.data('preco_diaria');
             var localizacao = button.data('localizacao');
-            var dataInicio = button.data('data_inicio');
-            var dataFim = button.data('data_fim');
+            var horario_checkin = button.data('horario_checkin');
+            var horario_checkout = button.data('horario_checkout');
 
             var modal = $(this);
-            modal.find('#editReservaId').val(passeioId);
-            modal.find('#editTitulo').val(titulo);
-            modal.find('#editDescricao').val(descricao);
-            modal.find('#editPreco').val(preco);
+            modal.find('#editReservaId').val(id);
+            modal.find('#editNome').val(nome);
+            modal.find('#editQuartos').val(n_quartos);
+            modal.find('#editPreco').val(preco_diaria);
             modal.find('#editLocal').val(localizacao);
-            modal.find('#editDataInicio').val(dataInicio);
-            modal.find('#editDataFim').val(dataFim);
+            modal.find('#editCheckIn').val(horario_checkin);
+            modal.find('#editCheckOut').val(horario_checkout);
         });
     </script>
 
