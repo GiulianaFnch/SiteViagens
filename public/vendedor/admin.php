@@ -254,14 +254,16 @@ mysqli_close($ligacao);
                             <div class="media align-items-center mb-3">
                             <img src="<?php echo $linha['foto'] ? '../../assets/images/pics/' . htmlspecialchars($linha['foto']) : 'https://bootdey.com/img/Content/avatar/avatar1.png'; ?>"
                             alt="avatar" class="rounded-circle mr-3 image" style="width: 80px;">
-                                <div class="media-body">
-                                    <label class="btn btn-outline-primary rounded-pill">
-                                        Upload Nova Foto
-                                        <input type="file" name="ficheiro" class="account-settings-fileinput"
-                                            accept=".jpg, .jpeg, .png, .gif">
-                                    </label>
-                                    <div class="small text-muted mt-1">Permitido JPG, GIF ou PNG. Tamanho máximo de
-                                        800K.</div>
+                            <div class="media-body">
+                                         <!-- Botão de upload de foto igual ao do perfil.php -->
+                                            <label class="btn btn-outline-primary rounded-pill">
+                                                Upload Nova Foto
+                                                <input type="file" name="ficheiro" class="account-settings-fileinput"
+                                                    accept=".jpg, .jpeg, .png, .gif" style="display: none;">
+                                            </label>
+                                            <div class="small text-muted mt-1">
+                                                Permitido JPG, GIF ou PNG. Tamanho máximo de 800K.
+                                      </div>
                                 </div>
                             </div>
 
