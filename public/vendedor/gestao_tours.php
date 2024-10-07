@@ -155,10 +155,11 @@ $stmt->close();
         </ul>
     </header>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 menu-container">
-            <nav class="menu">
+    <div class="container light-style flex-grow-1 container-p-y">
+        <div class="card shadow-sm rounded-lg">
+            <div class="row no-gutters">
+                <div class="col-md-3 p-3 bg-light rounded-left menu-container">
+                    <nav class="menu">
                         <a class="menu-item" style="color: #3A506B"><strong>Painel de Vendedor</strong></a>
                         <a class="menu-item" href="admin.php" onclick="showContent('profile');"><i class="bi bi-person-circle"></i> Editar Perfil</a>
                         <a class="menu-item" href="vender_opcoes.php"><i class="bi bi-bag"></i> Vender</a>
@@ -169,7 +170,8 @@ $stmt->close();
                     </nav>
             </div>
 
-            <div class="col-md-9 p-4">
+            <div class="col-md-9">
+                    <div class="tab-content p-4">
                 <h2>Gerenciar Passeios</h2>
                 <div class="table-responsive">
                     <table class="table table-striped">
@@ -277,6 +279,9 @@ $stmt->close();
             </div>
         </div>
     </div>
+        </div>
+    </div>
+    
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
