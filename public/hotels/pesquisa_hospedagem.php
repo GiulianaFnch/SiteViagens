@@ -5,8 +5,9 @@ include "../../config/liga_bd.php";
 // Evitar a injeção de SQL
 $stmt = $ligacao->prepare("SELECT * FROM t_hospedagem WHERE localizacao LIKE ? AND data_inicio <= ? AND data_fim >= ? AND n_quartos > 0");
 $localizacao = "%" . $_GET['localizacao'] . "%";
-$data = $_GET['data'];
-$stmt->bind_param("sss", $localizacao, $data, $data);
+$data_inicio = $_GET['data_inicio'];
+$data_fim = $_GET['data_fim'];
+$stmt->bind_param("sss", $localizacao, $data_inicio, $data_fim);
 $stmt->execute();
 $resultado = $stmt->get_result();
 ?>
@@ -163,7 +164,8 @@ $resultado = $stmt->get_result();
         <form action="pesquisa_hospedagem.php" method="get">
             <!-- Preserva os valores de localização e data nos campos de pesquisa -->
             <input type="text" placeholder="Para onde?" name="localizacao" value="<?php echo htmlspecialchars($_GET['localizacao'] ?? ''); ?>" required>
-            <input type="date" placeholder="Selecione as datas" name="data" value="<?php echo htmlspecialchars($_GET['data'] ?? ''); ?>" required>
+            <input type="date" placeholder="Data de Início" name="data_inicio" value="<?php echo htmlspecialchars($_GET['data_inicio'] ?? ''); ?>" required>
+            <input type="date" placeholder="Data de Fim" name="data_fim" value="<?php echo htmlspecialchars($_GET['data_fim'] ?? ''); ?>" required>
             <button style="color: grey;" type="submit">Pesquisar</button>
         </form>
     </section>
