@@ -170,7 +170,7 @@ header a, header .logo {
 <section class="container">
     <div class="text">
         <center>
-            <h2>Atividades mais procuradas.</h2>
+            <h1>Atividades mais procuradas.</h1>
         </center>
     </div>
 </section>
