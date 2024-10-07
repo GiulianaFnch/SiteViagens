@@ -167,8 +167,16 @@ $linha = mysqli_fetch_array($resultado);
             <h2><?php echo htmlspecialchars($linha['nome']); ?></h2>
             <div class="price-container">A partir de <?php echo htmlspecialchars($linha['preco_diaria']); ?> € por noite</div>
             <div class="description"><?php echo htmlspecialchars($linha['descricao']); ?></div>
+            <br>
             <div class="description">Classificação: <?php echo htmlspecialchars($linha['classificacao']); ?> estrelas</div>
+            <br>
             <div class="description">Quartos disponíveis: <?php echo htmlspecialchars($linha['n_quartos']); ?></div>
+            <br>
+            <div class="description">Localização: <?php echo htmlspecialchars($linha['localizacao']); ?> </div>
+            <br>
+            <div class="description">Horário Check-in: <?php echo htmlspecialchars($linha['horario_checkin']); ?> </div>
+            <br>
+            <div class="description">Horário Check-out: <?php echo htmlspecialchars($linha['horario_checkout']); ?> </div>
             <div class="button-container">
                 <form action="../carrinho/adicionar_ao_carrinho.php" method="post" id="reservaForm">
                     <input type="hidden" name="id_artigo" value="<?php echo htmlspecialchars($linha['id']); ?>">
