@@ -206,13 +206,6 @@ $resultado = $stmt->get_result();
             echo '                <input type="hidden" name="id_hospedagem" value="' . htmlspecialchars($linha['id']) . '">';
             echo '                <input type="submit" value="Ver Detalhes" class="btn-ver-mais">';
             echo '            </form>';
-
-            echo '            <form action="../carrinho/adicionar_ao_carrinho.php" method="post">';
-            echo '                <input type="hidden" name="id_hospedagem" value="' . htmlspecialchars($linha['id']) . '">';
-            echo '                <input type="hidden" name="tipo_item" value="hospedagem">';
-            echo '                <input type="hidden" name="return_url" value="' . htmlspecialchars($_SERVER['REQUEST_URI']) . '">';
-            echo '                <input type="submit" value="Adicionar ao Carrinho" class="btn-comprar">';
-            echo '            </form>';
             echo '        </div>';
             echo '    </div>';
             echo '</div>';

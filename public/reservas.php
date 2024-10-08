@@ -25,15 +25,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])) {
     exit;
 }
 
+// Aqui, garantimos que estamos pegando o user_id do vendedor do t_artigo
 $sql = "SELECT r.id, r.item_id, r.tipo_reserva, r.data_reserva, r.quantidade, 
+        r.user_id, 
+        r.user_id AS vendedor_id, -- Este é o ID do vendedor que vem da tabela t_artigo
         CASE 
             WHEN r.tipo_reserva = 'atividade' THEN (SELECT titulo FROM t_artigo WHERE id = r.item_id)
-            /*WHEN r.tipo_reserva = 'voo' THEN (SELECT titulo FROM t_voos WHERE id = r.item_id)
-            WHEN r.tipo_reserva = 'hospedagem' THEN (SELECT titulo FROM t_hospedagem WHERE id = r.item_id)
-            WHEN r.tipo_reserva = 'pacote' THEN (SELECT titulo FROM t_pacotes WHERE id = r.item_id)*/
+            /* Quando necessário, adicione as outras reservas aqui */
         END AS titulo
         FROM t_reservas r 
-        WHERE r.user_id = ?";
+        JOIN t_artigo a ON a.id = r.item_id
+        WHERE r.user_id = ?"; // Este user_id aqui é do usuário que está logado
+
 $stmt = $ligacao->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -54,7 +57,7 @@ $result = $stmt->get_result();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-    <style>
+     <style>
          header{
         position: fixed;
         top: 0;
@@ -159,13 +162,11 @@ $result = $stmt->get_result();
     <a href="../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
     <div class="bx bx-menu" id="menu-icon"></div>
     <ul class="navbar">
-    <li><a href="/SiteViagens/public/hotels/hotels.php" style="color: black;" >Hospedagem</a></li>
-            <li><a href="#package" style="color: black;" >Passagens</a></li>
-            <li><a href="/SiteViagens/public/tours/tours.php" style="color: black; ">Tours</a></li>
-            <li><a href="#contact" style="color: black;">Pacotes</a></li>
-            <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
-
-
+        <li><a href="/SiteViagens/public/hotels/hotels.php" style="color: black;">Hospedagem</a></li>
+        <li><a href="#package" style="color: black;">Passagens</a></li>
+        <li><a href="/SiteViagens/public/tours/tours.php" style="color: black;">Tours</a></li>
+        <li><a href="#contact" style="color: black;">Pacotes</a></li>
+        <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
     </ul>
 </header>
 
@@ -201,19 +202,20 @@ $result = $stmt->get_result();
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php while ($row = $result->fetch_assoc()): ?>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($row['titulo']); ?></td>
-                                        <td><?php echo htmlspecialchars($row['tipo_reserva']); ?></td>
-                                        <td><?php echo htmlspecialchars($row['data_reserva']); ?></td>
-                                        <td><?php echo htmlspecialchars($row['quantidade']); ?></td>
-                                        <td style="display: flex; gap: 10px;">
-                                            <button type="button" class="btn btn-delete" data-toggle="modal" data-target="#confirmDeleteModal" data-reserva-id="<?php echo $row['id']; ?>">
-                                                Excluir
-                                            </button>
-                                        </td>
-                                    </tr>
-                                <?php endwhile; ?>
+                            <?php while ($row = $result->fetch_assoc()): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($row['titulo']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['tipo_reserva']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['data_reserva']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['quantidade']); ?></td>
+                                    <td style="display: flex; gap: 10px;">
+                                        <a href="perfil_vendedor.php?user_id=<?php echo htmlspecialchars($row['vendedor_id']); ?>" class="btn btn-info">Ver Vendedor</a>
+                                        <button type="button" class="btn btn-delete" data-toggle="modal" data-target="#confirmDeleteModal" data-reserva-id="<?php echo $row['id']; ?>">
+                                            Excluir
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
                             </tbody>
                         </table>
                     <?php else: ?>
@@ -225,23 +227,23 @@ $result = $stmt->get_result();
     </div>
 </div>
 
-<!-- Modal de confirmação -->
+<!-- Modal de Confirmação de Exclusão -->
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="confirmDeleteModalLabel"><i class="bi bi-luggage"></i> Confirmação de Exclusão</h5>
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Exclusão</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Você tem certeza que deseja excluir sua reserva?
+                Tem certeza de que deseja excluir esta reserva?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <form id="deleteForm" method="post" action="reservas.php">
-                    <input type="hidden" name="reserva_id" id="reservaId">
+                <form method="POST">
+                    <input type="hidden" name="reserva_id" id="reserva_id">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="submit" name="delete" class="btn btn-danger">Excluir</button>
                 </form>
             </div>
@@ -250,20 +252,14 @@ $result = $stmt->get_result();
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Captura o clique no botão de excluir e configura o ID da reserva no modal
     $('#confirmDeleteModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // Botão que acionou o modal
-        var reservaId = button.data('reserva-id'); // Extrai o valor do ID da reserva
+        var button = $(event.relatedTarget);
+        var reservaId = button.data('reserva-id');
         var modal = $(this);
-        modal.find('#reservaId').val(reservaId); // Define o ID no campo oculto do formulário
+        modal.find('#reserva_id').val(reservaId);
     });
 </script>
-
-<!--footer-->
-<?php include '../views/partials/footer.php' ?>
-
 </body>
 </html>

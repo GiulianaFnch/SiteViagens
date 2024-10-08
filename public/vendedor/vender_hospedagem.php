@@ -42,9 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $horario_checkin = $_POST['horario_checkin'];
     $horario_checkout = $_POST['horario_checkout'];
     $tipo_hospedagem = $_POST['tipo_hospedagem'];
+    $data_inicio = $_POST['data_inicio'];
+    $data_fim = $_POST['data_fim'];
 
     $sql = "INSERT INTO t_hospedagem (id_user, nome, descricao, n_quartos, preco_diaria, classificacao, localizacao, horario_checkin, horario_checkout, tipo_hospedagem, foto1) 
-            VALUES ('$id_user', '$nome', '$descricao', '$n_quartos', '$preco_diaria', '$classificacao', '$localizacao', '$horario_checkin', '$horario_checkout', '$tipo_hospedagem', '');";
+            VALUES ('$id_user', '$nome', '$descricao', '$n_quartos', '$preco_diaria', '$classificacao', '$localizacao', '$horario_checkin', '$horario_checkout', '$tipo_hospedagem', '$data_inicio', '$data_fim', '');";
 
     if (mysqli_query($ligacao, $sql)) {
         $id_hospedagem = mysqli_insert_id($ligacao);
@@ -301,12 +303,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="card shadow-sm rounded-lg">
             <div class="row no-gutters">
                 <div class="col-md-3 p-3 bg-light rounded-left menu-container">
-                    <nav class="menu">
+                <nav class="menu">
                         <a class="menu-item" style="color: #3A506B"><strong>Painel de Vendedor</strong></a>
-                        <a class="menu-item" href="../vendedor/admin.php"><i class="bi bi-person-circle"></i> Editar perfil</a>
+                        <a class="menu-item" href="admin.php" onclick="showContent('profile');"><i class="bi bi-person-circle"></i> Editar Perfil</a>
                         <a class="menu-item" href="vender_opcoes.php"><i class="bi bi-bag"></i> Vender</a>
-                        <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i>Gestão de Reservas</a>
-                        <a class="menu-item" href="gestao_hospedagem.php"><i class="bi bi-train-freight-front"></i> Gestão de Hospedagem</a>
+                        <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Reservas</a>
+                        <a class="menu-item" href="gestao_opcoes.php"><i class="bi bi-train-freight-front"></i> Gestão</a>
                         <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
                         <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
@@ -361,6 +363,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <option value="cabana">Cabana</option>
                             <option value="resort">Resort</option>
                         </select>
+
+                        <label for="data_inicio">Data de Início:</label>
+                        <input type="date" id="data_inicio" name="data_inicio" required>
+
+                        <label for="data_fim">Data de Fim:</label>
+                        <input type="date" id="data_fim" name="data_fim" required>
 
                         <label for="ficheiro1">Foto 1:</label>
                         <input type="file" id="ficheiro1" name="ficheiro1">

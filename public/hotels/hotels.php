@@ -26,7 +26,7 @@
 
         <ul class="navbar">
             <li><a href="/SiteViagens/public/hotels/hotels.php">Hospedagem</a></li>
-            <li><a href="#package">Passagens</a></li>
+            <li><a href="/SiteViagens/public/voos/voos.php">Passagens</a></li>
             <li><a href="/SiteViagens/public/tours/tours.php">Passeios</a></li>
             <li><a href="/SiteViagens/public/pacotes/pacotes.php">Pacotes</a></li>
             <li><a href="public/perfil.php"><i class='bx bx-user'></i></a></li>
@@ -61,47 +61,50 @@
 </section>
 
     <!--container-->
-    <section class="container-hotel">
+    <section class="container-hotel"><br>
         <div class="text">
             <h2>Pesquisar por tipo </h2>
         </div>
 
         <div class="row-items">
-            <div class="container-box-hotel">
-                <div class="conteiner-img">
+        <div class="container-box-hotel">
+            <div class="conteiner-img">
+                <a href="listar_hospedagem.php?tipo_hospedagem=apartamento">
                     <img src="imagens/apartamento.jpg" style="width: 300px; height: auto;">
-                </div>
-                <h4> Apartamentos </h4>
-                
+                </a>
             </div>
-            <div class="container-box-hotel">
-                <div class="conteiner-img">
-                    <img src="imagens/hotel.jpg"  style="width: 300px; height: auto;">
-                </div>
-                <h4>hotéis</h4>
-                
+            <h4>Apartamentos</h4>
+        </div>
+        <div class="container-box-hotel">
+            <div class="conteiner-img">
+                <a href="listar_hospedagem.php?tipo_hospedagem=hotel">
+                    <img src="imagens/hotel.jpg" style="width: 300px; height: auto;">
+                </a>
             </div>
-
-            <div class="container-box-hotel">
-                <div class="conteiner-img">
+            <h4>Hotéis</h4>
+        </div>
+        <div class="container-box-hotel">
+            <div class="conteiner-img">
+                <a href="listar_hospedagem.php?tipo_hospedagem=hostel">
                     <img src="imagens/hostel.jpg" style="width: 300px; height: auto;">
-                </div>
-                <h4> Hostel</h4>
-                
+                </a>
             </div>
-
-            <div class="container-box-hotel">
-                <div class="conteiner-img">
+            <h4>Hostel</h4>
+        </div>
+        <div class="container-box-hotel">
+            <div class="conteiner-img">
+                <a href="listar_hospedagem.php?tipo_hospedagem=castelo">
                     <img src="imagens/castelo.jpg" style="width: 300px; height: auto;">
-                     
-                </div>
-                <h4>Castelo</h4>
-               
+                </a>
             </div>
+            <h4>Castelo</h4>
+        </div>
 
             <div class="container-box-hotel">
                 <div class="conteiner-img">
+                <a href="listar_hospedagem.php">
                     <img src="imagens/cabana.jpg" style="width: 300px; height: auto;">
+                </a>
                      
                 </div>
                 <h4>Cabanas</h4>

@@ -249,17 +249,17 @@ include '../../config/liga_bd.php';
                 <div class="col-md-3 p-3 bg-light rounded-left menu-container">
                     <nav class="menu">
                         <a class="menu-item" style="color: #3A506B"><strong>Painel de Vendedor</strong></a>
-                        <a class="menu-item" href="../vendedor/admin.php"><i class="bi bi-person-circle"></i> Editar perfil</a>
+                        <a class="menu-item" href="admin.php" onclick="showContent('profile');"><i class="bi bi-person-circle"></i> Editar Perfil</a>
                         <a class="menu-item" href="vender_opcoes.php"><i class="bi bi-bag"></i> Vender</a>
-                        <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i>Gestão de Reservas</a>
-                        <a class="menu-item" href="gestao_tours.php"><i class="bi bi-train-freight-front"></i> Gestão de Tours</a>
+                        <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Reservas</a>
+                        <a class="menu-item" href="gestao_opcoes.php"><i class="bi bi-train-freight-front"></i> Gestão</a>
                         <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
                         <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
                 </div>
 
                 <div class="col-md-9 p-4">
-                    <h1 class="h2">Vender Passeios</h1>
+                    <h1 class="h2">Vender Tours</h1>
                     <?php
                     $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : 1;
                     ?>
