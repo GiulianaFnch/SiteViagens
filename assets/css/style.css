@@ -180,7 +180,7 @@ section {
   position: relative;
   width: 100%;
   height: 100vh;
-  background: url(../../public/voos/imagens/voos.jpg);
+  background: url(../../public/voos/imagens/voo.jpg);
   background-size: cover;
   background-position: center;
   display: grid;

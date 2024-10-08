@@ -47,7 +47,7 @@
                 <input type="text" placeholder="Data de check-in - Data de check-out" aria-label="Datas de check-in e check-out" />
             </div>
             <div class="hotels-input-container">
-                <input type="text" placeholder="2 adultos · 0 criança · 1 quarto" aria-label="Pessoas e quarto" />
+                <input type="text" placeholder="Quantas Pessoas" aria-label="Pessoas " />
             </div>
             <button class="hotels-search-button" type="submit">Pesquisar</button>
         </form>
@@ -123,7 +123,34 @@
                 </div>
                
             </div>
-           
+            <div class="container-box-pacotes">
+                <div class="conteiner-img">
+                    <img src="images/9.png" style="width: 300px; height: auto;">
+                     
+                </div>
+               
+            </div>
+            <div class="container-box-pacotes">
+                <div class="conteiner-img">
+                    <img src="images/10.png" style="width: 300px; height: auto;">
+                     
+                </div>
+               
+            </div>
+            <div class="container-box-pacotes">
+                <div class="conteiner-img">
+                    <img src="images/11.png" style="width: 300px; height: auto;">
+                     
+                </div>
+               
+            </div>
+            <div class="container-box-pacotes">
+                <div class="conteiner-img">
+                    <img src="images/12.png" style="width: 300px; height: auto;">
+                     
+                </div>
+               
+            </div>
 
         </div>
     </section>
@@ -264,6 +291,66 @@ Você receberá e-mails promocionais da BestWay. Para mais informações, consul
     <!--link to js-->
     <script type="text/javascript" src="assets/js/script.js"></script>
     <script type="text/javascript" src="assests/js/scriptpacotes.js"></script>
+    <script>
+        const header = document.querySelector("header");
+
+window.addEventListener("scroll", function(){
+    header.classList.toggle("sticky",this.window.scrollY >0);
+});
+
+let menu = document.querySelector('#menu-icon');
+let navbar = document.querySelector('.navbar');
+
+menu.onclick = () => {
+    menu.classList.toggle('bx-x');
+    navbar.classList.toggle('open');
+};
+
+window.onscroll = () => {
+    menu.classList.remove('bx-x');
+    navbar.classList.remove('open');
+}
+// Seleciona os elementos dos botões de navegação e o container do carrossel
+const prevButton = document.querySelector('.prev');
+const nextButton = document.querySelector('.next');
+const destinosContainer = document.querySelector('.destinos-container');
+
+// Função para calcular a largura total de um cartão (incluindo margens)
+function getCardWidth() {
+    const card = document.querySelector('.destino-card');
+    if (!card) return 0; // Verifica se o cartão existe no DOM
+    const cardStyle = window.getComputedStyle(card);
+    const cardMarginRight = parseInt(cardStyle.marginRight) || 0; // Garante que a margem seja um número
+    return card.offsetWidth + cardMarginRight;
+}
+
+// Verifica se os botões existem antes de adicionar os event listeners
+if (nextButton && prevButton && destinosContainer) {
+
+    // Função para avançar no carrossel
+    nextButton.addEventListener('click', () => {
+        const cardWidth = getCardWidth();  // Recalcula a largura do cartão ao clicar
+        destinosContainer.scrollBy({
+            top: 0,
+            left: cardWidth,  // Rola para a direita pela largura de um cartão
+            behavior: 'smooth'
+        });
+    });
+
+    // Função para retroceder no carrossel
+    prevButton.addEventListener('click', () => {
+        const cardWidth = getCardWidth();  // Recalcula a largura do cartão ao clicar
+        destinosContainer.scrollBy({
+            top: 0,
+            left: -cardWidth,  // Rola para a esquerda pela largura de um cartão
+            behavior: 'smooth'
+        });
+    });
+
+} else {
+    console.error('Botões ou container do carrossel não encontrados.');
+}
+        </script>
     
 
 </body>
