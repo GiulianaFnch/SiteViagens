@@ -247,8 +247,11 @@ include '../../config/liga_bd.php';
                     echo '        <div class="btn-container">';
 
                     // Botão "Comprar" que redireciona para a página carrinho.php
-                    echo '            <form action="carrinho.php" method="post">';
+                    echo '    <form action="../carrinho/adicionar_ao_carrinho.php" id="f2" method="post">
+';
                     echo '                <input type="hidden" name="id_artigo" value="' . htmlspecialchars($linha['id']) . '">';
+                    echo '<input type="hidden" name="tipo_item" value="atividade">';
+                    echo '<input type="hidden" name="return_url" value="' . htmlspecialchars($_SERVER['REQUEST_URI']) . '">';
                     echo '                <input type="submit" value="Comprar" class="btn-comprar">';
                     echo '            </form>';
 
@@ -342,7 +345,7 @@ include '../../config/liga_bd.php';
     </section>
 
     <!--link to js-->
-    <script type="text/javascript" src="assets/js/script.js"></script>
+    <script type="text/javascript" src="../../assets/js/script.js"></script>
 
     <!-- Script para mudar a cor do header ao rolar a página -->
     <script>
