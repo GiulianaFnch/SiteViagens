@@ -188,24 +188,42 @@ mysqli_close($ligacao);
             border-radius: 4px;
         }
 
-        .popup {
+      /* Escurecer o fundo quando o popup estiver ativo */
+.popup-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998; /* Deve estar abaixo do popup */
+    display: none; /* Oculto por padrão */
+}
+
+.popup-background.active {
+    display: block;
+}
+
+/* Animação de fade-in suave */
+.popup {
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+    /* Redefinir estilos do popup */
+.popup {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0);
-    width: 80%;
-    max-width: 1600px;
-    height: 90vh;
-    max-height: 800px;
-    border-radius: 20px;
-    background: rgba(0, 0, 0, 0.75);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+    width: 90%;
+    max-width: 600px;
+    background-color: #fff;
+    border-radius: 10px;
     overflow: hidden;
-    transition: 1s;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
     opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .popup.active {
@@ -226,22 +244,35 @@ mysqli_close($ligacao);
     font-weight: 300;
 }
 
-.close-btn {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #f00;
-    cursor: pointer;
+.close-btn::before {
+    content: '×';
+    font-size: 16px;
+    line-height: 16px;
+    color: white;
 }
 
+/* Botão de fechar */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer
+}
+
+/* Imagem do popup */
 .large-image {
-    margin-top: 5%;
-    width: 80%;
-    height: 80%;
-    object-fit: contain;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 .index {
@@ -308,21 +339,22 @@ mysqli_close($ligacao);
                                                 accept=".jpg, .jpeg, .png, .gif">
                                         </label>
                                         <div class="small text-muted mt-1">Permitido JPG, GIF ou PNG. Tamanho máximo de
-                                            800K.</div>
+                                            800K.
+                                        </div>
 
                                            
 
                                     </div>
                                 </div>
 
-                             <!-- Popup container -->
+                            <!-- Popup container -->
+                            <div class="popup-background"></div> <!-- Mover para fora do popup -->
                             <div class="popup">
                                 <div class="top-bar">
                                     <span class="image-name"></span>
                                     <div class="close-btn"></div>
                                 </div>
                                 <img class="large-image" src="" alt="Imagem Grande">
-                                
                                 <div class="index"></div>
                             </div>
 
@@ -372,32 +404,40 @@ mysqli_close($ligacao);
     </div>
 
     <script>
-    const images = [...document.querySelectorAll('.image')];
-    const popup = document.querySelector('.popup');
-    const closeBtn = document.querySelector('.close-btn');
-    const largeImage = document.querySelector('.large-image');
-    const imageName = document.querySelector('.image-name');
-    const imageIndex = document.querySelector('.index');
-    let index = 0;
+   const images = [...document.querySelectorAll('.image')];
+const popup = document.querySelector('.popup');
+const closeBtn = document.querySelector('.close-btn');
+const largeImage = document.querySelector('.large-image');
+const imageName = document.querySelector('.image-name');
+const popupBackground = document.querySelector('.popup-background');
+let index = 0;
 
-    images.forEach((item, i) => {
-        item.addEventListener('click', () => {
-            updateImage(i);
-            popup.classList.add('active');
-        });
+images.forEach((item, i) => {
+    item.addEventListener('click', () => {
+        updateImage(i);
+        popup.classList.add('active');
+        popupBackground.classList.add('active'); // Ativar fundo escurecido
     });
+});
 
-    const updateImage = (i) => {
-        let path = images[i].src;
-        largeImage.src = path;
-        imageName.innerHTML = path.split('/').pop();
-        imageIndex.innerHTML = `0${i+1}`;
-        index = i;
-    };
+const updateImage = (i) => {
+    let path = images[i].src;
+    largeImage.src = path;
+    imageName.innerHTML = path.split('/').pop();
+    // Remova ou comente esta linha para não exibir o número da imagem:
+    // imageIndex.innerHTML = `0${i + 1}`;
+    index = i;
+};
 
-    closeBtn.addEventListener('click', () => {
-        popup.classList.remove('active');
-    });
+closeBtn.addEventListener('click', () => {
+    popup.classList.remove('active');
+    popupBackground.classList.remove('active'); // Desativar fundo escurecido
+});
+
+popupBackground.addEventListener('click', () => {
+    popup.classList.remove('active');
+    popupBackground.classList.remove('active'); // Desativar fundo escurecido
+});
 </script>
     
 
