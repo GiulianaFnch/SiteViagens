@@ -240,6 +240,27 @@ mysqli_close($ligacao);
     color: rgba(255, 255, 255, 0.4);
 }
     
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px; /* Espaçamento entre linhas */
+}
+
+.form-group {
+    flex: 1; /* Faz os grupos ocuparem espaço igual */
+    margin-right: 15px; /* Espaço entre os inputs */
+}
+
+.form-group:last-child {
+    margin-right: 0; /* Remove margem do último item */
+}
+
+.input-pequeno {
+    width: 300px; 
+    max-width: 100%; 
+}
+
+
     </style>
 </head>
 
@@ -313,31 +334,43 @@ mysqli_close($ligacao);
                             <input type="hidden" name="nome_foto"
                                 value="<?php echo htmlspecialchars($linha['foto']); ?>">
 
-                            <div class="form-group">
-                                <label for="username" class="form-label">Nick</label>
-                                <input type="text" id="username" class="form-control rounded-pill" name="nick"
-                                    value="<?php echo htmlspecialchars($linha['nick']); ?>" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="name" class="form-label">Nome</label>
-                                <input type="text" id="name" class="form-control rounded-pill" name="nome"
-                                    value="<?php echo htmlspecialchars($linha['nome']); ?>" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email" class="form-label">E-mail</label>
-                                <input type="email" id="email" class="form-control rounded-pill" name="email"
-                                    value="<?php echo htmlspecialchars($linha['email']); ?>" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="data_nasc" class="form-label">Data de Nascimento</label>
-                                <input type="date" id="data_nasc" class="form-control rounded-pill" name="data_nasc"
-                                    value="<?php echo htmlspecialchars($linha['data_nasc']); ?>" required>
-                            </div>
+                                <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="username" class="form-label">Nick</label>
+                                    <input type="text" id="username" class="form-control rounded-pill input-pequeno" name="nick"
+                                        value="<?php echo htmlspecialchars($linha['nick']); ?>" required>
+                                </div>
 
-                            <div class="text-right mt-3">
-                                <input type="submit" class="btn btn-primary rounded-pill" value="Alterar">
-                            </div>
-                        </form>
+                    
+                                    <div class="form-group col-md-6">
+                                        <label for="name" class="form-label">Nome</label>
+                                        <input type="text" id="name" class="form-control rounded-pill input-pequeno" name="nome"
+                                            value="<?php echo htmlspecialchars($linha['nome']); ?>" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email" class="form-label">E-mail</label>
+                                    <input type="email" id="email" class="form-control rounded-pill" name="email"
+                                        value="<?php echo htmlspecialchars($linha['email']); ?>" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="nome_marca" class="form-label">Nome da Marca</label>
+                                    <input type="text" id="nome_marca" class="form-control rounded-pill" name="nome_marca"
+                                        value="<?php echo htmlspecialchars($linha['nome_marca']); ?>" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="data_nasc" class="form-label">Data de Nascimento</label>
+                                    <input type="date" id="data_nasc" class="form-control rounded-pill" name="data_nasc"
+                                        value="<?php echo htmlspecialchars($linha['data_nasc']); ?>" required>
+                                </div>
+
+                                <div class="text-right mt-3">
+                                    <input type="submit" class="btn btn-primary rounded-pill" value="Alterar">
+                                </div>
+                            </form>
                     </div>
                     
 
