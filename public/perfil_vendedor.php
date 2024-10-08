@@ -3,11 +3,11 @@ include_once "../config/valida.php";
 include_once "../config/liga_bd.php";
 
 // Verifica se o user_id do vendedor foi passado na URL
-if (isset($_GET['id_user'])) {
-    $user_id = (int)$_GET['id_user']; // Obtém o ID do vendedor da URL
+if (isset($_GET['user_id'])) {
+    $user_id = (int)$_GET['user_id']; // Obtém o ID do vendedor da URL
 
-    // Consulta para buscar informações do vendedor
-    $sql = "SELECT * FROM t_artigo WHERE id = ?"; 
+    // Consulta para buscar informações do vendedor na tabela t_user
+    $sql = "SELECT * FROM t_user WHERE id = ?"; 
     $stmt = $ligacao->prepare($sql);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
@@ -39,9 +39,16 @@ if (isset($_GET['id_user'])) {
         <h1>Perfil do Vendedor</h1>
 
         <?php if ($linha): ?>
-            <p>Nome: <?php echo htmlspecialchars($linha['nome']); ?></p>
+            <img src="<?php echo $linha['foto'] ? '../assets/images/pics/' . htmlspecialchars($linha['foto']) : 'https://bootdey.com/img/Content/avatar/avatar1.png'; ?>" alt="Foto do Vendedor" style="width: 100px; height: 100px; border-radius: 50%;">
+            <p>Nome da Marca: <?php echo htmlspecialchars($linha['nome_marca']); ?></p>
+            <p>Nick: <?php echo htmlspecialchars($linha['nick']); ?></p>
             <p>Email: <?php echo htmlspecialchars($linha['email']); ?></p>
+
+            <p>Biografia: <?php echo htmlspecialchars($linha['biografia']); ?></p>
+            
             <p>Outras informações...</p>
+
+            
         <?php else: ?>
             <p>Vendedor não encontrado ou não é um vendedor.</p>
         <?php endif; ?>

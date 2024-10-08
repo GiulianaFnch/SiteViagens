@@ -25,17 +25,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])) {
     exit;
 }
 
-// Aqui, garantimos que estamos pegando o user_id do vendedor do t_artigo
+// Ajuste a consulta SQL para obter o ID do vendedor correto de acordo com o tipo de reserva
 $sql = "SELECT r.id, r.item_id, r.tipo_reserva, r.data_reserva, r.quantidade, 
-        r.user_id, 
-        r.user_id AS vendedor_id, -- Este é o ID do vendedor que vem da tabela t_artigo
+        CASE 
+            WHEN r.tipo_reserva = 'atividade' THEN (SELECT id_user FROM t_artigo WHERE id = r.item_id)
+            WHEN r.tipo_reserva = 'hospedagem' THEN (SELECT id_user FROM t_hospedagem WHERE id = r.item_id)
+            WHEN r.tipo_reserva = 'voo' THEN (SELECT id_user FROM t_voos WHERE id = r.item_id)
+        END AS vendedor_id,
         CASE 
             WHEN r.tipo_reserva = 'atividade' THEN (SELECT titulo FROM t_artigo WHERE id = r.item_id)
-            /* Quando necessário, adicione as outras reservas aqui */
+            WHEN r.tipo_reserva = 'hospedagem' THEN (SELECT nome FROM t_hospedagem WHERE id = r.item_id)
+            WHEN r.tipo_reserva = 'voo' THEN (SELECT flight_number FROM t_voos WHERE id = r.item_id)
         END AS titulo
         FROM t_reservas r 
-        JOIN t_artigo a ON a.id = r.item_id
-        WHERE r.user_id = ?"; // Este user_id aqui é do usuário que está logado
+        WHERE r.user_id = ?";
 
 $stmt = $ligacao->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -209,7 +212,7 @@ $result = $stmt->get_result();
                                     <td><?php echo htmlspecialchars($row['data_reserva']); ?></td>
                                     <td><?php echo htmlspecialchars($row['quantidade']); ?></td>
                                     <td style="display: flex; gap: 10px;">
-                                        <a href="perfil_vendedor.php?user_id=<?php echo htmlspecialchars($row['vendedor_id']); ?>" class="btn btn-info">Ver Vendedor</a>
+                                        <a href="perfil_vendedor.php?user_id=<?php echo htmlspecialchars($row['vendedor_id']); ?>" class="btn "><i class="bi bi-person-square"></i></a>
                                         <button type="button" class="btn btn-delete" data-toggle="modal" data-target="#confirmDeleteModal" data-reserva-id="<?php echo $row['id']; ?>">
                                             Excluir
                                         </button>
