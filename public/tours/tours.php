@@ -32,7 +32,7 @@ include '../../config/liga_bd.php';
             <li><a href="/SiteViagens/public/hotels/hotels.php">Hospedagem</a></li>
             <li><a href="#package">Passagens</a></li>
             <li><a href="/SiteViagens/public/tours/tours.php">Passeios</a></li>
-            <li><a href="#contact">Pacotes</a></li>
+            <li><a href="#/SiteViagens/public/pacotes/pacotes.php">Pacotes</a></li>
             <li><a href="/SiteViagens/public/perfil.php"><i class='bx bx-user'></i></a></li>
             <li><a href="/SiteViagens/public/carrinho/carrinho.php"><i class='bx bx-cart'></i></a></li>
         </ul>
@@ -42,7 +42,7 @@ include '../../config/liga_bd.php';
     <section class="home-tours" id="home">
         <!--colocar o nome grande -->
         <div class="home-text2">
-            <h1>Atrações. Atividades. <br> Experiências.</h1>
+            <h1>"Atrações. Atividades." <br> Experiências!</h1>
             <p style="color: aliceblue;">Explore novas atrações e vivências que se ajustam aos seus interesses e ao seu
                 jeito de viajar..</p>
             <!-- Search Section botão pesquisar  -->

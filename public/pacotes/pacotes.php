@@ -36,7 +36,7 @@
     <!--Home section-->
 <section class="home-pacotes" id="home">
     <div class="home-text">
-        <h3 >Os melhores pacotes, estão a um click.</h3>
+        <h1 >Os melhores pacotes, estão a um click.</h1>
         
         <!-- Barra de pesquisa de hotéis -->
         <form class="hotels-search-bar">
@@ -123,31 +123,7 @@
                 </div>
                
             </div>
-            <div class="container-box-pacotes">
-                <div class="conteiner-img">
-                    <img src="images/9.png" style="width: 300px; height: auto;">
-                     
-                </div>
-            </div>
-
-            <div class="container-box-pacotes">
-                <div class="conteiner-img">
-                    <img src="images/10.png" style="width: 300px; height: auto;">
-                     
-                </div>
-            </div>
-            <div class="container-box-pacotes">
-                <div class="conteiner-img">
-                    <img src="images/11.png" style="width: 300px; height: auto;">
-                     
-                </div>
-            </div>
-            <div class="container-box-pacotes">
-                <div class="conteiner-img">
-                    <img src="images/12.png" style="width: 300px; height: auto;">
-                     
-                </div>
-            </div>
+           
 
         </div>
     </section>
