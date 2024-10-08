@@ -36,7 +36,7 @@
     <!--Home section-->
     <section class="home-voos" id="home">
         <div class="home-text">
-            <h1>As melhores ofertas e os melhor</h1>
+            <h1>As melhores ofertas e os menores preços.</h1>
 
             <!-- Barra de pesquisa de hotéis -->
             <form class="hotels-search-bar" action="pesquisa_hospedagem.php" method="get">
