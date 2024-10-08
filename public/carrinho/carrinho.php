@@ -1,5 +1,4 @@
 <?php
-// Ver carrinho
 include "../../config/valida.php";
 include "../../config/liga_bd.php";
 
@@ -16,20 +15,19 @@ $stmt = $ligacao->prepare("
            CASE 
                WHEN c.tipo_item = 'atividade' THEN a.titulo 
                WHEN c.tipo_item = 'hospedagem' THEN h.nome 
+               WHEN c.tipo_item = 'voo' THEN v.arrival 
            END AS titulo, 
            CASE 
                WHEN c.tipo_item = 'atividade' THEN a.preco 
-               WHEN c.tipo_item = 'hospedagem' THEN h.preco_diaria * h.n_quartos 
+               WHEN c.tipo_item = 'hospedagem' THEN h.preco_diaria 
+               WHEN c.tipo_item = 'voo' THEN v.price 
            END AS preco, 
            c.quantidade, 
-           c.tipo_item, 
-           CASE 
-               WHEN c.tipo_item = 'atividade' THEN (a.preco * c.quantidade) 
-               WHEN c.tipo_item = 'hospedagem' THEN (h.preco_diaria * c.quantidade * h.n_quartos) 
-           END AS total
+           c.tipo_item
     FROM t_carrinho c
     LEFT JOIN t_artigo a ON c.id_artigo = a.id AND c.tipo_item = 'atividade'
     LEFT JOIN t_hospedagem h ON c.id_artigo = h.id AND c.tipo_item = 'hospedagem'
+    LEFT JOIN t_voos v ON c.id_artigo = v.id AND c.tipo_item = 'voo'
     WHERE c.id_user = ?
 ");
 if (!$stmt) {
@@ -44,6 +42,8 @@ if (!$resultado_artigos) {
     die("Erro na execução da consulta: " . $stmt->error);
 }
 
+// Calcular o total do carrinho
+$total_carrinho = 0;
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +55,7 @@ if (!$resultado_artigos) {
     <title>Meu Carrinho</title>
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/carrinho.css">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
@@ -84,11 +84,13 @@ if (!$resultado_artigos) {
                 <tbody>
                     <?php
                     while ($linha = $resultado_artigos->fetch_assoc()) {
+                        $total_item = $linha['preco'] * $linha['quantidade'];
+                        $total_carrinho += $total_item;
                         echo "<tr>";
                         echo "<td>" . htmlspecialchars($linha['titulo']) . "</td>";
                         echo "<td>" . htmlspecialchars($linha['preco']) . " €</td>";
                         echo "<td>" . htmlspecialchars($linha['quantidade']) . "</td>";
-                        echo "<td>" . htmlspecialchars($linha['total']) . " €</td>";
+                        echo "<td>" . htmlspecialchars($total_item) . " €</td>";
                         echo "<td>" . htmlspecialchars($linha['tipo_item']) . "</td>";
                         echo "<td>";
                         ?>
@@ -106,7 +108,7 @@ if (!$resultado_artigos) {
         </div>
         <div class="d-flex justify-content-between align-items-center mt-4">
             <h3>Total do Carrinho:
-                <?php echo isset($_SESSION['total_carrinho']) ? htmlspecialchars($_SESSION['total_carrinho']) . " €" : "0 €"; ?>
+                <?php echo htmlspecialchars($total_carrinho) . " €"; ?>
             </h3>
             <form action="efetuar_reserva.php" method="post">
                 <button type="submit" class="btn btn-success">Finalizar Reserva</button>

@@ -179,9 +179,15 @@ include '../../config/liga_bd.php';
     <!-- Lista de hospedagens -->
     <div class="hospedagens-grid">
         <?php
-        // Define o SQL para buscar todas as hospedagens disponíveis
-        $sql = "SELECT * FROM t_hospedagem";
-
+        // Verifica se o parâmetro tipo_hospedagem está presente no método GET
+        if (isset($_GET['tipo_hospedagem'])) {
+            $tipo_hospedagem = mysqli_real_escape_string($ligacao, $_GET['tipo_hospedagem']);
+            // Define o SQL para buscar hospedagens do tipo especificado
+            $sql = "SELECT * FROM t_hospedagem WHERE tipo_hospedagem = '$tipo_hospedagem'";
+        } else {
+            // Define o SQL para buscar todas as hospedagens disponíveis
+            $sql = "SELECT * FROM t_hospedagem";
+        }
         // Executa a consulta
         $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
 
@@ -212,16 +218,17 @@ include '../../config/liga_bd.php';
                     echo '        </div>';
                     echo '        <div class="btn-container">';
 
-                    // Botão "Reservar" que redireciona para a página carrinho.php
+                    /* Botão "Reservar" que redireciona para a página carrinho.php
                     echo '            <form action="carrinho.php" method="post">';
                     echo '                <input type="hidden" name="id_hospedagem" value="' . htmlspecialchars($linha['id']) . '">';
                     echo '                <input type="submit" value="Reservar" class="btn-comprar">';
                     echo '            </form>';
+                    */
 
                     // Botão "Ver mais" que redireciona para a página detalhes_hospedagem.php
                     echo '            <form action="detalhes_hospedagem.php" method="post">';
                     echo '                <input type="hidden" name="id_hospedagem" value="' . htmlspecialchars($linha['id']) . '">';
-                    echo '                <input type="submit" value="Ver Mais" class="btn-ver-comentarios">';
+                    echo '                <input type="submit" value="Reservar" class="btn-ver-comentarios">';
                     echo '            </form>';
 
                     echo '        </div>';
@@ -303,7 +310,7 @@ include '../../config/liga_bd.php';
 
     <!-- Script para mudar a cor do header ao rolar a página -->
     <script>
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             const header = document.querySelector('header');
             header.classList.toggle('scrolled', window.scrollY > 0);
         });

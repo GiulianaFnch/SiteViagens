@@ -86,6 +86,11 @@ $linha = mysqli_fetch_array($resultado);
             font-size: 22px;
         }
 
+        h4 {
+            margin-bottom: 10px;
+            font-size: 10px;
+        }
+
         .price-container {
             margin: 20px 0;
             font-size: 20px;
@@ -118,6 +123,24 @@ $linha = mysqli_fetch_array($resultado);
         .buy-button:hover {
             background-color: #4169e1;
         }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
     </style>
 </head>
 
@@ -132,7 +155,7 @@ $linha = mysqli_fetch_array($resultado);
             <li><a href="#contact">Pacotes</a></li>
         </ul>
     </header>
-
+    <br><br><br><br><br>
     <main>
         <div class="carousel-container">
             <div class="artigo-carousel">
@@ -157,78 +180,43 @@ $linha = mysqli_fetch_array($resultado);
             </div>
             <div class="description">Quartos disponíveis: <?php echo htmlspecialchars($linha['n_quartos']); ?></div>
             <div class="button-container">
-                <form action="../carrinho/adicionar_ao_carrinho.php" method="post">
-                    <input type="hidden" name="id_hospedagem" value="<?php echo htmlspecialchars($linha['id']); ?>">
-
-                    <input type="hidden" name="return_url" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                <form action="../carrinho/adicionar_ao_carrinho.php" method="post" id="reservaForm">
+                    <input type="hidden" name="id_artigo" value="<?php echo htmlspecialchars($linha['id']); ?>">
                     <input type="hidden" name="tipo_item" value="hospedagem">
+                    <input type="hidden" name="return_url"
+                        value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
+                    <input type="hidden" name="total" id="total" value="">
+                    <div class="form-group">
+                        <label for="data-checkin">Data de início:</label>
+                        <input type="date" id="data-checkin" name="data_checkin" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data-checkout">Data de término:</label>
+                        <input type="date" id="data-checkout" name="data_checkout" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="n_quartos">Número de quartos:</label>
+                        <select id="n_quartos" name="n_quartos" required>
+                            <?php
+                            for ($i = 1; $i <= $linha['n_quartos']; $i++) {
+                                echo "<option value='$i'>$i</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+
                     <input type="submit" value="Adicionar ao carrinho" class="buy-button">
                 </form>
             </div>
         </div>
     </main>
 
-    <section class="newsletter">
-        <div class="news-text">
-            <h2>Inscreva-se para receber nossas ofertas</h2>
-            <p>Você receberá e-mails promocionais da BestWay. Para mais informações, consulte as <a href="#">Politica de
-                    privacidade.</a>.</p>
-        </div>
-        <div class="send">
-            <form>
-                <input type="email" placeholder="Insira seu e-mail aqui" required>
-                <input type="submit" value="Quero recebê-las!">
-            </form>
-        </div>
-    </section>
-
-    <!--footer-->
-    <section id="contact">
-        <div class="footer">
-            <div class="main">
-                <div class="list">
-                    <h4>Minha Conta</h4>
-                    <ul>
-                        <li><a href="#">Minhas Viagens</a></li>
-                        <li><a href="public/perfil.php">Meu Perfil</a></li>
-                        <li><a href="#">Deletar minha conta</a></li>
-                    </ul>
-                </div>
-                <div class="list">
-                    <h4>Suporte</h4>
-                    <ul>
-                        <li><a href="#">Contatos</a></li>
-                        <li><a href="#">Termos & Condições</a></li>
-                        <li><a href="#">Politica de privacidade</a></li>
-                    </ul>
-                </div>
-                <div class="list">
-                    <h4>Trabalhe conosco</h4>
-                    <ul>
-                        <li><a href="public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
-                        <li><a href="public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
-                    </ul>
-                </div>
-                <div class="list">
-                    <h4>Connect</h4>
-                    <div class="social">
-                        <a href="#"><i class='bx bxl-facebook'></i></a>
-                        <a href="#"><i class='bx bxl-instagram'></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="end-text">
-            <p>© 2024 BestWay. Todos os direitos reservados.</p>
-        </div>
-    </section>
-
-    <!--link to js-->
-    <script type="text/javascript" src="assets/js/script.js"></script>
-
-    <!-- Script do Slick Carousel -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <!-- Scripts do Slick Carousel -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <script>
         $(document).ready(function () {
             $('.artigo-carousel').slick({
@@ -239,8 +227,35 @@ $linha = mysqli_fetch_array($resultado);
                 adaptiveHeight: true
             });
         });
-    </script>
 
+        document.getElementById('reservaForm').addEventListener('submit', function (e) {
+            const checkin = new Date(document.getElementById('data-checkin').value);
+            const checkout = new Date(document.getElementById('data-checkout').value);
+            const dailyRate = <?php echo $linha['preco_diaria']; ?>;
+            const numQuartos = document.getElementById('n_quartos').value;
+
+            // Calcular a diferença de dias
+            const timeDifference = checkout.getTime() - checkin.getTime();
+            const days = timeDifference / (1000 * 3600 * 24); // Converter milissegundos em dias
+
+            if (days <= 0) {
+                alert("A data de término deve ser posterior à data de início.");
+                e.preventDefault();
+                return;
+            }
+
+            const total = dailyRate * days * numQuartos;
+
+            // Definir o valor do campo oculto 'total'
+            document.getElementById('total').value = total;
+
+            // Confirmação para o usuário
+            const confirmMessage = `Você está prestes a adicionar ao carrinho:\n${days} dias de hospedagem, com ${numQuartos} quarto(s).\nTotal: €${total.toFixed(2)}.`;
+            if (!confirm(confirmMessage)) {
+                e.preventDefault();
+            }
+        });
+    </script>
 </body>
 
 </html>

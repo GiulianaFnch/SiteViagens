@@ -176,11 +176,33 @@ section {
   grid-template-columns: repeat(1, 1fr);
   align-items: center;
 }
+.home-voos {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: url(../../public/voos/imagens/voos.jpg);
+  background-size: cover;
+  background-position: center;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  align-items: center;
+}
 .listar-tours {
   position: relative;
   width: 100%;
   height: 100vh;
   background: url(../../public/tours/imagens/passeios.jpg);
+  background-size: cover;
+  background-position: center;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  align-items: center;
+}
+.listar-hospedagens {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: url(../../public/hotels/imagens/hotel1.jpg);
   background-size: cover;
   background-position: center;
   display: grid;

@@ -184,16 +184,16 @@
     <!-- Main Content -->
     <div class="col-md-9">
    <br><br>
-        <div class="option-card" onclick="window.location.href='vender_tours.php'">
+        <div class="option-card" onclick="window.location.href='gestao_tours.php'">
             <i class="bi bi-map"></i>
-            <h3>Vender Tours</h3>
-            <p>Crie e gerencie seus passeios e experiências turísticas.</p>
+            <h3>Gestão de Tours</h3>
+            <p>vou escrever algo aqui.</p>
         </div>
         <br><br>
-        <div class="option-card" onclick="window.location.href='vender_hospedagem.php'">
+        <div class="option-card" onclick="window.location.href='gerir_hospedagem.php'">
             <i class="bi bi-house"></i>
-            <h3>Vender Hospedagem</h3>
-            <p>Anuncie acomodações como hotéis, resorts e hostels.</p>
+            <h3>Gestão de Hospedagem</h3>
+            <p>vou escrever algo aqui.</p>
         </div>
         <br><br>
     </div>
