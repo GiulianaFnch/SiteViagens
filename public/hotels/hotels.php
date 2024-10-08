@@ -37,7 +37,7 @@
     <!--Home section-->
 <section class="home-hotels" id="home">
     <div class="home-text">
-        <h1>Seu próximo cantinho para relaxar está a um clique!</h1>
+        <h1>Seu próximo cantinho para relaxar, está a um clique!</h1>
         
         <!-- Barra de pesquisa de hotéis -->
         <form class="hotels-search-bar" action="pesquisa_hospedagem.php" method="get">
