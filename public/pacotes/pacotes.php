@@ -57,7 +57,7 @@
     <!--container-->
     <section class="container-pacotes">
         <div class="text">
-            <h2>Pesquisar por tipo </h2>
+            <h2>Confira nossas ofertas! </h2>
         </div>
 
         <div class="row-items">
