@@ -400,19 +400,19 @@ header{
                         </div>
 
 
-                        <div class="settings-item" id="logout-item">
-    <div class="item-left">
-        <i class="bi bi-box-arrow-right"></i>
-        <span class="item-label">Logout</span>
-    </div>
-    <div class="item-right">
-        <form method="POST" style="display: inline;">
-            <button type="submit" name="logout" class="btn btn-link" style="color: #007AFF; padding: 0; font-size: 18px;">
-             <i class="bi bi-chevron-right"></i>
-            </button>
-        </form>
-    </div>
-</div>
+                        <div class="settings-item" onclick="document.getElementById('logout-form').submit();">
+                        <div class="item-left">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span class="item-label">Logout</span>
+                        </div>
+                        <div class="item-right">
+                            <i class="bi bi-chevron-right"></i>  <!-- Removi o onclick aqui -->
+                        </div>
+                    </div>
+
+                    <form id="logout-form" method="POST" style="display: none;">
+                        <input type="hidden" name="logout" value="1">
+                    </form> 
                      
 
                     <div id="form-atualizar-senha">
