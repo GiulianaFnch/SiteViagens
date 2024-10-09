@@ -54,15 +54,68 @@ $total_carrinho = 0;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Carrinho</title>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/carrinho.css">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha384-XiUb2ZnoMBBx3zW3Kwq9K5Z8v+UGYmo/Y7P0UnQyy8vm3YQBGHhNZP+ak3B3o7W" crossorigin="anonymous" rel="stylesheet">
 
 </head>
+
+<style>
+/* Estilo global dos botões */
+        .btn {
+            border-radius: 25px; /* Bordas arredondadas */
+            padding: 8px 16px; /* Espaçamento interno reduzido */
+          
+        }
+ /* Botão de deslizamento */
+ .slide-button {
+            position: relative;
+            display: inline-flex; /* Muda para inline-flex para melhor alinhamento */
+            justify-content: center;
+            align-items: center;
+            width: 180px; /* Largura do botão reduzida */
+            height: 50px; /* Altura do botão reduzida */
+            gap: 10px; /* Espaço entre os ícones e o texto */
+            border-radius: 25px; /* Bordas arredondadas */
+            background: #006a00; /* Cor de fundo mais suave */
+            color: #ffff; /* Cor do texto */
+            font-family: 'Poppins', sans-serif; /* Fonte */
+            font-size: 16px; /* Tamanho da fonte ajustado */
+            text-decoration: none; /* Remove sublinhado */
+            overflow: hidden; /* Esconde o conteúdo que transborda */
+            transition: background 0.3s; /* Transição suave */
+            cursor: pointer; /* Muda o cursor para indicar que é clicável */
+        }
+
+ /* Pseudo-elemento em estado normal */
+ .slide-button::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: #00ab00;
+            border-radius: 25px; /* Bordas arredondadas */
+            z-index: 1;
+            transition: transform 500ms ease-in-out; /* Transição suave */
+        }
+
+          /* Pseudo-elemento em estado de hover */
+          .slide-button:hover::after {
+            transform: translateX(100%); /* Efeito de deslizamento mais sutil */
+        }
+
+  /* Texto em estado normal */
+  .slide-button span {
+            margin-left: -10px; /* Ajuste da margem */
+            z-index: 2;
+        }
+
+</style>
+
 
 <body>
     <?php include '../../views/partials/header.php'; ?>
@@ -111,7 +164,9 @@ $total_carrinho = 0;
                 <?php echo htmlspecialchars($total_carrinho) . " €"; ?>
             </h3>
             <form action="efetuar_reserva.php" method="post">
-                <button type="submit" class="btn btn-success">Finalizar Reserva</button>
+            <a href="#" role="link" class="slide-button" onclick="this.closest('form').submit();">
+                    <span class="text">Finalizar Reserva</span>    
+                </a>
             </form>
         </div>
     </main>
