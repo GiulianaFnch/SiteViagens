@@ -12,7 +12,7 @@ session_destroy();
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Logout - BestWay</title>
+    <title>Logout</title>
     <link rel="stylesheet" type="text/css" href="../../assets/css/style.css">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
