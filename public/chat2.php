@@ -345,7 +345,7 @@ header{
             <div id="messages"></div>
             <div id="message-input">
                 <input type="text" id="message" placeholder="Escreva uma mensagem...">
-                <i class="bi bi-app-indicator" onclick="toggleEmojiPanel()"></i>
+                <i class="bi bi-emoji-smile" onclick="toggleEmojiPanel()"></i>
                 <button onclick="sendMessage()"><i class="bi bi-send"></i></button>
             </div>
         </div>
