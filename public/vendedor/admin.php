@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nick = $_POST['nick'];
     $nome = $_POST['nome'];
     $email = $_POST['email'];
+    $biografia = $_POST['biografia'];
     $data_nasc = $_POST['data_nasc'];
     $fotoAntiga = $_POST['nome_foto'];
     $fotoNova = $fotoAntiga;  // Manter a foto antiga por padrão
@@ -41,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Atualizar dados no banco de dados
-    $sql = "UPDATE t_user SET nick='$nick', nome='$nome', email='$email', data_nasc='$data_nasc', foto='$fotoNova' WHERE id='$id'";
+    $sql = "UPDATE t_user SET nick='$nick', nome='$nome', email='$email', biografia='$biografia', data_nasc='$data_nasc', foto='$fotoNova' WHERE id='$id'";
     if (mysqli_query($ligacao, $sql)) {
         header('Location: admin.php');
         exit;
@@ -359,6 +360,12 @@ mysqli_close($ligacao);
                                     <label for="nome_marca" class="form-label">Nome da Marca</label>
                                     <input type="text" id="nome_marca" class="form-control rounded-pill" name="nome_marca"
                                         value="<?php echo htmlspecialchars($linha['nome_marca']); ?>" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="biografia" class="form-label">Bio</label>
+                                    <input type="text" id="biografia" class="form-control rounded-pill" name="biografia"
+                                        value="<?php echo htmlspecialchars($linha['biografia']); ?>" required>
                                 </div>
 
                                 <div class="form-group">
