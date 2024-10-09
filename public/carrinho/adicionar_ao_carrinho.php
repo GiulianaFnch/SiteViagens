@@ -87,7 +87,11 @@
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $id_user = $_SESSION['id'];
         $tipo_item = isset($_POST['tipo_item']) ? $_POST['tipo_item'] : 'atividade'; // Verifica se o tipo_item está definido
-        $quantidade = 1; // Quantidade fixa, pode ser alterada se desejado
+        if("hospedagem" == $tipo_item){
+            $quantidade = $_POST['dias_quartos']; 
+        } else{
+            $quantidade = 1;
+        }
         $return_url = isset($_POST['return_url']) ? $_POST['return_url'] : '/SiteViagens/index.html'; // URL da página anterior
         $total = isset($_POST['total']) ? $_POST['total'] : 0; // Valor total calculado
     
@@ -137,16 +141,16 @@
         if ($stmt->execute()) {
             // Atualiza o total do carrinho na sessão
             if (isset($_SESSION['total_carrinho'])) {
-                $_SESSION['total_carrinho'] += $total;
+                //$_SESSION['total_carrinho'] += $total;
             } else {
-                $_SESSION['total_carrinho'] = $total;
+                //$_SESSION['total_carrinho'] = $total;
             }
+            echo $_SESSION['total_carrinho'];
 
             // Exibe a mensagem de sucesso e redireciona
             echo "<div class='message-container'>
-                <h2>Item adicionado ao carrinho com sucesso!</h2>
-                <input type='button' value='Ir para o Carrinho' onclick='window.location.href=\"carrinho.php\"'>
-                <input type='button' value='Continuar Comprando' onclick='setTimeout(function(){window.location.href=\"$return_url\"}, 1000);'>
+                  <input type='button' value='Ir para o Carrinho' onclick='window.location.href=\"carrinho.php\"'>
+                <input type='button' value='Continuar Comprando' onclick='setTimeout(function(){onclick='window.location.href=\"/SiteViagens/index.html\"'>
               </div>";
         } else {
             echo "<h2>Erro ao adicionar item ao carrinho: " . $stmt->error . "</h2>";
