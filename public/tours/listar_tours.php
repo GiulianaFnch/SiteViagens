@@ -142,6 +142,61 @@ include '../../config/liga_bd.php';
                 /* 1 por linha em telas bem pequenas */
             }
         }
+        form {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    margin: 20px 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+select {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    color: #333;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+select:hover {
+    border-color: #888;
+}
+
+select:focus {
+    border-color: #5a9;
+    background-color: #fff;
+}
+
+option {
+    padding: 10px;
+    background-color: #fff;
+    color: #333;
+}
+
+/* Adicionando estilo ao próprio formulário */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    select {
+        max-width: 100%;
+    }
+}
+
     </style>
 </head>
 
@@ -167,20 +222,11 @@ include '../../config/liga_bd.php';
             <p style="color: aliceblue;">"Encontre destinos e experiências que combinam com você!"</p>
         </div>
     </section>
-
-    <!-- Container de Título -->
-    <section class="container">
-        <div class="text">
-            <center>
-                <h1>Atividades mais procuradas.</h1>
-            </center>
-        </div>
-    </section>
-
+<br><br>
     <!-- Formulário de seleção de categorias -->
-    <form action="" method="post">
-        Categoria:
-        <select name="categoria" id="categoria" onchange="this.form.submit();">
+    <center><form action="" method="post"><h1>
+        Encontre seu destino por categorias:</h1>
+       <center> <select name="categoria" id="categoria" onchange="this.form.submit();">
             <?php
             // Conecte-se ao banco de dados e busque as categorias
             $sql = "SELECT * FROM t_categoria";
@@ -198,9 +244,9 @@ include '../../config/liga_bd.php';
                     echo "<option value='" . $linha['id'] . "'>" . $linha['categoria'] . "</option>";
             }
             ?>
-        </select>
-    </form>
-
+        </select></center>
+    </form></center>
+<br><br>
     <!-- Lista de passeios -->
     <div class="passeios-grid">
         <?php
