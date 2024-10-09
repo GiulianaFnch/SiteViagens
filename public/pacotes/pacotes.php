@@ -163,49 +163,42 @@
             <button class="prev">&lt;</button>
             <div class="destinos-container">
                 <div class="destino-card">
-                    <img src="images/1.png" alt="Imagem 1">
-                    <div class="destino-nome">Pacote 1</div>
+                    <img src="images/13.jpg" alt="Imagem 1">
+                    <div class="destino-nome"> Grand Canyon</div>
                 </div>
                 <div class="destino-card">
-                    <img src="images/2.png" alt="Imagem 2">
-                    <div class="destino-nome">Pacote 2</div>
+                    <img src="images/14.jpg" alt="Imagem 2">
+                    <div class="destino-nome"> Caverna azul </div>
                 </div>
                 <div class="destino-card">
-                    <img src="images/3.png" alt="Imagem 3">
-                    <div class="destino-nome">Pacote 3</div>
+                    <img src="images/15.jpg" alt="Imagem 3">
+                    <div class="destino-nome"> Acrópole</div>
                 </div>
                 <div class="destino-card">
-                    <img src="images/4.png" alt="Imagem 4">
-                    <div class="destino-nome">Pacote 3</div>
+                    <img src="images/16.jpg" alt="Imagem 4">
+                    <div class="destino-nome">Sagrada Família</div>
                 </div>
                 <div class="destino-card">
-                    <img src="images/5.png" alt="Imagem 5">
-                    <div class="destino-nome">Pacote 3</div>
+                    <img src="images/17.jpg" alt="Imagem 5">
+                    <div class="destino-nome"> Lagoa Azul</div>
                 </div>
                 <div class="destino-card">
-                    <img src="images/6.png" alt="Imagem 6.">
-                    <div class="destino-nome">Pacote 3</div>
+                    <img src="images/18.jpg" alt="Imagem 6.">
+                    <div class="destino-nome"> Burj Khalifa</div>
                 </div>
                 <div class="destino-card">
-                    <img src="images/7.png" alt="Imagem 7">
-                    <div class="destino-nome">Pacote 3</div>
+                    <img src="images/19.jpg" alt="Imagem 7">
+                    <div class="destino-nome">Vaticano</div>
                 </div>
                 <div class="destino-card">
-                    <img src="images/8.png" alt="Imagem 8">
-                    <div class="destino-nome">Pacote 8</div>
+                    <img src="images/20.jpg" alt="Imagem 8">
+                    <div class="destino-nome">Amsterdã</div>
                 </div>
                 <div class="destino-card">
-                    <img src="images/9.png" alt="Imagem 9">
-                    <div class="destino-nome">Pacote 3</div>
+                    <img src="images/21.jpg" alt="Imagem 9">
+                    <div class="destino-nome"> Palácios Nasridas</div>
                 </div>
-                <div class="destino-card">
-                    <img src="images/10.png" alt="Imagem 10">
-                    <div class="destino-nome">Pacote 3</div>
-                </div>
-                <div class="destino-card">
-                    <img src="images/11.png" alt="Imagem 11">
-                    <div class="destino-nome">Pacote 3</div>
-                </div>
+                
                 <!-- Adicione mais cartões conforme necessário -->
             </div>
             <button class="next">&gt;</button>
