@@ -214,6 +214,7 @@ $linha = mysqli_fetch_array($resultado);
         <input type="hidden" name="tipo_item" value="hospedagem">
         <input type="hidden" name="return_url" value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
         <input type="hidden" name="total" id="total" value="">
+        <input type="hidden" name="dias_quartos" id="dias_quartos" value=""> 
 
         <div class="form-group-container">
             <div class="form-group">
@@ -277,9 +278,13 @@ $linha = mysqli_fetch_array($resultado);
             }
 
             const total = dailyRate * days * numQuartos;
+            const dias_quartos = days * numQuartos;
 
             // Definir o valor do campo oculto 'total'
             document.getElementById('total').value = total;
+
+            // Definir o valor do campo oculto 'dias_quartos'
+            document.getElementById('dias_quartos').value = dias_quartos;
 
             // Confirmação para o usuário
             const confirmMessage = `Você está prestes a adicionar ao carrinho:\n${days} dias de hospedagem, com ${numQuartos} quarto(s).\nTotal: €${total.toFixed(2)}.`;

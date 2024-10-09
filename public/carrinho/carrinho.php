@@ -43,7 +43,7 @@ if (!$resultado_artigos) {
 }
 
 // Calcular o total do carrinho
-$total_carrinho = 0;
+$total_carrinho = $_SESSION['total_carrinho'] ;
 ?>
 
 <!DOCTYPE html>
