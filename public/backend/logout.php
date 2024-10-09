@@ -94,7 +94,7 @@ session_destroy();
     </header>
 
     <div class="message-container">
-        <h1>Logout </h1>
+        
         <h2>Sessão terminada com sucesso! Até à próxima</h2>
         <input type="button" value="Voltar ao início" onclick="window.open('../../index.html','_self')">
     </div>
