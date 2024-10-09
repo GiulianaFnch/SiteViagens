@@ -351,9 +351,9 @@ include '../../config/liga_bd.php';
 
                     <h4> Minha Conta</h4>
                     <ul>
-                        <li><a href="#">Minhas Viagens</a></li>
-                        <li><a href="public/perfil.php">Meu Perfil</a></li>
-                        <li><a href="#">Deletar minha conta</a></li>
+                    <li><a href="/SiteViagens/public/perfil.php">Meu Perfil</a></li>
+                        <li><a href="/SiteViagens/public/reservas.php">Minhas Viagens</a></li>
+                        <li><a href="/SiteViagens/public/backend/logout.php">Logout</a></li>
 
                     </ul>
                 </div>
