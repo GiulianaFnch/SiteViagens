@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 08, 2024 at 06:38 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Tempo de geração: 10/10/2024 às 18:39
+-- Versão do servidor: 10.4.32-MariaDB
+-- Versão do PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `site_viagens`
+-- Banco de dados: `site_viagens`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `t_user`
+-- Estrutura para tabela `t_user`
 --
 
 CREATE TABLE `t_user` (
@@ -32,49 +32,43 @@ CREATE TABLE `t_user` (
   `nick` varchar(20) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `nome_marca` varchar(150) NOT NULL,
-  `biografia` text DEFAULT NULL,
   `data_nasc` varchar(10) DEFAULT NULL,
+  `nome_marca` varchar(150) NOT NULL,
   `pass` varchar(255) NOT NULL,
   `foto` varchar(50) DEFAULT NULL,
-  `tipo_user` int(11) NOT NULL DEFAULT 0
+  `tipo_user` int(11) NOT NULL DEFAULT 0,
+  `notificacoes_ofertas` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `t_user`
+-- Despejando dados para a tabela `t_user`
 --
 
-INSERT INTO `t_user` (`id`, `nick`, `nome`, `email`, `nome_marca`, `biografia`, `data_nasc`, `pass`, `foto`, `tipo_user`) VALUES
-(6, 'jujuba', 'jujubas finicio', 'finochio@gmail.com', '', NULL, '0002-03-20', '$2y$10$FO8sLuzGb48wK.RdmhUNnuef1309Ajc2aFiPlvDsvdPHiYLPL9Cw.', 'teste.jpg', 0),
-(7, 'Karol', 'Karoline', 'karol@gmail.com', '', NULL, '2024-09-19', '$2y$10$AeZm1fuqUb8cmWag2DboEejr8eDak/qD5PQuxRh.HcFhgqUlIAP/2', 'barco.jpg', 1),
-(8, 'teste', 'teste', 'teste@gmail.com', '', NULL, '2024-09-19', '$2y$10$UHhzzR4.fT4zRVFxaDQlr.D4MlSuxUCXiUr3IMupWrNzD0jGNAnn.', 'barco.jpg', 0),
-(9, 'vendedor', 'vendedor1', 'vendedor1@gmail.com', 'Venda de Atividades', NULL, '2024-09-01', '$2y$10$JVh.EL4CCCUWvpFT8CRvBes9uU2bMBz57vjXagvkYNys4E9AV8PH.', 'ia.jpg', 2),
-(10, 'admin', 'Administrador', 'adm.bestway@bestway.com', '', NULL, '2000-01-01', '$2y$10$VY8ZO913kX3KCd75fmib/uoxrpLxbso2/Ihhv0akcG3o3isTDaHbO', 'adm.jpg', 4),
-(11, 'vendedor2', 'vendedor de casas', 'vendedo2@gmail.com', 'Karols Hotels', NULL, NULL, '$2y$10$cLr90495Bjs/agRRPdT9RezwQsbSxkT838yjmDndPsIxzHjPDJJBG', NULL, 1),
-(12, 'jimin vendedor', 'Jimin do BTS', 'inesbrasil@outlook.com', 'Inês Brasil do BTS', NULL, '2024-10-01', '$2y$10$cdDN3hxfxQaL5CrSo8GoWe6Ffj7KaIB2NTC.ZCmtNTOdSu2TKSwc2', 'jimin.jpeg', 2),
-(13, 'David', 'Lucas Davi', 'lucasdavi@gmail.com', '', NULL, '2024-09-30', '$2y$10$Tshq8YnZHjSu3NHjuII79eSCeXk.MHtFTbFfagPgDGxpsW8ZBP6S.', 'lucas.jpg', 1),
-(14, 'guilherme vendedor', 'Guilherme Silva', 'asdsadasdas@gmail.com', 'asdasdsad', NULL, '2004-01-27', '$2y$10$g949wYlF/dznY2ccZRDkYeIl7sn5gokGcATSiB2TSwwHfe0oeU9ci', 'Guilherme-Silva-13-min-684x1024.jpg', 2);
+INSERT INTO `t_user` (`id`, `nick`, `nome`, `email`, `data_nasc`, `nome_marca`, `pass`, `foto`, `tipo_user`, `notificacoes_ofertas`) VALUES
+(15, 'crowne ', 'Crowne Plaza', 'Crowne@Plaza.com', '1589-06-09', 'Crowne Plaza LDA.', '$2y$10$DAUSdmFv4YyIh.frKhypveUY8txw55j2y1gul.pn838Oh4CfBQ4aW', 'download (1).png', 3, 1),
+(16, 'theritz', 'The Ritz', 'The@Ritz.com', '1986-06-20', 'The Ritz LDA.', '$2y$10$bCO9a7K5o0eTdDCpBhCgcO9184CIsMQc0bH3tD53zEtNwMJ8M2HBm', 'download.png', 3, 1),
+(17, 'fourseasons ', 'Four Seasons ', 'Four@Seasons.com', '1584-09-05', 'Four Seasons  LDA', '$2y$10$GG3qLetR1OlCqomWpcjtDOJJTeMEw.phPFHTqHznJ7vEudGUCSYEu', 'download (2).png', 3, 1);
 
 --
--- Indexes for dumped tables
+-- Índices para tabelas despejadas
 --
 
 --
--- Indexes for table `t_user`
+-- Índices de tabela `t_user`
 --
 ALTER TABLE `t_user`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `nick` (`nick`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT para tabelas despejadas
 --
 
 --
--- AUTO_INCREMENT for table `t_user`
+-- AUTO_INCREMENT de tabela `t_user`
 --
 ALTER TABLE `t_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
