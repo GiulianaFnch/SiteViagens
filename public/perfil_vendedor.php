@@ -26,6 +26,73 @@ if (isset($_GET['user_id'])) {
 }
 ?>
 
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+        }
+        .vendedor-info {
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .vendedor-info img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+        .info-container {
+            text-align: left;
+        }
+        .info-row {
+            margin-bottom: 10px;
+        }
+        .label {
+            font-weight: bold;
+            display: block;
+            font-size: 14px;
+        }
+        .value {
+            font-size: 14px;
+            color: #555;
+        }
+        .obsession {
+            font-size: 14px;
+            color: #f14668;
+            margin-top: 10px;
+        }
+        .btn-primary {
+            background-color: #f14668;
+            border: none;
+            padding: 10px 15px;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .btn-primary:hover {
+            background-color: #e03157;
+        }
+    </style>
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="pt">
 
@@ -33,6 +100,10 @@ if (isset($_GET['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil Vendedor</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/styleperfil.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/styleperfil.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -63,77 +134,53 @@ if (isset($_GET['user_id'])) {
         }
 
         .vendedor-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #fff;
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: white;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para destacar o bloco */
-            max-width: 500px; /* Largura máxima da div */
-            margin: 0 auto; /* Centraliza horizontalmente */
-            font-family: Arial, sans-serif;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(1, 1, 1, 1);
+            text-align: center;
         }
-
         .vendedor-info img {
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            margin-bottom: 15px; /* Espaçamento abaixo da foto */
-            object-fit: cover; /* Garante que a imagem seja cortada proporcionalmente */
+            object-fit: cover;
+            margin-bottom: 15px;
         }
-
-        .vendedor-info .info-row {
-            display: flex;
-            justify-content: space-between; /* Espaçamento entre os rótulos e valores */
-            margin: 10px 0; /* Espaçamento entre as linhas */
+        .info-container {
+            text-align: left;
         }
-
-        .vendedor-info .label {
-            font-weight: bold; /* Destaca os rótulos */
-            color: #333;
-            flex-basis: 40%; /* Largura fixa para os rótulos */
-            text-align: right; /* Alinha o texto à direita */
-            margin-right: 15px; /* Espaçamento à direita */
+        .info-row {
+            margin-bottom: 10px;
         }
-
-        .vendedor-info .value {
-            flex-basis: 60%; /* Largura fixa para os valores */
-            color: #555; /* Cor do texto dos valores */
+        .label {
+            font-weight: bold;
+            display: block;
+            font-size: 14px;
         }
-
-        .vendedor-info a {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
+        .value {
+            font-size: 14px;
+            color: #555;
+        }
+        .obsession {
+            font-size: 14px;
+            color: #f14668;
+            margin-top: 10px;
+        }
+        .btn-primary {
+            background-color: #4169e1;
+            border: none;
+            padding: 10px 15px;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
             border-radius: 5px;
-            text-decoration: none;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
         }
-
-        .vendedor-info a:hover {
-            background-color: #0056b3;
-        }
-
-        /* Estilo responsivo para telas menores */
-        @media (max-width: 768px) {
-            .vendedor-info {
-                max-width: 100%;
-                padding: 15px;
-            }
-            
-            .vendedor-info .info-row {
-                flex-direction: column; /* Muda a direção em telas menores */
-                align-items: flex-start; /* Alinha à esquerda */
-            }
-
-            .vendedor-info .label {
-                text-align: left; /* Alinha os rótulos à esquerda */
-                margin-right: 0; /* Remove margem à direita */
-            }
+        .btn-primary:hover {
+            background-color: #4169e1;
         }
     </style>
 </head>
@@ -181,8 +228,70 @@ if (isset($_GET['user_id'])) {
         <?php else: ?>
             <p>Vendedor não encontrado ou não é um vendedor.</p>
         <?php endif; ?>
-        
+        <br><br>
         <a href="reservas.php" class="btn btn-primary">Voltar</a> <!-- Botão para voltar à página anterior -->
     </div>
+     <!--footer-->
+     <section id="contact">
+        <div class="footer">
+            <div class="main">
+                <div class="list">
+
+                    <h4> Minha Conta</h4>
+                    <ul>
+                        <li><a href="#">Minhas Viagens</a></li>
+                        <li><a href="public/perfil.php">Meu Perfil</a></li>
+                        <li><a href="#">Deletar minha conta</a></li>
+
+                    </ul>
+                </div>
+
+                <div class="list">
+                    <h4>Suporte</h4>
+                    <ul>
+                        <li><a href="#">Contatos</a></li>
+                        <li><a href="#">Termos & Condições</a></li>
+                        <li><a href="#">Politica de privacidade</a></li>
+
+                    </ul>
+                </div>
+
+                <div class="list">
+                    <h4>Trabalhe conosco</h4>
+                    <ul>
+                        <li><a href="public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
+                        <li><a href="public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
+                    </ul>
+                </div>
+
+                <div class="list">
+                    <h4>Connect</h4>
+                    <div class="social">
+                        <a href="#"><i class='bx bxl-facebook'></i></a>
+                        <a href="#"><i class='bx bxl-instagram'></i></a>
+
+                        <a href="#"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="end-text">
+            <p>© 2024 BestWay. Todos os direitos reservados.</p>
+        </div>
+    </section>
+
+    <!--link to js-->
+    <script type="text/javascript" src="../../assets/js/script.js"></script>
+
+    <!-- Script para mudar a cor do header ao rolar a página -->
+    <script>
+        window.addEventListener('scroll', function () {
+            const header = document.querySelector('header');
+            header.classList.toggle('scrolled', window.scrollY > 0);
+        });
+    </script>
+
 </body>
+
 </html>
