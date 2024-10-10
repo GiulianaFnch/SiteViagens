@@ -140,17 +140,20 @@
 
         if ($stmt->execute()) {
             // Atualiza o total do carrinho na sessão
+            
             if (isset($_SESSION['total_carrinho'])) {
-                //$_SESSION['total_carrinho'] += $total;
-            } else {
+            if($tipo_item == 'hospedagem'){
                 //$_SESSION['total_carrinho'] = $total;
+            } else{
+                $_SESSION['total_carrinho'] += $total;
             }
-            echo $_SESSION['total_carrinho'];
+            }
+            //echo $_SESSION['total_carrinho'];
 
             // Exibe a mensagem de sucesso e redireciona
             echo "<div class='message-container'>
                   <input type='button' value='Ir para o Carrinho' onclick='window.location.href=\"carrinho.php\"'>
-                <input type='button' value='Continuar Comprando' onclick='setTimeout(function(){onclick='window.location.href=\"/SiteViagens/index.html\"'>
+                <input type='button' value='Continuar Comprando' onclick='window.history.go(-2)'>
               </div>";
         } else {
             echo "<h2>Erro ao adicionar item ao carrinho: " . $stmt->error . "</h2>";
