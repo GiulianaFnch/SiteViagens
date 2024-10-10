@@ -225,15 +225,15 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center gap-2" href="#">
+                                <a class="nav-link d-flex align-items-center gap-2" href="/SiteViagens/adm/vendedores.php">
                                     <svg class="bi">
                                         <use xlink:href="#people" />
                                     </svg>
-                                    Usuários
+                                    Vendedores
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center gap-2" href="#">
+                                <a class="nav-link d-flex align-items-center gap-2" href="/SiteViagens/adm/reservas.php">
                                     <svg class="bi">
                                         <use xlink:href="#cart" />
                                     </svg>
