@@ -2,7 +2,16 @@
 include_once "../../config/valida.php";
 include_once "../../config/liga_bd.php";
 
-$id_artigo = $_POST['id_artigo'];
+// Verificar se o id_artigo foi passado por POST ou GET
+if (isset($_POST['id_artigo'])) {
+    $id_artigo = $_POST['id_artigo'];
+} elseif (isset($_GET['id'])) {
+    $id_artigo = $_GET['id'];
+} else {
+    // Redirecionar ou exibir uma mensagem de erro se o id_artigo não estiver definido
+    die("ID do artigo não fornecido.");
+}
+
 $sql = "SELECT * FROM t_artigo WHERE id=" . $id_artigo;
 
 // a variável resultado vai guardar todos os dados de todos os artigos
@@ -462,55 +471,3 @@ $linha = mysqli_fetch_array($resultado);
 </body>
 
 </html>
-
-
-<!-- Depois arrumar para mostrar o nome do vendedor, não só o ID -->
-
-<!-- 
-        Ignorar essa parte, é para futuramente adicionar comentários (??)
-        (não apagar pra já pfv)
-    -->
-
-<!--
-    <h3>Comentários</h3>
-    <table>
-        <tr>
-            <td>ID</td>
-            <td>Comentário</td>
-            <td>Classificação</td>
-            <td>Data</td>
-            <td>Utilizador</td>
-        </tr>
-
-        <?php
-        /*
-        $sql = "SELECT * FROM t_art_comen WHERE publico=0 AND id_artigo=" . $id_artigo;
-        // a variavel resultado vai guardar todos os dados de todos os clientes
-        $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
-        // variavel para contar os registros
-        // enquanto conseguir ler dados do array resultado imprime
-        while ($linha = mysqli_fetch_array($resultado)) {
-            echo "<tr>";
-            echo "<td>" . $linha['id'] . "</td>";
-            echo "<td>" . $linha['comentario'] . "</td>";
-            echo "<td>" . $linha['avaliacao'] . "</td>";
-            echo "<td>" . $linha['data'] . "</td>";
-            echo "<td>" . $linha['id_user'] . "</td>";
-            echo "</tr>";
-        }
-            */
-        ?>
-
-    </table>
-    <form action="comprar3.php" method="post">
-        <input type="hidden" name="id_artigo" value="<?php echo $id_artigo; ?>">
-        Novo comentário:<br> <textarea cols="80" rows="5" name="comentario"></textarea><br>
-        Classificação: <input type="number" min="1" max="5" name="classificacao" required><br>
-        Data: <input type="text" readonly name="data" value="<?php echo date("h:i:sa"); ?>"><br>
-        Público: <select name="publico">
-            <option value="0">Público</option>
-            <option value="1">Privado</option>
-        </select>
-        <input type="submit" value="Comentar">
-
-    -->

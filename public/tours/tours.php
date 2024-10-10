@@ -1,4 +1,4 @@
-<?php 
+<?php
 include '../../config/liga_bd.php';
 /*include '../../config/valida.php';*/
 ?>
@@ -58,64 +58,64 @@ include '../../config/liga_bd.php';
         </div>
     </section>
 
-   <!--container-->
-<section class="destinos" id="destinos">
-    <div class="title">
-    <h2><a href="listar_tours.php" class="link-titulopasseios">Passeios mais procurados</a></h2>
+    <!--container-->
+    <section class="destinos" id="destinos">
+        <div class="title">
+            <h2><a href="listar_tours.php" class="link-titulopasseios">Passeios mais procurados</a></h2>
 
-    </div>
-    
-    <div class="linha">
-        <div class="destino">
-            <img src="imagens/coliseu.jpg" alt="Tour Coliseu">
-            <div class="descricao">
-                <h3>Visite o icônico Coliseu de Roma, um marco da história.</h3>
-            </div>
         </div>
 
-        <div class="destino">
-            <img src="imagens/riosena.jpg" alt="Passeio de barco pelo Rio Sena">
-            <div class="descricao">
-                <h3>Desfrute de um passeio romântico pelo Rio Sena.</h3>
+        <div class="linha">
+            <div class="destino">
+                <img src="imagens/coliseu.jpg" alt="Tour Coliseu">
+                <div class="descricao">
+                    <h3>Visite o icônico Coliseu de Roma, um marco da história.</h3>
+                </div>
             </div>
-        </div>
 
-        <div class="destino">
-            <img src="imagens/cristoredentor.jpg" alt="Cristo Redentor">
-            <div class="descricao">
-                <h3>Admire o Cristo Redentor, uma das maravilhas do mundo moderno.</h3>
+            <div class="destino">
+                <img src="imagens/riosena.jpg" alt="Passeio de barco pelo Rio Sena">
+                <div class="descricao">
+                    <h3>Desfrute de um passeio romântico pelo Rio Sena.</h3>
+                </div>
             </div>
-        </div>
-    </div> <!-- Fim da primeira linha -->
 
-    <div class="linha">
-        <div class="destino">
-            <img src="imagens/piramides.jpg" alt="Pirâmides de Gizé">
-            <div class="descricao">
-                <h3>Descubra as enigmáticas Pirâmides de Gizé.</h3>
+            <div class="destino">
+                <img src="imagens/cristoredentor.jpg" alt="Cristo Redentor">
+                <div class="descricao">
+                    <h3>Admire o Cristo Redentor, uma das maravilhas do mundo moderno.</h3>
+                </div>
             </div>
-        </div>
+        </div> <!-- Fim da primeira linha -->
 
-        <div class="destino">
-            <img src="imagens/centralpark.jpg" alt="Tour pelo Central Park">
-            <div class="descricao">
-                <h3>Caminhe pelo famoso Central Park em Nova York </h3>
+        <div class="linha">
+            <div class="destino">
+                <img src="imagens/piramides.jpg" alt="Pirâmides de Gizé">
+                <div class="descricao">
+                    <h3>Descubra as enigmáticas Pirâmides de Gizé.</h3>
+                </div>
             </div>
-        </div>
 
-        <div class="destino">
-            <img src="imagens/santorini.jpg" alt="Cruzeiro pelas ilhas vulcânicas">
-            <div class="descricao">
-                <h3>Cruzeiro pelas ilhas vulcânicas de Santorini</h3>
+            <div class="destino">
+                <img src="imagens/centralpark.jpg" alt="Tour pelo Central Park">
+                <div class="descricao">
+                    <h3>Caminhe pelo famoso Central Park em Nova York </h3>
+                </div>
             </div>
-        </div>
-    </div> <!-- Fim da segunda linha -->
-    <a href="listar_tours.php" class="botao-vertodostours">Ver todos</a>
 
-</section>
+            <div class="destino">
+                <img src="imagens/santorini.jpg" alt="Cruzeiro pelas ilhas vulcânicas">
+                <div class="descricao">
+                    <h3>Cruzeiro pelas ilhas vulcânicas de Santorini</h3>
+                </div>
+            </div>
+        </div> <!-- Fim da segunda linha -->
+        <a href="listar_tours.php" class="botao-vertodostours">Ver todos</a>
+
+    </section>
 
 
-</section>
+    </section>
 
 
 
@@ -124,11 +124,11 @@ include '../../config/liga_bd.php';
         <div class="title">
             <h2>Aventuras de tirar o fôlego</h2>
         </div>
+
         <div class="package-content2">
             <div class="box">
                 <div class="thum">
-                    <img src="imagens/australia.jpg">
-
+                    <a href="detalhes_tours.php?id=29"><img src="imagens/australia.jpg" alt="Gold Coast: aula de surf"></a>
                 </div>
 
                 <div class="dest-content">
@@ -144,17 +144,13 @@ include '../../config/liga_bd.php';
                         <a href="#">
                             <h4> A partir de 41,98 € por pessoa</h4>
                         </a><br>
-
-
                     </div>
                 </div>
             </div>
 
-
             <div class="box">
                 <div class="thum">
-                    <img src="imagens/frança.jpg">
-
+                    <a href="detalhes_tours.php?id=30"><img src="imagens/frança.jpg" alt="Chamonix: Dia de ski"></a>
                 </div>
 
                 <div class="dest-content">
@@ -173,10 +169,10 @@ include '../../config/liga_bd.php';
                     </div>
                 </div>
             </div>
+
             <div class="box">
                 <div class="thum">
-                    <img src="imagens/Antalya.jpg">
-
+                    <a href="detalhes_tours.php?id=31"><img src="imagens/Antalya.jpg" alt="Antalya: Safári de Buggy no Deserto"></a>
                 </div>
 
                 <div class="dest-content">
@@ -198,18 +194,16 @@ include '../../config/liga_bd.php';
 
             <div class="box">
                 <div class="thum">
-                    <img src="imagens/dubai.jpg">
-
+                    <a href="detalhes_tours.php?id=32"><img src="imagens/dubai.jpg" alt="Dubai: Paraquedismo no deserto de Dubai"></a>
                 </div>
 
                 <div class="dest-content">
                     <div class="location">
                         <h3 style="color: gray;">Dubai: Paraquedismo no deserto de Dubai</h3>
                         <h5>Contemple as dunas de Dubai enquanto despenca do céu a uma velocidade de 192 km/h.</h5>
-<br>
+                        <br>
                     </div>
                     <div class="stars">
-                        <a href="#"><i class='bx bxs-star'></i></a>
                         <a href="#"><i class='bx bxs-star'></i></a>
                         <a href="#"><i class='bx bxs-star'></i></a>
                         <a href="#"><i class='bx bxs-star'></i></a>
@@ -222,15 +216,14 @@ include '../../config/liga_bd.php';
 
             <div class="box">
                 <div class="thum">
-                    <img src="imagens/saara.jpg">
-
+                    <a href="detalhes_tours.php?id=34"><img src="imagens/saara.jpg" alt="Saara: Passeio de quadriciclo pelo deserto"></a>
                 </div>
- 
+
                 <div class="dest-content">
                     <div class="stars">
                         <h3 style="color: gray;"> Saara: Passeio de quadriciclo pelo deserto.</h3>
-                        <h5>Explore as paisagens deslumbrantes de Erg Chebbi em uma emocionante aventura de quadriciclo 
-             </h5>
+                        <h5>Explore as paisagens deslumbrantes de Erg Chebbi em uma emocionante aventura de quadriciclo
+                        </h5>
 
                     </div>
                     <div class="stars">
@@ -240,23 +233,20 @@ include '../../config/liga_bd.php';
                         <a href="#">
                             <h4> A partir de 266,00 € por pessoa</h4>
                         </a><br>
-
-
                     </div>
                 </div>
             </div>
 
             <div class="box">
                 <div class="thum">
-                    <img src="imagens/Geysir.jpg">
-
+                    <a href="detalhes_tours.php?id=35"><img src="imagens/Geysir.jpg" alt="Geysir: snowmobile na geleira Langjökull"></a>
                 </div>
- 
+
                 <div class="dest-content">
                     <div class="stars">
                         <h3 style="color: gray;">Geysir: snowmobile na geleira Langjökull</h3>
                         <h5>Embarque em um passeio de snowmobiling em Geysir
-             </h5><br><br>
+                        </h5><br><br>
 
                     </div>
                     <div class="stars">
@@ -266,22 +256,21 @@ include '../../config/liga_bd.php';
                         <a href="#">
                             <h4> A partir de 208,00 € por pessoa</h4>
                         </a><br>
-
-
                     </div>
                 </div>
             </div>
+
             <div class="box">
                 <div class="thum">
-                    <img src="imagens/tenerife.jpg">
-
+                    <a href="detalhes_tours.php?id=36"><img src="imagens/tenerife.jpg" alt="Tenerife: Voo duplo de parapente"></a>
                 </div>
- 
+
                 <div class="dest-content">
                     <div class="stars">
                         <h3 style="color: gray;">Tenerife: Voo duplo de parapente</h3>
-                        <h5>Experimente o incrível e emocionante mundo do parapente com uma equipe experiente e profissional. 
-             </h5>
+                        <h5>Experimente o incrível e emocionante mundo do parapente com uma equipe experiente e
+                            profissional.
+                        </h5>
 
                     </div>
                     <div class="stars">
@@ -291,22 +280,21 @@ include '../../config/liga_bd.php';
                         <a href="#">
                             <h4> A partir de 110,00 € por pessoa</h4>
                         </a><br>
-
-
                     </div>
                 </div>
             </div>
+
             <div class="box">
                 <div class="thum">
-                    <img src="imagens/puntacana.jpg">
-
+                    <a href="detalhes_tours.php?id=37"><img src="imagens/puntacana.jpg" alt="Punta Cana: Jet Ski a melhor experiência de adrenalina"></a>
                 </div>
- 
+
                 <div class="dest-content">
                     <div class="stars">
                         <h3 style="color: gray;">Punta Cana: Jet Ski a melhor experiência de adrenalina</h3>
-                        <h5>levará a lugares deslumbrantes como Cayo Bocaina, Cayo Esteban, a praia El Mono e a piscina natural de Miches. 
-             </h5>
+                        <h5>levará a lugares deslumbrantes como Cayo Bocaina, Cayo Esteban, a praia El Mono e a piscina
+                            natural de Miches.
+                        </h5>
 
                     </div>
                     <div class="stars">
@@ -316,14 +304,12 @@ include '../../config/liga_bd.php';
                         <a href="#">
                             <h4> A partir de 266,00 € por pessoa</h4>
                         </a><br>
-
-
                     </div>
                 </div>
             </div>
         </div>
     </section>
-   
+
 
     <!--Newsletter-->
     <section class="newsletter">
@@ -351,7 +337,7 @@ include '../../config/liga_bd.php';
 
                     <h4> Minha Conta</h4>
                     <ul>
-                    <li><a href="/SiteViagens/public/perfil.php">Meu Perfil</a></li>
+                        <li><a href="/SiteViagens/public/perfil.php">Meu Perfil</a></li>
                         <li><a href="/SiteViagens/public/reservas.php">Minhas Viagens</a></li>
                         <li><a href="/SiteViagens/public/backend/logout.php">Logout</a></li>
 
