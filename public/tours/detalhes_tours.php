@@ -224,7 +224,15 @@ $linha = mysqli_fetch_array($resultado);
     <strong>Localização:</strong> <?php echo $linha['localizacao']; ?>
 </div>
 
-        <!-- Botões de Comprar e Voltar -->
+        <!-- Botões de Comprar, Voltar e Favoritos-->
+       <div class="button-container">
+        <form action="../adicionar_favoritos.php" method="post">
+            <input type="hidden" name="id_artigo" value="<?php echo $linha['id']; ?>">
+            <input type="hidden" name="id_user" value="<?php echo $_SESSION['id']; ?>"> 
+            <input type="submit" class="buy-button" value="Adicionar aos Favoritos">
+        </form>
+    </div>
+        
         <div class="button-container">
     <form action="../carrinho/adicionar_ao_carrinho.php" id="f2" method="post">
         <input type="hidden" name="id_artigo" value="<?php echo $linha['id']; ?>">
