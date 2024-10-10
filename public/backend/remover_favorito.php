@@ -1,12 +1,6 @@
 <?php
-include '../config/valida.php';
-include '../config/liga_bd.php';
-
-// Verifica se o usuário está logado
-if (!isset($_SESSION['id'])) {
-    header("Location: /SiteViagens/public/login.php");
-    exit();
-}
+include '../../config/valida.php';
+include '../../config/liga_bd.php';
 
 $user_id = $_SESSION['id'];
 
@@ -25,6 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id_artigo'])) {
     }
 }
 
-header("Location: favoritos.php"); 
+header("Location: ../favoritos.php"); 
 exit();
 ?>

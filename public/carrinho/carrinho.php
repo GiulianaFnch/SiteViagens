@@ -42,8 +42,12 @@ if (!$resultado_artigos) {
     die("Erro na execução da consulta: " . $stmt->error);
 }
 
+if (!isset($_SESSION['total_carrinho'])) {
+    $_SESSION['total_carrinho'] = 0; // Inicialize com 0 se não estiver definida
+}
+
 // Calcular o total do carrinho
-$total_carrinho = $_SESSION['total_carrinho'] ;
+$total_carrinho = $_SESSION['total_carrinho'];
 ?>
 
 <!DOCTYPE html>

@@ -25,16 +25,18 @@ $linha = mysqli_fetch_array($resultado);
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;900&display=swap" rel="stylesheet">
 
     <!-- Estilos do Slick Carousel -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
 
     <style>
-        
         /* Header com fundo branco ao rolar */
         header.scrolled {
             background-color: white;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f9f9f9;
@@ -90,7 +92,8 @@ $linha = mysqli_fetch_array($resultado);
             color: #333;
         }
 
-        .rating, .reviews {
+        .rating,
+        .reviews {
             display: flex;
             align-items: center;
             gap: 5px;
@@ -126,128 +129,140 @@ $linha = mysqli_fetch_array($resultado);
         }
 
         .buy-button {
-    background-color: #6495ed; /* Cor de fundo azul */
-    color: white; /* Cor do texto branco */
-    width: 100%; /* O botão ocupa 100% da largura do container */
-    border: none; /* Remove a borda */
-    padding: 10px 0; /* Adiciona preenchimento vertical ao botão */
-    font-size: 16px; /* Define o tamanho da fonte */
-    cursor: pointer; /* Mostra o ícone de cursor de "mão" ao passar o mouse */
-    text-align: center; /* Centraliza o texto */
-    border-radius: 5px; /* Bordas arredondadas */
-    transition: background-color 0.3s ease; /* Efeito de transição na mudança de cor */
-}
-
-        .buy-button:hover {
-    background-color: #4169e1; /* Cor de fundo mais escura ao passar o mouse */
-}
-
-        .back-button {
-    background-color:#d1d1d1; 
-    color: white; 
-    width: 100%; 
-    border: none; 
-    padding: 10px 0; 
-    font-size: 16px; 
-    cursor: pointer; 
-    text-align: center; 
-    border-radius: 5px; 
-    transition: background-color 0.3s ease;
+            background-color: #6495ed;
+            /* Cor de fundo azul */
+            color: white;
+            /* Cor do texto branco */
+            width: 100%;
+            /* O botão ocupa 100% da largura do container */
+            border: none;
+            /* Remove a borda */
+            padding: 10px 0;
+            /* Adiciona preenchimento vertical ao botão */
+            font-size: 16px;
+            /* Define o tamanho da fonte */
+            cursor: pointer;
+            /* Mostra o ícone de cursor de "mão" ao passar o mouse */
+            text-align: center;
+            /* Centraliza o texto */
+            border-radius: 5px;
+            /* Bordas arredondadas */
+            transition: background-color 0.3s ease;
+            /* Efeito de transição na mudança de cor */
         }
 
-.back-button:hover {
-    background-color: #4169e1; 
-}
+        .buy-button:hover {
+            background-color: #4169e1;
+            /* Cor de fundo mais escura ao passar o mouse */
+        }
 
+        .back-button {
+            background-color: #d1d1d1;
+            color: white;
+            width: 100%;
+            border: none;
+            padding: 10px 0;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
 
+        .back-button:hover {
+            background-color: #4169e1;
+        }
     </style>
 </head>
 
 <body>
 
-<header>
-    <a href="/SiteViagens/index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
-    <ul class="navbar">
-        <li><a href="/SiteViagens/index.html#home">Hospedagem</a></li>
-        <li><a href="#package">Passagens</a></li>
-        <li><a href="/SiteViagens/public/tours/tours.php">Passeios</a></li>
-        <li><a href="#contact">Pacotes</a></li>
-        <li><a href="public/login.php"><i class='bx bx-user'></i></a></li>
-            <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a></li>
-    </ul>
-</header>
-<br><br><br><br><br>
+    <header>
+        <a href="/SiteViagens/index.html"
+            style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
+        <ul class="navbar">
+            <li><a href="/SiteViagens/index.html#home">Hospedagem</a></li>
+            <li><a href="#package">Passagens</a></li>
+            <li><a href="/SiteViagens/public/tours/tours.php">Passeios</a></li>
+            <li><a href="#contact">Pacotes</a></li>
+            <li><a href="public/login.php"><i class='bx bx-user'></i></a></li>
+            <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a>
+            </li>
+        </ul>
+    </header>
+    <br><br><br><br><br>
 
-<main>
-    <div class="carousel-container">
-        <div class="artigo-carousel">
-            <div><img src="imagens/<?php echo $linha['foto1']; ?>" class="artigo-img" alt="Imagem 1"></div>
-            
-            <?php if ($linha['foto2'] != NULL) { ?>
-                <div><img src="imagens/<?php echo $linha['foto2']; ?>" class="artigo-img" alt="Imagem 2"></div>
-            <?php } ?>
-            
-            <?php if ($linha['foto3'] != NULL) { ?>
-                <div><img src="imagens/<?php echo $linha['foto3']; ?>" class="artigo-img" alt="Imagem 3"></div>
-            <?php } ?>
-        </div>
-    </div>
+    <main>
+        <div class="carousel-container">
+            <div class="artigo-carousel">
+                <div><img src="imagens/<?php echo $linha['foto1']; ?>" class="artigo-img" alt="Imagem 1"></div>
 
-    <div class="info-container">
-        <h2><?php echo $linha['titulo']; ?></h2>
+                <?php if ($linha['foto2'] != NULL) { ?>
+                    <div><img src="imagens/<?php echo $linha['foto2']; ?>" class="artigo-img" alt="Imagem 2"></div>
+                <?php } ?>
 
-        <!-- Avaliações -->
-        <div class="rating">
-            <span>&#9733;&#9733;&#9733;&#9733;&#9734;</span>
-            <span>4.5 / 5</span>
+                <?php if ($linha['foto3'] != NULL) { ?>
+                    <div><img src="imagens/<?php echo $linha['foto3']; ?>" class="artigo-img" alt="Imagem 3"></div>
+                <?php } ?>
+            </div>
         </div>
 
-        <!-- Descrição -->
-        <div class="info-item"><?php echo $linha['descricao']; ?></div>
+        <div class="info-container">
+            <h2><?php echo $linha['titulo']; ?></h2>
 
-        <!-- Preço -->
-        <div class="price-container"> € <?php echo number_format($linha['preco'], 2, ',', '.'); ?></div>
+            <!-- Avaliações -->
+            <div class="rating">
+                <span>&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                <span>4.5 / 5</span>
+            </div>
 
-        <!-- Datas e Localização -->
-        <div class="info-item">
-    <i class='bx bx-calendar'></i> 
-    <strong>Data de início:</strong> <?php echo date('d/m/Y', strtotime($linha['data_inicio'])); ?>
-</div>
+            <!-- Descrição -->
+            <div class="info-item"><?php echo $linha['descricao']; ?></div>
 
-<div class="info-item">
-    <i class='bx bx-calendar-check'></i> 
-    <strong>Data de fim:</strong> <?php echo date('d/m/Y', strtotime($linha['data_fim'])); ?>
-</div>
+            <!-- Preço -->
+            <div class="price-container"> € <?php echo number_format($linha['preco'], 2, ',', '.'); ?></div>
 
-<div class="info-item">
-    <i class='bx bx-map'></i> 
-    <strong>Localização:</strong> <?php echo $linha['localizacao']; ?>
-</div>
+            <!-- Datas e Localização -->
+            <div class="info-item">
+                <i class='bx bx-calendar'></i>
+                <strong>Data de início:</strong> <?php echo date('d/m/Y', strtotime($linha['data_inicio'])); ?>
+            </div>
 
-        <!-- Botões de Comprar, Voltar e Favoritos-->
-       <div class="button-container">
-        <form action="../adicionar_favoritos.php" method="post">
-            <input type="hidden" name="id_artigo" value="<?php echo $linha['id']; ?>">
-            <input type="hidden" name="id_user" value="<?php echo $_SESSION['id']; ?>"> 
-            <input type="submit" class="buy-button" value="Adicionar aos Favoritos">
-        </form>
-    </div>
-        
-        <div class="button-container">
-    <form action="../carrinho/adicionar_ao_carrinho.php" id="f2" method="post">
-        <input type="hidden" name="id_artigo" value="<?php echo $linha['id']; ?>">
-        <input type="hidden" name="tipo_item" value="atividade">
-        <input type="hidden" name="return_url" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
-        <input type="submit" class="buy-button" value="Adicionar ao carrinho">
-    </form>
-</div>
-<br>
+            <div class="info-item">
+                <i class='bx bx-calendar-check'></i>
+                <strong>Data de fim:</strong> <?php echo date('d/m/Y', strtotime($linha['data_fim'])); ?>
+            </div>
+
+            <div class="info-item">
+                <i class='bx bx-map'></i>
+                <strong>Localização:</strong> <?php echo $linha['localizacao']; ?>
+            </div>
+
+            <!-- Botões de Comprar, Voltar e Favoritos-->
+            <div class="button-container">
+                <form action="../backend/adicionar_favoritos.php" method="post">
+                    <input type="hidden" name="id_artigo" value="<?php echo $linha['id']; ?>">
+                    <input type="hidden" name="id_user" value="<?php echo $_SESSION['id']; ?>">
+                    <input type="hidden" name="tipo_reserva" value="atividade">
+                    <input type="submit" class="buy-button" value="Adicionar aos Favoritos">
+                </form>
+            </div>
+
+            <div class="button-container">
+                <form action="../carrinho/adicionar_ao_carrinho.php" id="f2" method="post">
+                    <input type="hidden" name="id_artigo" value="<?php echo $linha['id']; ?>">
+                    <input type="hidden" name="tipo_item" value="atividade">
+                    <input type="hidden" name="return_url" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                    <input type="submit" class="buy-button" value="Adicionar ao carrinho">
+                </form>
+            </div>
+            <br>
             <button class="back-button" onclick="history.back()">Voltar</button>
         </div>
-    </div>
-</main>
- <!--Package section-->
- <section class="package" id="package">
+        </div>
+    </main>
+    <!--Package section-->
+    <section class="package" id="package">
         <div class="title">
             <h2>Você também pode gostar...</h2>
         </div>
@@ -333,7 +348,7 @@ $linha = mysqli_fetch_array($resultado);
                     <div class="location">
                         <h3 style="color: gray;">Dubai: Paraquedismo no deserto de Dubai</h3>
                         <h5>Contemple as dunas de Dubai enquanto despenca do céu a uma velocidade de 192 km/h.</h5>
-<br>
+                        <br>
                     </div>
                     <div class="stars">
                         <a href="#"><i class='bx bxs-star'></i></a>
@@ -346,8 +361,8 @@ $linha = mysqli_fetch_array($resultado);
                     </div>
                 </div>
             </div>
-            </div>
-            </section>
+        </div>
+    </section>
 
     <!--Newsletter-->
     <section class="newsletter">
@@ -421,7 +436,7 @@ $linha = mysqli_fetch_array($resultado);
     <script type="text/javascript" src="assets/js/script.js"></script>
     <!-- Script para mudar a cor do header ao rolar a página -->
     <script>
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             const header = document.querySelector('header');
             header.classList.toggle('scrolled', window.scrollY > 0);
         });
@@ -429,33 +444,34 @@ $linha = mysqli_fetch_array($resultado);
 
 
 
-<!-- Script do Slick Carousel -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-<script>
-    $(document).ready(function(){
-        $('.artigo-carousel').slick({
-            dots: true,
-            infinite: true,
-            speed: 300,
-            slidesToShow: 1,
-            adaptiveHeight: true
+    <!-- Script do Slick Carousel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.artigo-carousel').slick({
+                dots: true,
+                infinite: true,
+                speed: 300,
+                slidesToShow: 1,
+                adaptiveHeight: true
+            });
         });
-    });
-</script>
+    </script>
 
 </body>
+
 </html>
 
 
 <!-- Depois arrumar para mostrar o nome do vendedor, não só o ID -->
 
-    <!-- 
+<!-- 
         Ignorar essa parte, é para futuramente adicionar comentários (??)
         (não apagar pra já pfv)
     -->
-    
-    <!--
+
+<!--
     <h3>Comentários</h3>
     <table>
         <tr>
@@ -467,23 +483,23 @@ $linha = mysqli_fetch_array($resultado);
         </tr>
 
         <?php
-    /*
-    $sql = "SELECT * FROM t_art_comen WHERE publico=0 AND id_artigo=" . $id_artigo;
-    // a variavel resultado vai guardar todos os dados de todos os clientes
-    $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
-    // variavel para contar os registros
-    // enquanto conseguir ler dados do array resultado imprime
-    while ($linha = mysqli_fetch_array($resultado)) {
-        echo "<tr>";
-        echo "<td>" . $linha['id'] . "</td>";
-        echo "<td>" . $linha['comentario'] . "</td>";
-        echo "<td>" . $linha['avaliacao'] . "</td>";
-        echo "<td>" . $linha['data'] . "</td>";
-        echo "<td>" . $linha['id_user'] . "</td>";
-        echo "</tr>";
-    }
-        */
-    ?>
+        /*
+        $sql = "SELECT * FROM t_art_comen WHERE publico=0 AND id_artigo=" . $id_artigo;
+        // a variavel resultado vai guardar todos os dados de todos os clientes
+        $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
+        // variavel para contar os registros
+        // enquanto conseguir ler dados do array resultado imprime
+        while ($linha = mysqli_fetch_array($resultado)) {
+            echo "<tr>";
+            echo "<td>" . $linha['id'] . "</td>";
+            echo "<td>" . $linha['comentario'] . "</td>";
+            echo "<td>" . $linha['avaliacao'] . "</td>";
+            echo "<td>" . $linha['data'] . "</td>";
+            echo "<td>" . $linha['id_user'] . "</td>";
+            echo "</tr>";
+        }
+            */
+        ?>
 
     </table>
     <form action="comprar3.php" method="post">
@@ -498,5 +514,3 @@ $linha = mysqli_fetch_array($resultado);
         <input type="submit" value="Comentar">
 
     -->
-
-

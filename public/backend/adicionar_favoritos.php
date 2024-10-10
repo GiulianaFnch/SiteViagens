@@ -1,16 +1,12 @@
 <?php
-include '../config/valida.php';
-include '../config/liga_bd.php';
-
-if (!isset($_SESSION['id'])) {
-    header("Location: /SiteViagens/public/login.php");
-    exit();
-}
+include '../../config/valida.php';
+include '../../config/liga_bd.php';
 
 $user_id = $_SESSION['id'];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id_artigo'])) {
     $id_artigo = (int)$_POST['id_artigo'];
+    $tipo_reserva = $_POST['tipo_reserva'];
 
     // Verifica se o artigo já está nos favoritos para evitar duplicação
     $sql_check = "SELECT * FROM t_favoritos WHERE id_artigo = ? AND id_user = ?";
@@ -23,24 +19,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id_artigo'])) {
     if ($result_check->num_rows > 0) {
         echo "<script>
                 alert('Este artigo já está nos seus favoritos!');
-                window.history.go(-1);
+                window.history.go(-2);
               </script>";
         exit;
     }
 
     // Caso contrário, insere o artigo como favorito
-    $sql = "INSERT INTO t_favoritos (id_artigo, id_user) VALUES (?, ?)";
+    $sql = "INSERT INTO t_favoritos (id_artigo, id_user, tipo_reserva) VALUES (?, ?, ?)";
     $stmt = $ligacao->prepare($sql);
-    $stmt->bind_param("ii", $id_artigo, $user_id);
+    $stmt->bind_param("iis", $id_artigo, $user_id, $tipo_reserva);
     if ($stmt->execute()) {
         echo "<script>
                 alert('Artigo adicionado aos favoritos com sucesso!');
-                window.history.go(-1);
+                window.history.go(-2);
               </script>";
     } else {
         echo "<script>
                 alert('Erro ao adicionar artigo aos favoritos.');
-                window.history.go(-1);
+                window.history.go(-2);
               </script>";
     }
     exit;

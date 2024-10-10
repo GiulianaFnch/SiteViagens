@@ -141,26 +141,28 @@ $linha = mysqli_fetch_array($resultado);
             border: 1px solid #ddd;
             border-radius: 4px;
         }
-        
-.form-group-container {
-    display: flex;
-    gap: 70px; /* Espaçamento entre os campos */
-    justify-content: center; /* Centraliza horizontalmente */
-}
 
-.form-group {
-    flex: 1; /* Cada item ocupa o mesmo espaço */
-}
+        .form-group-container {
+            display: flex;
+            gap: 70px;
+            /* Espaçamento entre os campos */
+            justify-content: center;
+            /* Centraliza horizontalmente */
+        }
 
-/* Responsivo - Quando a tela for menor, os itens voltam a ficar um abaixo do outro */
-@media (max-width: 600px) {
-    .form-group-container {
-        flex-direction: column;
-        align-items: center; /* Centralizar em telas pequenas */
-    }
-}
+        .form-group {
+            flex: 1;
+            /* Cada item ocupa o mesmo espaço */
+        }
 
-
+        /* Responsivo - Quando a tela for menor, os itens voltam a ficar um abaixo do outro */
+        @media (max-width: 600px) {
+            .form-group-container {
+                flex-direction: column;
+                align-items: center;
+                /* Centralizar em telas pequenas */
+            }
+        }
     </style>
 </head>
 
@@ -177,72 +179,88 @@ $linha = mysqli_fetch_array($resultado);
     </header>
     <br><br><br><br><br>
     <main>
-    <div class="carousel-container">
-        <div class="artigo-carousel">
-            <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto1']); ?>" alt="Foto 1"></div>
-            <?php if (!empty($linha['foto2'])): ?>
-                <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto2']); ?>" alt="Foto 2"></div>
-            <?php endif; ?>
-            <?php if (!empty($linha['foto3'])): ?>
-                <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto3']); ?>" alt="Foto 3"></div>
-            <?php endif; ?>
+        <div class="carousel-container">
+            <div class="artigo-carousel">
+                <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto1']); ?>"
+                        alt="Foto 1"></div>
+                <?php if (!empty($linha['foto2'])): ?>
+                    <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto2']); ?>"
+                            alt="Foto 2"></div>
+                <?php endif; ?>
+                <?php if (!empty($linha['foto3'])): ?>
+                    <div><img src="../../public/hotels/imagens/<?php echo htmlspecialchars($linha['foto3']); ?>"
+                            alt="Foto 3"></div>
+                <?php endif; ?>
+            </div>
         </div>
-    </div>
 
-    <div class="details-container">
-        <h2><?php echo htmlspecialchars($linha['nome']); ?></h2>
-        <div class="price-container">A partir de <?php echo htmlspecialchars($linha['preco_diaria']); ?> € por noite</div>
-        <div class="description"><?php echo htmlspecialchars($linha['descricao']); ?></div>
-        <br>
-        <div class="description">Classificação: <?php echo htmlspecialchars($linha['classificacao']); ?> estrelas</div>
-        <br>
-        <div class="description">Quartos disponíveis: <?php echo htmlspecialchars($linha['n_quartos']); ?></div>
-        <br>
-        <div class="description">Localização: <?php echo htmlspecialchars($linha['localizacao']); ?></div>
-        <br>
-        <div class="description">Horário Check-in: <?php echo htmlspecialchars($linha['horario_checkin']); ?></div>
-        <br>
-        <div class="description">Horário Check-out: <?php echo htmlspecialchars($linha['horario_checkout']); ?></div>
-    </div>
+        <div class="details-container">
+            <h2><?php echo htmlspecialchars($linha['nome']); ?></h2>
+            <div class="price-container">A partir de <?php echo htmlspecialchars($linha['preco_diaria']); ?> € por noite
+            </div>
+            <div class="description"><?php echo htmlspecialchars($linha['descricao']); ?></div>
+            <br>
+            <div class="description">Classificação: <?php echo htmlspecialchars($linha['classificacao']); ?> estrelas
+            </div>
+            <br>
+            <div class="description">Quartos disponíveis: <?php echo htmlspecialchars($linha['n_quartos']); ?></div>
+            <br>
+            <div class="description">Localização: <?php echo htmlspecialchars($linha['localizacao']); ?></div>
+            <br>
+            <div class="description">Horário Check-in: <?php echo htmlspecialchars($linha['horario_checkin']); ?></div>
+            <br>
+            <div class="description">Horário Check-out: <?php echo htmlspecialchars($linha['horario_checkout']); ?>
+            </div>
+        </div>
     </main>
     <main>
 
-<!-- Novo contêiner para data e número de quartos -->
-<div class="booking-container">
-    <form action="../carrinho/adicionar_ao_carrinho.php" method="post" id="reservaForm">
-        <input type="hidden" name="id_artigo" value="<?php echo htmlspecialchars($linha['id']); ?>">
-        <input type="hidden" name="tipo_item" value="hospedagem">
-        <input type="hidden" name="return_url" value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
-        <input type="hidden" name="total" id="total" value="">
-        <input type="hidden" name="dias_quartos" id="dias_quartos" value=""> 
+        <!-- Novo contêiner para data e número de quartos -->
+        <div class="booking-container">
+            <form action="../carrinho/adicionar_ao_carrinho.php" method="post" id="reservaForm">
+                <input type="hidden" name="id_artigo" value="<?php echo htmlspecialchars($linha['id']); ?>">
+                <input type="hidden" name="tipo_item" value="hospedagem">
+                <input type="hidden" name="return_url" value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
+                <input type="hidden" name="total" id="total" value="">
+                <input type="hidden" name="dias_quartos" id="dias_quartos" value="">
 
-        <div class="form-group-container">
-            <div class="form-group">
-                <label for="data-checkin">Check-in:</label>
-                <input type="date" id="data-checkin" name="data_checkin" required>
+                <div class="form-group-container">
+                    <div class="form-group">
+                        <label for="data-checkin">Check-in:</label>
+                        <input type="date" id="data-checkin" name="data_checkin" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data-checkout">Check-out:</label>
+                        <input type="date" id="data-checkout" name="data_checkout" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="n_quartos">Quartos:</label>
+                        <select id="n_quartos" name="n_quartos" required>
+                            <?php
+                            for ($i = 1; $i <= $linha['n_quartos']; $i++) {
+                                echo "<option value='$i'>$i</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <input type="submit" value="Adicionar ao carrinho" class="buy-button">
+            </form>
+
+            <div class="button-container">
+                <form action="../backend/adicionar_favoritos.php" method="post">
+                    <input type="hidden" name="id_artigo" value="<?php echo $linha['id']; ?>">
+                    <input type="hidden" name="id_user" value="<?php echo $_SESSION['id']; ?>">
+                    <input type="hidden" name="tipo_reserva" value="hospedagem">
+                    <input type="submit" class="buy-button" value="Adicionar aos Favoritos">
+                </form>
             </div>
 
-            <div class="form-group">
-                <label for="data-checkout">Check-out:</label>
-                <input type="date" id="data-checkout" name="data_checkout" required>
-            </div>
-
-            <div class="form-group">
-                <label for="n_quartos">Quartos:</label>
-                <select id="n_quartos" name="n_quartos" required>
-                    <?php
-                    for ($i = 1; $i <= $linha['n_quartos']; $i++) {
-                        echo "<option value='$i'>$i</option>";
-                    }
-                    ?>
-                </select>
-            </div>
         </div>
-
-        <input type="submit" value="Adicionar ao carrinho" class="buy-button">
-    </form>
-</div>
-</main>
+    </main>
 
 
 
@@ -293,8 +311,8 @@ $linha = mysqli_fetch_array($resultado);
             }
         });
     </script>
-     <!--Package section-->
- <section class="package" id="package">
+    <!--Package section-->
+    <section class="package" id="package">
         <div class="title">
             <h2>Você também pode gostar...</h2>
         </div>
@@ -384,7 +402,7 @@ $linha = mysqli_fetch_array($resultado);
                         <h3 style="color: gray;">Riad Hadda</h3>
                         <h5>Marrakech | Marrocos</h5>
                         <h5>Experimente um autêntico Riad no coração da Cidade Vermelha</h5>
-<br>
+                        <br>
                     </div>
                     <div class="stars">
                         <a href="#"><i class='bx bxs-star'></i></a>
@@ -396,8 +414,8 @@ $linha = mysqli_fetch_array($resultado);
                     </div>
                 </div>
             </div>
-            </div>
-            </section>
+        </div>
+    </section>
 
     <!--Newsletter-->
     <section class="newsletter">
@@ -471,7 +489,7 @@ $linha = mysqli_fetch_array($resultado);
     <script type="text/javascript" src="assets/js/script.js"></script>
     <!-- Script para mudar a cor do header ao rolar a página -->
     <script>
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             const header = document.querySelector('header');
             header.classList.toggle('scrolled', window.scrollY > 0);
         });
@@ -479,22 +497,23 @@ $linha = mysqli_fetch_array($resultado);
 
 
 
-<!-- Script do Slick Carousel -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-<script>
-    $(document).ready(function(){
-        $('.artigo-carousel').slick({
-            dots: true,
-            infinite: true,
-            speed: 300,
-            slidesToShow: 1,
-            adaptiveHeight: true
+    <!-- Script do Slick Carousel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.artigo-carousel').slick({
+                dots: true,
+                infinite: true,
+                speed: 300,
+                slidesToShow: 1,
+                adaptiveHeight: true
+            });
         });
-    });
-</script>
+    </script>
 
 </body>
+
 </html>
 </body>
 
