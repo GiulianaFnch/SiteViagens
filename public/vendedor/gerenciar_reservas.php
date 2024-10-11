@@ -4,14 +4,13 @@ include '../../config/liga_bd.php';
 
 $vendedor_id = $_SESSION['id'];
 
-$sql = "SELECT r.id, r.item_id, r.tipo_reserva, r.data_reserva, r.quantidade, r.user_id,
+$sql = "SELECT r.id, r.item_id, r.tipo_reserva, r.data_reserva, r.quantidade, u.nome AS user_nome,
         CASE 
             WHEN r.tipo_reserva = 'atividade' THEN (SELECT titulo FROM t_artigo WHERE id = r.item_id)
-            /*WHEN r.tipo_reserva = 'voo' THEN (SELECT titulo FROM t_voos WHERE id = r.item_id)
-            WHEN r.tipo_reserva = 'hospedagem' THEN (SELECT titulo FROM t_hospedagem WHERE id = r.item_id)
-            WHEN r.tipo_reserva = 'pacote' THEN (SELECT titulo FROM t_pacotes WHERE id = r.item_id)*/
+            WHEN r.tipo_reserva = 'hospedagem' THEN (SELECT nome FROM t_hospedagem WHERE id = r.item_id)
         END AS titulo
         FROM t_reservas r 
+        JOIN t_user u ON r.user_id = u.id
         WHERE r.tipo_reserva = 'atividade' AND r.item_id IN (SELECT id FROM t_artigo WHERE id_user = ?)";
 $stmt = $ligacao->prepare($sql);
 $stmt->bind_param("i", $vendedor_id);
@@ -153,7 +152,7 @@ $result = $stmt->get_result();
                             <?php while ($row = $result->fetch_assoc()): ?>
                             <tr>
                                 <td><?php echo htmlspecialchars($row['titulo']); ?></td>
-                                <td><?php echo htmlspecialchars($row['user_id']); ?></td>
+                                <td><?php echo htmlspecialchars($row['user_nome']); ?></td>
                                 <td><?php echo htmlspecialchars($row['tipo_reserva']); ?></td>
                                 <td><?php echo htmlspecialchars($row['data_reserva']); ?></td>
                                 <td><?php echo htmlspecialchars($row['quantidade']); ?></td>
