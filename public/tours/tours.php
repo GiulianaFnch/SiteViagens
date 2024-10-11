@@ -347,7 +347,7 @@ include '../../config/liga_bd.php';
                 <div class="list">
                     <h4>Suporte</h4>
                     <ul>
-                        <li><a href="#">Contatos</a></li>
+                        <li><a href="/SiteViagens/public/contatos/Contatos.html">Contatos</a></li>
                         <li><a href="#">Termos & Condições</a></li>
                         <li><a href="#">Politica de privacidade</a></li>
 
