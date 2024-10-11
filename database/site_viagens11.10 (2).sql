@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 11, 2024 at 01:33 AM
+-- Generation Time: Oct 11, 2024 at 04:22 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,8 +20,21 @@ SET time_zone = "+00:00";
 --
 -- Database: `site_viagens`
 --
-CREATE DATABASE IF NOT EXISTS `site_viagens` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `site_viagens`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `amizades`
+--
+
+CREATE TABLE `amizades` (
+  `id` int(11) NOT NULL,
+  `id_usuario1` int(11) DEFAULT NULL,
+  `id_usuario2` int(11) DEFAULT NULL,
+  `status` enum('pendente','aceito','rejeitado') DEFAULT 'pendente',
+  `data_solicitacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `data_aceite` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -382,6 +395,12 @@ INSERT INTO `t_voos` (`id`, `id_user`, `flight_number`, `airline`, `price`, `arr
 --
 
 --
+-- Indexes for table `amizades`
+--
+ALTER TABLE `amizades`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `t_artigo`
 --
 ALTER TABLE `t_artigo`
@@ -444,6 +463,12 @@ ALTER TABLE `t_voos`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `amizades`
+--
+ALTER TABLE `amizades`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `t_artigo`
