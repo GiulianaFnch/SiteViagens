@@ -12,11 +12,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("ii", $id_carrinho, $id_user);
 
         if ($stmt->execute()) {
-            // Atualiza o total do carrinho
-            $stmt = $ligacao->prepare("SELECT SUM(a.preco * c.quantidade) AS total
-                                       FROM t_carrinho c
-                                       JOIN t_artigo a ON c.id_artigo = a.id
-                                       WHERE c.id_user = ?");
+            $stmt = $ligacao->prepare("
+                SELECT *
+                FROM t_carrinho 
+                WHERE id_user = ?
+            ");
             $stmt->bind_param("i", $id_user);
             $stmt->execute();
             $resultado = $stmt->get_result();
