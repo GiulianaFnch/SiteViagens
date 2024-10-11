@@ -67,10 +67,10 @@ Este projeto está licenciado sob a MIT License.
 ## Contato
 
 Para mais informações, entre em contato com um dos colaboradores do projeto:
--`Giuliana Finochio`
--`Guilherme Silva`
--`Gabrielle Reis`
--`Karoline Moura`
+    - `Giuliana Finochio`
+    - `Guilherme Silva`
+    - `Gabrielle Reis`
+    - `Karoline Moura`
 
 ### Resumo
 
