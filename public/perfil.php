@@ -3,21 +3,79 @@
 
     Pra conseguir editar que ainda colocar o perfil2.php
 -->
-
 <?php
+
 include '../config/valida.php';
 include '../config/liga_bd.php';
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 $activeMenu = 'profile';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id = $_POST['id'];
+// Definir o ID do usuário logado
+$id = $_SESSION['id']; // ID do usuário logado
+
+// Gerenciar solicitações de amizade
+if (isset($_POST['id_solicitacao'])) {
+    $id_solicitacao = $_POST['id_solicitacao'];
+    if (isset($_POST['aceitar'])) {
+        // Aceitar a solicitação
+        $stmt = $ligacao->prepare("UPDATE amizades SET status = 'aceito' WHERE id = ?");
+        $stmt->bind_param("i", $id_solicitacao);
+        if ($stmt->execute()) {
+            echo json_encode(['status' => 'success', 'message' => 'Amizade aceita.']);
+            exit;
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Erro ao aceitar a amizade.']);
+            exit;
+        }
+    } elseif (isset($_POST['rejeitar'])) {
+        // Rejeitar a solicitação
+        $stmt = $ligacao->prepare("DELETE FROM amizades WHERE id = ?");
+        $stmt->bind_param("i", $id_solicitacao);
+        if ($stmt->execute()) {
+            echo json_encode(['status' => 'success', 'message' => 'Amizade rejeitada.']);
+            exit;
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Erro ao rejeitar a amizade.']);
+            exit;
+        }
+    }
+}
+
+// Mostrar solicitações de amizade pendentes
+$sql_solicitacoes = "SELECT * FROM amizades WHERE id_usuario2 = ? AND status = 'pendente'";
+$stmt_solicitacoes = $ligacao->prepare($sql_solicitacoes);
+$stmt_solicitacoes->bind_param("i", $id);
+$stmt_solicitacoes->execute();
+$resultado_solicitacoes = $stmt_solicitacoes->get_result();
+
+// Verificar se há solicitações pendentes e exibi-las antes do restante da página
+$solicitacoes = []; // Inicializar a variável
+
+if ($resultado_solicitacoes->num_rows > 0) {
+    echo "";
+    while ($solicitacao = $resultado_solicitacoes->fetch_assoc()) {
+        $solicitacoes[] = $solicitacao; // Adicionar cada solicitação ao array
+    }
+    echo "<hr>"; // Opcional: Adicionar uma linha separadora
+} else {
+    echo ""; // Mensagem caso não haja solicitações
+}
+
+
+    echo "<hr>"; // Opcional: Adicionar uma linha separadora
+
+
+// Atualizar dados do perfil
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['id_solicitacao'])) {
     $nick = $_POST['nick'];
     $nome = $_POST['nome'];
     $email = $_POST['email'];
     $data_nasc = $_POST['data_nasc'];
     $fotoAntiga = $_POST['nome_foto'];
-    $fotoNova = $fotoAntiga;  // Manter a foto antiga por padrão
+    $fotoNova = $fotoAntiga; // Manter a foto antiga por padrão
 
     // Lidar com upload de foto
     if (isset($_FILES['ficheiro']) && $_FILES['ficheiro']['error'] == 0) {
@@ -26,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Verificar tipo e tamanho do arquivo
         if (in_array($_FILES['ficheiro']['type'], $allowed_types) && $_FILES['ficheiro']['size'] <= $max_size) {
-            $fotoNova = $_FILES['ficheiro']['name'];
+            $fotoNova = uniqid() . '_' . $_FILES['ficheiro']['name'];  // Nome único para evitar conflitos
             $destino = '../assets/images/pics/' . $fotoNova;
 
             // Verificar se o diretório 'pics/' existe, caso contrário, cria-o
@@ -50,22 +108,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // Atualizar dados no banco de dados
-    $sql = "UPDATE t_user SET nick='$nick', nome='$nome', email='$email', data_nasc='$data_nasc', foto='$fotoNova' WHERE id='$id'";
-    if (mysqli_query($ligacao, $sql)) {
+    // Atualizar dados no banco de dados usando prepared statements
+    $stmt = $ligacao->prepare("UPDATE t_user SET nick = ?, nome = ?, email = ?, data_nasc = ?, foto = ? WHERE id = ?");
+    $stmt->bind_param("sssssi", $nick, $nome, $email, $data_nasc, $fotoNova, $id);
+
+    if ($stmt->execute()) {
         // Redirecionar após o sucesso
-        header('Location: perfil.php');
+        header('Location: perfil.php?msg=perfil_atualizado');
         exit;
     } else {
-        echo "Erro ao atualizar os dados: " . mysqli_error($ligacao);
+        echo "Erro ao atualizar os dados: " . $stmt->error;
         exit;
     }
 }
 
-$id = $_SESSION['id'];
-$sql = "SELECT * FROM t_user WHERE id=$id";
-$resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
-$linha = mysqli_fetch_array($resultado);
+// Exibir dados do perfil
+$sql = "SELECT * FROM t_user WHERE id=?";
+$stmt = $ligacao->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+$linha = $resultado->fetch_assoc();
+
 mysqli_close($ligacao);
 ?>
 
@@ -284,7 +348,43 @@ mysqli_close($ligacao);
     color: rgba(255, 255, 255, 0.4);
 }
 
-        /*--------*/
+ /* Estilos do modal */
+ .modal {
+            display: none; /* Ocultar modal por padrão */
+            z-index: 2000;
+            left: 0;
+            top: 100px;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0); /* Cor de fundo */
+            background-color: rgba(0,0,0,0.4); /* Fundo escuro */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            padding: 100px;
+            border: 1px solid #888;
+            width: 80%; /* Largura do modal */
+            max-width: 500px; /* Largura máxima do modal */
+          
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+       
     </style>
 </head>
 
@@ -304,8 +404,32 @@ mysqli_close($ligacao);
 
         </ul>
         </header>
-        
+
     <br><br><br><br><br><br>
+
+<!-- Modal -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <form id="solicitacaoForm" method="POST">
+            <input type="hidden" id="solicitacaoId" name="id_solicitacao" value="">
+            <p>Você tem certeza que deseja aceitar esta solicitação de amizade?</p>
+            <button type="submit" name="aceitar">Aceitar</button>
+            <button type="button" onclick="closeModal()">Cancelar</button>
+        </form>
+    </div>
+</div>
+
+<?php
+    foreach ($solicitacoes as $solicitacao) {
+        echo "<form method='post' onsubmit='openModal(" . $solicitacao['id'] . "); return false;'>"; 
+        echo "<input type='hidden' name='id_solicitacao' value='" . $solicitacao['id'] . "'>";
+        echo "<button type='button' onclick='openModal(" . $solicitacao['id'] . ");'>Aceitar</button>";
+        echo "<button type='submit' name='rejeitar'>Rejeitar</button>";
+        echo "</form>";
+    }
+?>
+
 
     <div class="container light-style flex-grow-1 container-p-y">
         <div class="card shadow-sm rounded-lg">
@@ -321,6 +445,8 @@ mysqli_close($ligacao);
                         <a class="menu-item" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
                 </div>
+
+                                        
 
                 <div class="col-md-9">
                     <div class="tab-content p-4">
@@ -434,12 +560,49 @@ closeBtn.addEventListener('click', () => {
     popupBackground.classList.remove('active'); // Desativar fundo escurecido
 });
 
-popupBackground.addEventListener('click', () => {
-    popup.classList.remove('active');
-    popupBackground.classList.remove('active'); // Desativar fundo escurecido
+
+
+
+function openModal(id) {
+    document.getElementById('solicitacaoId').value = id; // Define o ID da solicitação no campo oculto
+    document.getElementById('myModal').style.display = "block"; // Exibe o modal
+}
+
+function closeModal() {
+    document.getElementById('myModal').style.display = "none"; // Oculta o modal
+}
+
+// Fecha o modal se o usuário clicar fora do conteúdo do modal
+window.onclick = function(event) {
+    if (event.target == document.getElementById('myModal')) {
+        closeModal();
+    }
+}
+
+// AJAX para aceitar ou rejeitar a solicitação
+$(document).ready(function() {
+    $('#solicitacaoForm').on('submit', function(event) {
+        event.preventDefault(); // Impede o envio padrão do formulário
+
+        $.ajax({
+            url: 'perfil.php', // A URL onde o formulário será enviado
+            type: 'POST',
+            data: $(this).serialize(), // Serializa os dados do formulário
+            success: function(response) {
+                // Aqui você pode verificar a resposta e atualizar a interface do usuário, se necessário
+                closeModal(); // Fecha o modal
+                location.reload(); // Recarrega a página para ver as mudanças
+            },
+            error: function(xhr, status, error) {
+                console.error('Erro ao processar a solicitação:', error);
+            }
+        });
+    });
 });
+   
 </script>
     
+
 
     <!--footer-->
     <?php include '../views/partials/footer.php' ?>
