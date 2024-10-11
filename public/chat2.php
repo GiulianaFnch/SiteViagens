@@ -4,13 +4,15 @@ require_once '../config/liga_bd.php'; // Conexão com o banco de dados
 
 $id_user = $_SESSION['id']; // ID do usuário logado
 
-// Buscar todos os usuários
-$stmt = $ligacao->prepare("SELECT id, foto, nick FROM t_user WHERE id != ?");
-$stmt->bind_param("i", $id_user); // "i" para um inteiro
+// Buscar apenas os usuários com amizade aceita
+$stmt = $ligacao->prepare("SELECT u.id, u.foto, u.nick FROM amizades a 
+                           JOIN t_user u ON (a.id_usuario1 = u.id OR a.id_usuario2 = u.id)
+                           WHERE (a.id_usuario1 = ? OR a.id_usuario2 = ?) AND a.status = 'aceito' AND u.id != ?");
+$stmt->bind_param("iii", $id_user, $id_user, $id_user);
 $stmt->execute();
 $resultado = $stmt->get_result();
 
-$usuarios = []; // Array para armazenar os usuários
+$usuarios = [];
 while ($linha = mysqli_fetch_assoc($resultado)) {
     $usuarios[] = $linha; // Adiciona cada usuário ao array
 }
@@ -193,29 +195,34 @@ header{
         #message-input {
             display: flex;
             align-items: center;
+         
         }
 
         #message-input input {
-    width: 85%;
-    padding: 12px;
+    width: 75%;
+    padding: 12px 10px; /* Adiciona um padding para a entrada */
     border: 1px solid #ddd;
     border-radius: 20px;
-    margin-right: 10px;
     font-size: 16px;
 }
 
 
-       #message-input button {
-    width: auto;
-    padding: 12px;
-    background-color: #007AFF;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+#message-input button {
+    background: none; /* Remove o fundo padrão do botão */
+    border: none; /* Remove a borda */
+    cursor: pointer; /* Muda o cursor para um ponteiro */
+    margin-right: 10px; /* Espaço entre o ícone e o campo de entrada */
 }
+
+#message-input button:last-child {
+    padding: 7px; /* Ajuste no botão de enviar */
+    background-color: #007AFF; /* Cor do botão de enviar */
+    color: white;
+    border-radius: 50%;
+    margin-left: 10px; 
+    font-size: 9px; 
+}
+
 
 #message-input button i {
     font-size: 18px;
@@ -330,24 +337,26 @@ header{
 
             <div class="col-md-9 p-4">
     <div id="chat-container">
-        <div id="user-list">
-            <h2>Conversas</h2>
-            <?php foreach ($usuarios as $usuario): ?>
-                <div class="user-item" onclick="loadChat(<?php echo $usuario['id']; ?>)">
-                    <img src="../assets/images/pics/<?php echo $usuario['foto']; ?>" alt="Foto de <?php echo $usuario['nick']; ?>" class="user-icon">
-                    <span><?php echo $usuario['nick']; ?></span>
-                </div>
-            <?php endforeach; ?>
+    <div id="user-list">
+    <h2>Conversas</h2>
+    <?php foreach ($usuarios as $usuario): ?>
+        <div class="user-item" onclick="loadChat(<?php echo $usuario['id']; ?>)">
+            <img src="../assets/images/pics/<?php echo $usuario['foto']; ?>" alt="Foto de <?php echo $usuario['nick']; ?>" class="user-icon">
+            <span><?php echo $usuario['nick']; ?></span>
         </div>
+    <?php endforeach; ?>
+</div>
 
         <div id="chat-box" style="display:none;">
             <i class="bi bi-arrow-left" id="back-arrow" onclick="showUserList()"></i>
             <div id="messages"></div>
             <div id="message-input">
-                <input type="text" id="message" placeholder="Escreva uma mensagem...">
-                <i class="bi bi-emoji-smile" onclick="toggleEmojiPanel()"></i>
-                <button onclick="sendMessage()"><i class="bi bi-send"></i></button>
-            </div>
+    <button onclick="toggleEmojiPanel()" style="background: none; border: none; cursor: pointer;">
+        <i class="bi bi-emoji-smile"></i>
+    </button>
+    <input type="text" id="message" placeholder="Escreva uma mensagem...">
+    <button onclick="sendMessage()"><i class="bi bi-send"></i></button>
+</div>
         </div>
     </div>
 
@@ -465,6 +474,8 @@ header{
                 scrollToBottom(); // Rola para o final a cada atualização
             });
     }, 3000); // Atualiza a cada 3 segundos
+
+
 </script>
 
 <br>
