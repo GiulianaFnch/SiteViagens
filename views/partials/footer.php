@@ -15,7 +15,7 @@
                 <div class="list">
                     <h4>Suporte</h4>
                     <ul>
-                        <li><a href="#">Contatos</a></li>
+                        <li><a href="/SiteViagens/contatos/contatos.html">Contatos</a></li>
                         <li><a href="#">Termos & Condições</a></li>
                         <li><a href="#">Politica de privacidade</a></li>
 
@@ -31,14 +31,16 @@
                 </div>
 
                 <div class="list">
-                    <h4>Connect</h4>
+                    <h4>Redes Sociais</h4>
                     <div class="social">
-                        <a href="#"><i class='bx bxl-facebook'></i></a>
-                        <a href="#"><i class='bx bxl-instagram'></i></a>
-
+                        <ul>
+                        <li><a href="#"><i class='bx bxl-facebook'></i></a></li>
+                        <li><a href="#"><i class='bx bxl-instagram'></i></a></li>
                         <a href="#"></a>
+                    </ul>
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -47,4 +49,4 @@
         </div>
     </section>
 <!--link to js-->
-<script type="text/javascript" src="../assets/js/script.js"></script>
+<script type="text/javascript" src="/SiteViagens/assets/js/script.js"></script>
