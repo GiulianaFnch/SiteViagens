@@ -24,73 +24,30 @@ if (isset($_GET['user_id'])) {
     // Se user_id não foi passado, define $linha como null
     $linha = null;
 }
+
+
+// Função para enviar solicitação de amizade
+if (isset($_POST['enviar_solicitacao'])) {
+    $id_usuario1 = $_SESSION['id']; // Usuário logado
+    $id_usuario2 = $_POST['id_usuario2']; // Usuário que vai receber a solicitação
+
+    // Verifica se a solicitação já foi feita
+    $checkStmt = $ligacao->prepare("SELECT * FROM amizades WHERE id_usuario1 = ? AND id_usuario2 = ?");
+    $checkStmt->bind_param("ii", $id_usuario1, $id_usuario2);
+    $checkStmt->execute();
+    $result = $checkStmt->get_result();
+
+    if ($result->num_rows == 0) {
+        // Inserir nova solicitação de amizade
+        $stmt = $ligacao->prepare("INSERT INTO amizades (id_usuario1, id_usuario2) VALUES (?, ?)");
+        $stmt->bind_param("ii", $id_usuario1, $id_usuario2);
+        $stmt->execute();
+        echo "Solicitação de amizade enviada!";
+    } else {
+        echo "Você já enviou uma solicitação para esse usuário.";
+    }
+}
 ?>
-
-
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-        }
-        .vendedor-info {
-            max-width: 400px;
-            margin: 50px auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .vendedor-info img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 15px;
-        }
-        .info-container {
-            text-align: left;
-        }
-        .info-row {
-            margin-bottom: 10px;
-        }
-        .label {
-            font-weight: bold;
-            display: block;
-            font-size: 14px;
-        }
-        .value {
-            font-size: 14px;
-            color: #555;
-        }
-        .obsession {
-            font-size: 14px;
-            color: #f14668;
-            margin-top: 10px;
-        }
-        .btn-primary {
-            background-color: #f14668;
-            border: none;
-            padding: 10px 15px;
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .btn-primary:hover {
-            background-color: #e03157;
-        }
-    </style>
-
-
-
-
-
-
-
-
-
 
 
 <!DOCTYPE html>
@@ -156,10 +113,13 @@ if (isset($_GET['user_id'])) {
             margin-bottom: 10px;
         }
         .label {
+            font-weight: 600;
             font-weight: bold;
             display: block;
-            font-size: 14px;
+            font-size: 15px;
+            
         }
+        
         .value {
             font-size: 14px;
             color: #555;
@@ -170,15 +130,17 @@ if (isset($_GET['user_id'])) {
             margin-top: 10px;
         }
         .btn-primary {
-            background-color: #4169e1;
-            border: none;
-            padding: 10px 15px;
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
+    background-color: #4169e1; /* Azul royal */
+    border: none;
+    padding: 12px 20px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    border-radius: 25px; /* Botão com bordas arredondadas */
+    font-size: 14px; /* Ajustar o tamanho da fonte */
+    transition: background-color 0.3s, transform 0.2s; /* Efeitos de transição */
+}
         .btn-primary:hover {
             background-color: #4169e1;
         }
@@ -220,10 +182,14 @@ if (isset($_GET['user_id'])) {
                     <span class="label">Biografia:</span>
                     <span class="value"><?php echo htmlspecialchars($linha['biografia']); ?></span>
                 </div>
-                <div class="info-row">
-                    <span class="label">Outras informações:</span>
-                    <span class="value">Outros detalhes aqui...</span>
-                </div>
+                
+                        <form method="POST">
+            <input type="hidden" name="id_usuario2" value="<?php echo $linha['id']; ?>">
+            <button type="submit" name="enviar_solicitacao">
+                <i class="bi bi-person-fill-add"></i> Enviar solicitação de amizade
+            </button>
+        </form>
+                
             </div>
         <?php else: ?>
             <p>Vendedor não encontrado ou não é um vendedor.</p>
