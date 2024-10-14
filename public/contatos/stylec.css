@@ -34,7 +34,7 @@ header {
 .team-cards {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 40px;
     flex-wrap: wrap;
 }
 
@@ -56,8 +56,8 @@ header {
 
 .team-member img {
     border-radius: 50%;
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
     object-fit: cover;
 }
 
