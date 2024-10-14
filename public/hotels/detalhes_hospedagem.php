@@ -143,8 +143,9 @@ $linha = mysqli_fetch_array($resultado);
         }
 
         .form-group-container {
+            
             display: flex;
-            gap: 70px;
+            gap: 40px;
             /* Espaçamento entre os campos */
             justify-content: center;
             /* Centraliza horizontalmente */
@@ -211,12 +212,7 @@ $linha = mysqli_fetch_array($resultado);
             <br>
             <div class="description">Horário Check-out: <?php echo htmlspecialchars($linha['horario_checkout']); ?>
             </div>
-        </div>
-    </main>
-    <main>
 
-        <!-- Novo contêiner para data e número de quartos -->
-        <div class="booking-container">
             <form action="../carrinho/adicionar_ao_carrinho.php" method="post" id="reservaForm">
                 <input type="hidden" name="id_artigo" value="<?php echo htmlspecialchars($linha['id']); ?>">
                 <input type="hidden" name="tipo_item" value="hospedagem">
@@ -258,6 +254,13 @@ $linha = mysqli_fetch_array($resultado);
                     <input type="submit" class="buy-button" value="Adicionar aos Favoritos">
                 </form>
             </div>
+        </div>
+    </main>
+    <main>
+
+        <!-- Novo contêiner para data e número de quartos -->
+        <div class="booking-container">
+           
 
         </div>
     </main>
