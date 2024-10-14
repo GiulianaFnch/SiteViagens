@@ -58,7 +58,7 @@ Ferramentas recomendadas para configurar o ambiente:
 
 3. Configure o banco de dados:
     - Crie um banco de dados MySQL.
-    - Importe o arquivo `site_viagens.sql` para criar as tabelas necessárias.
+    - Importe o arquivo `site_viagens.sql` que está na pasta `database` para criar as tabelas necessárias.
     - Edite o arquivo `config/liga_bd.php` com as credenciais do seu banco de dados.
 
 4. Inicie o servidor:
