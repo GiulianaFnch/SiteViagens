@@ -30,16 +30,30 @@ Este projeto é uma aplicação web para gerenciar reservas de viagens, hospedag
    - **reservas.php**: Página de gerenciamento de reservas do usuário normal.
 - **views/**: Partials e templates reutilizáveis.
 
+## Requisitos
+
+Para executar este projeto localmente, certifique-se de que possui os seguintes requisitos:
+
+- **PHP** 7.4 ou superior
+- **MySQL** 5.7 ou superior
+- **Servidor Web** (Apache recomendado)
+- **Git** para clonar o repositório
+
+Ferramentas recomendadas para configurar o ambiente:
+
+- [XAMPP](https://www.apachefriends.org/pt_br/index.html) ou [WAMP](https://www.wampserver.com/en/) para configurar o servidor local com Apache, PHP e MySQL.
+
+
 ## Instalação
 
 1. Clone o repositório:
-    ```bash
-    git clone https://github.com/GiulianaFnch/Site.git
+    ```bash 
+    git clone https://github.com/GiulianaFnch/SiteViagens.git
     ```
 
 2. Navegue até o diretório do projeto:
     ```bash
-    cd site-viagens
+    cd SiteViagens
     ```
 
 3. Configure o banco de dados:
