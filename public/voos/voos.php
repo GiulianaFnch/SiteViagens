@@ -213,7 +213,7 @@
                         echo '<input type="hidden" name="arrival" value="' . htmlspecialchars($leg->arrival_airport->name) . '">';
                         echo '<input type="hidden" name="tipo_item" value="voo">';
                         echo '<input type="hidden" name="return_url" value="' . htmlspecialchars($_SERVER['REQUEST_URI']) . '">';
-                        echo '<button type="submit" class="btn-comprar">Adicionar ao Carrinho</button>';
+                        echo '<button type="submit" class="home-btn">Adicionar ao Carrinho</button>';
                         echo '</form>';
                         echo '</div>';
                     }
