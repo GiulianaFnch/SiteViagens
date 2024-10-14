@@ -9,27 +9,32 @@ Este projeto é uma aplicação web para gerenciar reservas de viagens, hospedag
 - **Passagens Aéreas**: Pesquisa e reserva de passagens aéreas.
 - **Passeios Turísticos**: Pesquisa e reserva de passeios turísticos.
 - **Carrinho de Compras**: Adição de itens ao carrinho e cálculo do total.
+- **Perfil**: Configurações de conta do usuário.
 - **Perfil do Vendedor**: Visualização do perfil do vendedor.
 - **Chat**: Comunicação entre usuários e vendedores.
-- **Configurações**: Configurações de conta do usuário.
 
 ## Estrutura do Projeto
 
+
+- **adm/**: Painel de gestão para o administrador/developer.
+- **assets/**: Arquivos de estilo e imagens.
 - **config/**: Arquivos de configuração e validação.
+- **database/**: Arquivos da base de dados.
 - **public/**: Arquivos públicos acessíveis via URL.
    - **carrinho/**: Funcionalidades relacionadas ao carrinho de compras.
    - **hotels/**: Funcionalidades relacionadas a hospedagens.
+   - **pacotes/**: Funcionalidades relacionadas a pacotes de viagens.
    - **tours/**: Funcionalidades relacionadas a passeios turísticos.
-   - **reservas.php**: Página de gerenciamento de reservas.
-   - **perfil_vendedor.php**: Página de visualização do perfil do vendedor.
-- **assets/**: Arquivos de estilo e imagens.
+   - **voos/**: Funcionalidades relacionadas a passagens aéreas.
+   - **vendedor/**: Funcionalidades do perfil do vendedor.
+   - **reservas.php**: Página de gerenciamento de reservas do usuário normal.
 - **views/**: Partials e templates reutilizáveis.
 
 ## Instalação
 
 1. Clone o repositório:
     ```bash
-    git clone https://github.com/seu-usuario/site-viagens.git
+    git clone https://github.com/GiulianaFnch/Site.git
     ```
 
 2. Navegue até o diretório do projeto:
@@ -39,7 +44,7 @@ Este projeto é uma aplicação web para gerenciar reservas de viagens, hospedag
 
 3. Configure o banco de dados:
     - Crie um banco de dados MySQL.
-    - Importe o arquivo `site_viagens08.10.sql` para criar as tabelas necessárias.
+    - Importe o arquivo `site_viagens.sql` para criar as tabelas necessárias.
     - Edite o arquivo `config/liga_bd.php` com as credenciais do seu banco de dados.
 
 4. Inicie o servidor:
@@ -47,8 +52,11 @@ Este projeto é uma aplicação web para gerenciar reservas de viagens, hospedag
 
 ## Uso
 
+### Perfil do Utilizador
+Para visualizar o perfil do usuário normal, use o arquivo `perfil.php`. Este arquivo busca as informações do vendedor na tabela `t_user` onde `tipo_user` é 0.
+
 ### Adicionar ao Carrinho
-Para adicionar um item ao carrinho, use o arquivo `adicionar_ao_carrinho.php`. Este arquivo verifica se o item já está no carrinho e atualiza a quantidade ou insere um novo registro.
+Para adicionar um item ao carrinho, realize a pesquisa que quiser até o item específico, e clique em "Adicionar ao carrinho". Será verificado se o item já está no carrinho e atualiza a quantidade ou insere um novo registro.
 
 ### Visualizar Carrinho
 Para visualizar os itens no carrinho, use o arquivo `carrinho.php`. Este arquivo exibe os itens adicionados e calcula o total do carrinho.
