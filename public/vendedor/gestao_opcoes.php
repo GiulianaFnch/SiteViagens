@@ -187,13 +187,13 @@
         <div class="option-card" onclick="window.location.href='gestao_tours.php'">
             <i class="bi bi-map"></i>
             <h3>Gestão de Tours</h3>
-            <p>vou escrever algo aqui.</p>
+            <p>Gerencie seus passeios.</p>
         </div>
         <br><br>
         <div class="option-card" onclick="window.location.href='gerir_hospedagem.php'">
             <i class="bi bi-house"></i>
             <h3>Gestão de Hospedagem</h3>
-            <p>vou escrever algo aqui.</p>
+            <p>Aqui você pode gerenciar suas hospedagens.</p>
         </div>
         <br><br>
     </div>
