@@ -160,17 +160,31 @@ $linha = mysqli_fetch_array($resultado);
             background-color: #d1d1d1;
             color: white;
             width: 100%;
-            border: none;
-            padding: 10px 0;
-            font-size: 16px;
-            cursor: pointer;
-            text-align: center;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
 
-        .back-button:hover {
-            background-color: #4169e1;
+        .form-group-container {
+            display: flex;
+            gap: 70px;
+            /* Espaçamento entre os campos */
+            justify-content: center;
+            /* Centraliza horizontalmente */
+        }
+
+        .form-group {
+            flex: 1;
+            /* Cada item ocupa o mesmo espaço */
+        }
+
+        /* Responsivo - Quando a tela for menor, os itens voltam a ficar um abaixo do outro */
+        @media (max-width: 600px) {
+            .form-group-container {
+                flex-direction: column;
+                align-items: center;
+                /* Centralizar em telas pequenas */
+            }
         }
     </style>
 </head>
@@ -220,12 +234,7 @@ $linha = mysqli_fetch_array($resultado);
             <br>
             <div class="description">Horário Check-out: <?php echo htmlspecialchars($linha['horario_checkout']); ?>
             </div>
-        </div>
-    </main>
-    <main>
 
-        <!-- Novo contêiner para data e número de quartos -->
-        <div class="booking-container">
             <form action="../carrinho/adicionar_ao_carrinho.php" method="post" id="reservaForm">
                 <input type="hidden" name="id_artigo" value="<?php echo htmlspecialchars($linha['id']); ?>">
                 <input type="hidden" name="tipo_item" value="hospedagem">
@@ -267,6 +276,13 @@ $linha = mysqli_fetch_array($resultado);
                     <input type="submit" class="buy-button" value="Adicionar aos Favoritos">
                 </form>
             </div>
+        </div>
+    </main>
+    <main>
+
+        <!-- Novo contêiner para data e número de quartos -->
+        <div class="booking-container">
+           
 
         </div>
     </main>
