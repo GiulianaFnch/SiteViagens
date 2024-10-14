@@ -267,7 +267,6 @@ mysqli_close($ligacao);
 
 <body>
     <!--header-->
-
     <header>
 
         <a href="../../index.html"
@@ -275,10 +274,11 @@ mysqli_close($ligacao);
         <div class="bx bx-menu" id="menu-icon"></div>
 
         <ul class="navbar">
-            <li><a href="#home" style="color: black;">Hospedagem</a></li>
-            <li><a href="#package" style="color: black;">Passagens</a></li>
-            <li><a href="#destination" style="color: black; ">Tours</a></li>
-            <li><a href="#contact" style="color: black;">Pacotes</a></li>
+            <li><a href="/SiteViagens/public/hotels/hotels.php">Hospedagem</a></li>
+            <li><a href="/SiteViagens/public/voos/voos.php">Passagens</a></li>
+            <li><a href="/SiteViagens/public/tours/tours.php">Passeios</a></li>
+            <li><a href="/SiteViagens/public/pacotes/pacotes.php">Pacotes</a></li>
+            <li><a href="/SiteViagens/public/perfil.php"><i class='bx bx-user'></i></a></li>
         </ul>
     </header>
 
