@@ -39,6 +39,20 @@ $linha = mysqli_fetch_array($resultado);
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
 
+        <header>
+        <a href="/SiteViagens/index.html"
+            style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
+        <ul class="navbar">
+            <li><a href="/SiteViagens/index.html#home">Hospedagem</a></li>
+            <li><a href="#package">Passagens</a></li>
+            <li><a href="/SiteViagens/public/tours/tours.php">Passeios</a></li>
+            <li><a href="#contact">Pacotes</a></li>
+            <li><a href="public/login.php"><i class='bx bx-user'></i></a></li>
+            <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a>
+            </li>
+        </ul>
+    </header>
+    
     <style>
         /* Header com fundo branco ao rolar */
         header.scrolled {
@@ -186,21 +200,8 @@ $linha = mysqli_fetch_array($resultado);
 
 <body>
 
-    <header>
-        <a href="/SiteViagens/index.html"
-            style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
-        <ul class="navbar">
-            <li><a href="/SiteViagens/index.html#home">Hospedagem</a></li>
-            <li><a href="#package">Passagens</a></li>
-            <li><a href="/SiteViagens/public/tours/tours.php">Passeios</a></li>
-            <li><a href="#contact">Pacotes</a></li>
-            <li><a href="public/login.php"><i class='bx bx-user'></i></a></li>
-            <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a>
-            </li>
-        </ul>
-    </header>
-    <br><br><br><br><br>
-
+    
+    
     <main>
         <div class="carousel-container">
             <div class="artigo-carousel">
