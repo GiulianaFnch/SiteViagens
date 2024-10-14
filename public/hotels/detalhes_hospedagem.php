@@ -30,7 +30,7 @@ $linha = mysqli_fetch_array($resultado);
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
 
-    <style>
+        <style>
         /* Header com fundo branco ao rolar */
         header.scrolled {
             background-color: white;
@@ -67,75 +67,98 @@ $linha = mysqli_fetch_array($resultado);
         }
 
         .carousel-container {
-            width: 50%;
-        }
-
-        .carousel-container img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-        }
-
-        .details-container {
+            width: 70%;
             padding: 20px;
-            width: 50%;
+        }
+
+        img.artigo-img {
+            width: 100%;
+            max-height: 450px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .info-container {
+            width: 40%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         h2 {
             margin-bottom: 10px;
             font-size: 22px;
+            color: #333;
         }
 
-        h4 {
-            margin-bottom: 10px;
-            font-size: 10px;
+        .rating,
+        .reviews {
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .price-container {
             margin: 20px 0;
             font-size: 20px;
-            color: #333;
+            color: #6495ed;
+            font-weight: bold;
         }
 
-        .description {
+        .info-item {
+            margin-bottom: 10px;
             font-size: 16px;
             color: #555;
         }
 
         .button-container {
             display: flex;
+            flex-direction: column;
             gap: 10px;
             margin-top: 20px;
         }
 
+        .button-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
         .buy-button {
             background-color: #6495ed;
+            /* Cor de fundo azul */
             color: white;
+            /* Cor do texto branco */
             width: 100%;
+            /* O botão ocupa 100% da largura do container */
             border: none;
+            /* Remove a borda */
             padding: 10px 0;
+            /* Adiciona preenchimento vertical ao botão */
+            font-size: 16px;
+            /* Define o tamanho da fonte */
             cursor: pointer;
+            /* Mostra o ícone de cursor de "mão" ao passar o mouse */
             text-align: center;
+            /* Centraliza o texto */
             border-radius: 5px;
+            /* Bordas arredondadas */
             transition: background-color 0.3s ease;
+            /* Efeito de transição na mudança de cor */
         }
 
         .buy-button:hover {
             background-color: #4169e1;
+            /* Cor de fundo mais escura ao passar o mouse */
         }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .form-group input,
-        .form-group select {
+        .back-button {
+            background-color: #d1d1d1;
+            color: white;
             width: 100%;
             padding: 8px;
             border: 1px solid #ddd;
@@ -211,12 +234,7 @@ $linha = mysqli_fetch_array($resultado);
             <br>
             <div class="description">Horário Check-out: <?php echo htmlspecialchars($linha['horario_checkout']); ?>
             </div>
-        </div>
-    </main>
-    <main>
 
-        <!-- Novo contêiner para data e número de quartos -->
-        <div class="booking-container">
             <form action="../carrinho/adicionar_ao_carrinho.php" method="post" id="reservaForm">
                 <input type="hidden" name="id_artigo" value="<?php echo htmlspecialchars($linha['id']); ?>">
                 <input type="hidden" name="tipo_item" value="hospedagem">
@@ -258,6 +276,13 @@ $linha = mysqli_fetch_array($resultado);
                     <input type="submit" class="buy-button" value="Adicionar aos Favoritos">
                 </form>
             </div>
+        </div>
+    </main>
+    <main>
+
+        <!-- Novo contêiner para data e número de quartos -->
+        <div class="booking-container">
+           
 
         </div>
     </main>
