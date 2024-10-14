@@ -327,7 +327,7 @@ header{
                     <nav class="menu">
                         <a class="menu-item" href="perfil.php"><i class="bi bi-person-circle"></i> Editar perfil</a>
                         <a class="menu-item" href="reservas.php"><i class="bi bi-clipboard2"></i> Reservas</a>
-                        <a class="menu-item" href="#favorites"><i class="bi bi-heart"></i> Favoritos</a>
+                        <a class="menu-item" href="favoritos.php"><i class="bi bi-heart"></i> Favoritos</a>
                         <a class="menu-item" href="chat2.php"><i class="bi bi-chat-dots"></i> Chat</a>
                         <a class="menu-item active" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
