@@ -333,14 +333,13 @@ include '../../config/liga_bd.php';
     <section id="contact">
         <div class="footer">
             <div class="main">
-                <div class="list">
 
+                <div class="list">
                     <h4> Minha Conta</h4>
                     <ul>
                         <li><a href="/SiteViagens/public/perfil.php">Meu Perfil</a></li>
                         <li><a href="/SiteViagens/public/reservas.php">Minhas Viagens</a></li>
                         <li><a href="/SiteViagens/public/backend/logout.php">Logout</a></li>
-
                     </ul>
                 </div>
 
@@ -348,8 +347,8 @@ include '../../config/liga_bd.php';
                     <h4>Suporte</h4>
                     <ul>
                         <li><a href="/SiteViagens/public/contatos/Contatos.html">Contatos</a></li>
-                        <li><a href="#">Termos & Condições</a></li>
-                        <li><a href="#">Politica de privacidade</a></li>
+                        <li><a href="/SiteViagens/public/contatos/termos.html">Termos & Condições</a></li>
+                        <li><a href="/SiteViagens/public/contatos/privacidade.html">Politica de privacidade</a></li>
 
                     </ul>
                 </div>
@@ -357,22 +356,24 @@ include '../../config/liga_bd.php';
                 <div class="list">
                     <h4>Trabalhe conosco</h4>
                     <ul>
-
-                        <li><a href="public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
-                        <li><a href="#">Como criador de conteúdo</a></li>
-
+                        <li><a href="/SiteViagens/public/vendedor/registro_vendedor.php">Registrar como parceiro</a>
+                        </li>
+                        <li><a href="/SiteViagens/public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
                     </ul>
                 </div>
 
                 <div class="list">
-                    <h4>Connect</h4>
+                    <h4>Redes Sociais</h4>
                     <div class="social">
-                        <a href="#"><i class='bx bxl-facebook'></i></a>
-                        <a href="#"><i class='bx bxl-instagram'></i></a>
+                        <ul>
+                            <li><a href="#"><i class='bx bxl-facebook'></i></a></li>
+                            <li><a href="#"><i class='bx bxl-instagram'></i></a></li>
 
-                        <a href="#"></a>
+                            <a href="#"></a>
+                        </ul>
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -380,6 +381,7 @@ include '../../config/liga_bd.php';
             <p>© 2024 BestWay. Todos os direitos reservados.</p>
         </div>
     </section>
+
 
     <!--link to js-->
     <script type="text/javascript" src="../../assets/js/script.js"></script>
