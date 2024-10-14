@@ -1,128 +1,72 @@
-/* Estilos globais */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    color: #000000;
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
-}
-
-/* Header */
-
-header {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 100%;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: transparent;
-    padding: 30px 18%;
-    transition: ease 0.4s;
-  }
-  
-
 /* Seção do time */
 .team-section {
-    text-align: center;
-    padding: 40px 20px;
+  text-align: center;
+  padding: 40px 20px;
 }
 
+/* Altere a largura total dos cartões e o espaçamento entre eles */
 .team-cards {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  gap: 50px; /* Aumentei o espaçamento entre os cartões */
+  flex-wrap: wrap;
 }
 
 /* Estilos para os cartões */
 .team-member {
-    border: 1px solid #ddd;
-    padding: 20px;
-    border-radius: 12px;
-    background-color: #ffffff;
-    width: 250px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #ddd;
+  padding: 30px; /* Aumentei o padding interno */
+  border-radius: 12px;
+  background-color: #ffffff;
+  width: 300px; /* Aumentei a largura do card */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .team-member:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.2);
 }
 
+/* Aumente o tamanho das imagens dentro dos cartões */
 .team-member img {
-    border-radius: 50%;
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
+  border-radius: 50%;
+  width: 250px; /* Aumentei a largura da imagem */
+  height: 250px; /* Aumentei a altura da imagem */
+  object-fit: cover;
 }
 
 .team-member h3 {
-    margin: 10px 0;
-    font-size: 1.2em;
-    color: #000000;
+  margin: 10px 0;
+  font-size: 1.4em; /* Aumentei o tamanho do texto do nome */
+  color: #000000;
 }
 
+/* Estilizando a seção de contatos */
 .contacts {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 .contacts a {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin: 5px 0;
-    color: #6495ed;
-    text-decoration: none;
-    font-size: 1.1em;
-    transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 5px 0;
+  color: #6495ed;
+  text-decoration: none;
+  font-size: 1.2em; /* Aumentei o tamanho da fonte dos links */
+  transition: color 0.3s;
 }
 
-
-.navbar {
-    display: flex;
-  }
-  
-  .navbar a {
-    color: var(--bg-color);
-    font-size: var(--p-font);
-    font-weight: 500;
-    padding: 10px 22px;
-    border-radius: 4px;
-    transition: ease 0.4s;
-  }
-  
-  .navbar a:hover {
-    background: var(--bg-color);
-    color: var(--text-color);
-    box-shadow: 5px 10px 30px rgb(85 85 85 / 20%);
-    border-radius: 4px;
-  }
-
 .contacts a:hover {
-    color: #4169e1;
+  color: #4169e1;
 }
 
 .contacts i {
-    margin-right: 10px;
-    font-size: 1.3em;
+  margin-right: 10px;
+  font-size: 1.3em;
 }
 
-/* Footer */
-footer {
-    background-color: #6495ed;
-    color: #ffffff;
-    text-align: center;
-    padding: 20px;
-    position: relative;
-    bottom: 0;
-    width: 100%;
-    box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.1);
-}
 /* Estilos gerais para a página de documentos */
 .body {
     font-family: Arial, sans-serif;
