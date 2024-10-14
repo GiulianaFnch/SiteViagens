@@ -8,17 +8,17 @@
 .team-cards {
   display: flex;
   justify-content: center;
-  gap: 50px; /* Aumentei o espaçamento entre os cartões */
-  flex-wrap: wrap;
+  gap: 20px; /* Reduzi o espaçamento entre os cartões */
+  flex-wrap: wrap; /* Permite que quebre em linha quando necessário, mas tenta manter todos na mesma */
 }
 
 /* Estilos para os cartões */
 .team-member {
   border: 1px solid #ddd;
-  padding: 30px; /* Aumentei o padding interno */
+  padding: 20px; /* Reduzi o padding interno */
   border-radius: 12px;
   background-color: #ffffff;
-  width: 300px; /* Aumentei a largura do card */
+  width: 250px; /* Reduzi a largura do card para caber melhor */
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -31,14 +31,14 @@
 /* Aumente o tamanho das imagens dentro dos cartões */
 .team-member img {
   border-radius: 50%;
-  width: 250px; /* Aumentei a largura da imagem */
-  height: 250px; /* Aumentei a altura da imagem */
+  width: 200px; /* Reduzi a largura da imagem */
+  height: 200px; /* Reduzi a altura da imagem */
   object-fit: cover;
 }
 
 .team-member h3 {
   margin: 10px 0;
-  font-size: 1.4em; /* Aumentei o tamanho do texto do nome */
+  font-size: 1.4em;
   color: #000000;
 }
 
@@ -54,7 +54,7 @@
   margin: 5px 0;
   color: #6495ed;
   text-decoration: none;
-  font-size: 1.2em; /* Aumentei o tamanho da fonte dos links */
+  font-size: 1.2em;
   transition: color 0.3s;
 }
 
