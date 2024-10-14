@@ -30,7 +30,7 @@ $linha = mysqli_fetch_array($resultado);
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
 
-        <style>
+    <style>
         /* Header com fundo branco ao rolar */
         header.scrolled {
             background-color: white;
@@ -67,98 +67,75 @@ $linha = mysqli_fetch_array($resultado);
         }
 
         .carousel-container {
-            width: 70%;
-            padding: 20px;
+            width: 50%;
         }
 
-        img.artigo-img {
+        .carousel-container img {
             width: 100%;
-            max-height: 450px;
+            height: auto;
             object-fit: cover;
-            border-radius: 8px;
         }
 
-        .info-container {
-            width: 40%;
+        .details-container {
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            width: 50%;
         }
 
         h2 {
             margin-bottom: 10px;
             font-size: 22px;
-            color: #333;
         }
 
-        .rating,
-        .reviews {
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        h4 {
+            margin-bottom: 10px;
+            font-size: 10px;
         }
 
         .price-container {
             margin: 20px 0;
             font-size: 20px;
-            color: #6495ed;
-            font-weight: bold;
+            color: #333;
         }
 
-        .info-item {
-            margin-bottom: 10px;
+        .description {
             font-size: 16px;
             color: #555;
         }
 
         .button-container {
             display: flex;
-            flex-direction: column;
             gap: 10px;
             margin-top: 20px;
         }
 
-        .button-container button {
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
         .buy-button {
             background-color: #6495ed;
-            /* Cor de fundo azul */
             color: white;
-            /* Cor do texto branco */
             width: 100%;
-            /* O botão ocupa 100% da largura do container */
             border: none;
-            /* Remove a borda */
             padding: 10px 0;
-            /* Adiciona preenchimento vertical ao botão */
-            font-size: 16px;
-            /* Define o tamanho da fonte */
             cursor: pointer;
-            /* Mostra o ícone de cursor de "mão" ao passar o mouse */
             text-align: center;
-            /* Centraliza o texto */
             border-radius: 5px;
-            /* Bordas arredondadas */
             transition: background-color 0.3s ease;
-            /* Efeito de transição na mudança de cor */
         }
 
         .buy-button:hover {
             background-color: #4169e1;
-            /* Cor de fundo mais escura ao passar o mouse */
         }
 
-        .back-button {
-            background-color: #d1d1d1;
-            color: white;
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 8px;
             border: 1px solid #ddd;
@@ -166,8 +143,9 @@ $linha = mysqli_fetch_array($resultado);
         }
 
         .form-group-container {
+            
             display: flex;
-            gap: 70px;
+            gap: 40px;
             /* Espaçamento entre os campos */
             justify-content: center;
             /* Centraliza horizontalmente */
