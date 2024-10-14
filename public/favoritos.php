@@ -80,27 +80,27 @@ mysqli_close($ligacao);
             box-shadow: 5px 10px 30px rgb(85 85 85 / 20%);
             border-radius: 4px;
         }
-        /* Ajuste para as imagens */
+        
         img {
-            width: 50%; /* A imagem ocupa toda a largura do seu container */
+            width: 30%; /* A imagem ocupa toda a largura do seu container */
             height: auto; /* A altura é ajustada automaticamente */
-             /* A imagem cobre o espaço disponível */
             border-radius: 8px; /* Bordas arredondadas para as imagens */
         }
 
+
         .image-container {
     display: flex;
-    justify-content: space-between; /* Espaço entre as imagens */
-    gap: 10px; /* Distância entre as imagens */
-    width: 100%; /* O container ocupa 100% da largura */
+    flex-wrap: wrap; 
+    gap: 10px; 
+    width: 100%;
+    justify-content: space-between; 
 }
 
 .image-container img {
-    width: 48%; /* Cada imagem ocupa 48% da largura do container */
+    width: 35%; /* As imagens ocuparão 48% da largura do contêiner, deixando espaço entre elas */
     height: auto;
-    border-radius: 8px; /* Bordas arredondadas */
+    border-radius: 8px; /* Bordas arredondadas para as imagens */
 }
-
          /* Layout do container principal */
          .container {
             display: flex;
@@ -163,6 +163,11 @@ mysqli_close($ligacao);
             flex: 1; /* O conteúdo principal ocupa o espaço restante */
             padding: 20px;
         }
+
+        .titulo-pequeno {
+    font-size: 120%; 
+    line-height: 1.2; 
+}
     </style>
 </head>
 <body>
@@ -207,13 +212,17 @@ mysqli_close($ligacao);
             <ul>
                 <?php while ($linha = mysqli_fetch_array($resultado)): ?>
                     <li>
-                        <h2><?php echo htmlspecialchars($linha['titulo']); ?></h2>
+                        <h2 class="titulo-pequeno"><?php echo htmlspecialchars($linha['titulo']); ?></h2>
+
+                        <div class="image-container">
                         <?php if ($linha['tipo_reserva'] == 'atividade'): ?>
                             <img src="tours/imagens/<?php echo htmlspecialchars($linha['foto1']); ?>" alt="Imagem da atividade">
                         <?php elseif ($linha['tipo_reserva'] == 'hospedagem'): ?>
                             <img src="hotels/imagens/<?php echo htmlspecialchars($linha['foto1']); ?>" alt="Imagem da hospedagem">
+                            
                         <?php endif; ?>
                         <p>Preço: € <?php echo number_format($linha['preco'], 2, ',', '.'); ?></p>
+                        
 
                         <form action="backend/remover_favorito.php" method="post">
                             <input type="hidden" name="id_artigo" value="<?php echo htmlspecialchars($linha['id_artigo']); ?>">
@@ -225,12 +234,14 @@ mysqli_close($ligacao);
         <?php else: ?>
             <p>Você ainda não tem artigos favoritos.</p>
         <?php endif; ?>
+        
     
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     </div>
     </div>
