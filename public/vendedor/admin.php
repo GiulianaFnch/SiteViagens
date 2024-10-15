@@ -282,7 +282,7 @@ mysqli_close($ligacao);
         </ul>
     </header>
 
-    <br><br><br><br><br><br><br>
+    <br><br><br><br><br><br>
 
 
     <div class="container light-style flex-grow-1 container-p-y">
@@ -386,7 +386,7 @@ mysqli_close($ligacao);
         </div>
     </div>
     </div>
-    <br><br><br>
+    <br><br>
 
     <?php include '../../views/partials/footer.php' ?>
 
