@@ -82,10 +82,6 @@ Para visualizar o perfil do vendedor, use o arquivo `perfil_vendedor.php`. Este 
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
 
-## Licença
-
-Este projeto está licenciado sob a MIT License.
-
 ## Contato
 
 Para mais informações, entre em contato com um dos colaboradores do projeto:
