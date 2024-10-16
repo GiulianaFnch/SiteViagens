@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 15, 2024 at 04:33 PM
+-- Generation Time: Oct 16, 2024 at 07:21 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `site_viagens`
 --
+CREATE DATABASE IF NOT EXISTS `site_viagens` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `site_viagens`;
 
 -- --------------------------------------------------------
 
@@ -42,7 +44,9 @@ CREATE TABLE `amizades` (
 
 INSERT INTO `amizades` (`id`, `id_usuario1`, `id_usuario2`, `status`, `data_solicitacao`, `data_aceite`) VALUES
 (1, 6, 8, 'aceito', '2024-10-11 14:30:57', NULL),
-(2, 6, 14, 'aceito', '2024-10-11 14:31:59', NULL);
+(2, 6, 14, 'aceito', '2024-10-11 14:31:59', NULL),
+(3, 22, 14, 'aceito', '2024-10-16 15:16:37', NULL),
+(4, 22, 9, 'aceito', '2024-10-16 15:16:43', NULL);
 
 -- --------------------------------------------------------
 
@@ -74,21 +78,20 @@ CREATE TABLE `t_artigo` (
 
 INSERT INTO `t_artigo` (`id`, `id_user`, `cat`, `subcat`, `titulo`, `descricao`, `preco`, `localizacao`, `data_inicio`, `data_fim`, `estado`, `foto1`, `foto2`, `foto3`, `vendido`) VALUES
 (1, 14, 1, 1, 'Tour Histórico pela Cidade Velha', 'Um passeio pelos pontos históricos da cidade velha com um guia especializado.', 50.00, 'Lisboa, Portugal', '2024-09-01', '2024-09-30', 5, 'tour_hist_1.jpg', 'tour_hist_2.jpg', 'tour_hist_3.jpg', 0),
-(2, 6, 2, 4, 'Passeio de Balão ao Nascer do Sol', 'Desfrute de uma incrível vista do nascer do sol em um passeio de balão pela região vinícola.', 150.00, 'Toscana, Itália', '2024-09-01', '2024-09-30', 4, 'balao_1.jpg', 'balao_2.jpg', 'balao_3.jpg', 0),
-(3, 7, 3, 3, 'Visita Guiada ao Museu do Vinho', 'Conheça a história e produção dos vinhos locais com degustação incluída.', 80.00, 'Bordeaux, França', '2024-10-01', '2024-10-31', 5, 'museu_vinho_1.jpg', 'museu_vinho_2.jpg', 'museu_vinho_3.jpg', 0),
-(4, 8, 1, 2, 'Show de Fado Tradicional', 'Aprecie uma noite de Fado com artistas locais em uma das casas de show mais renomadas.', 35.00, 'Porto, Portugal', '2024-10-01', '2024-10-31', 5, 'fado_1.jpg', 'fado_2.jpg', 'fado_3.jpg', 0),
+(2, 6, 2, 4, 'Passeio de Balão ao Nascer do Sol', 'Desfrute de uma incrível vista do nascer do sol em um passeio de balão pela região vinícola.', 150.00, 'Toscana, Itália', '2024-09-01', '2025-09-30', 4, 'balao_1.jpg', 'balao_2.jpg', 'balao_3.jpg', 0),
+(3, 7, 3, 3, 'Visita Guiada ao Museu do Vinho', 'Conheça a história e produção dos vinhos locais com degustação incluída.', 80.00, 'Bordeaux, França', '2024-10-01', '2025-10-31', 5, 'museu_vinho_1.jpg', 'museu_vinho_2.jpg', 'museu_vinho_3.jpg', 0),
+(4, 8, 1, 2, 'Show de Fado Tradicional', 'Aprecie uma noite de Fado com artistas locais em uma das casas de show mais renomadas.', 35.00, 'Porto, Portugal', '2024-10-01', '2025-10-31', 5, 'fado_1.jpg', 'fado_2.jpg', 'fado_3.jpg', 0),
 (5, 14, 4, 6, 'Rapel em Montanha', 'Rapel em montanhas para aventureiros com instrutores experientes.', 200.00, 'Patagônia, Argentina', '2024-09-01', '2024-09-30', 4, 'rapel_1.jpg', 'rapel_2.jpg', 'rapel_3.jpg', 0),
-(6, 6, 3, 4, 'Passeio Gastronômico pelos Mercados Locais', 'Uma jornada gastronômica pelos mercados locais com degustação de pratos tradicionais.', 45.00, 'São Paulo, Brasil', '2024-10-01', '2024-10-31', 5, 'mercado_gastr_1.jpg', 'mercado_gastr_2.jpg', 'mercado_gastr_3.jpg', 0),
-(7, 7, 2, 5, 'Visita ao Parque Nacional', 'Explore as trilhas do parque nacional com guias locais e observe a fauna nativa.', 120.00, 'Kruger, África do Sul', '2024-09-01', '2024-09-30', 3, 'parque_kruger_1.jpg', 'parque_kruger_2.jpg', 'parque_kruger_3.jpg', 0),
+(6, 6, 3, 4, 'Passeio Gastronômico pelos Mercados Locais', 'Uma jornada gastronômica pelos mercados locais com degustação de pratos tradicionais.', 45.00, 'São Paulo, Brasil', '2024-10-01', '2025-10-31', 5, 'mercado_gastr_1.jpg', 'mercado_gastr_2.jpg', 'mercado_gastr_3.jpg', 0),
+(7, 7, 2, 5, 'Visita ao Parque Nacional', 'Explore as trilhas do parque nacional com guias locais e observe a fauna nativa.', 120.00, 'Kruger, África do Sul', '2024-09-01', '2025-09-30', 3, 'parque_kruger_1.jpg', 'parque_kruger_2.jpg', 'parque_kruger_3.jpg', 0),
 (8, 8, 1, 3, 'Museu de Arte Moderna', 'Visite uma das maiores coleções de arte moderna com um guia especializado.', 60.00, 'Nova York, EUA', '2024-10-01', '2024-10-31', 5, 'museu_arte_moderna_1.jpg', 'museu_arte_moderna_2.jpg', 'museu_arte_moderna_3.jpg', 0),
 (9, 14, 4, 6, 'Rafting em Rápidos', 'Uma emocionante aventura em rios com águas rápidas e guias profissionais.', 180.00, 'Colorado, EUA', '2024-10-05', '2024-10-05', 4, 'rafting_1.jpg', 'rafting_2.jpg', 'rafting_3.jpg', 0),
-(10, 6, 2, 4, 'Passeio de Bicicleta na Floresta', 'Descubra paisagens naturais enquanto pedala por trilhas seguras na floresta.', 95.00, 'Amazônia, Brasil', '2024-10-25', '2024-10-25', 5, 'bicicleta_1.jpg', 'bicicleta_2.jpg', 'bicicleta_3.jpg', 0),
-(11, 14, 1, 1, 'Passeio Cultural pelo Centro Histórico', 'Um passeio guiado pelas ruas históricas e monumentos icônicos da cidade.', 40.00, 'Lisboa, Portugal', '2024-09-21', '2024-10-15', 5, 'centro_hist_1.jpeg', 'centro_hist_2.jpg', 'centro_hist_3.jpg', 0),
-(12, 6, 3, 4, 'Tour Gastronômico pelos Restaurantes Típicos', 'Descubra os melhores restaurantes locais com pratos tradicionais.', 70.00, 'Lisboa, Portugal', '2024-09-22', '2024-10-20', 5, 'tour_gastro_1.jpg', 'tour_gastro_2.jpg', 'tour_gastro_3.jpg', 0),
-(13, 7, 2, 2, 'Show de Música Tradicional', 'Aprecie um show de música tradicional em um dos melhores teatros da cidade.', 55.00, 'Lisboa, Portugal', '2024-09-25', '2024-10-25', 4, 'musica_trad_1.jpg', 'musica_trad_2.jpg', 'musica_trad_3.jpg', 0),
-(14, 8, 4, 6, 'Aventura de Escalada em Penhascos', 'Desfrute de uma aventura de escalada com vistas deslumbrantes e guias experientes.', 180.00, 'Lisboa, Portugal', '2024-10-01', '2024-10-31', 4, 'escalada_1.jpg', 'escalada_2.jpg', 'escalada_3.jpg', 0),
-(15, 14, 2, 4, 'Passeio de Caiaque no Rio Tejo', 'Explore as águas do Rio Tejo em uma emocionante aventura de caiaque.', 90.00, 'Lisboa, Portugal', '2024-09-30', '2024-10-20', 5, 'caiaque_1.jpg', 'caiaque_2.jpg', 'caiaque_3.jpg', 0),
-(17, 6, 4, 6, 'Skydiving', 'bem radical', 1500.00, 'portugal', '2024-09-03', '2024-11-07', 2, 'uma imagem.jpg', NULL, NULL, 0),
+(10, 6, 2, 4, 'Passeio de Bicicleta na Floresta', 'Descubra paisagens naturais enquanto pedala por trilhas seguras na floresta.', 95.00, 'Amazônia, Brasil', '2024-10-25', '2025-10-25', 5, 'bicicleta_1.jpg', 'bicicleta_2.jpg', 'bicicleta_3.jpg', 0),
+(11, 14, 1, 1, 'Passeio Cultural pelo Centro Histórico', 'Um passeio guiado pelas ruas históricas e monumentos icônicos da cidade.', 40.00, 'Lisboa, Portugal', '2024-09-21', '2025-10-15', 5, 'centro_hist_1.jpeg', 'centro_hist_2.jpg', 'centro_hist_3.jpg', 0),
+(12, 6, 3, 4, 'Tour Gastronômico pelos Restaurantes Típicos', 'Descubra os melhores restaurantes locais com pratos tradicionais.', 70.00, 'Lisboa, Portugal', '2024-09-22', '2025-10-20', 5, 'tour_gastro_1.jpg', 'tour_gastro_2.jpg', 'tour_gastro_3.jpg', 0),
+(13, 7, 2, 2, 'Show de Música Tradicional', 'Aprecie um show de música tradicional em um dos melhores teatros da cidade.', 55.00, 'Lisboa, Portugal', '2024-09-25', '2025-10-25', 4, 'musica_trad_1.jpg', 'musica_trad_2.jpg', 'musica_trad_3.jpg', 0),
+(14, 8, 4, 6, 'Aventura de Escalada em Penhascos', 'Desfrute de uma aventura de escalada com vistas deslumbrantes e guias experientes.', 180.00, 'Lisboa, Portugal', '2024-10-01', '2025-10-31', 4, 'escalada_1.jpg', 'escalada_2.jpg', 'escalada_3.jpg', 0),
+(15, 14, 2, 4, 'Passeio de Caiaque no Rio Tejo', 'Explore as águas do Rio Tejo em uma emocionante aventura de caiaque.', 90.00, 'Lisboa, Portugal', '2024-09-30', '2025-10-20', 5, 'caiaque_1.jpg', 'caiaque_2.jpg', 'caiaque_3.jpg', 0),
 (21, 9, 4, 6, 'Surfar onda gigante', 'Surfar ondas gigantes em Nazaré!!!', 100.00, 'Nazaré, Portugal', '2000-01-01', '2030-01-01', 4, 'surf.jpg', 'surf.jpg', NULL, 0),
 (23, 9, 1, 1, 'Tour Coliseu de Roma', 'Visite o icônico Coliseu de Roma, um marco da história.', 50.00, 'Roma, Itália', '2024-06-01', '2024-06-30', 1, 'coliseu.jpg', NULL, NULL, 0),
 (24, 12, 1, 1, 'Passeio de barco pelo Rio Sena', 'Desfrute de um passeio romântico pelo Rio Sena.', 60.00, 'Paris, França', '2024-07-01', '2024-07-15', 1, 'riosena.jpg', NULL, NULL, 0),
@@ -99,7 +102,7 @@ INSERT INTO `t_artigo` (`id`, `id_user`, `cat`, `subcat`, `titulo`, `descricao`,
 (29, 9, 4, 6, 'Gold Coast: Aula de Surf', 'Experimente a emoção de pegar uma onda com uma aula de surf na Gold Coast.', 41.98, 'Gold Coast, Austrália', '2024-08-05', '2024-08-10', 1, 'australia.jpg', NULL, NULL, 0),
 (30, 12, 4, 6, 'Chamonix: Dia de Ski', 'Experimente esquiar nos Alpes franceses, no famoso resort de Chamonix.', 41.98, 'Chamonix, França', '2024-12-01', '2024-12-10', 1, 'frança.jpg', NULL, NULL, 0),
 (31, 14, 4, 6, 'Antalya: Safári de Buggy', 'Experimente a emoção de percorrer paisagens desérticas.', 46.43, 'Antalya, Turquia', '2024-09-15', '2024-09-20', 1, 'antalya.jpg', NULL, NULL, 0),
-(32, 9, 4, 6, 'Dubai: Paraquedismo no Deserto', 'Contemple as dunas de Dubai enquanto despenca do céu a uma velocidade de 192 km/h.', 41.98, 'Dubai, Emirados Árabes', '2024-11-01', '2024-11-05', 1, 'dubai.jpg', NULL, NULL, 0),
+(32, 9, 4, 6, 'Dubai: Paraquedismo no Deserto', 'Contemple as dunas de Dubai enquanto despenca do céu a uma velocidade de 192 km/h.', 41.98, 'Dubai, Emirados Árabes', '2024-11-01', '2025-11-05', 1, 'dubai.jpg', NULL, NULL, 0),
 (33, 16, 1, 2, 'sherek rave', 'inimigos do fim', 123.00, 'Alentejo', '2024-12-11', '2025-01-11', 3, 'pine.jpg', 'dogs.jpg', NULL, 0),
 (34, 9, 4, 6, 'Saara: Passeio de quadriciclo pelo deserto', 'Explore as paisagens deslumbrantes de Erg Chebbi em uma emocionante aventura de quadriciclo.', 266.00, 'Saara, Marrocos', '2024-05-01', '2024-05-15', 1, 'saara.jpg', NULL, NULL, 0),
 (35, 12, 4, 6, 'Geysir: snowmobile na geleira Langjökull', 'Embarque em um passeio de snowmobiling em Geysir.', 208.00, 'Langjökull, Islândia', '2024-07-01', '2024-07-10', 1, 'geysir.jpg', NULL, NULL, 0),
@@ -157,8 +160,6 @@ CREATE TABLE `t_carrinho` (
 --
 
 INSERT INTO `t_carrinho` (`id`, `id_user`, `id_artigo`, `quantidade`, `data_adicao`, `tipo_item`) VALUES
-(90, 6, 4, 1, '2024-10-11 16:18:05', 'voo'),
-(91, 6, 30, 1, '2024-10-11 16:21:06', 'atividade'),
 (100, 10, 1, 6, '2024-10-11 16:56:34', 'hospedagem');
 
 -- --------------------------------------------------------
@@ -206,7 +207,8 @@ INSERT INTO `t_favoritos` (`id`, `id_user`, `id_artigo`, `data_adicao`, `tipo_re
 (0, 6, 3, '2024-10-10 22:46:07', 'hospedagem'),
 (0, 6, 4, '2024-10-10 23:01:31', 'hospedagem'),
 (0, 6, 1, '2024-10-10 23:01:44', 'atividade'),
-(0, 20, 34, '2024-10-11 17:34:08', 'atividade');
+(0, 20, 34, '2024-10-11 17:34:08', 'atividade'),
+(0, 22, 36, '2024-10-16 15:14:52', 'atividade');
 
 -- --------------------------------------------------------
 
@@ -240,14 +242,12 @@ CREATE TABLE `t_hospedagem` (
 --
 
 INSERT INTO `t_hospedagem` (`id`, `id_user`, `nome`, `descricao`, `n_quartos`, `preco_diaria`, `localizacao`, `classificacao`, `horario_checkin`, `horario_checkout`, `tipo_hospedagem`, `data_criacao`, `data_atualizacao`, `foto1`, `foto2`, `foto3`, `data_inicio`, `data_fim`) VALUES
-(1, 9, 'Hotel Matos', 'Descubra um mundo de conforto, luxo e aventura enquanto explora nossa seleção selecionada de hotéis, tornando cada momento da sua fuga verdadeiramente extraordinário.', 20, 150.00, 'Portugal', 4, '15:00:00', '10:00:00', 'hotel', '2024-10-04 15:21:39', '2024-10-07 23:50:10', 'hotel matos.png', 'suite_romantica.jpg', NULL, '2024-10-01', '2024-10-31'),
-(2, 9, 'Pine Cliff Algarve Resort', 'O Pine Cliffs, a Luxury Collection Resort é um dos resorts de luxo mais prestigiados e premiados da Europa, oferecendo uma localização privilegiada e mais', 100, 3000.00, 'Algarve, Portugal', 5, '16:00:00', '12:00:00', 'resort', '2024-10-04 15:40:41', '2024-10-07 23:50:10', 'pinecliff.jpg', 'algarve.jpg', 'pine.jpg', '2024-10-01', '2024-11-30'),
-(3, 9, 'Transylvania', 'Hotel temática do filme de animação, assustar tomem cuidado com as crianças!!', 13, 15.00, 'Mistério', 2, '00:00:00', '23:59:00', 'castelo', '2024-10-04 15:42:07', '2024-10-07 23:50:10', 'transilvania.jpg', 'transyl.jpg', NULL, '2024-10-01', '2024-10-31'),
-(4, 9, 'Hotel Bom pra Cachorro', 'Hotel para dogs', 5, 30.00, 'Portugal', 3, '10:00:00', '09:00:00', 'hostel', '2024-10-04 15:42:47', '2024-10-07 23:50:10', 'hotel dog.jpg', 'dogs.jpg', NULL, '2024-10-01', '2024-10-15'),
-(5, 14, 'Crowne Plaza Paris République', 'Hotel clássico no centro de Paris', 200, 210.00, 'Paris, França', 4, '14:00:00', '11:00:00', 'hotel', '2024-10-08 00:00:14', '2024-10-08 00:00:14', 'paris.jpg', NULL, NULL, '2024-04-10', '2024-04-20'),
-(6, 12, 'The Ritz-Carlton, Central Park', 'Hotel de luxo com vista para o Central Park', 150, 500.00, 'New York, EUA', 5, '15:00:00', '11:00:00', 'hotel', '2024-10-08 00:00:14', '2024-10-08 00:00:14', 'novayork.jpg', NULL, NULL, '2024-05-01', '2024-05-15'),
-(7, 12, 'Torel Avantgarde', 'Hotel de luxo com vista para o rio Douro', 45, 250.00, 'Porto, Portugal', 5, '14:00:00', '12:00:00', 'hotel', '2024-10-08 00:00:14', '2024-10-08 00:00:14', 'porto.jpg', NULL, NULL, '2024-06-01', '2024-06-15'),
-(8, 14, 'Signiel Seoul', 'Luxuoso hotel em Seul', 300, 320.00, 'Seul, Coreia do Sul', 5, '14:00:00', '11:00:00', 'hotel', '2024-10-08 00:00:14', '2024-10-08 00:00:14', 'seul.jpg', NULL, NULL, '2024-06-01', '2024-06-15'),
+(2, 9, 'Pine Cliff Algarve Resort', 'O Pine Cliffs, a Luxury Collection Resort é um dos resorts de luxo mais prestigiados e premiados da Europa, oferecendo uma localização privilegiada e mais', 100, 3000.00, 'Algarve, Portugal', 5, '16:00:00', '12:00:00', 'resort', '2024-10-04 15:40:41', '2024-10-16 14:32:32', 'pinecliff.jpg', 'algarve.jpg', 'pine.jpg', '2024-10-01', '2025-11-30'),
+(4, 9, 'Hotel Bom pra Cachorro', 'Hotel para dogs', 5, 30.00, 'Portugal', 3, '10:00:00', '09:00:00', 'hostel', '2024-10-04 15:42:47', '2024-10-16 14:32:32', 'hotel dog.jpg', 'dogs.jpg', NULL, '2024-10-01', '2025-10-15'),
+(5, 14, 'Crowne Plaza Paris République', 'Hotel clássico no centro de Paris', 200, 210.00, 'Paris, França', 4, '14:00:00', '11:00:00', 'hotel', '2024-10-08 00:00:14', '2024-10-16 14:32:32', 'paris.jpg', NULL, NULL, '2024-04-10', '2025-04-20'),
+(6, 12, 'The Ritz-Carlton, Central Park', 'Hotel de luxo com vista para o Central Park', 150, 500.00, 'New York, EUA', 5, '15:00:00', '11:00:00', 'hotel', '2024-10-08 00:00:14', '2024-10-16 14:32:32', 'novayork.jpg', NULL, NULL, '2024-05-01', '2025-05-15'),
+(7, 12, 'Torel Avantgarde', 'Hotel de luxo com vista para o rio Douro', 45, 250.00, 'Porto, Portugal', 5, '14:00:00', '12:00:00', 'hotel', '2024-10-08 00:00:14', '2024-10-16 14:32:32', 'porto.jpg', NULL, NULL, '2024-06-01', '2025-06-15'),
+(8, 14, 'Signiel Seoul', '', 300, 320.00, 'Seul, Coreia do Sul', 5, '14:00:00', '11:00:00', 'hotel', '2024-10-08 00:00:14', '2024-10-16 14:32:32', 'seul.jpg', NULL, NULL, '2024-06-01', '2024-06-15'),
 (9, 12, '7 Four Seasons', 'Hotel exclusivo com vista de Londres', 50, 600.00, 'Londres, Reino Unido', 5, '15:00:00', '12:00:00', 'hotel', '2024-10-08 00:00:14', '2024-10-08 00:00:14', 'londres.jpg', NULL, NULL, '2024-07-01', '2024-07-15'),
 (10, 14, 'Pestana CR7', 'Hotel temático Cristiano Ronaldo', 50, 180.00, 'Marrakech, Marrocos', 4, '15:00:00', '12:00:00', 'hotel', '2024-10-08 00:00:14', '2024-10-08 00:00:14', 'Marrakech.jpg', NULL, NULL, '2024-07-10', '2024-07-25'),
 (11, 12, 'Majestic Elegance Costa Mujeres', 'Resort all-inclusive em Cancun', 300, 320.00, 'Cancun, México', 5, '14:00:00', '11:00:00', 'resort', '2024-10-08 00:00:14', '2024-10-08 00:00:14', 'mexico.jpg', NULL, NULL, '2024-05-15', '2024-06-01'),
@@ -322,7 +322,17 @@ INSERT INTO `t_reservas` (`id`, `item_id`, `user_id`, `tipo_reserva`, `data_rese
 (44, 36, 20, 'atividade', '2024-10-11', 1),
 (45, 7, 20, 'voo', '2024-10-11', 1),
 (46, 2, 20, 'atividade', '2024-10-11', 1),
-(47, 35, 20, 'atividade', '2024-10-11', 1);
+(47, 35, 20, 'atividade', '2024-10-11', 1),
+(48, 4, 6, 'voo', '2024-10-15', 1),
+(49, 30, 6, 'atividade', '2024-10-15', 1),
+(50, 37, 6, 'atividade', '2024-10-15', 1),
+(51, 34, 6, 'atividade', '2024-10-15', 1),
+(52, 32, 6, 'atividade', '2024-10-15', 1),
+(54, 8, 22, 'voo', '2024-10-16', 1),
+(55, 14, 22, 'hospedagem', '2024-10-16', 6),
+(56, 37, 22, 'atividade', '2024-10-16', 1),
+(57, 34, 22, 'atividade', '2024-10-16', 1),
+(58, 15, 22, 'hospedagem', '2024-10-16', 1);
 
 -- --------------------------------------------------------
 
@@ -386,7 +396,8 @@ INSERT INTO `t_user` (`id`, `nick`, `nome`, `email`, `nome_marca`, `biografia`, 
 (17, 'crowne ', 'Crowne Plaza', 'Crowne@Plaza.com', 'Crowne Plaza LDA.', NULL, '1589-06-09', '$2y$10$DAUSdmFv4YyIh.frKhypveUY8txw55j2y1gul.pn838Oh4CfBQ4aW', 'download (1).png', 3),
 (18, 'theritz', 'The Ritz', 'The@Ritz.com', 'The Ritz LDA.', NULL, '1986-06-20', '$2y$10$bCO9a7K5o0eTdDCpBhCgcO9184CIsMQc0bH3tD53zEtNwMJ8M2HBm', 'download.png', 2),
 (19, 'fourseasons ', 'Four Seasons ', 'Four@Seasons.com', 'Four Seasons  LDA', NULL, '1584-09-05', '$2y$10$GG3qLetR1OlCqomWpcjtDOJJTeMEw.phPFHTqHznJ7vEudGUCSYEu', 'download (2).png', 1),
-(20, 'lucas vendedor', 'Lucas David da Silva', 'lucasdavi@gmail.com', 'Hostel do Davi', 'Sou um novo vendedor de hotéis e atividades na cidade do Porto!', '2004-03-12', '$2y$10$n0Z0SQ2003DODUntAEUmZePM9TAOYpZ/5eDZmzhKGmcw267ydvTdG', 'TEMPO.jpg', 2);
+(20, 'lucas vendedor', 'Lucas David da Silva', 'lucasdavi@gmail.com', 'Hostel do Davi', 'Sou um novo vendedor de hotéis e atividades na cidade do Porto!', '2004-03-12', '$2y$10$n0Z0SQ2003DODUntAEUmZePM9TAOYpZ/5eDZmzhKGmcw267ydvTdG', 'TEMPO.jpg', 2),
+(22, 'gabi.r', 'Gabrielle', 'costagabriellegc@gmail.com', '', NULL, '1999-01-02', '$2y$10$.9xYR2IUcGhhcXGegHuT3OiFM9Z13Vrm1r.r/3gNirUn032nBOMxa', 'mulher.jpg', 0);
 
 -- --------------------------------------------------------
 
@@ -415,7 +426,8 @@ INSERT INTO `t_voos` (`id`, `id_user`, `flight_number`, `airline`, `price`, `arr
 (4, 6, 'CA 898', 'Air China', 684.00, 'Aeroporto de Madrid Adolfo Suarez-Barajas', '2024-10-11 16:18:05'),
 (5, 10, 'TK 199', 'Turkish Airlines', 1007.00, 'Istanbul Airport', '2024-10-11 16:39:55'),
 (6, 20, 'TP 88', 'Tap Air Portugal', 1760.00, 'Aeroporto Humberto Delgado', '2024-10-11 17:24:28'),
-(7, 20, 'LH 507', 'Lufthansa', 1328.00, 'Aeroporto de Frankfurt', '2024-10-11 17:36:28');
+(7, 20, 'LH 507', 'Lufthansa', 1328.00, 'Aeroporto de Frankfurt', '2024-10-11 17:36:28'),
+(8, 22, 'FR 573', 'Ryanair', 63.00, 'Aeroporto de Madrid Adolfo Suarez-Barajas', '2024-10-16 14:55:22');
 
 --
 -- Indexes for dumped tables
@@ -495,7 +507,7 @@ ALTER TABLE `t_voos`
 -- AUTO_INCREMENT for table `amizades`
 --
 ALTER TABLE `amizades`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `t_artigo`
@@ -513,7 +525,7 @@ ALTER TABLE `t_art_comen`
 -- AUTO_INCREMENT for table `t_carrinho`
 --
 ALTER TABLE `t_carrinho`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
 
 --
 -- AUTO_INCREMENT for table `t_categoria`
@@ -531,7 +543,7 @@ ALTER TABLE `t_hospedagem`
 -- AUTO_INCREMENT for table `t_reservas`
 --
 ALTER TABLE `t_reservas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `t_subcat`
@@ -543,13 +555,13 @@ ALTER TABLE `t_subcat`
 -- AUTO_INCREMENT for table `t_user`
 --
 ALTER TABLE `t_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `t_voos`
 --
 ALTER TABLE `t_voos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables

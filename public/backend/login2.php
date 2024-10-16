@@ -70,13 +70,13 @@
 <header>
     <a href="/SiteViagens/index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
     <ul class="navbar">
-        <li><a href="/SiteViagens/index.html#home" style="color: black;">Hospedagem</a></li>
-        <li><a href="#package" style="color: black;">Passagens</a></li>
-        <li><a href="/SiteViagens/public/tours/tours.php" style="color: black;">Passeios</a></li>
-        <li><a href="#contact" style="color: black;">Pacotes</a></li>
-        <li><a href="public/login.php" style="color: black;"><i class='bx bx-user'></i></a></li>
-        <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a></li>
-    </ul>
+            <li><a href="/SiteViagens/public/hotels/hotels.php">Hospedagem</a></li>
+            <li><a href="/SiteViagens/public/voos/voos.php">Passagens</a></li>
+            <li><a href="/SiteViagens/public/tours/tours.php">Passeios</a></li>
+            <li><a href="/SiteViagens/public/pacotes/pacotes.php">Pacotes</a></li>
+            <li><a href="/SiteViagens/public/perfil.php"><i class='bx bx-user'></i></a></li>
+            <li><a href="/SiteViagens/public/carrinho/carrinho.php"><i class='bx bx-cart'></i></a></li>
+        </ul>
 </header>
 <br><br><br><br><br><br><br><br><br>
 <body>
