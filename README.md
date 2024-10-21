@@ -1,5 +1,5 @@
-# Site Viagens
-# Bem-vindo ao repositório do Site Viagens!
+# BestWay
+# Bem-vindo ao repositório do Best Way!
 ![image](https://github.com/user-attachments/assets/012ec1b6-7b77-4313-b6e1-e81328c8ee99)
 
 Este projeto é uma aplicação web para gerenciar reservas de viagens, hospedagens, passagens aéreas e passeios turísticos. A aplicação permite que os usuários pesquisem, adicionem itens ao carrinho, façam reservas e visualizem perfis de vendedores.
