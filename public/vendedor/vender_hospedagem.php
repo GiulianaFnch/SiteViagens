@@ -1,38 +1,35 @@
 <?php
 include 'valida_vendedor.php';
 include '../../config/liga_bd.php';
+require_once '../../config/upload.php';
 
 $uploadOk = 1;
 $target_dir = "../../public/hotels/imagens/";
 
-function processar_foto($file, $id_hospedagem, $numero_foto) {
+function processar_foto($file, $id_hospedagem, $numero_foto)
+{
     global $uploadOk, $ligacao, $target_dir;
-    
+
     if ($uploadOk == 0) {
         return;
     }
 
-    $target_file = $target_dir . basename($file["name"]);
-    $file_name = basename($file["name"]);
-    $check = getimagesize($file["tmp_name"]);
-    if($check === false) {
-        echo "O arquivo não é uma imagem.";
+    $file_name = salvar_imagem($file, $target_dir);
+    if ($file_name === null) {
+        echo "O arquivo não é uma imagem válida.";
         $uploadOk = 0;
         return;
     }
 
-    if (move_uploaded_file($file["tmp_name"], $target_file)) {
-        $sql = "UPDATE t_hospedagem SET foto{$numero_foto}='{$file_name}' WHERE id={$id_hospedagem};";
-        mysqli_query($ligacao, $sql);
-    } else {
-        echo "O seu ficheiro não foi enviado.";
-        $uploadOk = 0;
-    }
+    $numero_foto = (int) $numero_foto; // 1, 2 ou 3
+    $stmt = $ligacao->prepare("UPDATE t_hospedagem SET foto{$numero_foto} = ? WHERE id = ?");
+    $stmt->bind_param("si", $file_name, $id_hospedagem);
+    $stmt->execute();
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Captura os dados do formulário com verificações
-    $id_user = $_POST['id_user'];
+    $id_user = $_SESSION['id'];
     $nome = $_POST['titulo'];
     $descricao = $_POST['descricao'];
     $n_quartos = $_POST['n_quartos'];
@@ -45,11 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $data_inicio = $_POST['data_inicio'];
     $data_fim = $_POST['data_fim'];
 
-    $sql = "INSERT INTO t_hospedagem (id_user, nome, descricao, n_quartos, preco_diaria, classificacao, localizacao, horario_checkin, horario_checkout, tipo_hospedagem, foto1) 
-            VALUES ('$id_user', '$nome', '$descricao', '$n_quartos', '$preco_diaria', '$classificacao', '$localizacao', '$horario_checkin', '$horario_checkout', '$tipo_hospedagem', '$data_inicio', '$data_fim', '');";
+    $stmt = $ligacao->prepare("INSERT INTO t_hospedagem (id_user, nome, descricao, n_quartos, preco_diaria, classificacao, localizacao, horario_checkin, horario_checkout, tipo_hospedagem, data_inicio, data_fim, foto1)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '')");
+    $stmt->bind_param("issidissssss", $id_user, $nome, $descricao, $n_quartos, $preco_diaria, $classificacao, $localizacao, $horario_checkin, $horario_checkout, $tipo_hospedagem, $data_inicio, $data_fim);
 
-    if (mysqli_query($ligacao, $sql)) {
-        $id_hospedagem = mysqli_insert_id($ligacao);
+    if ($stmt->execute()) {
+        $id_hospedagem = $stmt->insert_id;
         echo "<h2>Registro efetuado com sucesso! </h2>";
 
         $_FILES["ficheiro"] = $_FILES["ficheiro1"];
@@ -65,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             processar_foto($_FILES["ficheiro"], $id_hospedagem, 3);
         }
     } else {
-        echo "Erro: " . mysqli_error($ligacao);
+        echo "Erro: " . $stmt->error;
     }
 
     mysqli_close($ligacao);

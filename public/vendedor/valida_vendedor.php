@@ -3,10 +3,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Defina a URL base do seu site
-if (!defined('BASE_URL')) {
-    define('BASE_URL', 'http://localhost/siteviagens/');
-}
+// URL base do site (definida em config/config.php)
+require_once __DIR__ . '/../../config/config.php';
 
 // Validação das variáveis de sessão
 if (!isset($_SESSION['id']) || !isset($_SESSION['nick'])) {
@@ -95,15 +93,15 @@ if (!isset($_SESSION['id']) || !isset($_SESSION['nick'])) {
     </head>
 
     <header>
-        <a href="/SiteViagens/index.html"
+        <a href="<?= BASE_URL ?>index.html"
             style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
         <ul class="navbar">
-            <li><a href="/SiteViagens/index.html#home" style="color: black;">Hospedagem</a></li>
+            <li><a href="<?= BASE_URL ?>index.html#home" style="color: black;">Hospedagem</a></li>
             <li><a href="#package" style="color: black;">Passagens</a></li>
-            <li><a href="/SiteViagens/public/tours/tours.php" style="color: black;">Passeios</a></li>
+            <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black;">Passeios</a></li>
             <li><a href="#contact" style="color: black;">Pacotes</a></li>
-            <li><a href="/SiteViagens/public/login.php" style="color: black;"><i class='bx bx-user'></i></a></li>
-            <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a>
+            <li><a href="<?= BASE_URL ?>public/login.php" style="color: black;"><i class='bx bx-user'></i></a></li>
+            <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a>
             </li>
         </ul>
     </header>

@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../config/config.php'; ?>
 <!-- 
     Essa página será inspirada no arquivo do projeto do Rui chamado perfil1.php que está na pasta exemplos/projeto_rui/perfil1.php
 
@@ -21,8 +22,8 @@ if (isset($_POST['id_solicitacao'])) {
     $id_solicitacao = $_POST['id_solicitacao'];
     if (isset($_POST['aceitar'])) {
         // Aceitar a solicitação
-        $stmt = $ligacao->prepare("UPDATE amizades SET status = 'aceito' WHERE id = ?");
-        $stmt->bind_param("i", $id_solicitacao);
+        $stmt = $ligacao->prepare("UPDATE amizades SET status = 'aceito', data_aceite = NOW() WHERE id = ? AND id_usuario2 = ?");
+        $stmt->bind_param("ii", $id_solicitacao, $id);
         if ($stmt->execute()) {
             echo json_encode(['status' => 'success', 'message' => 'Amizade aceita.']);
             exit;
@@ -32,8 +33,8 @@ if (isset($_POST['id_solicitacao'])) {
         }
     } elseif (isset($_POST['rejeitar'])) {
         // Rejeitar a solicitação
-        $stmt = $ligacao->prepare("DELETE FROM amizades WHERE id = ?");
-        $stmt->bind_param("i", $id_solicitacao);
+        $stmt = $ligacao->prepare("DELETE FROM amizades WHERE id = ? AND id_usuario2 = ?");
+        $stmt->bind_param("ii", $id_solicitacao, $id);
         if ($stmt->execute()) {
             echo json_encode(['status' => 'success', 'message' => 'Amizade rejeitada.']);
             exit;
@@ -79,32 +80,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['id_solicitacao'])) {
 
     // Lidar com upload de foto
     if (isset($_FILES['ficheiro']) && $_FILES['ficheiro']['error'] == 0) {
-        $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
-        $max_size = 800 * 1024;  // 800 KB
-
-        // Verificar tipo e tamanho do arquivo
-        if (in_array($_FILES['ficheiro']['type'], $allowed_types) && $_FILES['ficheiro']['size'] <= $max_size) {
-            $fotoNova = uniqid() . '_' . $_FILES['ficheiro']['name'];  // Nome único para evitar conflitos
-            $destino = '../assets/images/pics/' . $fotoNova;
-
-            // Verificar se o diretório 'pics/' existe, caso contrário, cria-o
-            if (!is_dir('../assets/images/pics')) {
-                mkdir('../assets/images/pics', 0777, true);
-            }
-
-            // Mover o arquivo para o diretório desejado
-            if (move_uploaded_file($_FILES['ficheiro']['tmp_name'], $destino)) {
-                // Remover a foto antiga, se for o caso
-                if ($fotoAntiga && file_exists('../assets/images/pics/' . $fotoAntiga)) {
-                    unlink('../assets/images/pics/' . $fotoAntiga);
-                }
-            } else {
-                echo "Erro ao fazer upload da imagem!";
-                exit;
-            }
-        } else {
+        require_once '../config/upload.php';
+        $fotoNova = salvar_imagem($_FILES['ficheiro'], '../assets/images/pics', 800 * 1024);
+        if ($fotoNova === null) {
             echo "Arquivo inválido ou excedeu o tamanho permitido!";
             exit;
+        }
+        // Remover a foto antiga, se for o caso
+        if ($fotoAntiga && basename($fotoAntiga) === $fotoAntiga && file_exists('../assets/images/pics' . '/' . $fotoAntiga)) {
+            unlink('../assets/images/pics' . '/' . $fotoAntiga);
         }
     }
 
@@ -396,11 +380,11 @@ mysqli_close($ligacao);
         <div class="bx bx-menu" id="menu-icon"></div>
 
         <ul class="navbar">
-            <li><a href="/SiteViagens/public/hotels/hotels.php" style="color: black;" >Hospedagem</a></li>
+            <li><a href="<?= BASE_URL ?>public/hotels/hotels.php" style="color: black;" >Hospedagem</a></li>
             <li><a href="#package" style="color: black;" >Passagens</a></li>
-            <li><a href="/SiteViagens/public/tours/tours.php" style="color: black; ">Tours</a></li>
+            <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black; ">Tours</a></li>
             <li><a href="#contact" style="color: black;">Pacotes</a></li>
-            <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
+            <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
 
         </ul>
         </header>

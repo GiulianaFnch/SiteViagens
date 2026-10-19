@@ -1,11 +1,12 @@
 <?php
+require_once __DIR__ . '/../../config/config.php';
 include 'valida_vendedor.php';
 include '../../config/liga_bd.php';
 
 $activeMenu = 'profile';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id = $_POST['id'];
+    $id = $_SESSION['id']; // nunca confiar no id vindo do formulário
     $nick = $_POST['nick'];
     $nome = $_POST['nome'];
     $email = $_POST['email'];
@@ -16,38 +17,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Lidar com upload de foto
     if (isset($_FILES['ficheiro']) && $_FILES['ficheiro']['error'] == 0) {
-        $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
-        $max_size = 800 * 1024;  // 800 KB
-
-        if (in_array($_FILES['ficheiro']['type'], $allowed_types) && $_FILES['ficheiro']['size'] <= $max_size) {
-            $fotoNova = $_FILES['ficheiro']['name'];
-            $destino = '../../assets/images/pics/' . $fotoNova;
-
-            if (!is_dir('../../assets/images/pics')) {
-                mkdir('../../assets/images/pics', 0777, true);
-            }
-
-            if (move_uploaded_file($_FILES['ficheiro']['tmp_name'], $destino)) {
-                if ($fotoAntiga && file_exists('../assets/images/pics/' . $fotoAntiga)) {
-                    unlink('../../assets/images/pics/' . $fotoAntiga);
-                }
-            } else {
-                echo "Erro ao fazer upload da imagem!";
-                exit;
-            }
-        } else {
+        require_once '../../config/upload.php';
+        $fotoNova = salvar_imagem($_FILES['ficheiro'], '../../assets/images/pics', 800 * 1024);
+        if ($fotoNova === null) {
             echo "Arquivo inválido ou excedeu o tamanho permitido!";
             exit;
+        }
+        // Remover a foto antiga, se for o caso
+        if ($fotoAntiga && basename($fotoAntiga) === $fotoAntiga && file_exists('../../assets/images/pics' . '/' . $fotoAntiga)) {
+            unlink('../../assets/images/pics' . '/' . $fotoAntiga);
         }
     }
 
     // Atualizar dados no banco de dados
-    $sql = "UPDATE t_user SET nick='$nick', nome='$nome', email='$email', biografia='$biografia', data_nasc='$data_nasc', foto='$fotoNova' WHERE id='$id'";
-    if (mysqli_query($ligacao, $sql)) {
+    $stmt = $ligacao->prepare("UPDATE t_user SET nick = ?, nome = ?, email = ?, biografia = ?, data_nasc = ?, foto = ? WHERE id = ?");
+    $stmt->bind_param("ssssssi", $nick, $nome, $email, $biografia, $data_nasc, $fotoNova, $id);
+    if ($stmt->execute()) {
         header('Location: admin.php');
         exit;
     } else {
-        echo "Erro ao atualizar os dados: " . mysqli_error($ligacao);
+        echo "Erro ao atualizar os dados: " . $stmt->error;
         exit;
     }
 }
@@ -274,11 +263,11 @@ mysqli_close($ligacao);
         <div class="bx bx-menu" id="menu-icon"></div>
 
         <ul class="navbar">
-            <li><a href="/SiteViagens/public/hotels/hotels.php">Hospedagem</a></li>
-            <li><a href="/SiteViagens/public/voos/voos.php">Passagens</a></li>
-            <li><a href="/SiteViagens/public/tours/tours.php">Passeios</a></li>
-            <li><a href="/SiteViagens/public/pacotes/pacotes.php">Pacotes</a></li>
-            <li><a href="/SiteViagens/public/perfil.php"><i class='bx bx-user'></i></a></li>
+            <li><a href="<?= BASE_URL ?>public/hotels/hotels.php">Hospedagem</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php">Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/tours/tours.php">Passeios</a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/perfil.php"><i class='bx bx-user'></i></a></li>
         </ul>
     </header>
 

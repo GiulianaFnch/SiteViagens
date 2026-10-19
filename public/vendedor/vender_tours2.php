@@ -1,6 +1,7 @@
 <?php
 include 'valida_vendedor.php';
 include '../../config/liga_bd.php';
+require_once '../../config/upload.php';
 
 $uploadOk = 1;
 $target_dir = "../../public/tours/imagens/";
@@ -13,31 +14,21 @@ function processar_foto($file, $id_artigo, $numero_foto)
         return;
     }
 
-    $target_file = $target_dir . basename($file["name"]);
-    $file_name = basename($file["name"]);
-    $check = getimagesize($file["tmp_name"]);
-    if ($check === false) {
-        echo "O arquivo não é uma imagem.";
+    $file_name = salvar_imagem($file, $target_dir);
+    if ($file_name === null) {
+        echo "O arquivo não é uma imagem válida.";
         $uploadOk = 0;
         return;
     }
 
-    if (move_uploaded_file($file["tmp_name"], $target_file)) {
-        if ($numero_foto == 1) {
-            $sql = "UPDATE t_artigo SET foto1='{$file_name}' WHERE id={$id_artigo};";
-            mysqli_query($ligacao, $sql);
-        } else {
-            $sql = "UPDATE t_artigo SET foto{$numero_foto}='{$file_name}' WHERE id={$id_artigo};";
-            mysqli_query($ligacao, $sql);
-        }
-    } else {
-        echo "O seu ficheiro não foi enviado.";
-        $uploadOk = 0;
-    }
+    $numero_foto = (int) $numero_foto; // 1, 2 ou 3
+    $stmt = $ligacao->prepare("UPDATE t_artigo SET foto{$numero_foto} = ? WHERE id = ?");
+    $stmt->bind_param("si", $file_name, $id_artigo);
+    $stmt->execute();
 }
 
 // Captura os dados do formulário com verificações
-$id_user = $_POST['id_user'];
+$id_user = $_SESSION['id'];
 $valor_cat = $_POST['valor_cat'];
 $valor_subcat = $_POST['valor_subcat'];
 $titulo = $_POST['titulo'];
@@ -48,12 +39,12 @@ $localizacao = isset($_POST['localizacao']) ? $_POST['localizacao'] : '';
 $data_inicio = isset($_POST['data_inicio']) ? $_POST['data_inicio'] : '';
 $data_fim = isset($_POST['data_fim']) ? $_POST['data_fim'] : '';
 
-$sql = "INSERT INTO t_artigo (id_user, cat, subcat, titulo, descricao, preco, estado, localizacao, data_inicio, data_fim, foto1) 
-        VALUES ('$id_user', '$valor_cat', '$valor_subcat', '$titulo', '$descricao', '$preco', '$estado', '$localizacao', 
-        '$data_inicio', '$data_fim', '');";
+$stmt = $ligacao->prepare("INSERT INTO t_artigo (id_user, cat, subcat, titulo, descricao, preco, estado, localizacao, data_inicio, data_fim, foto1)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '')");
+$stmt->bind_param("iiissdisss", $id_user, $valor_cat, $valor_subcat, $titulo, $descricao, $preco, $estado, $localizacao, $data_inicio, $data_fim);
 
-if (mysqli_query($ligacao, $sql)) {
-    $id_artigo = mysqli_insert_id($ligacao);
+if ($stmt->execute()) {
+    $id_artigo = $stmt->insert_id;
     echo "<h2>Registro efetuado com sucesso! </h2>";
 
     $_FILES["ficheiro"] = $_FILES["ficheiro1"];
@@ -69,7 +60,7 @@ if (mysqli_query($ligacao, $sql)) {
         processar_foto($_FILES["ficheiro"], $id_artigo, 3);
     }
 } else {
-    echo "Erro: " . mysqli_error($ligacao);
+    echo "Erro: " . $stmt->error;
 }
 
 mysqli_close($ligacao);

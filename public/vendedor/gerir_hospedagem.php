@@ -9,14 +9,6 @@ if (!isset($_SESSION['id'])) {
 
 $vendedor_id = $_SESSION['id']; // ID do vendedor logado
 
-// Obter as hospedagens do usuário
-$sql = "SELECT * FROM t_hospedagem WHERE id_user = ?";
-$stmt = $ligacao->prepare($sql);
-$stmt->bind_param("i", $vendedor_id);
-$stmt->execute();
-$result = $stmt->get_result(); // O resultado é atribuído à variável $result
-$stmt->close();
-
 // Processar a atualização de uma hospedagem
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit'])) {
     $id = $_POST['reserva_id'];
@@ -77,11 +69,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit'])) {
 
     // Verifica se há campos para atualizar
     if (!empty($fields)) {
-        $sql .= implode(", ", $fields) . " WHERE id = ?";
+        // Só permite alterar hospedagens do próprio vendedor
+        $sql .= implode(", ", $fields) . " WHERE id = ? AND id_user = ?";
         $params[] = $id;
+        $params[] = $vendedor_id;
 
         $stmt = $ligacao->prepare($sql);
-        $stmt->bind_param(str_repeat("s", count($params) - 1) . "i", ...$params); // Último parâmetro é o ID (inteiro)
+        $stmt->bind_param(str_repeat("s", count($params) - 2) . "ii", ...$params); // Os dois últimos são o ID e o vendedor
         
         if ($stmt->execute()) {
             echo "Hospedagem atualizada com sucesso!";
@@ -99,9 +93,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
     $id = $_POST['id'];
 
-    $sql = "DELETE FROM t_hospedagem WHERE id = ?";
+    $sql = "DELETE FROM t_hospedagem WHERE id = ? AND id_user = ?";
     $stmt = $ligacao->prepare($sql);
-    $stmt->bind_param("i", $id);
+    $stmt->bind_param("ii", $id, $vendedor_id);
     
     if ($stmt->execute()) {
         echo "Hospedagem excluída com sucesso!";
@@ -111,6 +105,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 
     $stmt->close();
 }
+
+// Obter as hospedagens do usuário
+$sql = "SELECT * FROM t_hospedagem WHERE id_user = ?";
+$stmt = $ligacao->prepare($sql);
+$stmt->bind_param("i", $vendedor_id);
+$stmt->execute();
+$result = $stmt->get_result(); // O resultado é atribuído à variável $result
+$stmt->close();
 ?>
 
 <!DOCTYPE html>
@@ -333,12 +335,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
                     </button>
                 </div>
                 <div class="modal-body">
-                    Tem certeza de que deseja excluir este passeio?
+                    Tem certeza de que deseja excluir esta hospedagem?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <form method="POST" action="excluir_tour.php" style="display:inline;">
-                    <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                    <form method="POST" style="display:inline;">
+                    <input type="hidden" name="id" id="reservaId" value="">
                     <button type="submit" name="delete" class="btn btn-delete">Excluir</button>
                 </form>
                 </div>

@@ -369,12 +369,13 @@ CREATE TABLE `t_user` (
   `nick` varchar(20) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `nome_marca` varchar(150) NOT NULL,
+  `nome_marca` varchar(150) NOT NULL DEFAULT '',
   `biografia` text DEFAULT NULL,
   `data_nasc` varchar(10) DEFAULT NULL,
   `pass` varchar(255) NOT NULL,
   `foto` varchar(50) DEFAULT NULL,
-  `tipo_user` int(11) NOT NULL DEFAULT 0
+  `tipo_user` int(11) NOT NULL DEFAULT 0,
+  `notificacoes_ofertas` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --

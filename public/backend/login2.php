@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -68,14 +69,14 @@
 </head>
 
 <header>
-    <a href="/SiteViagens/index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
+    <a href="<?= BASE_URL ?>index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
     <ul class="navbar">
-            <li><a href="/SiteViagens/public/hotels/hotels.php">Hospedagem</a></li>
-            <li><a href="/SiteViagens/public/voos/voos.php">Passagens</a></li>
-            <li><a href="/SiteViagens/public/tours/tours.php">Passeios</a></li>
-            <li><a href="/SiteViagens/public/pacotes/pacotes.php">Pacotes</a></li>
-            <li><a href="/SiteViagens/public/perfil.php"><i class='bx bx-user'></i></a></li>
-            <li><a href="/SiteViagens/public/carrinho/carrinho.php"><i class='bx bx-cart'></i></a></li>
+            <li><a href="<?= BASE_URL ?>public/hotels/hotels.php">Hospedagem</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php">Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/tours/tours.php">Passeios</a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/perfil.php"><i class='bx bx-user'></i></a></li>
+            <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php"><i class='bx bx-cart'></i></a></li>
         </ul>
 </header>
 <br><br><br><br><br><br><br><br><br>
@@ -84,14 +85,15 @@
         <?php
         session_start(); // inicia a sessão
 
-        $nick = $_POST['nick'];
-        $pass = $_POST['pass'];
+        $nick = $_POST['nick'] ?? '';
+        $pass = $_POST['pass'] ?? '';
 
         include '../../config/liga_bd.php';
 
-        $sql = "SELECT * FROM t_user WHERE nick = '$_POST[nick]'";
-        $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
-        $linha = mysqli_fetch_array($resultado);
+        $stmt = $ligacao->prepare("SELECT * FROM t_user WHERE nick = ?");
+        $stmt->bind_param("s", $nick);
+        $stmt->execute();
+        $linha = $stmt->get_result()->fetch_array();
 
         // caso o utilizador não exista na base de dados
         if ($linha == NULL) {
@@ -100,7 +102,7 @@
             header("refresh:5;url=../registro.php");
         } else {
             // caso a senha esteja correta
-            if (password_verify($_POST['pass'], $linha['pass'])) {
+            if (password_verify($pass, $linha['pass'])) {
                 // caso o utilizador tenha sido bloqueado pelo admin
                 if ($linha['tipo_user'] == 1) {
                     echo '<h2>Utilizador bloqueado</h2>';

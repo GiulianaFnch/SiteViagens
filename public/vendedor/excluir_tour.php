@@ -1,4 +1,5 @@
 <?php
+include 'valida_vendedor.php';
 include '../../config/liga_bd.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -6,9 +7,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Validação básica
     if (!empty($id)) {
-        $sql = "DELETE FROM t_artigo WHERE id = ?";
+        $sql = "DELETE FROM t_artigo WHERE id = ? AND id_user = ?";
         $stmt = $ligacao->prepare($sql);
-        $stmt->bind_param("i", $id);
+        $stmt->bind_param("ii", $id, $_SESSION['id']);
         if ($stmt->execute()) {
             echo "Sucesso";
             header("refresh:1;url=gestao_tours.php");
