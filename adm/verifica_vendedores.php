@@ -1,5 +1,9 @@
 <?php
 include 'valida_adm.php';
+// Rejeita pedidos POST sem o token CSRF da sessão
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verificar();
+}
 include '../config/liga_bd.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -74,10 +78,12 @@ include 'views/header.php';
                         <td class="text-center"><?php echo htmlspecialchars($row['tipo_user']); ?></td>
                         <td>
                             <form action="verifica_vendedores.php" method="post" style="display:inline;">
+                                <?= csrf_campo() ?>
                                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
                                 <button type="submit" class="btn ">Ativar</button>
                             </form>
                             <form action="desativar_usuario.php" method="post" style="display:inline;">
+                                <?= csrf_campo() ?>
                                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
                                 <button type="submit" class="btn btn-warning btn-sm">Desativar</button>
                             </form>

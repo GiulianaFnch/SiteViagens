@@ -290,6 +290,7 @@ include '../../config/liga_bd.php';
 
 
                     <form action="vender_tours2.php" id="f2" method="post" enctype="multipart/form-data">
+                        <?= csrf_campo() ?>
                         <input type="hidden" name="id_user" value="<?php echo $_SESSION['id']; ?>" required>
                         <input type="hidden" name="valor_cat" value="<?php echo $categoria; ?>" id="valor_cat" required>
                         <input type="hidden" name="valor_subcat" value="" id="valor_subcat" required>

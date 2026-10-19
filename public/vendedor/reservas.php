@@ -1,5 +1,9 @@
 <?php
 include 'valida_vendedor.php';
+// Rejeita pedidos POST sem o token CSRF da sessão
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verificar();
+}
 // Verifica se o formulário foi enviado via POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete'])) {

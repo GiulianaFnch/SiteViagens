@@ -1,5 +1,6 @@
 <?php
 require_once '../config/valida.php';
+csrf_verificar(); // só aceita POST com o token CSRF da sessão
 require_once '../config/liga_bd.php';
 
 $id_remetente = $_SESSION['id']; // ID do usuário logado

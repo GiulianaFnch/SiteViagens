@@ -226,6 +226,7 @@ mysqli_close($ligacao);
                         
 
                         <form action="backend/remover_favorito.php" method="post">
+                            <?= csrf_campo() ?>
                             <input type="hidden" name="id_artigo" value="<?php echo htmlspecialchars($linha['id_artigo']); ?>">
                             <input type="submit" value="Remover">
                         </form>

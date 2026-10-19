@@ -1,5 +1,9 @@
 <?php
 include 'valida_vendedor.php';
+// Rejeita pedidos POST sem o token CSRF da sessão
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verificar();
+}
 include '../../config/liga_bd.php';
 
 $activeMenu = 'settings';
@@ -130,14 +134,14 @@ if (isset($_POST['logout'])) {
             icon.classList.toggle('bi-file-earmark-check-fill');
 
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'configuracoes.php', true);
+            xhr.open('POST', 'configuracoes2.php', true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     console.log('Configuração de notificações atualizada.');
                 }
             };
-            xhr.send('toggle_notificacoes_ofertas=1&notificacoes_ofertas=' + newStatus);
+            xhr.send('toggle_notificacoes_ofertas=1&notificacoes_ofertas=' + newStatus + '&csrf_token=<?= csrf_token() ?>');
         }
     </script>
 
@@ -413,12 +417,14 @@ header{
                     </div>
 
                     <form id="logout-form" method="POST" style="display: none;">
+                        <?= csrf_campo() ?>
                         <input type="hidden" name="logout" value="1">
                     </form>
                      
 
                     <div id="form-atualizar-senha">
                         <form method="post" action="configuracoes2.php">
+                            <?= csrf_campo() ?>
                             <div class="form-group">
                                 <label for="senha_atual">Senha Atual</label>
                                 <input type="password" id="senha_atual" name="senha_atual" class="form-control" required>
@@ -475,7 +481,7 @@ header{
 
                                 // Envia uma solicitação AJAX para atualizar o estado no servidor
                                 var xhr = new XMLHttpRequest();
-                                xhr.open('POST', 'configuracoes.php', true);
+                                xhr.open('POST', 'configuracoes2.php', true);
                                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                                 xhr.onreadystatechange = function () {
                                     if (xhr.readyState === 4) {
@@ -487,7 +493,7 @@ header{
                                         }
                                     }
                                 };
-                                xhr.send('toggle_location_service=1&location_service=' + (isEnabled ? 0 : 1));
+                                xhr.send('toggle_location_service=1&location_service=' + (isEnabled ? 0 : 1) + '&csrf_token=<?= csrf_token() ?>');
                             }
                         </script>
 
@@ -501,14 +507,14 @@ header{
                             icon.classList.toggle('bi-file-earmark-check-fill');
 
                             var xhr = new XMLHttpRequest();
-                            xhr.open('POST', 'configuracoes.php', true);
+                            xhr.open('POST', 'configuracoes2.php', true);
                             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                             xhr.onreadystatechange = function () {
                                 if (xhr.readyState === 4 && xhr.status === 200) {
                                     console.log(xhr.responseText); // Adiciona log para depuração
                                 }
                             };
-                            xhr.send('toggle_notificacoes_ofertas=1&notificacoes_ofertas=' + newStatus);
+                            xhr.send('toggle_notificacoes_ofertas=1&notificacoes_ofertas=' + newStatus + '&csrf_token=<?= csrf_token() ?>');
                         }
                         </script>
                             <script src="../assets/js/jquery.min.js"></script>

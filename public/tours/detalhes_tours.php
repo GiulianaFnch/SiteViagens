@@ -257,6 +257,7 @@ if (!$linha) {
             <!-- Botões de Comprar, Voltar e Favoritos-->
             <div class="button-container">
                 <form action="../backend/adicionar_favoritos.php" method="post">
+                    <?= csrf_campo() ?>
                     <input type="hidden" name="id_artigo" value="<?php echo $linha['id']; ?>">
                     <input type="hidden" name="id_user" value="<?php echo $_SESSION['id']; ?>">
                     <input type="hidden" name="tipo_reserva" value="atividade">
@@ -266,6 +267,7 @@ if (!$linha) {
 
             <div class="button-container">
                 <form action="../carrinho/adicionar_ao_carrinho.php" id="f2" method="post">
+                    <?= csrf_campo() ?>
                     <input type="hidden" name="id_artigo" value="<?php echo $linha['id']; ?>">
                     <input type="hidden" name="tipo_item" value="atividade">
                     <input type="hidden" name="return_url" value="<?php echo $_SERVER['REQUEST_URI']; ?>">

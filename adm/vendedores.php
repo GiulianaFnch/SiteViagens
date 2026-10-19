@@ -57,10 +57,12 @@ include 'views/header.php';
                         <td class="text"><?php echo htmlspecialchars($row['biografia']); ?></td>
                         <td>
                             <form action="verifica_vendedores.php" method="post" style="display:inline;">
+                                <?= csrf_campo() ?>
                                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
                                 <button type="submit" class="btn ">Ativar</button>
                             </form>
                             <form action="desativar_usuario.php" method="post" style="display:inline;">
+                                <?= csrf_campo() ?>
                                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
                                 <button type="submit" class="btn btn-warning btn-sm">Desativar</button>
                             </form>

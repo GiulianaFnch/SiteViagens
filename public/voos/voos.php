@@ -1,4 +1,7 @@
-<?php require_once __DIR__ . '/../../config/config.php'; ?>
+<?php
+require_once __DIR__ . '/../../config/config.php';
+require_once __DIR__ . '/../../config/csrf.php'; // inicia a sessão para o token do carrinho
+?>
 <!DOCTYPE html>
 <html>
 
@@ -215,6 +218,7 @@
                         echo '<span> round trip</span>';
                         echo '</div>';
                         echo '<form action="../carrinho/adicionar_ao_carrinho.php" method="post">';
+                        echo csrf_campo();
                         echo '<input type="hidden" name="flight_number" value="' . htmlspecialchars($leg->flight_number) . '">';
                         echo '<input type="hidden" name="airline" value="' . htmlspecialchars($leg->airline) . '">';
                         echo '<input type="hidden" name="price" value="' . htmlspecialchars($flight->price) . '">';

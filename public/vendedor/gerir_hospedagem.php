@@ -1,10 +1,15 @@
 <?php
 include '../../config/liga_bd.php';
+require_once '../../config/csrf.php'; // também inicia a sessão
 
 // Verifica se a sessão está iniciada e obtém o ID do usuário
-session_start();
 if (!isset($_SESSION['id'])) {
     die("Usuário não está logado.");
+}
+
+// Rejeita pedidos POST sem o token CSRF da sessão
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verificar();
 }
 
 $vendedor_id = $_SESSION['id']; // ID do vendedor logado
@@ -340,6 +345,7 @@ $stmt->close();
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <form method="POST" style="display:inline;">
+                        <?= csrf_campo() ?>
                     <input type="hidden" name="id" id="reservaId" value="">
                     <button type="submit" name="delete" class="btn btn-delete">Excluir</button>
                 </form>
@@ -360,6 +366,7 @@ $stmt->close();
                 </div>
                 <div class="modal-body">
                     <form id="editForm" method="post" action="gerir_hospedagem.php">
+                        <?= csrf_campo() ?>
                         <input type="hidden" name="reserva_id" id="editReservaId">
                         <div class="form-group">
                        <label for="nome">Título</label>

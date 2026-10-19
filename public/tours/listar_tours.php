@@ -296,6 +296,7 @@ form {
                     // Botão "Comprar" que redireciona para a página carrinho.php
                     echo '    <form action="../carrinho/adicionar_ao_carrinho.php" id="f2" method="post">
 ';
+                    echo csrf_campo();
                     echo '                <input type="hidden" name="id_artigo" value="' . htmlspecialchars($linha['id']) . '">';
                     echo '<input type="hidden" name="tipo_item" value="atividade">';
                     echo '<input type="hidden" name="return_url" value="' . htmlspecialchars($_SERVER['REQUEST_URI']) . '">';

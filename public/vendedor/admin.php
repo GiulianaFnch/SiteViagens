@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
 include 'valida_vendedor.php';
+// Rejeita pedidos POST sem o token CSRF da sessão
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verificar();
+}
 include '../../config/liga_bd.php';
 
 $activeMenu = 'profile';
@@ -292,6 +296,7 @@ mysqli_close($ligacao);
                 <div class="col-md-9">
                     <div class="tab-content p-4">
                         <form action="admin.php" method="POST" enctype="multipart/form-data">
+                            <?= csrf_campo() ?>
                             <input type="hidden" name="id" value="<?php echo htmlspecialchars($linha['id']); ?>">
 
                             <div class="media align-items-center mb-3">

@@ -58,6 +58,7 @@ include 'views/header.php';
                         <td class="text-center"><?php echo htmlspecialchars($row['tipo_user']); ?></td>
                         <td>
                             <form action="desativar_usuario.php" method="post" style="display:inline;">
+                                <?= csrf_campo() ?>
                                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
                                 <button type="submit" class="btn btn-warning btn-sm">Desativar</button>
                             </form>

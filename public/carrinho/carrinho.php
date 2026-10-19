@@ -152,6 +152,7 @@ $total_carrinho = $_SESSION['total_carrinho'];
                         echo "<td>";
                         ?>
                         <form action="remover_do_carrinho.php" method="post" style="display:inline;">
+                            <?= csrf_campo() ?>
                             <input type="hidden" name="id_carrinho" value="<?php echo htmlspecialchars($linha['id']); ?>">
                             <button type="submit" class="btn btn-danger btn-sm">Remover</button>
                         </form>
@@ -168,6 +169,7 @@ $total_carrinho = $_SESSION['total_carrinho'];
                 <?php echo htmlspecialchars($total_carrinho) . " €"; ?>
             </h3>
             <form action="efetuar_reserva.php" method="post">
+                <?= csrf_campo() ?>
             <a href="#" role="link" class="slide-button" onclick="this.closest('form').submit();">
                     <span class="text">Finalizar Reserva</span>    
                 </a>

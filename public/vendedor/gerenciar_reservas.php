@@ -196,6 +196,7 @@ $result = $stmt->get_result();
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <form id="deleteForm" method="post" action="reservas.php">
+                        <?= csrf_campo() ?>
                         <input type="hidden" name="reserva_id" id="reservaId">
                         <button type="submit" name="delete" class="btn btn-danger">Excluir</button>
                     </form>
@@ -217,6 +218,7 @@ $result = $stmt->get_result();
                 <div class="modal-body">
                     <!-- Formulário de edição -->
                     <form id="editForm" method="post" action="editar_reserva.php">
+                        <?= csrf_campo() ?>
                         <input type="hidden" name="reserva_id" id="editReservaId">
 
                         <div class="form-group">

@@ -1,6 +1,10 @@
 <?php require_once __DIR__ . '/../config/config.php'; ?>
 <?php 
 include '../config/valida.php';
+// Rejeita pedidos POST sem o token CSRF da sessão
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verificar();
+}
 include '../config/liga_bd.php';
 
 $user_id = $_SESSION['id'];
@@ -246,6 +250,7 @@ $result = $stmt->get_result();
             </div>
             <div class="modal-footer">
                 <form method="POST">
+                    <?= csrf_campo() ?>
                     <input type="hidden" name="reserva_id" id="reserva_id">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="submit" name="delete" class="btn btn-danger">Excluir</button>

@@ -417,7 +417,8 @@ header{
             method: 'POST',
             body: new URLSearchParams({
                 'user_id': selectedUserId,
-                'message': message
+                'message': message,
+                'csrf_token': '<?= csrf_token() ?>'
             })
         }).then(response => response.text())
           .then(data => {

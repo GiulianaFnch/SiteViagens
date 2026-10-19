@@ -7,6 +7,10 @@
 <?php
 
 include '../config/valida.php';
+// Rejeita pedidos POST sem o token CSRF da sessão
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verificar();
+}
 include '../config/liga_bd.php';
 
 error_reporting(E_ALL);
@@ -396,6 +400,7 @@ mysqli_close($ligacao);
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
         <form id="solicitacaoForm" method="POST">
+            <?= csrf_campo() ?>
             <input type="hidden" id="solicitacaoId" name="id_solicitacao" value="">
             <p>Você tem certeza que deseja aceitar esta solicitação de amizade?</p>
             <button type="submit" name="aceitar">Aceitar</button>
@@ -407,6 +412,7 @@ mysqli_close($ligacao);
 <?php
     foreach ($solicitacoes as $solicitacao) {
         echo "<form method='post' onsubmit='openModal(" . $solicitacao['id'] . "); return false;'>"; 
+        echo csrf_campo();
         echo "<input type='hidden' name='id_solicitacao' value='" . $solicitacao['id'] . "'>";
         echo "<button type='button' onclick='openModal(" . $solicitacao['id'] . ");'>Aceitar</button>";
         echo "<button type='submit' name='rejeitar'>Rejeitar</button>";
@@ -436,6 +442,7 @@ mysqli_close($ligacao);
                     <div class="tab-content p-4">
                         <div class="tab-pane fade active show" id="account-general">
                             <form action="perfil.php" method="POST" enctype="multipart/form-data">
+                                <?= csrf_campo() ?>
                                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($linha['id']); ?>">
 
                                 <!-- Avatar e upload de nova foto -->

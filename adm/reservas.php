@@ -55,10 +55,12 @@ include 'views/header.php';
                         <td><?php echo htmlspecialchars($row['quantidade']); ?></td>
                         <td>
                             <form action="editar_reserva.php" method="post" style="display:inline;">
+                                <?= csrf_campo() ?>
                                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
                                 <button type="submit" class="btn btn-primary btn-sm">Editar</button>
                             </form>
                             <form action="excluir_reserva.php" method="post" style="display:inline;">
+                                <?= csrf_campo() ?>
                                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
                                 <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
                             </form>

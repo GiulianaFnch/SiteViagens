@@ -1,5 +1,9 @@
 <?php
 include "../../config/valida.php";
+// Rejeita pedidos POST sem o token CSRF da sessão
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verificar();
+}
 include "../../config/liga_bd.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

@@ -228,6 +228,7 @@ $stmt->close();
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <form id="deleteForm" method="post" action="excluir_tour.php">
+                        <?= csrf_campo() ?>
                         <input type="hidden" name="id" id="reservaId">
                         <button type="submit" class="btn btn-delete">Excluir</button>
                     </form>
@@ -248,6 +249,7 @@ $stmt->close();
                 </div>
                 <div class="modal-body">
                     <form id="editForm" method="post" action="editar_tour.php">
+                        <?= csrf_campo() ?>
                         <input type="hidden" name="reserva_id" id="editReservaId">
                         <div class="form-group">
                             <label for="titulo">Título</label>

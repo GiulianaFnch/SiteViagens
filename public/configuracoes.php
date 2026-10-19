@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . '/../config/config.php';
 include '../config/valida.php';
+// Rejeita pedidos POST sem o token CSRF da sessão
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verificar();
+}
 include '../config/liga_bd.php';
 
 $activeMenu = 'settings';
@@ -139,7 +143,7 @@ if (isset($_POST['logout'])) {
                     console.log('Configuração de notificações atualizada.');
                 }
             };
-            xhr.send('toggle_notificacoes_ofertas=1&notificacoes_ofertas=' + newStatus);
+            xhr.send('toggle_notificacoes_ofertas=1&notificacoes_ofertas=' + newStatus + '&csrf_token=<?= csrf_token() ?>');
         }
     </script>
 
@@ -412,12 +416,14 @@ header{
                     </div>
 
                     <form id="logout-form" method="POST" style="display: none;">
+                        <?= csrf_campo() ?>
                         <input type="hidden" name="logout" value="1">
                     </form> 
                      
 
                     <div id="form-atualizar-senha">
                         <form method="post" action="configuracoes.php">
+                            <?= csrf_campo() ?>
                             <div class="form-group">
                                 <label for="senha_atual">Senha Atual</label>
                                 <input type="password" id="senha_atual" name="senha_atual" class="form-control" required>
@@ -486,7 +492,7 @@ header{
                                         }
                                     }
                                 };
-                                xhr.send('toggle_location_service=1&location_service=' + (isEnabled ? 0 : 1));
+                                xhr.send('toggle_location_service=1&location_service=' + (isEnabled ? 0 : 1) + '&csrf_token=<?= csrf_token() ?>');
                             }
                         </script>
 
@@ -507,7 +513,7 @@ function toggleNotification() {
             console.log(xhr.responseText); // Adiciona log para depuração
         }
     };
-    xhr.send('toggle_notificacoes_ofertas=1&notificacoes_ofertas=' + newStatus);
+    xhr.send('toggle_notificacoes_ofertas=1&notificacoes_ofertas=' + newStatus + '&csrf_token=<?= csrf_token() ?>');
 }
 </script>
     <script src="../assets/js/jquery.min.js"></script>

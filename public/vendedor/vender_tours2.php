@@ -1,5 +1,6 @@
 <?php
 include 'valida_vendedor.php';
+csrf_verificar(); // só aceita POST com o token CSRF da sessão
 include '../../config/liga_bd.php';
 require_once '../../config/upload.php';
 

@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . '/../config/config.php';
 include_once "../config/valida.php";
+// Rejeita pedidos POST sem o token CSRF da sessão
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verificar();
+}
 include_once "../config/liga_bd.php";
 
 // Verifica se o user_id do vendedor foi passado na URL
@@ -185,6 +189,7 @@ if (isset($_POST['enviar_solicitacao'])) {
                 </div>
                 
                         <form method="POST">
+                            <?= csrf_campo() ?>
             <input type="hidden" name="id_usuario2" value="<?php echo $linha['id']; ?>">
             <button type="submit" name="enviar_solicitacao">
                 <i class="bi bi-person-fill-add"></i> Enviar solicitação de amizade

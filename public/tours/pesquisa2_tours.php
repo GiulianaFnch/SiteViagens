@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
+require_once __DIR__ . '/../../config/csrf.php'; // inicia a sessão para o token do carrinho
 /*include "../../config/valida.php";*/
 include "../../config/liga_bd.php";
 
@@ -209,6 +210,7 @@ $resultado = $stmt->get_result();
             echo '            </form>';
 
             echo '            <form action="../carrinho/adicionar_ao_carrinho.php" method="post">';
+            echo csrf_campo();
             echo '                <input type="hidden" name="id_artigo" value="' . htmlspecialchars($linha['id']) . '">';
             echo '                <input type="hidden" name="tipo_item" value="atividade">';
             echo '                <input type="hidden" name="return_url" value="' . htmlspecialchars($_SERVER['REQUEST_URI']) . '">';

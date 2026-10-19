@@ -1,5 +1,9 @@
 <?php
 include 'valida_vendedor.php';
+// Rejeita pedidos POST sem o token CSRF da sessão
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verificar();
+}
 include '../../config/liga_bd.php';
 require_once '../../config/upload.php';
 
@@ -316,6 +320,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <h1 class="h2">Vender Hospedagem</h1>
 
                     <form action="vender_hospedagem.php" id="f2" method="post" enctype="multipart/form-data">
+                        <?= csrf_campo() ?>
                         <input type="hidden" name="id_user" value="<?php echo $_SESSION['id']; ?>" required>
 
                         <label for="titulo">Título:</label>

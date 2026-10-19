@@ -83,6 +83,7 @@
 <body>
 <?php
 include "../../config/valida.php";
+csrf_verificar(); // só aceita POST com o token CSRF da sessão
 include "../../config/liga_bd.php";
 
 $id_user = $_SESSION['id']; // Assumindo que o ID do usuário está armazenado na sessão
