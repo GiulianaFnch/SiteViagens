@@ -1,0 +1,39 @@
+# Sobe o site completo: docker compose up
+# Site:       http://localhost:8080
+# phpMyAdmin: http://localhost:8081  (utilizador: root / senha: root)
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASS: root
+      DB_NAME: site_viagens
+      SERPAPI_KEY: ${SERPAPI_KEY:-}
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:10.11
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: site_viagens
+    volumes:
+      - ./database/site_viagens.sql:/docker-entrypoint-initdb.d/site_viagens.sql:ro
+      - dbdata:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+    depends_on:
+      - db
+
+volumes:
+  dbdata:

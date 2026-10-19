@@ -1,0 +1,9 @@
+# Configuração local (credenciais, chaves de API)
+config/config.local.php
+.env
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
