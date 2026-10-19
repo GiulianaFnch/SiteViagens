@@ -1,12 +1,9 @@
 <?php
-    $servidor="localhost";
-    $utilizador="root";
-    $senha="";
-    $bd="site_viagens";
-    //criar a variavel ligacao (1º ip do servidor, 2º nome do utilizador)
-    // (3º senha por defeito vazia, e 4º nome da base de dados)   
-    $ligacao = mysqli_connect($servidor,$utilizador,$senha,$bd);
-    // tento executar a ligação ao meu servidor
-    if ($ligacao->connect_error)
-        die(mysqli_error($ligacao));
+    require_once __DIR__ . '/config.php';
+
+    // cria a variável $ligacao usando as credenciais de config/config.php
+    $ligacao = mysqli_connect($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
+    if (!$ligacao)
+        die("Erro na ligação à base de dados: " . mysqli_connect_error());
+    mysqli_set_charset($ligacao, 'utf8mb4');
  ?>

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/config.php';
 include '../config/valida.php';
 include '../config/liga_bd.php';
 
@@ -310,11 +311,11 @@ header{
         <div class="bx bx-menu" id="menu-icon"></div>
 
         <ul class="navbar">
-        <li><a href="/SiteViagens/public/hotels/hotels.php" style="color: black;" >Hospedagem</a></li>
+        <li><a href="<?= BASE_URL ?>public/hotels/hotels.php" style="color: black;" >Hospedagem</a></li>
             <li><a href="#package" style="color: black;" >Passagens</a></li>
-            <li><a href="/SiteViagens/public/tours/tours.php" style="color: black; ">Tours</a></li>
+            <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black; ">Tours</a></li>
             <li><a href="#contact" style="color: black;">Pacotes</a></li>
-            <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
+            <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
         </ul>
         </header>
         

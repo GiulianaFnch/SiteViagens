@@ -261,7 +261,7 @@ include '../../config/liga_bd.php';
                 <div class="col-md-9 p-4">
                     <h1 class="h2">Vender Tours</h1>
                     <?php
-                    $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : 1;
+                    $categoria = isset($_POST['categoria']) ? (int) $_POST['categoria'] : 1;
                     ?>
 
                     <form action="vender_tours.php" id="f1" method="post">

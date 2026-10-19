@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -65,15 +66,15 @@
 </head>
 
 <header>
-    <a href="/SiteViagens/index.html"
+    <a href="<?= BASE_URL ?>index.html"
         style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
     <ul class="navbar">
-        <li><a href="/SiteViagens/index.html#home" style="color: black;">Hospedagem</a></li>
+        <li><a href="<?= BASE_URL ?>index.html#home" style="color: black;">Hospedagem</a></li>
         <li><a href="#package" style="color: black;">Passagens</a></li>
-        <li><a href="/SiteViagens/public/tours/tours.php" style="color: black;">Passeios</a></li>
+        <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black;">Passeios</a></li>
         <li><a href="#contact" style="color: black;">Pacotes</a></li>
         <li><a href="public/login.php" style="color: black;"><i class='bx bx-user'></i></a></li>
-        <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a>
+        <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a>
         </li>
     </ul>
 </header>
@@ -107,14 +108,22 @@ if (!$resultado_artigos) {
     die("Erro na execução da consulta: " . $stmt->error);
 }
 
+if ($resultado_artigos->num_rows === 0) {
+    echo "<div class='message-container'>";
+    echo "<h2>O seu carrinho está vazio.</h2>";
+    echo "</div>";
+    header("refresh:2;url=carrinho.php");
+    exit();
+}
+
 // Processa cada item do carrinho e insere na tabela de reservas
+$stmt_reserva = $ligacao->prepare("INSERT INTO t_reservas (item_id, user_id, tipo_reserva, data_reserva, quantidade) VALUES (?, ?, ?, ?, ?)");
 while ($linha = $resultado_artigos->fetch_assoc()) {
     $id_artigo = $linha['id_artigo'];
     $tipo_item = $linha['tipo_item'];
     $quantidade = $linha['quantidade'];
     $data_reserva = date('Y-m-d'); // Data atual
 
-    $stmt_reserva = $ligacao->prepare("INSERT INTO t_reservas (item_id, user_id, tipo_reserva, data_reserva, quantidade) VALUES (?, ?, ?, ?, ?)");
     $stmt_reserva->bind_param("iissi", $id_artigo, $id_user, $tipo_item, $data_reserva, $quantidade);
     $stmt_reserva->execute();
 }

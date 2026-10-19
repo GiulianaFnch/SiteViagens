@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/config.php'; ?>
 <!DOCTYPE html>
 <html>
 
@@ -20,16 +21,16 @@
 <body>
     <!--header-->
     <header>
-        <a href="/SiteViagens/" class="logo">BestWay</a>
+        <a href="<?= BASE_URL ?>" class="logo">BestWay</a>
         <div class="bx bx-menu" id="menu-icon"></div>
 
         <ul class="navbar">
-            <li><a href="/SiteViagens/public/hotels/hotels.php">Hospedagem</a></li>
-            <li><a href="/SiteViagens/public/voos/voos.php">Passagens</a></li>
-            <li><a href="/SiteViagens/public/tours/tours.php">Passeios</a></li>
-            <li><a href="/SiteViagens/public/pacotes/pacotes.php">Pacotes</a></li>
-            <li><a href="/SiteViagens/public/perfil.php"><i class='bx bx-user'></i></a></li>
-            <li><a href="/SiteViagens/public/carrinho/carrinho.php"><i class='bx bx-cart'></i></a></li>
+            <li><a href="<?= BASE_URL ?>public/hotels/hotels.php">Hospedagem</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php">Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/tours/tours.php">Passeios</a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/perfil.php"><i class='bx bx-user'></i></a></li>
+            <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php"><i class='bx bx-cart'></i></a></li>
         </ul>
     </header>
 
@@ -369,18 +370,18 @@
                 <div class="list">
                     <h4> Minha Conta</h4>
                     <ul>
-                        <li><a href="/SiteViagens/public/perfil.php">Meu Perfil</a></li>
-                        <li><a href="/SiteViagens/public/reservas.php">Minhas Viagens</a></li>
-                        <li><a href="/SiteViagens/public/backend/logout.php">Logout</a></li>
+                        <li><a href="<?= BASE_URL ?>public/perfil.php">Meu Perfil</a></li>
+                        <li><a href="<?= BASE_URL ?>public/reservas.php">Minhas Viagens</a></li>
+                        <li><a href="<?= BASE_URL ?>public/backend/logout.php">Logout</a></li>
                     </ul>
                 </div>
 
                 <div class="list">
                     <h4>Suporte</h4>
                     <ul>
-                        <li><a href="/SiteViagens/public/contatos/Contatos.html">Contatos</a></li>
-                        <li><a href="/SiteViagens/public/contatos/termos.html">Termos & Condições</a></li>
-                        <li><a href="/SiteViagens/public/contatos/privacidade.html">Politica de privacidade</a></li>
+                        <li><a href="<?= BASE_URL ?>public/contatos/Contatos.html">Contatos</a></li>
+                        <li><a href="<?= BASE_URL ?>public/contatos/termos.html">Termos & Condições</a></li>
+                        <li><a href="<?= BASE_URL ?>public/contatos/privacidade.html">Politica de privacidade</a></li>
 
                     </ul>
                 </div>
@@ -388,9 +389,9 @@
                 <div class="list">
                     <h4>Trabalhe conosco</h4>
                     <ul>
-                        <li><a href="/SiteViagens/public/vendedor/registro_vendedor.php">Registrar como parceiro</a>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/registro_vendedor.php">Registrar como parceiro</a>
                         </li>
-                        <li><a href="/SiteViagens/public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
                     </ul>
                 </div>
 

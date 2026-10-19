@@ -1,4 +1,5 @@
 <?php
+include 'valida_vendedor.php';
 include '../../config/liga_bd.php';
 
 if (isset($_POST['edit'])) {
@@ -11,9 +12,9 @@ if (isset($_POST['edit'])) {
     $data_fim = $_POST['data_fim'];
 
     // Atualizar o passeio no banco de dados
-    $sql = "UPDATE t_artigo SET titulo = ?, descricao = ?, preco = ?, localizacao = ?, data_inicio = ?, data_fim = ? WHERE id = ?";
+    $sql = "UPDATE t_artigo SET titulo = ?, descricao = ?, preco = ?, localizacao = ?, data_inicio = ?, data_fim = ? WHERE id = ? AND id_user = ?";
     $stmt = $ligacao->prepare($sql);
-    $stmt->bind_param("ssssssi", $titulo, $descricao, $preco, $local, $data_inicio, $data_fim, $id);
+    $stmt->bind_param("ssssssii", $titulo, $descricao, $preco, $local, $data_inicio, $data_fim, $id, $_SESSION['id']);
     
     if ($stmt->execute()) {
         // Redirecionar após a atualização

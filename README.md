@@ -31,39 +31,61 @@ Este projeto é uma aplicação web para gerenciar reservas de viagens, hospedag
    - **reservas.php**: Página de gerenciamento de reservas do usuário normal.
 - **views/**: Partials e templates reutilizáveis.
 
-## Requisitos
+## Como executar
 
-Para executar este projeto localmente, certifique-se de que possui os seguintes requisitos:
+### Opção 1 — Docker (recomendado)
 
-- **PHP** 7.4 ou superior
-- **MySQL** 5.7 ou superior
-- **Servidor Web** (Apache recomendado)
-- **Git** para clonar o repositório
+Precisa apenas do [Docker](https://www.docker.com/products/docker-desktop/) instalado.
 
-Ferramentas recomendadas para configurar o ambiente:
+```bash
+git clone https://github.com/GiulianaFnch/SiteViagens.git
+cd SiteViagens
+docker compose up
+```
 
-- [XAMPP](https://www.apachefriends.org/pt_br/index.html) ou [WAMP](https://www.wampserver.com/en/) para configurar o servidor local com Apache, PHP e MySQL.
+- Site: <http://localhost:8080>
+- phpMyAdmin: <http://localhost:8081> (utilizador `root`, senha `root`)
 
+A base de dados é criada automaticamente a partir de `database/site_viagens.sql` na primeira execução.
+Para recomeçar com a base de dados limpa: `docker compose down -v`.
 
-## Instalação
+### Opção 2 — XAMPP / WAMP
 
-1. Clone o repositório:
-    ```bash 
-    git clone https://github.com/GiulianaFnch/SiteViagens.git
-    ```
+Requisitos: PHP 7.4+ (testado em 8.3) e MySQL 5.7+ / MariaDB 10+.
 
-2. Navegue até o diretório do projeto:
-    ```bash
-    cd SiteViagens
-    ```
+1. Clone o repositório para a pasta `htdocs` do XAMPP (ex.: `C:\xampp\htdocs\SiteViagens`).
+2. No phpMyAdmin, crie a base de dados `site_viagens` e importe `database/site_viagens.sql`.
+3. Inicie o Apache e o MySQL e abra <http://localhost/SiteViagens/>.
 
-3. Configure o banco de dados:
-    - Crie um banco de dados MySQL.
-    - Importe o arquivo `site_viagens.sql` que está na pasta `database` para criar as tabelas necessárias.
-    - Edite o arquivo `config/liga_bd.php` com as credenciais do seu banco de dados.
+## Configuração
 
-4. Inicie o servidor:
-    - Se estiver usando o XAMPP, coloque o projeto na pasta `htdocs` e inicie o Apache e MySQL.
+Toda a configuração fica em `config/config.php`. Para alterar credenciais da base de dados,
+o caminho do site ou chaves de API **sem mexer no código versionado**:
+
+```bash
+cp config/config.local.example.php config/config.local.php
+```
+
+e edite `config/config.local.php` (este ficheiro está no `.gitignore`).
+Também é possível usar variáveis de ambiente: `DB_HOST`, `DB_USER`, `DB_PASS`, `DB_NAME`, `BASE_URL`, `SERPAPI_KEY`.
+
+- **BASE_URL** — é detetado automaticamente (ex.: `/SiteViagens/` no XAMPP, `/` no Docker).
+- **SERPAPI_KEY** — necessária para a pesquisa de voos (`public/voos/voos.php`). Crie uma chave gratuita em <https://serpapi.com>.
+
+### Atualizar uma base de dados existente
+
+Se já tinha a base de dados importada antes, aplique os scripts de `database/migrations/` por ordem
+(no phpMyAdmin → separador SQL, ou `mysql site_viagens < database/migrations/001_correcoes_t_user.sql`).
+
+## Tipos de utilizador (`t_user.tipo_user`)
+
+| Valor | Tipo |
+|-------|------|
+| 0 | Cliente |
+| 1 | Bloqueado |
+| 2 | Vendedor (parceiro) |
+| 3 | Vendedor a aguardar aprovação |
+| 4 | Administrador (painel em `/adm`) |
 
 ## Uso
 
@@ -90,13 +112,3 @@ Para mais informações, entre em contato com um dos colaboradores do projeto:
 - `Guilherme Silva`
 - `Gabrielle Reis`
 - `Karoline Moura`
-
-### Resumo
-
-- **Funcionalidades:** Descreve as principais funcionalidades do projeto.
-- **Estrutura do Projeto:** Explica a estrutura de diretórios e arquivos.
-- **Instalação:** Passos para clonar o repositório, configurar o banco de dados e iniciar o servidor.
-- **Uso:** Instruções para adicionar itens ao carrinho, visualizar o carrinho e visualizar o perfil do vendedor.
-- **Contribuição:** Informações sobre como contribuir para o projeto.
-- **Licença:** Informação sobre a licença do projeto.
-- **Contato:** Informações de contato para mais informações.

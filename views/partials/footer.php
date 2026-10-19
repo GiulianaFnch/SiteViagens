@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/config.php'; ?>
 <!--footer-->
 <section id="contact">
         <div class="footer">
@@ -6,16 +7,16 @@
 
                     <h4> Minha Conta</h4>
                     <ul>
-                    <li><a href="/SiteViagens/public/perfil.php">Meu Perfil</a></li>
-                        <li><a href="/SiteViagens/public/reservas.php">Minhas Viagens</a></li>
-                        <li><a href="/SiteViagens/public/backend/logout.php">Logout</a></li>
+                    <li><a href="<?= BASE_URL ?>public/perfil.php">Meu Perfil</a></li>
+                        <li><a href="<?= BASE_URL ?>public/reservas.php">Minhas Viagens</a></li>
+                        <li><a href="<?= BASE_URL ?>public/backend/logout.php">Logout</a></li>
                     </ul>
                 </div>
 
                 <div class="list">
                     <h4>Suporte</h4>
                     <ul>
-                        <li><a href="/SiteViagens/contatos/contatos.html">Contatos</a></li>
+                        <li><a href="<?= BASE_URL ?>public/contatos/Contatos.html">Contatos</a></li>
                         <li><a href="#">Termos & Condições</a></li>
                         <li><a href="#">Politica de privacidade</a></li>
 
@@ -25,8 +26,8 @@
                 <div class="list">
                     <h4>Trabalhe conosco</h4>
                     <ul>
-                        <li><a href="/SiteViagens/public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
-                        <li><a href="/SiteViagens/public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
                     </ul>
                 </div>
 
@@ -49,4 +50,4 @@
         </div>
     </section>
 <!--link to js-->
-<script type="text/javascript" src="/SiteViagens/assets/js/script.js"></script>
+<script type="text/javascript" src="<?= BASE_URL ?>assets/js/script.js"></script>

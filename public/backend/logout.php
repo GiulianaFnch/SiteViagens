@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/config.php';
 session_start();
 // Apaga todas as variáveis da sessão
 $_SESSION = array();
@@ -82,14 +83,14 @@ session_destroy();
 <body>
 
     <header>
-        <a href="/SiteViagens/index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
+        <a href="<?= BASE_URL ?>index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
         <ul class="navbar">
-            <li><a href="/SiteViagens/index.html#home" style="color: black;">Hospedagem</a></li>
+            <li><a href="<?= BASE_URL ?>index.html#home" style="color: black;">Hospedagem</a></li>
             <li><a href="#package" style="color: black;">Passagens</a></li>
-            <li><a href="/SiteViagens/public/tours/tours.php" style="color: black;">Passeios</a></li>
+            <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black;">Passeios</a></li>
             <li><a href="#contact" style="color: black;">Pacotes</a></li>
             <li><a href="public/login.php" style="color: black;"><i class='bx bx-user'></i></a></li>
-            <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a></li>
+            <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a></li>
         </ul>
     </header>
 
@@ -99,7 +100,7 @@ session_destroy();
         <input type="button" value="Voltar ao início" onclick="window.open('../../index.html','_self')">
     </div>
 
-    <?php header("refresh:10;url=/SiteViagens/index.html"); ?>
+    <?php header("refresh:10;url=" . BASE_URL . "index.html"); ?>
 
     <footer>
         <p>© 2024 BestWay. Todos os direitos reservados.</p>

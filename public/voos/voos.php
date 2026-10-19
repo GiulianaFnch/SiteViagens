@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/config.php'; ?>
 <!DOCTYPE html>
 <html>
 
@@ -130,16 +131,16 @@
 <body>
     <!--header-->
     <header>
-        <a href="/SiteViagens/" class="logo">BestWay</a>
+        <a href="<?= BASE_URL ?>" class="logo">BestWay</a>
         <div class="bx bx-menu" id="menu-icon"></div>
 
         <ul class="navbar">
-            <li><a href="/SiteViagens/public/hotels/hotels.php">Hospedagem</a></li>
-            <li><a href="/SiteViagens/public/voos/voos.php">Passagens</a></li>
-            <li><a href="/SiteViagens/public/tours/tours.php">Passeios</a></li>
-            <li><a href="/SiteViagens/public/pacotes/pacotes.php">Pacotes</a></li>
-            <li><a href="/SiteViagens/public/perfil.php"><i class='bx bx-user'></i></a></li>
-            <li><a href="/SiteViagens/public/carrinho/carrinho.php"><i class='bx bx-cart'></i></a></li>
+            <li><a href="<?= BASE_URL ?>public/hotels/hotels.php">Hospedagem</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php">Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/tours/tours.php">Passeios</a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/perfil.php"><i class='bx bx-user'></i></a></li>
+            <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php"><i class='bx bx-cart'></i></a></li>
         </ul>
     </header>
 
@@ -184,10 +185,17 @@
                 "currency" => "EUR"
             ];
 
-            $search = new GoogleSearch('f38710f1433e7f8a9771e521339b6be72239435c9d95f5b2249ffd7c812d9819');
-            $result = $search->get_json($query);
+            $result = null;
+            if (SERPAPI_KEY === '') {
+                echo '<p>A pesquisa de voos não está configurada. Defina a chave da SerpAPI em config/config.local.php.</p>';
+            } else {
+                $search = new GoogleSearch(SERPAPI_KEY);
+                $result = $search->get_json($query);
+            }
 
-            if (isset($result->best_flights) || isset($result->other_flights)) {
+            if ($result === null) {
+                // sem chave configurada: a mensagem já foi exibida
+            } elseif (isset($result->best_flights) || isset($result->other_flights)) {
                 $flights = $result->best_flights ?? $result->other_flights;
                 echo '<div class="flight-results">';
                 echo '<h2>Melhores opções</h2>';
@@ -247,15 +255,15 @@
                 <div class="list">
                     <h4> Minha Conta</h4>
                     <ul>
-                        <li><a href="/SiteViagens/public/perfil.php">Meu Perfil</a></li>
-                        <li><a href="/SiteViagens/public/reservas.php">Minhas Viagens</a></li>
-                        <li><a href="/SiteViagens/public/backend/logout.php">Logout</a></li>
+                        <li><a href="<?= BASE_URL ?>public/perfil.php">Meu Perfil</a></li>
+                        <li><a href="<?= BASE_URL ?>public/reservas.php">Minhas Viagens</a></li>
+                        <li><a href="<?= BASE_URL ?>public/backend/logout.php">Logout</a></li>
                     </ul>
                 </div>
                 <div class="list">
                     <h4>Suporte</h4>
                     <ul>
-                        <li><a href="/SiteViagens/public/contatos/Contatos.html">Contatos</a></li>
+                        <li><a href="<?= BASE_URL ?>public/contatos/Contatos.html">Contatos</a></li>
                         <li><a href="#">Termos & Condições</a></li>
                         <li><a href="#">Politica de privacidade</a></li>
                     </ul>
@@ -263,8 +271,8 @@
                 <div class="list">
                     <h4>Trabalhe conosco</h4>
                     <ul>
-                        <li><a href="/SiteViagens/public/vendedor/registro_vendedor.php">Registrar como parceiro</a></li>
-                        <li><a href="/SiteViagens/public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/registro_vendedor.php">Registrar como parceiro</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
                     </ul>
                 </div>
                 <div class="list">

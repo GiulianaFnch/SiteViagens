@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/config.php';
 require_once '../config/valida.php'; // Validação do usuário logado
 require_once '../config/liga_bd.php'; // Conexão com o banco de dados
 
@@ -311,11 +312,11 @@ header{
 <header>
     <a href="../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
     <ul class="navbar">
-    <li><a href="/SiteViagens/public/hotels/hotels.php" style="color: black;" >Hospedagem</a></li>
+    <li><a href="<?= BASE_URL ?>public/hotels/hotels.php" style="color: black;" >Hospedagem</a></li>
             <li><a href="#package" style="color: black;" >Passagens</a></li>
-            <li><a href="/SiteViagens/public/tours/tours.php" style="color: black; ">Tours</a></li>
+            <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black; ">Tours</a></li>
             <li><a href="#contact" style="color: black;">Pacotes</a></li>
-            <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
+            <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
     </ul>
 </header>
 

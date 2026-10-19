@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../../config/config.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -65,15 +66,15 @@
 </head>
 
 <header>
-    <a href="/SiteViagens/index.html"
+    <a href="<?= BASE_URL ?>index.html"
         style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
     <ul class="navbar">
-        <li><a href="/SiteViagens/index.html#home" style="color: black;">Hospedagem</a></li>
+        <li><a href="<?= BASE_URL ?>index.html#home" style="color: black;">Hospedagem</a></li>
         <li><a href="#package" style="color: black;">Passagens</a></li>
-        <li><a href="/SiteViagens/public/tours/tours.php" style="color: black;">Passeios</a></li>
+        <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black;">Passeios</a></li>
         <li><a href="#contact" style="color: black;">Pacotes</a></li>
         <li><a href="public/login.php" style="color: black;"><i class='bx bx-user'></i></a></li>
-        <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a>
+        <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a>
         </li>
     </ul>
 </header>
@@ -92,7 +93,7 @@
         } else{
             $quantidade = 1;
         }
-        $return_url = isset($_POST['return_url']) ? $_POST['return_url'] : '/SiteViagens/index.html'; // URL da página anterior
+        $return_url = isset($_POST['return_url']) ? $_POST['return_url'] : BASE_URL . 'index.html'; // URL da página anterior
         $total = isset($_POST['total']) ? $_POST['total'] : 0; // Valor total calculado
     
         // Verifica se o tipo_item é hospedagem ou atividade e define o id_artigo correspondente

@@ -88,11 +88,11 @@ if ($uploadOk == 0) {
     <?php
 } else {
     if ($uploadOk == 1) {
-        move_uploaded_file($_FILES['ficheiro']['tmp_name'], $target_file);
         $tmp = password_hash($_POST['pass'], PASSWORD_DEFAULT);
-        $sql = "INSERT INTO t_user (nick, nome, email, data_nasc, pass, foto) VALUES ('" . $_POST['nick'] . "', '" . $_POST['nome'] . "', '" . $_POST['email'] . "', '" . $_POST['data_nasc'] . "', '" . $tmp . "', '" . $foto . "')";
-        
-        if (mysqli_query($ligacao, $sql)) {
+        $stmt = $ligacao->prepare("INSERT INTO t_user (nick, nome, email, nome_marca, data_nasc, pass, foto) VALUES (?, ?, ?, '', ?, ?, ?)");
+        $stmt->bind_param("ssssss", $_POST['nick'], $_POST['nome'], $_POST['email'], $_POST['data_nasc'], $tmp, $foto);
+
+        if ($stmt->execute()) {
             ?>
             <!DOCTYPE html>
             <html lang="pt-BR">

@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-// Defina a URL base do seu site
-define('BASE_URL', 'http://localhost/siteviagens/');
+// URL base do site (definida em config/config.php)
+require_once __DIR__ . '/config.php';
 
 // Validação das variáveis de sessão
 if (!isset($_SESSION['id']) || !isset($_SESSION['nick'])) {

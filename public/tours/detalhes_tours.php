@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/config.php';
 include_once "../../config/valida.php";
 include_once "../../config/liga_bd.php";
 
@@ -12,11 +13,16 @@ if (isset($_POST['id_artigo'])) {
     die("ID do artigo não fornecido.");
 }
 
-$sql = "SELECT * FROM t_artigo WHERE id=" . $id_artigo;
+$id_artigo = (int) $id_artigo;
+$stmt = $ligacao->prepare("SELECT * FROM t_artigo WHERE id = ?");
+$stmt->bind_param("i", $id_artigo);
+$stmt->execute();
 
-// a variável resultado vai guardar todos os dados de todos os artigos
-$resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
-$linha = mysqli_fetch_array($resultado);
+// a variável linha vai guardar todos os dados do artigo
+$linha = $stmt->get_result()->fetch_array();
+if (!$linha) {
+    die("Passeio não encontrado.");
+}
 ?>
 
 <!DOCTYPE html>
@@ -40,15 +46,15 @@ $linha = mysqli_fetch_array($resultado);
         href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
 
         <header>
-        <a href="/SiteViagens/index.html"
+        <a href="<?= BASE_URL ?>index.html"
             style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
         <ul class="navbar">
-            <li><a href="/SiteViagens/index.html#home">Hospedagem</a></li>
+            <li><a href="<?= BASE_URL ?>index.html#home">Hospedagem</a></li>
             <li><a href="#package">Passagens</a></li>
-            <li><a href="/SiteViagens/public/tours/tours.php">Passeios</a></li>
+            <li><a href="<?= BASE_URL ?>public/tours/tours.php">Passeios</a></li>
             <li><a href="#contact">Pacotes</a></li>
             <li><a href="public/login.php"><i class='bx bx-user'></i></a></li>
-            <li><a href="/SiteViagens/public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a>
+            <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a>
             </li>
         </ul>
     </header>
