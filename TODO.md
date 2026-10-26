@@ -43,7 +43,7 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 - [ ] Recuperação de palavra-passe / confirmação de e-mail.
 - [x] Avaliações dos passeios e hospedagens (`config/avaliacoes.php`, `views/partials/avaliacoes.php`) — só quem já usou a reserva avalia.
 - [ ] Resposta do vendedor às avaliações.
-- [ ] Paginação nas listagens e no painel de administração.
+- [x] Paginação (`config/paginacao.php`): 12 por página nas listagens de passeios e hospedagens, 25 nos painéis do admin.
 - [ ] Envio de e-mails de ofertas (para `t_newsletter` e utilizadores com `notificacoes_ofertas`) — falta um serviço de e-mail.
 
 ## Organização do código

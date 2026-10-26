@@ -1,10 +1,17 @@
 <?php
 include 'valida_adm.php';
 include '../config/liga_bd.php';
+include '../config/paginacao.php';
 
-// Consulta para obter todos os usuários
-$sql = "SELECT id, nick, nome, email, data_nasc, nome_marca, foto, tipo_user FROM t_user";
-$result = $ligacao->query($sql);
+// Utilizadores, 25 por página
+$por_pagina = 25;
+$pagina = pagina_atual();
+$total = (int) $ligacao->query("SELECT COUNT(*) FROM t_user")->fetch_row()[0];
+$stmt = $ligacao->prepare("SELECT id, nick, nome, email, data_nasc, nome_marca, foto, tipo_user FROM t_user ORDER BY id LIMIT ? OFFSET ?");
+$offset = ($pagina - 1) * $por_pagina;
+$stmt->bind_param("ii", $por_pagina, $offset);
+$stmt->execute();
+$result = $stmt->get_result();
 
 include 'views/header.php';
 ?>
@@ -73,6 +80,7 @@ include 'views/header.php';
                 <?php endwhile; ?>
             </tbody>
         </table>
+        <?= paginacao_html($total, $por_pagina, $pagina) ?>
     </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

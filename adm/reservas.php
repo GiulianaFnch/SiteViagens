@@ -2,6 +2,7 @@
 include 'valida_adm.php';
 include '../config/liga_bd.php';
 include '../config/reservas.php';
+include '../config/paginacao.php';
 
 // Cancelar uma reserva (fica no histórico e deixa de ocupar vagas)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancelar'])) {
@@ -28,8 +29,17 @@ $sql = "SELECT r.id, r.item_id, r.user_id, r.tipo_reserva, r.data_reserva, r.qua
         LEFT JOIN t_artigo a ON r.tipo_reserva = 'atividade' AND a.id = r.item_id
         LEFT JOIN t_hospedagem h ON r.tipo_reserva = 'hospedagem' AND h.id = r.item_id
         LEFT JOIN t_voos v ON r.tipo_reserva = 'voo' AND v.id = r.item_id
-        ORDER BY r.id DESC";
-$result = $ligacao->query($sql);
+        ORDER BY r.id DESC
+        LIMIT ? OFFSET ?";
+// Reservas, 25 por página
+$por_pagina = 25;
+$pagina = pagina_atual();
+$offset = ($pagina - 1) * $por_pagina;
+$total = (int) $ligacao->query("SELECT COUNT(*) FROM t_reservas")->fetch_row()[0];
+$stmt = $ligacao->prepare($sql);
+$stmt->bind_param("ii", $por_pagina, $offset);
+$stmt->execute();
+$result = $stmt->get_result();
 
 include 'views/header.php';
 ?>
@@ -95,6 +105,7 @@ include 'views/header.php';
                 <?php endwhile; ?>
             </tbody>
         </table>
+        <?= paginacao_html($total, $por_pagina, $pagina) ?>
     </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

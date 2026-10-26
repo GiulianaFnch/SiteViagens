@@ -56,6 +56,13 @@ for u in anon jujuba vendedor admin; do
     verifica "todas as páginas respondem 200/403 para $u" '[ -z "$erros" ] || { echo "       $erros"; false; }'
 done
 
+echo "== Paginação"
+TOTAL=$(q "SELECT COUNT(*) FROM t_artigo a JOIN t_user u ON u.id=a.id_user WHERE a.vendido=0")
+SOMA=0
+for p in 1 2 3 4 5; do SOMA=$((SOMA + $(curl -s "$B/public/tours/listar_tours.php?pagina=$p" | grep -o "<h3>" | wc -l))); done
+verifica "páginas de passeios somam o total ($TOTAL)" '[ "$SOMA" = "$TOTAL" ]'
+verifica "no máximo 12 passeios por página"          '[ "$(curl -s $B/public/tours/listar_tours.php | grep -o "<h3>" | wc -l)" -le 12 ]'
+
 echo "== Permissões"
 verifica "visitante não vê reservas (403)"          '[ "$(status anon public/reservas.php)" = 403 ]'
 verifica "cliente não entra no painel do vendedor"  '[ "$(status jujuba public/vendedor/admin.php)" = 403 ]'

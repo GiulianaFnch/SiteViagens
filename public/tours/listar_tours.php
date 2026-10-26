@@ -3,6 +3,7 @@ require_once __DIR__ . '/../../config/config.php';
 /*include '../../config/valida.php';*/
 include '../../config/liga_bd.php';
 include '../../config/avaliacoes.php';
+include '../../config/paginacao.php';
 ?>
 
 <!DOCTYPE html>
@@ -226,7 +227,8 @@ form {
     </section>
 <br><br>
     <!-- Formulário de seleção de categorias -->
-    <center><form action="" method="post"><h1>
+    <?php $categoria = (int) ($_GET['categoria'] ?? $_POST['categoria'] ?? 0); ?>
+    <center><form action="" method="get"><h1>
         Encontre seu destino por categorias:</h1>
        <center> <select name="categoria" id="categoria" onchange="this.form.submit();">
             <?php
@@ -240,7 +242,7 @@ form {
             // Preenche as opções do select com as categorias vindas do banco de dados
             while ($linha = mysqli_fetch_array($resultado)) {
                 // Verifica se a categoria selecionada é a atual
-                if (isset($_POST['categoria']) && $_POST['categoria'] == $linha['id'])
+                if ($categoria == $linha['id'])
                     echo "<option value='" . (int) $linha['id'] . "' selected>" . htmlspecialchars($linha['categoria']) . "</option>";
                 else
                     echo "<option value='" . (int) $linha['id'] . "'>" . htmlspecialchars($linha['categoria']) . "</option>";
@@ -252,21 +254,27 @@ form {
     <!-- Lista de passeios -->
     <div class="passeios-grid">
         <?php
-        // Verifica se uma categoria foi selecionada no formulário
-        $categoria = isset($_POST['categoria']) ? (int) $_POST['categoria'] : 0;
+        // Paginação (?pagina=N); a categoria 0 ("Todos") mostra todas
+        $por_pagina = 12;
+        $pagina = pagina_atual();
+        $offset = ($pagina - 1) * $por_pagina;
 
-        // Define o SQL de acordo com a categoria selecionada
-        // Artigos não vendidos (com o nick e email do vendedor numa só consulta);
-        // a categoria 0 ("Todos") mostra todas
+        $stmt = $ligacao->prepare("SELECT COUNT(*) FROM t_artigo a JOIN t_user u ON u.id = a.id_user
+                                   WHERE a.vendido = 0 AND (? = 0 OR a.cat = ?)");
+        $stmt->bind_param("ii", $categoria, $categoria);
+        $stmt->execute();
+        $total = (int) $stmt->get_result()->fetch_row()[0];
+
+        // Artigos não vendidos com o nick e email do vendedor e a média das avaliações, numa só consulta
         $stmt = $ligacao->prepare("SELECT a.*, u.nick, u.email, av.media_avaliacoes, COALESCE(av.total_avaliacoes, 0) AS total_avaliacoes
                                    FROM t_artigo a
                                    JOIN t_user u ON u.id = a.id_user
                                    LEFT JOIN (SELECT item_id, AVG(nota) AS media_avaliacoes, COUNT(*) AS total_avaliacoes
                                               FROM t_avaliacoes WHERE tipo_item = 'atividade' GROUP BY item_id) av ON av.item_id = a.id
-                                   WHERE a.vendido = 0 AND (? = 0 OR a.cat = ?)");
-        $stmt->bind_param("ii", $categoria, $categoria);
-
-        // Executa a consulta
+                                   WHERE a.vendido = 0 AND (? = 0 OR a.cat = ?)
+                                   ORDER BY a.id
+                                   LIMIT ? OFFSET ?");
+        $stmt->bind_param("iiii", $categoria, $categoria, $por_pagina, $offset);
         $stmt->execute();
         $resultado = $stmt->get_result();
 
@@ -316,6 +324,7 @@ form {
         }
         ?>
     </div>
+    <?= paginacao_html($total, $por_pagina, $pagina) ?>
 
     </div>
 

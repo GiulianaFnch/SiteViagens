@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../config/config.php';
 include '../../config/liga_bd.php';
 include '../../config/avaliacoes.php';
+include '../../config/paginacao.php';
 ?>
 
 <!DOCTYPE html>
@@ -181,25 +182,28 @@ include '../../config/avaliacoes.php';
     <!-- Lista de hospedagens -->
     <div class="hospedagens-grid">
         <?php
-        // Verifica se o parâmetro tipo_hospedagem está presente no método GET
-        if (isset($_GET['tipo_hospedagem'])) {
-            // Busca hospedagens do tipo especificado (com o nick e email do vendedor numa só consulta)
-            $stmt = $ligacao->prepare("SELECT h.*, u.nick, u.email, av.media_avaliacoes, COALESCE(av.total_avaliacoes, 0) AS total_avaliacoes
-                                       FROM t_hospedagem h
-                                       JOIN t_user u ON u.id = h.id_user
-                                       LEFT JOIN (SELECT item_id, AVG(nota) AS media_avaliacoes, COUNT(*) AS total_avaliacoes
-                                                  FROM t_avaliacoes WHERE tipo_item = 'hospedagem' GROUP BY item_id) av ON av.item_id = h.id
-                                       WHERE h.tipo_hospedagem = ?");
-            $stmt->bind_param("s", $_GET['tipo_hospedagem']);
-        } else {
-            // Busca todas as hospedagens disponíveis
-            $stmt = $ligacao->prepare("SELECT h.*, u.nick, u.email, av.media_avaliacoes, COALESCE(av.total_avaliacoes, 0) AS total_avaliacoes
-                                       FROM t_hospedagem h
-                                       JOIN t_user u ON u.id = h.id_user
-                                       LEFT JOIN (SELECT item_id, AVG(nota) AS media_avaliacoes, COUNT(*) AS total_avaliacoes
-                                                  FROM t_avaliacoes WHERE tipo_item = 'hospedagem' GROUP BY item_id) av ON av.item_id = h.id");
-        }
-        // Executa a consulta
+        // Filtro opcional por tipo (?tipo_hospedagem=hotel) e paginação (?pagina=N)
+        $tipo_hospedagem = $_GET['tipo_hospedagem'] ?? '';
+        $por_pagina = 12;
+        $pagina = pagina_atual();
+        $offset = ($pagina - 1) * $por_pagina;
+
+        $stmt = $ligacao->prepare("SELECT COUNT(*) FROM t_hospedagem h JOIN t_user u ON u.id = h.id_user
+                                   WHERE (? = '' OR h.tipo_hospedagem = ?)");
+        $stmt->bind_param("ss", $tipo_hospedagem, $tipo_hospedagem);
+        $stmt->execute();
+        $total = (int) $stmt->get_result()->fetch_row()[0];
+
+        // Hospedagens com o nick e email do vendedor e a média das avaliações, numa só consulta
+        $stmt = $ligacao->prepare("SELECT h.*, u.nick, u.email, av.media_avaliacoes, COALESCE(av.total_avaliacoes, 0) AS total_avaliacoes
+                                   FROM t_hospedagem h
+                                   JOIN t_user u ON u.id = h.id_user
+                                   LEFT JOIN (SELECT item_id, AVG(nota) AS media_avaliacoes, COUNT(*) AS total_avaliacoes
+                                              FROM t_avaliacoes WHERE tipo_item = 'hospedagem' GROUP BY item_id) av ON av.item_id = h.id
+                                   WHERE (? = '' OR h.tipo_hospedagem = ?)
+                                   ORDER BY h.id
+                                   LIMIT ? OFFSET ?");
+        $stmt->bind_param("ssii", $tipo_hospedagem, $tipo_hospedagem, $por_pagina, $offset);
         $stmt->execute();
         $resultado = $stmt->get_result();
 
@@ -243,6 +247,7 @@ include '../../config/avaliacoes.php';
         }
         ?>
     </div>
+    <?= paginacao_html($total, $por_pagina, $pagina) ?>
 
     <section class="newsletter">
         <div class="news-text">
