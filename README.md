@@ -72,6 +72,8 @@ Também é possível usar variáveis de ambiente: `DB_HOST`, `DB_USER`, `DB_PASS
 
 - **BASE_URL** — é detetado automaticamente (ex.: `/SiteViagens/` no XAMPP, `/` no Docker).
 - **SERPAPI_KEY** — necessária para a pesquisa de voos (`public/voos/voos.php`). Crie uma chave gratuita em <https://serpapi.com>.
+- **debug** (`APP_DEBUG`) — `false` por omissão: erros inesperados mostram só uma mensagem genérica e os detalhes vão
+  para o log do servidor (no XAMPP, `xampp/apache/logs/error.log`). Ponha `true` no seu computador para ver os erros na página.
 
 ### Atualizar uma base de dados existente
 

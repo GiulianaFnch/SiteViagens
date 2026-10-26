@@ -105,7 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['id_solicitacao'])) {
         header('Location: perfil.php?msg=perfil_atualizado');
         exit;
     } else {
-        echo "Erro ao atualizar os dados: " . $stmt->error;
+        error_log("perfil: " . $stmt->error);
+        echo "Erro ao atualizar os dados. Tente novamente.";
         exit;
     }
 }

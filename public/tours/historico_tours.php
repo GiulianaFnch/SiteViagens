@@ -37,23 +37,17 @@ $tipo = 0;
 
         <?php
 
-        if ($tipo == 0)
-            $sql = "SELECT * FROM t_artigo WHERE id_user=" . $_SESSION['id'];
+        // tipo 0 = todos, 1 = por vender, 2 = vendidos
+        $sql = "SELECT * FROM t_artigo WHERE id_user = ?";
         if ($tipo == 1)
-            $sql = "SELECT * FROM t_artigo WHERE id_user=" . $_SESSION['id'] . " AND vendido=0";
+            $sql .= " AND vendido = 0";
         if ($tipo == 2)
-            $sql = "SELECT * FROM t_artigo WHERE id_user=" . $_SESSION['id'] . " AND vendido!=0";
+            $sql .= " AND vendido != 0";
 
-        /*
-        if ($_POST['tipo'] == 0)
-            $sql = "SELECT * FROM t_artigo WHERE id_user=" . $_SESSION['id'];
-        if ($_POST['tipo'] == 1)
-            $sql = "SELECT * FROM t_artigo WHERE id_user=" . $_SESSION['id'] . " AND vendido=0";
-        if ($_POST['tipo'] == 2)
-            $sql = "SELECT * FROM t_artigo WHERE id_user=" . $_SESSION['id'] . " AND vendido!=0";
-        */
-
-        $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
+        $stmt = $ligacao->prepare($sql);
+        $stmt->bind_param("i", $_SESSION['id']);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
 
         while ($linha = mysqli_fetch_assoc($resultado)) {
             echo "<tr>";

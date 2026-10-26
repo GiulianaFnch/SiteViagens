@@ -20,7 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: carrinho.php');
             exit();
         } else {
-            echo "Erro ao remover item do carrinho: " . $stmt->error;
+            error_log("remover_do_carrinho: " . $stmt->error);
+            echo "Erro ao remover item do carrinho.";
         }
 
         $stmt->close();

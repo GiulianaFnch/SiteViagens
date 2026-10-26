@@ -23,9 +23,12 @@ $sql = "SELECT f.tipo_reserva,
         FROM t_favoritos f
         LEFT JOIN t_artigo a ON f.id_artigo = a.id AND f.tipo_reserva = 'atividade'
         LEFT JOIN t_hospedagem h ON f.id_artigo = h.id AND f.tipo_reserva = 'hospedagem'
-        WHERE f.id_user = '$user_id'";
+        WHERE f.id_user = ?";
 
-$resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
+$stmt = $ligacao->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
 
 mysqli_close($ligacao);
 ?>

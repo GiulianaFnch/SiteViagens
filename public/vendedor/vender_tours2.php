@@ -61,7 +61,8 @@ if ($stmt->execute()) {
         processar_foto($_FILES["ficheiro"], $id_artigo, 3);
     }
 } else {
-    echo "Erro: " . $stmt->error;
+    error_log("vender_tours2: " . $stmt->error);
+    echo "Erro ao registar o passeio.";
 }
 
 mysqli_close($ligacao);

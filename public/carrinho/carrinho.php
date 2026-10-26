@@ -4,11 +4,6 @@ include "../../config/liga_bd.php";
 
 $id_user = $_SESSION['id'];
 
-// Verifique se a ligação ao banco de dados está correta
-if ($ligacao->connect_error) {
-    die("Falha na ligação: " . $ligacao->connect_error);
-}
-
 // Consulta para obter itens do carrinho
 $stmt = $ligacao->prepare("SELECT id, id_artigo, tipo_item, quantidade, data_inicio, data_fim
                            FROM t_carrinho WHERE id_user = ? ORDER BY id");

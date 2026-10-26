@@ -15,6 +15,8 @@ $config = [
     'db_name'     => getenv('DB_NAME') ?: 'site_viagens',
     'base_url'    => getenv('BASE_URL') ?: null,
     'serpapi_key' => getenv('SERPAPI_KEY') ?: '',
+    // true mostra os detalhes dos erros na página (só para desenvolvimento)
+    'debug'       => filter_var(getenv('APP_DEBUG'), FILTER_VALIDATE_BOOLEAN),
 ];
 
 if (file_exists(__DIR__ . '/config.local.php')) {
@@ -37,3 +39,17 @@ $config['base_url'] = preg_replace('#^/+#', '/', $config['base_url']);
 
 define('BASE_URL', $config['base_url']);
 define('SERPAPI_KEY', $config['serpapi_key']);
+define('APP_DEBUG', (bool) $config['debug']);
+
+// Erros não tratados (ex.: falha numa consulta à BD): os detalhes vão para o log do servidor
+// e o visitante vê só uma mensagem genérica, sem SQL, nomes de tabelas ou caminhos de ficheiros.
+if (!APP_DEBUG) {
+    set_exception_handler(function ($e) {
+        error_log('BestWay: ' . $e);
+        if (!headers_sent()) {
+            http_response_code(500);
+        }
+        echo '<p style="font-family: sans-serif; text-align: center; margin: 40px;">'
+            . 'Ocorreu um erro inesperado. Tente novamente mais tarde.</p>';
+    });
+}

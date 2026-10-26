@@ -1,11 +1,6 @@
 <?php
+include 'valida_vendedor.php'; // exige login de vendedor e inicia a sessão
 include '../../config/liga_bd.php';
-require_once '../../config/csrf.php'; // também inicia a sessão
-
-// Verifica se a sessão está iniciada e obtém o ID do usuário
-if (!isset($_SESSION['id'])) {
-    die("Usuário não está logado.");
-}
 
 // Rejeita pedidos POST sem o token CSRF da sessão
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -85,7 +80,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit'])) {
         if ($stmt->execute()) {
             echo "Hospedagem atualizada com sucesso!";
         } else {
-            echo "Erro ao atualizar: " . $stmt->error;
+            error_log("gerir_hospedagem: " . $stmt->error);
+            echo "Erro ao atualizar a hospedagem.";
         }
 
         $stmt->close();
@@ -105,7 +101,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
     if ($stmt->execute()) {
         echo "Hospedagem excluída com sucesso!";
     } else {
-        echo "Erro ao excluir: " . $stmt->error;
+        error_log("gerir_hospedagem: " . $stmt->error);
+        echo "Erro ao excluir a hospedagem.";
     }
 
     $stmt->close();

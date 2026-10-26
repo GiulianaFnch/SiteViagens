@@ -40,15 +40,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: admin.php');
         exit;
     } else {
-        echo "Erro ao atualizar os dados: " . $stmt->error;
+        error_log("vendedor/admin: " . $stmt->error);
+        echo "Erro ao atualizar os dados. Tente novamente.";
         exit;
     }
 }
 
 $id = $_SESSION['id'];
-$sql = "SELECT * FROM t_user WHERE id=$id";
-$resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
-$linha = mysqli_fetch_array($resultado);
+$stmt = $ligacao->prepare("SELECT * FROM t_user WHERE id = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$linha = $stmt->get_result()->fetch_array();
 mysqli_close($ligacao);
 ?>
 

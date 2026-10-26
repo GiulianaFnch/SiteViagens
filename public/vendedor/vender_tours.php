@@ -279,8 +279,10 @@ include '../../config/liga_bd.php';
                         <br>Subcategoria:
                         <select name="subcategoria" id="subcategoria" onchange="atualiza();">
                             <?php
-                            $sql2 = "SELECT * FROM t_subcat WHERE categoria = " . $categoria;
-                            $resultado2 = mysqli_query($ligacao, $sql2);
+                            $stmt2 = $ligacao->prepare("SELECT * FROM t_subcat WHERE categoria = ?");
+                            $stmt2->bind_param("i", $categoria);
+                            $stmt2->execute();
+                            $resultado2 = $stmt2->get_result();
                             while ($linha2 = mysqli_fetch_assoc($resultado2)) {
                                 echo "<option value='" . (int) $linha2['id'] . "'>" . htmlspecialchars($linha2['subcat']) . "</option>";
                             }

@@ -182,23 +182,24 @@ include '../../config/liga_bd.php';
         <?php
         // Verifica se o parâmetro tipo_hospedagem está presente no método GET
         if (isset($_GET['tipo_hospedagem'])) {
-            $tipo_hospedagem = mysqli_real_escape_string($ligacao, $_GET['tipo_hospedagem']);
-            // Define o SQL para buscar hospedagens do tipo especificado
-            $sql = "SELECT * FROM t_hospedagem WHERE tipo_hospedagem = '$tipo_hospedagem'";
+            // Busca hospedagens do tipo especificado (com o nick e email do vendedor numa só consulta)
+            $stmt = $ligacao->prepare("SELECT h.*, u.nick, u.email FROM t_hospedagem h
+                                       JOIN t_user u ON u.id = h.id_user WHERE h.tipo_hospedagem = ?");
+            $stmt->bind_param("s", $_GET['tipo_hospedagem']);
         } else {
-            // Define o SQL para buscar todas as hospedagens disponíveis
-            $sql = "SELECT * FROM t_hospedagem";
+            // Busca todas as hospedagens disponíveis
+            $stmt = $ligacao->prepare("SELECT h.*, u.nick, u.email FROM t_hospedagem h
+                                       JOIN t_user u ON u.id = h.id_user");
         }
         // Executa a consulta
-        $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
+        $stmt->execute();
+        $resultado = $stmt->get_result();
 
         // Verifica se existem hospedagens disponíveis
         if (mysqli_num_rows($resultado) > 0) {
             // Itera sobre os resultados e exibe cada hospedagem
             while ($linha = mysqli_fetch_array($resultado)) {
-                $sql_user = "SELECT nick, email FROM t_user WHERE id = " . $linha['id_user'];
-                $res_user = mysqli_query($ligacao, $sql_user) or die(mysqli_error($ligacao));
-                $linha_user = mysqli_fetch_assoc($res_user);
+                $linha_user = $linha; // nick e email do vendedor já vêm na consulta
 
                 if ($linha_user) {
                     echo '<div class="box">';

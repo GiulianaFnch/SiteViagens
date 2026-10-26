@@ -67,7 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             processar_foto($_FILES["ficheiro"], $id_hospedagem, 3);
         }
     } else {
-        echo "Erro: " . $stmt->error;
+        error_log("vender_hospedagem: " . $stmt->error);
+        echo "Erro ao registar a hospedagem.";
     }
 
     mysqli_close($ligacao);

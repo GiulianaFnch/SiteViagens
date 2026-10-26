@@ -6,31 +6,27 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 
 - [x] **Proteção CSRF** nas ações de utilizadores autenticados — `config/csrf.php` (`csrf_campo()` nos
       formulários, `csrf_verificar()` nos ficheiros que alteram dados, token também nos pedidos AJAX do chat e das definições).
-- [ ] CSRF no login e nos registos (`public/backend/login2.php`, `public/registro2.php`,
-      `public/vendedor/registro_vendedor.php`) — exige primeiro mover o `session_start()` para antes do HTML.
-- [ ] Logout por GET (`public/backend/logout.php`) — qualquer página pode terminar a sessão do utilizador.
-      Passar a POST com token (os links estão também em páginas estáticas como `index.html`).
+- [x] CSRF no login e nos registos (`login.php`/`login2.php`, `registro.php`/`registro2.php`, `registro_vendedor.php`).
+- [x] Logout só por POST com token — os links "Logout" abrem uma página de confirmação.
 - [x] **XSS** — os textos vindos da BD (títulos, descrições, nomes, nicks, fotos, categorias) passam por
       `htmlspecialchars` em todas as páginas. Testado com títulos/nomes contendo `<script>` em 19 páginas.
-- [ ] **Preço do voo vem do cliente** — `public/carrinho/adicionar_ao_carrinho.php` grava em `t_voos` o
-      `price` enviado no POST. Recalcular/validar no servidor (ou guardar o resultado da SerpAPI na sessão).
+- [x] **Preço do voo vem do cliente** — os resultados da SerpAPI ficam na sessão; o formulário só envia uma referência.
 - [x] **`total` vem do cliente** no mesmo ficheiro — o preço passa a ser calculado no servidor (`config/reservas.php`).
-- [ ] **Login sem `session_regenerate_id(true)`** em `public/backend/login2.php` (fixação de sessão).
+- [x] **Fixação de sessão** — novo ID de sessão a cada login; cookie de sessão `HttpOnly`, `SameSite=Lax` e
+      `use_strict_mode` (`config/csrf.php`).
 - [x] **Quantidade sem validação** — carrinho e `editar_reserva.php` validam quartos (1 a `n_quartos`) e pessoas (1 a 20).
-- [ ] Mensagens de erro expõem detalhes da BD (`or die(mysqli_error(...))` em vários ficheiros). Trocar por
-      mensagem genérica + `error_log`.
-- [ ] Consultas ainda montadas com concatenação (hoje seguras porque os valores são `int`/sessão, mas frágeis):
-      `public/tours/historico_tours.php`, `public/tours/listar_tours.php`, `public/hotels/listar_hospedagem.php`
-      (usa `real_escape_string`), `public/vendedor/admin.php`, `public/vendedor/vender_tours.php`. Passar a prepared statements.
-- [ ] `public/vendedor/gestao_opcoes.php` e `vender_opcoes.php` não exigem login de vendedor
-      (só mostram menus, mas devem incluir `valida_vendedor.php`).
+- [x] Mensagens de erro já não expõem detalhes da BD — tratador de exceções em `config/config.php` (mensagem genérica
+      + `error_log`; `'debug' => true` em `config.local.php` mostra os detalhes).
+- [x] Consultas com concatenação passaram a prepared statements (`historico_tours`, `listar_tours`, `listar_hospedagem`,
+      `favoritos`, `vendedor/admin`, `vender_tours`).
+- [x] `gestao_opcoes.php`, `vender_opcoes.php` e `gerir_hospedagem.php` exigem login de vendedor.
 
 ## Bugs / lógica
 
 - [x] Reserva verifica datas e quartos livres, e `efetuar_reserva.php` usa uma transação.
 - [x] Reserva guarda o preço pago (`preco_unitario`, `preco_total`).
 - [ ] Passeios não têm lotação máxima (só se limita a 20 pessoas por reserva). Falta uma coluna de vagas em `t_artigo`.
-- [ ] N+1 queries em `listar_tours.php` e `listar_hospedagem.php` (uma consulta de utilizador por item) — usar `JOIN`.
+- [x] N+1 queries em `listar_tours.php` e `listar_hospedagem.php` — agora uma só consulta com `JOIN`.
 - [ ] `adicionar_ao_carrinho.php` lê `return_url` mas convém garantir que só redireciona para caminhos internos.
 - [ ] Formulários que apontam para ficheiros inexistentes:
       `public/hotels/listar_hospedagem.php` (`carrinho.php`), `public/voos/voos.php` (`subscribe.php`).

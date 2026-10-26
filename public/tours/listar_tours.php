@@ -231,7 +231,7 @@ form {
             <?php
             // Conecte-se ao banco de dados e busque as categorias
             $sql = "SELECT * FROM t_categoria";
-            $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
+            $resultado = mysqli_query($ligacao, $sql);
 
             // Adiciona a opção "Todos" com valor 0
             echo "<option value='0'>Todos</option>";
@@ -255,24 +255,22 @@ form {
         $categoria = isset($_POST['categoria']) ? (int) $_POST['categoria'] : 0;
 
         // Define o SQL de acordo com a categoria selecionada
-        if ($categoria == 0) {
-            // Se "Todos" for selecionado, exibe todos os artigos não vendidos
-            $sql = "SELECT * FROM t_artigo WHERE vendido = 0";
-        } else {
-            // Caso contrário, exibe apenas os artigos da categoria selecionada
-            $sql = "SELECT * FROM t_artigo WHERE vendido = 0 AND cat = " . $categoria;
-        }
+        // Artigos não vendidos (com o nick e email do vendedor numa só consulta);
+        // a categoria 0 ("Todos") mostra todas
+        $stmt = $ligacao->prepare("SELECT a.*, u.nick, u.email FROM t_artigo a
+                                   JOIN t_user u ON u.id = a.id_user
+                                   WHERE a.vendido = 0 AND (? = 0 OR a.cat = ?)");
+        $stmt->bind_param("ii", $categoria, $categoria);
 
         // Executa a consulta
-        $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
+        $stmt->execute();
+        $resultado = $stmt->get_result();
 
         // Verifica se existem passeios disponíveis
         if (mysqli_num_rows($resultado) > 0) {
             // Itera sobre os resultados e exibe cada passeio
             while ($linha = mysqli_fetch_array($resultado)) {
-                $sql_user = "SELECT nick, email FROM t_user WHERE id = " . $linha['id_user'];
-                $res_user = mysqli_query($ligacao, $sql_user) or die(mysqli_error($ligacao));
-                $linha_user = mysqli_fetch_assoc($res_user);
+                $linha_user = $linha; // nick e email do vendedor já vêm na consulta
 
                 if ($linha_user) {
                     echo '<div class="box">';

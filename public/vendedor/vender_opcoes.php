@@ -1,3 +1,4 @@
+<?php include 'valida_vendedor.php'; // só vendedores ?>
 <!DOCTYPE html>
 <html lang="pt">
 
