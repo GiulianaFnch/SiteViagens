@@ -33,6 +33,18 @@ function avaliacao_pode_avaliar($ligacao, $id_user, $tipo, $item_id)
     return $pode;
 }
 
+// id do vendedor dono do passeio/hospedagem (ou null se o item não existir)
+function avaliacao_dono_item($ligacao, $tipo, $item_id)
+{
+    $tabela = $tipo === 'hospedagem' ? 't_hospedagem' : 't_artigo';
+    $stmt = $ligacao->prepare("SELECT id_user FROM $tabela WHERE id = ?");
+    $stmt->bind_param("i", $item_id);
+    $stmt->execute();
+    $r = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+    return $r ? (int) $r['id_user'] : null;
+}
+
 function avaliacao_e_admin($ligacao, $id_user)
 {
     $stmt = $ligacao->prepare("SELECT tipo_user FROM t_user WHERE id = ?");

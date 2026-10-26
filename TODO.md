@@ -42,7 +42,7 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 - [x] Cancelamento de reserva pelo cliente (antes do início), vendedor e admin — a reserva fica com `estado = 'cancelada'`.
 - [ ] Recuperação de palavra-passe / confirmação de e-mail.
 - [x] Avaliações dos passeios e hospedagens (`config/avaliacoes.php`, `views/partials/avaliacoes.php`) — só quem já usou a reserva avalia.
-- [ ] Resposta do vendedor às avaliações.
+- [x] Resposta do vendedor às avaliações (só o vendedor dono do item; migração 008).
 - [x] Paginação (`config/paginacao.php`): 12 por página nas listagens de passeios e hospedagens, 25 nos painéis do admin.
 - [ ] Envio de e-mails de ofertas (para `t_newsletter` e utilizadores com `notificacoes_ofertas`) — falta um serviço de e-mail.
 

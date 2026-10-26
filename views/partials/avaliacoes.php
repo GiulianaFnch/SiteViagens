@@ -10,7 +10,7 @@ $avaliacao_resumo = avaliacao_resumo($ligacao, $avaliacao_tipo, $avaliacao_item_
 $avaliacao_id_user = (int) ($_SESSION['id'] ?? 0);
 $avaliacao_admin = $avaliacao_id_user && avaliacao_e_admin($ligacao, $avaliacao_id_user);
 
-$stmt = $ligacao->prepare("SELECT av.id, av.id_user, av.nota, av.comentario, av.data_atualizacao, u.nick, u.foto
+$stmt = $ligacao->prepare("SELECT av.id, av.id_user, av.nota, av.comentario, av.data_atualizacao, av.resposta, av.data_resposta, u.nick, u.foto
     FROM t_avaliacoes av JOIN t_user u ON u.id = av.id_user
     WHERE av.tipo_item = ? AND av.item_id = ?
     ORDER BY (av.id_user = ?) DESC, av.data_atualizacao DESC");
@@ -26,6 +26,7 @@ foreach ($avaliacoes as $av) {
     }
 }
 $pode_avaliar = $avaliacao_id_user && avaliacao_pode_avaliar($ligacao, $avaliacao_id_user, $avaliacao_tipo, $avaliacao_item_id);
+$e_dono = $avaliacao_id_user && avaliacao_dono_item($ligacao, $avaliacao_tipo, $avaliacao_item_id) === $avaliacao_id_user;
 
 $avaliacao_mensagem = $_SESSION['avaliacao_mensagem'] ?? null;
 unset($_SESSION['avaliacao_mensagem']);
@@ -51,6 +52,9 @@ unset($_SESSION['avaliacao_mensagem']);
     .avaliacoes .cabecalho img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
     .avaliacoes .data { color: #888; font-size: 13px; margin-left: auto; }
     .avaliacoes .comentario { color: #444; white-space: pre-line; }
+    .avaliacoes .resposta { margin: 10px 0 0 20px; padding: 10px 14px; background: #f4f7fd; border-left: 3px solid #6495ed; border-radius: 4px; }
+    .avaliacoes .resposta strong { color: #3A506B; }
+    .avaliacoes details summary { cursor: pointer; color: #6495ed; margin-top: 8px; font-size: 14px; }
 </style>
 
 <section class="avaliacoes" id="avaliacoes">
@@ -87,7 +91,9 @@ unset($_SESSION['avaliacao_mensagem']);
             <button type="submit"><?= $minha_avaliacao ? 'Guardar alterações' : 'Publicar avaliação' ?></button>
         </form>
     <?php elseif (!$minha_avaliacao): ?>
-        <p>Só quem reservou e já usou esta reserva pode avaliar.</p>
+        <?php if (!$e_dono): ?>
+            <p>Só quem reservou e já usou esta reserva pode avaliar.</p>
+        <?php endif; ?>
     <?php endif; ?>
 
     <?php foreach ($avaliacoes as $av): ?>
@@ -102,6 +108,30 @@ unset($_SESSION['avaliacao_mensagem']);
             </div>
             <?php if ($av['comentario'] !== null): ?>
                 <div class="comentario"><?= htmlspecialchars($av['comentario']) ?></div>
+            <?php endif; ?>
+            <?php if ($av['resposta'] !== null): ?>
+                <div class="resposta">
+                    <strong>Resposta do vendedor</strong>
+                    <span class="data"><?= date('d/m/Y', strtotime($av['data_resposta'])) ?></span>
+                    <div class="comentario"><?= htmlspecialchars($av['resposta']) ?></div>
+                </div>
+            <?php endif; ?>
+            <?php if ($e_dono): ?>
+                <details>
+                    <summary><?= $av['resposta'] !== null ? 'Editar resposta' : 'Responder' ?></summary>
+                    <form method="post" action="<?= BASE_URL ?>public/backend/avaliar.php">
+                        <?= csrf_campo() ?>
+                        <input type="hidden" name="tipo_item" value="<?= htmlspecialchars($avaliacao_tipo) ?>">
+                        <input type="hidden" name="item_id" value="<?= (int) $avaliacao_item_id ?>">
+                        <input type="hidden" name="id_avaliacao" value="<?= (int) $av['id'] ?>">
+                        <textarea name="resposta" maxlength="<?= AVALIACAO_MAX_COMENTARIO ?>" required
+                            placeholder="Responda a este cliente"><?= htmlspecialchars($av['resposta'] ?? '') ?></textarea>
+                        <button type="submit" name="responder">Publicar resposta</button>
+                        <?php if ($av['resposta'] !== null): ?>
+                            <button type="submit" name="apagar_resposta" class="apagar" formnovalidate>Apagar resposta</button>
+                        <?php endif; ?>
+                    </form>
+                </details>
             <?php endif; ?>
             <?php if ((int) $av['id_user'] === $avaliacao_id_user || $avaliacao_admin): ?>
                 <form method="post" action="<?= BASE_URL ?>public/backend/avaliar.php" onsubmit="return confirm('Apagar esta avaliação?');">

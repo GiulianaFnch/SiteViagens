@@ -611,6 +611,8 @@ CREATE TABLE IF NOT EXISTS `t_avaliacoes` (
   `comentario` text DEFAULT NULL,
   `data_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
   `data_atualizacao` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `resposta` text DEFAULT NULL,
+  `data_resposta` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uma_por_utilizador` (`id_user`, `tipo_item`, `item_id`),
   KEY `item` (`tipo_item`, `item_id`),

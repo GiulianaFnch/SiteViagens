@@ -14,7 +14,25 @@ if (!in_array($tipo, AVALIACAO_TIPOS, true) || $item_id <= 0) {
 }
 
 $mensagem = null;
-if (isset($_POST['apagar'])) {
+if (isset($_POST['responder']) || isset($_POST['apagar_resposta'])) {
+    // Só o vendedor dono do passeio/hospedagem responde às avaliações
+    $id_avaliacao = (int) ($_POST['id_avaliacao'] ?? 0);
+    $resposta = isset($_POST['apagar_resposta']) ? '' : trim($_POST['resposta'] ?? '');
+    if (avaliacao_dono_item($ligacao, $tipo, $item_id) !== (int) $id_user) {
+        $mensagem = 'Só o vendedor deste item pode responder às avaliações.';
+    } elseif (mb_strlen($resposta) > AVALIACAO_MAX_COMENTARIO) {
+        $mensagem = 'A resposta pode ter no máximo ' . AVALIACAO_MAX_COMENTARIO . ' caracteres.';
+    } else {
+        $resposta = $resposta === '' ? null : $resposta;
+        // data_atualizacao = data_atualizacao: responder não muda a data da avaliação do cliente
+        $stmt = $ligacao->prepare("UPDATE t_avaliacoes
+            SET resposta = ?, data_resposta = IF(? IS NULL, NULL, NOW()), data_atualizacao = data_atualizacao
+            WHERE id = ? AND tipo_item = ? AND item_id = ?");
+        $stmt->bind_param("ssisi", $resposta, $resposta, $id_avaliacao, $tipo, $item_id);
+        $stmt->execute();
+        $mensagem = $resposta === null ? 'Resposta apagada.' : 'Resposta publicada.';
+    }
+} elseif (isset($_POST['apagar'])) {
     // Cada utilizador apaga a sua avaliação; o administrador pode apagar qualquer uma (moderação)
     $id_avaliacao = (int) ($_POST['id_avaliacao'] ?? 0);
     if (avaliacao_e_admin($ligacao, $id_user)) {

@@ -120,8 +120,9 @@ As regras ficam em `config/reservas.php` e são usadas no carrinho, no checkout 
 - Só avalia quem tem uma reserva confirmada desse item que já terminou (check-out ou dia do passeio no passado).
 - Uma avaliação por utilizador e item: avaliar de novo edita a anterior. Cada um pode apagar a sua; o administrador
   pode apagar qualquer uma.
+- O vendedor dono do passeio ou da hospedagem pode responder a cada avaliação (e editar ou apagar a resposta).
 - A média aparece nos detalhes e nas listagens. Para bases de dados existentes, aplique
-  `database/migrations/004_avaliacoes.sql`.
+  `database/migrations/004_avaliacoes.sql` e `008_resposta_avaliacoes.sql`.
 
 ## Newsletter
 

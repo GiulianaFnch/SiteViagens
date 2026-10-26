@@ -132,6 +132,11 @@ verifica "comentário com <script> sai escapado"     '[[ "$H" == *"&lt;script&gt
 post Karol public/backend/avaliar.php -d tipo_item=hospedagem -d item_id=4 -d nota=5 >/dev/null
 verifica "quem não reservou não consegue avaliar"   '[ "$(q "SELECT COUNT(*) FROM t_avaliacoes WHERE item_id=4")" = 1 ]'
 verifica "listagem mostra a média"                  '[[ "$(curl -s $B/public/hotels/listar_hospedagem.php)" == *"4,0 (1 avaliação)"* ]]'
+AID=$(q "SELECT id FROM t_avaliacoes WHERE item_id=4")
+post vendedor public/backend/avaliar.php -d tipo_item=hospedagem -d item_id=4 -d id_avaliacao=$AID -d responder=1 -d "resposta=Obrigado pela visita" >/dev/null
+verifica "vendedor dono responde à avaliação"       '[[ "$(curl -s -b $T/jujuba $B/public/hotels/detalhes_hospedagem.php?id=4 | txt)" == *"Resposta do vendedor"*"Obrigado pela visita"* ]]'
+post Karol public/backend/avaliar.php -d tipo_item=hospedagem -d item_id=4 -d id_avaliacao=$AID -d responder=1 -d resposta=spam >/dev/null
+verifica "quem não é o vendedor não responde"       '[ "$(q "SELECT resposta FROM t_avaliacoes WHERE id=$AID")" = "Obrigado pela visita" ]'
 
 echo "== Newsletter e logout"
 verifica "inscrição na newsletter"                  '[[ "$(curl -s -d email=smoke@exemplo.com $B/public/backend/newsletter.php)" == *"Inscrição feita"* ]]'
