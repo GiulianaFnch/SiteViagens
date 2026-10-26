@@ -17,10 +17,9 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
       Títulos e descrições são escritos por vendedores, logo um vendedor pode injetar script nas páginas dos clientes.
 - [ ] **Preço do voo vem do cliente** — `public/carrinho/adicionar_ao_carrinho.php` grava em `t_voos` o
       `price` enviado no POST. Recalcular/validar no servidor (ou guardar o resultado da SerpAPI na sessão).
-- [ ] **`total` vem do cliente** no mesmo ficheiro — não confiar nele; calcular a partir dos preços na BD.
+- [x] **`total` vem do cliente** no mesmo ficheiro — o preço passa a ser calculado no servidor (`config/reservas.php`).
 - [ ] **Login sem `session_regenerate_id(true)`** em `public/backend/login2.php` (fixação de sessão).
-- [ ] **Quantidade sem validação** — `dias_quartos` (carrinho) e `quantidade` (`editar_reserva.php`)
-      aceitam 0 ou negativos. Forçar `(int)` e `>= 1`.
+- [x] **Quantidade sem validação** — carrinho e `editar_reserva.php` validam quartos (1 a `n_quartos`) e pessoas (1 a 20).
 - [ ] Mensagens de erro expõem detalhes da BD (`or die(mysqli_error(...))` em vários ficheiros). Trocar por
       mensagem genérica + `error_log`.
 - [ ] Consultas ainda montadas com concatenação (hoje seguras porque os valores são `int`/sessão, mas frágeis):
@@ -31,12 +30,12 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 
 ## Bugs / lógica
 
-- [ ] Reserva não verifica disponibilidade nem datas — `efetuar_reserva.php` só copia o carrinho para `t_reservas`.
-      Não há transação: se uma inserção falhar, o carrinho é apagado na mesma.
-- [ ] Reserva não guarda o preço pago (se o vendedor mudar o preço, o histórico muda).
+- [x] Reserva verifica datas e quartos livres, e `efetuar_reserva.php` usa uma transação.
+- [x] Reserva guarda o preço pago (`preco_unitario`, `preco_total`).
+- [ ] Passeios não têm lotação máxima (só se limita a 20 pessoas por reserva). Falta uma coluna de vagas em `t_artigo`.
 - [ ] N+1 queries em `listar_tours.php` e `listar_hospedagem.php` (uma consulta de utilizador por item) — usar `JOIN`.
 - [ ] `adicionar_ao_carrinho.php` lê `return_url` mas convém garantir que só redireciona para caminhos internos.
-- [ ] Formulários que apontam para ficheiros inexistentes: `adm/reservas.php` (`editar_reserva.php`, `excluir_reserva.php`),
+- [ ] Formulários que apontam para ficheiros inexistentes:
       `public/hotels/listar_hospedagem.php` (`carrinho.php`), `public/voos/voos.php` (`subscribe.php`).
 - [ ] O "serviço de localização" em `configuracoes.php`/`configuracoes2.php` envia `toggle_location_service`, mas o servidor não trata esse campo.
 - [ ] Links quebrados no cabeçalho de `efetuar_reserva.php` (`#package`, `#contact`, `public/login.php` relativo).
@@ -45,7 +44,7 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 
 - [ ] **Pacotes** (`public/pacotes/pacotes.php`) é só HTML estático — não há tabela nem gestão de pacotes.
 - [ ] Pagamento (atualmente "reservar" não cobra nada).
-- [ ] Cancelamento de reserva pelo cliente.
+- [x] Cancelamento de reserva pelo cliente (antes do início), vendedor e admin — a reserva fica com `estado = 'cancelada'`.
 - [ ] Recuperação de palavra-passe / confirmação de e-mail.
 - [ ] Avaliações/comentários dos passeios e hospedagens.
 - [ ] Paginação nas listagens e no painel de administração.

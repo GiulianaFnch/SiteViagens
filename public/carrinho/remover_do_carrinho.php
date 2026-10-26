@@ -16,17 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("ii", $id_carrinho, $id_user);
 
         if ($stmt->execute()) {
-            $stmt = $ligacao->prepare("
-                SELECT *
-                FROM t_carrinho 
-                WHERE id_user = ?
-            ");
-            $stmt->bind_param("i", $id_user);
-            $stmt->execute();
-            $resultado = $stmt->get_result();
-            $linha = $resultado->fetch_assoc();
-            $_SESSION['total_carrinho'] = $linha['total'] ?? 0;
-
             // Redireciona de volta para a página do carrinho
             header('Location: carrinho.php');
             exit();

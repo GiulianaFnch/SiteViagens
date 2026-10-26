@@ -13,6 +13,10 @@ $linha = $stmt->get_result()->fetch_array();
 if (!$linha) {
     die("Hospedagem não encontrada.");
 }
+
+// Datas que o calendário deixa escolher: de hoje (ou do início da disponibilidade) até ao fim dela
+$data_min = max(date('Y-m-d'), (string) $linha['data_inicio']);
+$data_max = (string) $linha['data_fim'];
 ?>
 
 <!DOCTYPE html>
@@ -209,7 +213,10 @@ if (!$linha) {
             <div class="description">Classificação: <?php echo htmlspecialchars($linha['classificacao']); ?> estrelas
             </div>
             <br>
-            <div class="description">Quartos disponíveis: <?php echo htmlspecialchars($linha['n_quartos']); ?></div>
+            <div class="description">Quartos: <?php echo htmlspecialchars($linha['n_quartos']); ?></div>
+            <?php if ($data_max): ?>
+            <div class="description">Disponível até: <?php echo date('d/m/Y', strtotime($data_max)); ?></div>
+            <?php endif; ?>
             <br>
             <div class="description">Localização: <?php echo htmlspecialchars($linha['localizacao']); ?></div>
             <br>
@@ -223,18 +230,16 @@ if (!$linha) {
                 <input type="hidden" name="id_artigo" value="<?php echo htmlspecialchars($linha['id']); ?>">
                 <input type="hidden" name="tipo_item" value="hospedagem">
                 <input type="hidden" name="return_url" value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
-                <input type="hidden" name="total" id="total" value="">
-                <input type="hidden" name="dias_quartos" id="dias_quartos" value="">
 
                 <div class="form-group-container">
                     <div class="form-group">
                         <label for="data-checkin">Check-in:</label>
-                        <input type="date" id="data-checkin" name="data_checkin" required>
+                        <input type="date" id="data-checkin" name="data_checkin" min="<?= $data_min ?>" max="<?= $data_max ?>" required>
                     </div>
 
                     <div class="form-group">
                         <label for="data-checkout">Check-out:</label>
-                        <input type="date" id="data-checkout" name="data_checkout" required>
+                        <input type="date" id="data-checkout" name="data_checkout" min="<?= $data_min ?>" max="<?= $data_max ?>" required>
                     </div>
 
                     <div class="form-group">
@@ -305,17 +310,11 @@ if (!$linha) {
                 return;
             }
 
+            // Só uma estimativa para o cliente confirmar: o preço final é calculado no servidor
             const total = dailyRate * days * numQuartos;
-            const dias_quartos = days * numQuartos;
-
-            // Definir o valor do campo oculto 'total'
-            document.getElementById('total').value = total;
-
-            // Definir o valor do campo oculto 'dias_quartos'
-            document.getElementById('dias_quartos').value = dias_quartos;
 
             // Confirmação para o usuário
-            const confirmMessage = `Você está prestes a adicionar ao carrinho:\n${days} dias de hospedagem, com ${numQuartos} quarto(s).\nTotal: €${total.toFixed(2)}.`;
+            const confirmMessage = `Você está prestes a adicionar ao carrinho:\n${days} noite(s) de hospedagem, com ${numQuartos} quarto(s).\nTotal: €${total.toFixed(2)}.`;
             if (!confirm(confirmMessage)) {
                 e.preventDefault();
             }

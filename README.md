@@ -77,6 +77,24 @@ Também é possível usar variáveis de ambiente: `DB_HOST`, `DB_USER`, `DB_PASS
 Se já tinha a base de dados importada antes, aplique os scripts de `database/migrations/` por ordem
 (no phpMyAdmin → separador SQL, ou `mysql site_viagens < database/migrations/001_correcoes_t_user.sql`).
 
+O `003_atualizar_datas_exemplo.sql` é opcional: prolonga a disponibilidade dos passeios e hospedagens
+**de exemplo** (que terminava em 2024/2025) para que possam ser reservados. Não o use com dados reais.
+
+## Reservas
+
+As regras ficam em `config/reservas.php` e são usadas no carrinho, no checkout e nos painéis:
+
+- **Hospedagem** — o cliente escolhe check-in, check-out e nº de quartos. O preço é
+  `diária × noites × quartos`, e a reserva só é aceite se houver quartos livres em todas as noites
+  (contando apenas reservas confirmadas) e se as datas estiverem dentro do período de disponibilidade.
+- **Passeio** — o cliente escolhe o dia (dentro do período do passeio) e o nº de pessoas (1 a 20).
+  O preço é `preço × pessoas`.
+- O preço é sempre calculado no servidor; o valor pago fica gravado na reserva e não muda se o
+  vendedor alterar o preço depois.
+- Finalizar a reserva é uma transação: se algum item deixou de estar disponível, nada é reservado.
+- O cliente pode cancelar uma reserva até à data de início; o vendedor e o administrador também.
+  Reservas canceladas ficam no histórico e libertam os quartos.
+
 ## Tipos de utilizador (`t_user.tipo_user`)
 
 | Valor | Tipo |

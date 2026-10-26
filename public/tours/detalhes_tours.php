@@ -23,6 +23,10 @@ $linha = $stmt->get_result()->fetch_array();
 if (!$linha) {
     die("Passeio não encontrado.");
 }
+
+// Datas que o calendário deixa escolher: de hoje (ou do início do passeio) até ao fim
+$data_min = max(date('Y-m-d'), (string) $linha['data_inicio']);
+$data_max = (string) $linha['data_fim'];
 ?>
 
 <!DOCTYPE html>
@@ -270,8 +274,18 @@ if (!$linha) {
                     <?= csrf_campo() ?>
                     <input type="hidden" name="id_artigo" value="<?php echo $linha['id']; ?>">
                     <input type="hidden" name="tipo_item" value="atividade">
-                    <input type="hidden" name="return_url" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                    <input type="submit" class="buy-button" value="Adicionar ao carrinho">
+                    <input type="hidden" name="return_url" value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
+                    <?php if ($data_min <= $data_max): ?>
+                        <div class="info-item">
+                            <label for="data_passeio"><strong>Data:</strong></label>
+                            <input type="date" id="data_passeio" name="data_inicio" min="<?= $data_min ?>" max="<?= $data_max ?>" value="<?= $data_min ?>" required>
+                            <label for="pessoas"><strong>Pessoas:</strong></label>
+                            <input type="number" id="pessoas" name="quantidade" min="1" max="20" value="1" required style="width: 70px;">
+                        </div>
+                        <input type="submit" class="buy-button" value="Adicionar ao carrinho">
+                    <?php else: ?>
+                        <p>Este passeio já não tem datas disponíveis.</p>
+                    <?php endif; ?>
                 </form>
             </div>
             <br>

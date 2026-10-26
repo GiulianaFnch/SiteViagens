@@ -10,44 +10,30 @@ if ($ligacao->connect_error) {
 }
 
 // Consulta para obter itens do carrinho
-$stmt = $ligacao->prepare("
-    SELECT c.id, 
-           CASE 
-               WHEN c.tipo_item = 'atividade' THEN a.titulo 
-               WHEN c.tipo_item = 'hospedagem' THEN h.nome 
-               WHEN c.tipo_item = 'voo' THEN v.arrival 
-           END AS titulo, 
-           CASE 
-               WHEN c.tipo_item = 'atividade' THEN a.preco 
-               WHEN c.tipo_item = 'hospedagem' THEN h.preco_diaria 
-               WHEN c.tipo_item = 'voo' THEN v.price 
-           END AS preco, 
-           c.quantidade, 
-           c.tipo_item
-    FROM t_carrinho c
-    LEFT JOIN t_artigo a ON c.id_artigo = a.id AND c.tipo_item = 'atividade'
-    LEFT JOIN t_hospedagem h ON c.id_artigo = h.id AND c.tipo_item = 'hospedagem'
-    LEFT JOIN t_voos v ON c.id_artigo = v.id AND c.tipo_item = 'voo'
-    WHERE c.id_user = ?
-");
-if (!$stmt) {
-    die("Erro na preparação da consulta: " . $ligacao->error);
-}
-
+$stmt = $ligacao->prepare("SELECT id, id_artigo, tipo_item, quantidade, data_inicio, data_fim
+                           FROM t_carrinho WHERE id_user = ? ORDER BY id");
 $stmt->bind_param("i", $id_user);
 $stmt->execute();
-$resultado_artigos = $stmt->get_result();
+$linhas_carrinho = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
 
-if (!$resultado_artigos) {
-    die("Erro na execução da consulta: " . $stmt->error);
+// Recalcula cada item com os preços e a disponibilidade atuais
+include "../../config/reservas.php";
+$itens = [];
+$total_carrinho = 0;
+$tem_erros = false;
+foreach ($linhas_carrinho as $linha) {
+    $item = reserva_preparar_item($ligacao, $linha['tipo_item'], $linha['id_artigo'], $linha['quantidade'],
+        $linha['data_inicio'], $linha['data_fim'], $id_user);
+    $item['id_carrinho'] = $linha['id'];
+    $item['tipo_item'] = $linha['tipo_item'];
+    if ($item['erro'] === null) {
+        $total_carrinho += $item['preco_total'];
+    } else {
+        $tem_erros = true;
+    }
+    $itens[] = $item;
 }
-
-if (!isset($_SESSION['total_carrinho'])) {
-    $_SESSION['total_carrinho'] = 0; // Inicialize com 0 se não estiver definida
-}
-
-// Calcular o total do carrinho
-$total_carrinho = $_SESSION['total_carrinho'];
 ?>
 
 <!DOCTYPE html>
@@ -131,49 +117,74 @@ $total_carrinho = $_SESSION['total_carrinho'];
                 <thead class="table-dark">
                     <tr>
                         <th>Título</th>
+                        <th>Tipo de Item</th>
+                        <th>Datas</th>
                         <th>Preço</th>
                         <th>Quantidade</th>
                         <th>Total</th>
-                        <th>Tipo de Item</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    while ($linha = $resultado_artigos->fetch_assoc()) {
-                        $total_item = $linha['preco'] * $linha['quantidade'];
-                        $total_carrinho += $total_item;
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($linha['titulo']) . "</td>";
-                        echo "<td>" . htmlspecialchars($linha['preco']) . " €</td>";
-                        echo "<td>" . htmlspecialchars($linha['quantidade']) . "</td>";
-                        echo "<td>" . htmlspecialchars($total_item) . " €</td>";
-                        echo "<td>" . htmlspecialchars($linha['tipo_item']) . "</td>";
-                        echo "<td>";
-                        ?>
-                        <form action="remover_do_carrinho.php" method="post" style="display:inline;">
-                            <?= csrf_campo() ?>
-                            <input type="hidden" name="id_carrinho" value="<?php echo htmlspecialchars($linha['id']); ?>">
-                            <button type="submit" class="btn btn-danger btn-sm">Remover</button>
-                        </form>
-                        <?php
-                        echo "</td>";
-                        echo "</tr>";
-                    }
-                    ?>
+                    <?php foreach ($itens as $item): ?>
+                        <tr>
+                            <td>
+                                <?= htmlspecialchars($item['titulo']) ?>
+                                <?php if ($item['erro'] !== null): ?>
+                                    <div class="text-danger small"><?= htmlspecialchars($item['erro']) ?></div>
+                                <?php endif; ?>
+                            </td>
+                            <td><?= htmlspecialchars($item['tipo_item']) ?></td>
+                            <td>
+                                <?php if ($item['tipo_item'] == 'hospedagem'): ?>
+                                    <?= reserva_formatar_data($item['data_inicio']) ?> a <?= reserva_formatar_data($item['data_fim']) ?>
+                                    <?php if ($item['noites']): ?><br><small><?= $item['noites'] ?> noite(s)</small><?php endif; ?>
+                                <?php elseif ($item['tipo_item'] == 'atividade'): ?>
+                                    <?= reserva_formatar_data($item['data_inicio']) ?>
+                                <?php else: ?>
+                                    —
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?= reserva_formatar_preco($item['preco_unitario']) ?>
+                                <?php if ($item['tipo_item'] == 'hospedagem'): ?><small>/noite</small><?php endif; ?>
+                                <?php if ($item['tipo_item'] == 'atividade'): ?><small>/pessoa</small><?php endif; ?>
+                            </td>
+                            <td>
+                                <?= (int) $item['quantidade'] ?>
+                                <?php if ($item['tipo_item'] == 'hospedagem'): ?><small>quarto(s)</small><?php endif; ?>
+                                <?php if ($item['tipo_item'] == 'atividade'): ?><small>pessoa(s)</small><?php endif; ?>
+                            </td>
+                            <td><?= $item['erro'] === null ? reserva_formatar_preco($item['preco_total']) : '—' ?></td>
+                            <td>
+                            <form action="remover_do_carrinho.php" method="post" style="display:inline;">
+                                <?= csrf_campo() ?>
+                                <input type="hidden" name="id_carrinho" value="<?= (int) $item['id_carrinho'] ?>">
+                                <button type="submit" class="btn btn-danger btn-sm">Remover</button>
+                            </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    <?php if (!$itens): ?>
+                        <tr><td colspan="7">O seu carrinho está vazio.</td></tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
         <div class="d-flex justify-content-between align-items-center mt-4">
             <h3>Total do Carrinho:
-                <?php echo htmlspecialchars($total_carrinho) . " €"; ?>
+                <?= reserva_formatar_preco($total_carrinho) ?>
             </h3>
+            <?php if ($tem_erros): ?>
+                <p class="text-danger">Remova os itens indisponíveis para finalizar a reserva.</p>
+            <?php elseif ($itens): ?>
             <form action="efetuar_reserva.php" method="post">
                 <?= csrf_campo() ?>
             <a href="#" role="link" class="slide-button" onclick="this.closest('form').submit();">
                     <span class="text">Finalizar Reserva</span>    
                 </a>
             </form>
+            <?php endif; ?>
         </div>
     </main>
 </body>
@@ -182,6 +193,5 @@ $total_carrinho = $_SESSION['total_carrinho'];
 </html>
 
 <?php
-$stmt->close();
 $ligacao->close();
 ?>

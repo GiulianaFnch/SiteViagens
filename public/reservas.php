@@ -6,6 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verificar();
 }
 include '../config/liga_bd.php';
+include '../config/reservas.php';
 
 $user_id = $_SESSION['id'];
 
@@ -16,22 +17,26 @@ $stmt_user->execute();
 $result_user = $stmt_user->get_result();
 $linha = $result_user->fetch_assoc(); 
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])) {
+// Cancelar reserva: só reservas confirmadas que ainda não começaram.
+// A reserva fica no histórico como "cancelada" e deixa de ocupar vagas.
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancelar'])) {
     $reserva_id = (int) $_POST['reserva_id'];
-    $sql = "DELETE FROM t_reservas WHERE id = ? AND user_id = ?";
+    $sql = "UPDATE t_reservas SET estado = 'cancelada'
+            WHERE id = ? AND user_id = ? AND estado = 'confirmada'
+              AND (data_inicio IS NULL OR data_inicio > CURDATE())";
     $stmt = $ligacao->prepare($sql);
     $stmt->bind_param("ii", $reserva_id, $user_id);
     $stmt->execute();
-    
-    echo "<script>
-            alert('Reserva excluída com sucesso!');
-            window.history.go(-1); // Volta para a página anterior
-          </script>";
+    $cancelada = $stmt->affected_rows > 0;
+
+    header('Location: reservas.php?msg=' . ($cancelada ? 'cancelada' : 'nao_cancelada'));
     exit;
 }
 
 // Ajuste a consulta SQL para obter o ID do vendedor correto de acordo com o tipo de reserva
-$sql = "SELECT r.id, r.item_id, r.tipo_reserva, r.data_reserva, r.quantidade, 
+$sql = "SELECT r.id, r.item_id, r.tipo_reserva, r.data_reserva, r.quantidade,
+        r.data_inicio, r.data_fim, r.preco_total, r.estado,
+        (r.estado = 'confirmada' AND (r.data_inicio IS NULL OR r.data_inicio > CURDATE())) AS pode_cancelar, 
         CASE 
             WHEN r.tipo_reserva = 'atividade' THEN (SELECT id_user FROM t_artigo WHERE id = r.item_id)
             WHEN r.tipo_reserva = 'hospedagem' THEN (SELECT id_user FROM t_hospedagem WHERE id = r.item_id)
@@ -43,7 +48,8 @@ $sql = "SELECT r.id, r.item_id, r.tipo_reserva, r.data_reserva, r.quantidade,
             WHEN r.tipo_reserva = 'voo' THEN (SELECT flight_number FROM t_voos WHERE id = r.item_id)
         END AS titulo
         FROM t_reservas r 
-        WHERE r.user_id = ?";
+        WHERE r.user_id = ?
+        ORDER BY r.data_reserva DESC, r.id DESC";
 
 $stmt = $ligacao->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -198,29 +204,50 @@ $result = $stmt->get_result();
                 <div class="container light-style">
                     <h2>Minhas Reservas</h2>
 
+                    <?php if (($_GET['msg'] ?? '') == 'cancelada'): ?>
+                        <div class="alert alert-success">Reserva cancelada.</div>
+                    <?php elseif (($_GET['msg'] ?? '') == 'nao_cancelada'): ?>
+                        <div class="alert alert-warning">Esta reserva já não pode ser cancelada.</div>
+                    <?php endif; ?>
+
                     <?php if (isset($result) && $result->num_rows > 0): ?>
                         <table class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>Título</th>
                                     <th>Tipo de Reserva</th>
-                                    <th>Data da Reserva</th>
+                                    <th>Datas</th>
                                     <th>Quantidade</th>
+                                    <th>Valor</th>
+                                    <th>Estado</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
                             <?php while ($row = $result->fetch_assoc()): ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($row['titulo']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['titulo'] ?? '(item removido)'); ?></td>
                                     <td><?php echo htmlspecialchars($row['tipo_reserva']); ?></td>
-                                    <td><?php echo htmlspecialchars($row['data_reserva']); ?></td>
+                                    <td>
+                                        <?php if ($row['tipo_reserva'] == 'hospedagem' && $row['data_inicio']): ?>
+                                            <?= reserva_formatar_data($row['data_inicio']) ?> a <?= reserva_formatar_data($row['data_fim']) ?>
+                                        <?php elseif ($row['data_inicio']): ?>
+                                            <?= reserva_formatar_data($row['data_inicio']) ?>
+                                        <?php else: ?>
+                                            —
+                                        <?php endif; ?>
+                                        <br><small class="text-muted">reservado em <?= reserva_formatar_data($row['data_reserva']) ?></small>
+                                    </td>
                                     <td><?php echo htmlspecialchars($row['quantidade']); ?></td>
+                                    <td><?= reserva_formatar_preco($row['preco_total']) ?></td>
+                                    <td><?= $row['estado'] == 'cancelada' ? '<span class="badge badge-secondary">Cancelada</span>' : '<span class="badge badge-success">Confirmada</span>' ?></td>
                                     <td style="display: flex; gap: 10px;">
-                                        <a href="perfil_vendedor.php?user_id=<?php echo htmlspecialchars($row['vendedor_id']); ?>" class="btn "><i class="bi bi-person-square"></i></a>
+                                        <a href="perfil_vendedor.php?user_id=<?php echo (int) $row['vendedor_id']; ?>" class="btn "><i class="bi bi-person-square"></i></a>
+                                        <?php if ($row['pode_cancelar']): ?>
                                         <button type="button" class="btn btn-delete" data-toggle="modal" data-target="#confirmDeleteModal" data-reserva-id="<?php echo $row['id']; ?>">
-                                            Excluir
+                                            Cancelar
                                         </button>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>
@@ -240,20 +267,20 @@ $result = $stmt->get_result();
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Exclusão</h5>
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Cancelar reserva</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Tem certeza de que deseja excluir esta reserva?
+                Tem certeza de que deseja cancelar esta reserva?
             </div>
             <div class="modal-footer">
                 <form method="POST">
                     <?= csrf_campo() ?>
                     <input type="hidden" name="reserva_id" id="reserva_id">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" name="delete" class="btn btn-danger">Excluir</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Voltar</button>
+                    <button type="submit" name="cancelar" class="btn btn-danger">Cancelar reserva</button>
                 </form>
             </div>
         </div>

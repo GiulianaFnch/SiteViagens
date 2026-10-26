@@ -1,13 +1,34 @@
 <?php
 include 'valida_adm.php';
 include '../config/liga_bd.php';
+include '../config/reservas.php';
+
+// Cancelar uma reserva (fica no histórico e deixa de ocupar vagas)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancelar'])) {
+    csrf_verificar();
+    $id = (int) $_POST['id'];
+    $stmt = $ligacao->prepare("UPDATE t_reservas SET estado = 'cancelada' WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    header('Location: reservas.php');
+    exit;
+}
 
 // Consulta para obter todas as reservas com os nomes dos usuários e dos itens
-$sql = "SELECT r.id, r.item_id, r.user_id, r.tipo_reserva, r.data_reserva, r.quantidade, 
-               u.nome AS user_nome, a.titulo AS item_nome
+$sql = "SELECT r.id, r.item_id, r.user_id, r.tipo_reserva, r.data_reserva, r.quantidade,
+               r.data_inicio, r.data_fim, r.preco_total, r.estado,
+               u.nome AS user_nome,
+               CASE r.tipo_reserva
+                   WHEN 'atividade' THEN a.titulo
+                   WHEN 'hospedagem' THEN h.nome
+                   WHEN 'voo' THEN CONCAT(v.airline, ' ', v.flight_number)
+               END AS item_nome
         FROM t_reservas r
         JOIN t_user u ON r.user_id = u.id
-        JOIN t_artigo a ON r.item_id = a.id";
+        LEFT JOIN t_artigo a ON r.tipo_reserva = 'atividade' AND a.id = r.item_id
+        LEFT JOIN t_hospedagem h ON r.tipo_reserva = 'hospedagem' AND h.id = r.item_id
+        LEFT JOIN t_voos v ON r.tipo_reserva = 'voo' AND v.id = r.item_id
+        ORDER BY r.id DESC";
 $result = $ligacao->query($sql);
 
 include 'views/header.php';
@@ -39,8 +60,10 @@ include 'views/header.php';
                     <th>Item</th>
                     <th>Usuário</th>
                     <th>Tipo Reserva</th>
-                    <th>Data da Reserva</th>
+                    <th>Datas</th>
                     <th>Quantidade</th>
+                    <th>Valor</th>
+                    <th>Estado</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -48,22 +71,25 @@ include 'views/header.php';
                 <?php while ($row = $result->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo htmlspecialchars($row['id']); ?></td>
-                        <td><?php echo htmlspecialchars($row['item_nome']); ?></td>
+                        <td><?php echo htmlspecialchars($row['item_nome'] ?? '(item removido)'); ?></td>
                         <td><?php echo htmlspecialchars($row['user_nome']); ?></td>
                         <td><?php echo htmlspecialchars($row['tipo_reserva']); ?></td>
-                        <td><?php echo htmlspecialchars($row['data_reserva']); ?></td>
-                        <td><?php echo htmlspecialchars($row['quantidade']); ?></td>
                         <td>
-                            <form action="editar_reserva.php" method="post" style="display:inline;">
+                            <?= reserva_formatar_data($row['data_inicio']) ?>
+                            <?php if ($row['tipo_reserva'] == 'hospedagem' && $row['data_fim']): ?> a <?= reserva_formatar_data($row['data_fim']) ?><?php endif; ?>
+                            <br><small class="text-muted">reservado em <?= reserva_formatar_data($row['data_reserva']) ?></small>
+                        </td>
+                        <td><?php echo htmlspecialchars($row['quantidade']); ?></td>
+                        <td><?= reserva_formatar_preco($row['preco_total']) ?></td>
+                        <td><?= $row['estado'] == 'cancelada' ? '<span class="badge text-bg-secondary">Cancelada</span>' : '<span class="badge text-bg-success">Confirmada</span>' ?></td>
+                        <td>
+                            <?php if ($row['estado'] == 'confirmada'): ?>
+                            <form method="post" style="display:inline;" onsubmit="return confirm('Cancelar esta reserva?');">
                                 <?= csrf_campo() ?>
                                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
-                                <button type="submit" class="btn btn-primary btn-sm">Editar</button>
+                                <button type="submit" name="cancelar" class="btn btn-danger btn-sm">Cancelar</button>
                             </form>
-                            <form action="excluir_reserva.php" method="post" style="display:inline;">
-                                <?= csrf_campo() ?>
-                                <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
-                                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                            </form>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endwhile; ?>

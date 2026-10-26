@@ -152,7 +152,9 @@ CREATE TABLE `t_carrinho` (
   `id_artigo` int(11) NOT NULL,
   `quantidade` int(11) DEFAULT 1,
   `data_adicao` timestamp NOT NULL DEFAULT current_timestamp(),
-  `tipo_item` enum('atividade','hospedagem','voo','pacote') NOT NULL
+  `tipo_item` enum('atividade','hospedagem','voo','pacote') NOT NULL,
+  `data_inicio` date DEFAULT NULL,
+  `data_fim` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -277,7 +279,12 @@ CREATE TABLE `t_reservas` (
   `user_id` int(11) NOT NULL,
   `tipo_reserva` enum('atividade','voo','hospedagem','pacote') NOT NULL,
   `data_reserva` date NOT NULL,
-  `quantidade` int(11) NOT NULL
+  `quantidade` int(11) NOT NULL,
+  `data_inicio` date DEFAULT NULL,
+  `data_fim` date DEFAULT NULL,
+  `preco_unitario` decimal(10,2) DEFAULT NULL,
+  `preco_total` decimal(10,2) DEFAULT NULL,
+  `estado` enum('confirmada','cancelada') NOT NULL DEFAULT 'confirmada'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -479,7 +486,8 @@ ALTER TABLE `t_hospedagem`
 --
 ALTER TABLE `t_reservas`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `item` (`tipo_reserva`, `item_id`);
 
 --
 -- Indexes for table `t_subcat`
@@ -587,6 +595,13 @@ ALTER TABLE `t_carrinho`
 --
 ALTER TABLE `t_reservas`
   ADD CONSTRAINT `t_reservas_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `t_user` (`id`);
+
+--
+-- Dados de exemplo: prolonga a disponibilidade dos passeios e hospedagens
+-- (ver database/migrations/003_atualizar_datas_exemplo.sql)
+--
+UPDATE `t_artigo`     SET `data_fim` = '2027-12-31' WHERE `data_fim` < '2027-12-31';
+UPDATE `t_hospedagem` SET `data_fim` = '2027-12-31' WHERE `data_fim` IS NULL OR `data_fim` < '2027-12-31';
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -209,12 +209,10 @@ $resultado = $stmt->get_result();
             echo '                <input type="submit" value="Ver Detalhes" class="btn-ver-mais">';
             echo '            </form>';
 
-            echo '            <form action="../carrinho/adicionar_ao_carrinho.php" method="post">';
-            echo csrf_campo();
+            // Abre os detalhes, onde se escolhe a data e o nº de pessoas
+            echo '            <form action="detalhes_tours.php" method="post">';
             echo '                <input type="hidden" name="id_artigo" value="' . htmlspecialchars($linha['id']) . '">';
-            echo '                <input type="hidden" name="tipo_item" value="atividade">';
-            echo '                <input type="hidden" name="return_url" value="' . htmlspecialchars($_SERVER['REQUEST_URI']) . '">';
-            echo '                <input type="submit" value="Adicionar ao Carrinho" class="btn-comprar">';
+            echo '                <input type="submit" value="Reservar" class="btn-comprar">';
             echo '            </form>';
             echo '        </div>';
             echo '    </div>';
