@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
 include '../../config/liga_bd.php';
+include '../../config/avaliacoes.php';
 ?>
 
 <!DOCTYPE html>
@@ -183,13 +184,20 @@ include '../../config/liga_bd.php';
         // Verifica se o parâmetro tipo_hospedagem está presente no método GET
         if (isset($_GET['tipo_hospedagem'])) {
             // Busca hospedagens do tipo especificado (com o nick e email do vendedor numa só consulta)
-            $stmt = $ligacao->prepare("SELECT h.*, u.nick, u.email FROM t_hospedagem h
-                                       JOIN t_user u ON u.id = h.id_user WHERE h.tipo_hospedagem = ?");
+            $stmt = $ligacao->prepare("SELECT h.*, u.nick, u.email, av.media_avaliacoes, COALESCE(av.total_avaliacoes, 0) AS total_avaliacoes
+                                       FROM t_hospedagem h
+                                       JOIN t_user u ON u.id = h.id_user
+                                       LEFT JOIN (SELECT item_id, AVG(nota) AS media_avaliacoes, COUNT(*) AS total_avaliacoes
+                                                  FROM t_avaliacoes WHERE tipo_item = 'hospedagem' GROUP BY item_id) av ON av.item_id = h.id
+                                       WHERE h.tipo_hospedagem = ?");
             $stmt->bind_param("s", $_GET['tipo_hospedagem']);
         } else {
             // Busca todas as hospedagens disponíveis
-            $stmt = $ligacao->prepare("SELECT h.*, u.nick, u.email FROM t_hospedagem h
-                                       JOIN t_user u ON u.id = h.id_user");
+            $stmt = $ligacao->prepare("SELECT h.*, u.nick, u.email, av.media_avaliacoes, COALESCE(av.total_avaliacoes, 0) AS total_avaliacoes
+                                       FROM t_hospedagem h
+                                       JOIN t_user u ON u.id = h.id_user
+                                       LEFT JOIN (SELECT item_id, AVG(nota) AS media_avaliacoes, COUNT(*) AS total_avaliacoes
+                                                  FROM t_avaliacoes WHERE tipo_item = 'hospedagem' GROUP BY item_id) av ON av.item_id = h.id");
         }
         // Executa a consulta
         $stmt->execute();
@@ -212,10 +220,7 @@ include '../../config/liga_bd.php';
                     echo "            <h5>" . htmlspecialchars($linha['descricao']) . "</h5>";
                     echo '        </div>';
                     echo '        <div class="stars">';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
+                    echo '            <span style="color: #f5a623;">' . avaliacao_texto($linha['media_avaliacoes'] === null ? null : (float) $linha['media_avaliacoes'], (int) $linha['total_avaliacoes']) . '</span>';
                     echo "            <h4>A partir de " . htmlspecialchars($linha['preco_diaria']) . " € por noite</h4>";
                     echo '        </div>';
                     echo '        <div class="btn-container">';

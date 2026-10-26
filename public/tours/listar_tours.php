@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../config/config.php';
 /*include '../../config/valida.php';*/
 include '../../config/liga_bd.php';
+include '../../config/avaliacoes.php';
 ?>
 
 <!DOCTYPE html>
@@ -257,8 +258,11 @@ form {
         // Define o SQL de acordo com a categoria selecionada
         // Artigos não vendidos (com o nick e email do vendedor numa só consulta);
         // a categoria 0 ("Todos") mostra todas
-        $stmt = $ligacao->prepare("SELECT a.*, u.nick, u.email FROM t_artigo a
+        $stmt = $ligacao->prepare("SELECT a.*, u.nick, u.email, av.media_avaliacoes, COALESCE(av.total_avaliacoes, 0) AS total_avaliacoes
+                                   FROM t_artigo a
                                    JOIN t_user u ON u.id = a.id_user
+                                   LEFT JOIN (SELECT item_id, AVG(nota) AS media_avaliacoes, COUNT(*) AS total_avaliacoes
+                                              FROM t_avaliacoes WHERE tipo_item = 'atividade' GROUP BY item_id) av ON av.item_id = a.id
                                    WHERE a.vendido = 0 AND (? = 0 OR a.cat = ?)");
         $stmt->bind_param("ii", $categoria, $categoria);
 
@@ -283,10 +287,7 @@ form {
                     echo "            <h5>" . htmlspecialchars($linha['descricao']) . "</h5>";
                     echo '        </div>';
                     echo '        <div class="stars">';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
+                    echo '            <span style="color: #f5a623;">' . avaliacao_texto($linha['media_avaliacoes'] === null ? null : (float) $linha['media_avaliacoes'], (int) $linha['total_avaliacoes']) . '</span>';
                     echo "            <h4>A partir de " . htmlspecialchars($linha['preco']) . " € por pessoa</h4>";
                     echo '        </div>';
                     echo '        <div class="btn-container">';

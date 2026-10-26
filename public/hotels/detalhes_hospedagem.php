@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../config/config.php';
 include_once "../../config/valida.php";
 include_once "../../config/liga_bd.php";
+include_once "../../config/avaliacoes.php";
 
 $id_hospedagem = (int) ($_POST['id_hospedagem'] ?? $_GET['id'] ?? 0);
 $stmt = $ligacao->prepare("SELECT * FROM t_hospedagem WHERE id = ?");
@@ -206,6 +207,11 @@ $data_max = (string) $linha['data_fim'];
 
         <div class="details-container">
             <h2><?php echo htmlspecialchars($linha['nome']); ?></h2>
+            <?php $resumo = avaliacao_resumo($ligacao, 'hospedagem', $id_hospedagem); ?>
+            <a href="#avaliacoes" style="color: inherit; text-decoration: none;">
+                <span style="color: #f5a623;"><?= avaliacao_estrelas($resumo['media']) ?></span>
+                <?= $resumo['total'] ? number_format($resumo['media'], 1, ',', '') . ' / 5 (' . $resumo['total'] . ($resumo['total'] == 1 ? ' avaliação' : ' avaliações') . ' dos hóspedes)' : 'Sem avaliações' ?>
+            </a>
             <div class="price-container">A partir de <?php echo htmlspecialchars($linha['preco_diaria']); ?> € por noite
             </div>
             <div class="description"><?php echo htmlspecialchars($linha['descricao']); ?></div>
@@ -268,14 +274,11 @@ $data_max = (string) $linha['data_fim'];
             </div>
         </div>
     </main>
-    <main>
-
-        <!-- Novo contêiner para data e número de quartos -->
-        <div class="booking-container">
-           
-
-        </div>
-    </main>
+    <?php
+    $avaliacao_tipo = 'hospedagem';
+    $avaliacao_item_id = $id_hospedagem;
+    include '../../views/partials/avaliacoes.php';
+    ?>
 
 
 

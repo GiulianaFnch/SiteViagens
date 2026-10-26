@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../config/config.php';
 include_once "../../config/valida.php";
 include_once "../../config/liga_bd.php";
+include_once "../../config/avaliacoes.php";
 
 // Verificar se o id_artigo foi passado por POST ou GET
 if (isset($_POST['id_artigo'])) {
@@ -230,11 +231,12 @@ $data_max = (string) $linha['data_fim'];
         <div class="info-container">
             <h2><?php echo htmlspecialchars($linha['titulo']); ?></h2>
 
-            <!-- Avaliações -->
-            <div class="rating">
-                <span>&#9733;&#9733;&#9733;&#9733;&#9734;</span>
-                <span>4.5 / 5</span>
-            </div>
+            <!-- Avaliações (média real; a lista fica na secção #avaliacoes) -->
+            <?php $resumo = avaliacao_resumo($ligacao, 'atividade', $id_artigo); ?>
+            <a class="rating" href="#avaliacoes" style="color: inherit; text-decoration: none;">
+                <span style="color: #f5a623;"><?= avaliacao_estrelas($resumo['media']) ?></span>
+                <span><?= $resumo['total'] ? number_format($resumo['media'], 1, ',', '') . ' / 5 (' . $resumo['total'] . ')' : 'Sem avaliações' ?></span>
+            </a>
 
             <!-- Descrição -->
             <div class="info-item"><?php echo htmlspecialchars($linha['descricao']); ?></div>
@@ -293,6 +295,12 @@ $data_max = (string) $linha['data_fim'];
         </div>
         </div>
     </main>
+
+    <?php
+    $avaliacao_tipo = 'atividade';
+    $avaliacao_item_id = $id_artigo;
+    include '../../views/partials/avaliacoes.php';
+    ?>
     <!--Package section-->
     <section class="package" id="package">
         <div class="title">

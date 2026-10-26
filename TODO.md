@@ -31,6 +31,8 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 - [ ] Formulários que apontam para ficheiros inexistentes:
       `public/hotels/listar_hospedagem.php` (`carrinho.php`), `public/voos/voos.php` (`subscribe.php`).
 - [ ] O "serviço de localização" em `configuracoes.php`/`configuracoes2.php` envia `toggle_location_service`, mas o servidor não trata esse campo.
+- [ ] `config/valida.php` (e `valida_adm`/`valida_vendedor`) imprime a página de erro antes do `header("refresh")`, por isso o
+      redirecionamento para o login falha em páginas que já tinham começado a escrever HTML. Enviar o header antes.
 - [ ] Links quebrados no cabeçalho de `efetuar_reserva.php` (`#package`, `#contact`, `public/login.php` relativo).
 
 ## Funcionalidades em falta
@@ -39,7 +41,8 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 - [ ] Pagamento (atualmente "reservar" não cobra nada).
 - [x] Cancelamento de reserva pelo cliente (antes do início), vendedor e admin — a reserva fica com `estado = 'cancelada'`.
 - [ ] Recuperação de palavra-passe / confirmação de e-mail.
-- [ ] Avaliações/comentários dos passeios e hospedagens.
+- [x] Avaliações dos passeios e hospedagens (`config/avaliacoes.php`, `views/partials/avaliacoes.php`) — só quem já usou a reserva avalia.
+- [ ] Resposta do vendedor às avaliações.
 - [ ] Paginação nas listagens e no painel de administração.
 - [ ] Notificações de ofertas (`notificacoes_ofertas` existe na BD mas nada envia e-mails).
 

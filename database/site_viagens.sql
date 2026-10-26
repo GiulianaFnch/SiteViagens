@@ -597,6 +597,25 @@ ALTER TABLE `t_reservas`
   ADD CONSTRAINT `t_reservas_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `t_user` (`id`);
 
 --
+-- Estrutura da tabela `t_avaliacoes`
+--
+
+CREATE TABLE IF NOT EXISTS `t_avaliacoes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) NOT NULL,
+  `tipo_item` enum('atividade','hospedagem') NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `nota` tinyint(1) NOT NULL,
+  `comentario` text DEFAULT NULL,
+  `data_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `data_atualizacao` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uma_por_utilizador` (`id_user`, `tipo_item`, `item_id`),
+  KEY `item` (`tipo_item`, `item_id`),
+  CONSTRAINT `t_avaliacoes_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `t_user` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
 -- Dados de exemplo: prolonga a disponibilidade dos passeios e hospedagens
 -- (ver database/migrations/003_atualizar_datas_exemplo.sql)
 --

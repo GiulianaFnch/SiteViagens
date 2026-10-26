@@ -98,6 +98,15 @@ As regras ficam em `config/reservas.php` e são usadas no carrinho, no checkout 
 - O cliente pode cancelar uma reserva até à data de início; o vendedor e o administrador também.
   Reservas canceladas ficam no histórico e libertam os quartos.
 
+## Avaliações
+
+- Nota de 1 a 5 estrelas e comentário opcional, em passeios e hospedagens.
+- Só avalia quem tem uma reserva confirmada desse item que já terminou (check-out ou dia do passeio no passado).
+- Uma avaliação por utilizador e item: avaliar de novo edita a anterior. Cada um pode apagar a sua; o administrador
+  pode apagar qualquer uma.
+- A média aparece nos detalhes e nas listagens. Para bases de dados existentes, aplique
+  `database/migrations/004_avaliacoes.sql`.
+
 ## Tipos de utilizador (`t_user.tipo_user`)
 
 | Valor | Tipo |
