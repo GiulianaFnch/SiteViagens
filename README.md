@@ -123,6 +123,9 @@ O envio dos e-mails ainda não está implementado.
 | 3 | Vendedor a aguardar aprovação |
 | 4 | Administrador (painel em `/adm`) |
 
+As constantes correspondentes (`TIPO_CLIENTE`, `TIPO_ADMIN`, ...) estão em `config/acesso.php`. Ao bloquear um utilizador, o tipo
+anterior fica guardado em `tipo_antes_bloqueio` e é reposto quando ele é reativado (migração `006_tipo_antes_bloqueio.sql`).
+
 ## Uso
 
 ### Perfil do Utilizador

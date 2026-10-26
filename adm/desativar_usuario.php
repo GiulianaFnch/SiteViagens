@@ -7,24 +7,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include '../config/liga_bd.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id = $_POST['id'];
+    $id = (int) $_POST['id'];
+    $tipo_user = tipo_utilizador($ligacao, $id);
 
-    // Verificar o estado atual do tipo_user
-    $sql = "SELECT tipo_user FROM t_user WHERE id = ?";
-    $stmt = $ligacao->prepare($sql);
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $stmt->bind_result($tipo_user);
-    $stmt->fetch();
-    $stmt->close();
+    if ($tipo_user === null || $tipo_user === TIPO_ADMIN) {
+        // Administradores (incluindo o próprio) não podem ser bloqueados por aqui
+        echo "<script>alert('Este utilizador não pode ser desativado.'); window.location.href='index.php';</script>";
+        exit;
+    }
 
-    // Atualizar o tipo_user com base no estado atual
-    if ($tipo_user == 1) {
-        // Se o usuário estiver desativado, ativar (tipo_user = 0)
-        $sql = "UPDATE t_user SET tipo_user = 0 WHERE id = ?";
+    if ($tipo_user === TIPO_BLOQUEADO) {
+        // Reativar: volta ao tipo que tinha antes do bloqueio (cliente, vendedor, ...)
+        $sql = "UPDATE t_user SET tipo_user = COALESCE(tipo_antes_bloqueio, " . TIPO_CLIENTE . "), tipo_antes_bloqueio = NULL WHERE id = ?";
     } else {
-        // Se o usuário estiver ativo, desativar (tipo_user = 1)
-        $sql = "UPDATE t_user SET tipo_user = 1 WHERE id = ?";
+        // Desativar: guarda o tipo atual para o poder repor
+        $sql = "UPDATE t_user SET tipo_antes_bloqueio = tipo_user, tipo_user = " . TIPO_BLOQUEADO . " WHERE id = ?";
     }
 
     $stmt = $ligacao->prepare($sql);

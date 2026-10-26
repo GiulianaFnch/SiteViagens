@@ -1,5 +1,6 @@
 <?php
 // Avaliações de passeios ('atividade') e hospedagens: média, permissões e estrelas.
+require_once __DIR__ . '/acesso.php';
 
 const AVALIACAO_TIPOS = ['atividade', 'hospedagem'];
 const AVALIACAO_MAX_COMENTARIO = 1000;
@@ -39,7 +40,7 @@ function avaliacao_e_admin($ligacao, $id_user)
     $stmt->execute();
     $r = $stmt->get_result()->fetch_assoc();
     $stmt->close();
-    return $r && (int) $r['tipo_user'] === 4;
+    return $r && (int) $r['tipo_user'] === TIPO_ADMIN;
 }
 
 // "★★★★☆" arredondado à estrela mais próxima (ou estrelas vazias sem avaliações)

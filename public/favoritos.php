@@ -23,7 +23,8 @@ $sql = "SELECT f.tipo_reserva,
         FROM t_favoritos f
         LEFT JOIN t_artigo a ON f.id_artigo = a.id AND f.tipo_reserva = 'atividade'
         LEFT JOIN t_hospedagem h ON f.id_artigo = h.id AND f.tipo_reserva = 'hospedagem'
-        WHERE f.id_user = ?";
+        WHERE f.id_user = ?
+          AND (a.id IS NOT NULL OR h.id IS NOT NULL)"; // ignora favoritos de itens que já foram apagados
 
 $stmt = $ligacao->prepare($sql);
 $stmt->bind_param("i", $user_id);

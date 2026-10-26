@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
-require_once __DIR__ . '/../../config/csrf.php'; // inicia a sessão
+require_once __DIR__ . '/../../config/acesso.php'; // inicia a sessão e define os tipos de utilizador
 csrf_verificar(); // só aceita o formulário de login.php (impede logins forçados por outros sites)
 ?>
 <!DOCTYPE html>
@@ -106,7 +106,7 @@ csrf_verificar(); // só aceita o formulário de login.php (impede logins força
             // caso a senha esteja correta
             if (password_verify($pass, $linha['pass'])) {
                 // caso o utilizador tenha sido bloqueado pelo admin
-                if ($linha['tipo_user'] == 1) {
+                if ($linha['tipo_user'] == TIPO_BLOQUEADO) {
                     echo '<h2>Utilizador bloqueado</h2>';
                     ?>
                     <br>

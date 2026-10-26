@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../config/csrf.php'; // inicia a sessão para o token do formulário
+require_once __DIR__ . '/../../config/acesso.php'; // inicia a sessão (token do formulário) e define os tipos de utilizador
 // Rejeita registos enviados sem o token (formulários de outros sites)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verificar();
@@ -42,8 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     include '../../config/liga_bd.php';
 
-                    // Definir tipo_user como 3 por padrão (vendedor não validado)
-                    $tipo_user = 3;
+                    // Novo vendedor fica a aguardar aprovação do administrador
+                    $tipo_user = TIPO_VENDEDOR_PENDENTE;
 
                     $tmp = password_hash($_POST['pass'], PASSWORD_DEFAULT);
                     $sql = "INSERT INTO t_user (nick, nome, email, nome_marca, pass, tipo_user) VALUES (?, ?, ?, ?, ?, ?)";

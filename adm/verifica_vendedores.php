@@ -7,10 +7,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include '../config/liga_bd.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id = $_POST['id'];
+    $id = (int) $_POST['id'];
 
-    // Atualizar o tipo_user para 2
-    $sql = "UPDATE t_user SET tipo_user = 2 WHERE id = ?";
+    // Aprova o registo: só vendedores que aguardam aprovação passam a vendedores
+    $sql = "UPDATE t_user SET tipo_user = " . TIPO_VENDEDOR . " WHERE id = ? AND tipo_user = " . TIPO_VENDEDOR_PENDENTE;
     $stmt = $ligacao->prepare($sql);
     $stmt->bind_param("i", $id);
 
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 // Consulta para obter todos os usuários
 include '../config/liga_bd.php';
-$sql = "SELECT id, nick, nome, email, data_nasc, nome_marca, foto, tipo_user FROM t_user WHERE tipo_user = '3'";
+$sql = "SELECT id, nick, nome, email, data_nasc, nome_marca, foto, tipo_user FROM t_user WHERE tipo_user = " . TIPO_VENDEDOR_PENDENTE;
 $result = $ligacao->query($sql);
 
 include 'views/header.php';
@@ -75,7 +75,7 @@ include 'views/header.php';
                         <td><?php echo htmlspecialchars($row['nome_marca']); ?></td>
                         <td><img src="../assets/images/pics/<?php echo htmlspecialchars($row['foto']); ?>" alt="Foto"
                                 width="50"></td>
-                        <td class="text-center"><?php echo htmlspecialchars($row['tipo_user']); ?></td>
+                        <td class="text-center"><?php echo htmlspecialchars(tipo_utilizador_nome($row['tipo_user'])); ?></td>
                         <td>
                             <form action="verifica_vendedores.php" method="post" style="display:inline;">
                                 <?= csrf_campo() ?>

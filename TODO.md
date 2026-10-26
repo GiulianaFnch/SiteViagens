@@ -32,8 +32,7 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
       tabela `t_newsletter`) nas 12 páginas; links "Passagens"/"Pacotes" do menu, links `public/...` relativos, scripts,
       CSS e imagens com caminho ou maiúsculas erradas corrigidos (verificado com um rastreio de links em 39 páginas).
 - [x] Removido o botão "serviço de localização" das configurações (não fazia nada no servidor).
-- [ ] `config/valida.php` (e `valida_adm`/`valida_vendedor`) imprime a página de erro antes do `header("refresh")`, por isso o
-      redirecionamento para o login falha em páginas que já tinham começado a escrever HTML. Enviar o header antes.
+- [x] Redirecionamento para o login falhava em páginas que já tinham começado a escrever HTML — agora o header é enviado antes.
 - [x] Links quebrados no cabeçalho de `efetuar_reserva.php` e de ~25 outras páginas.
 
 ## Funcionalidades em falta
@@ -50,7 +49,9 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 ## Organização do código
 
 - [ ] Cabeçalho, rodapé e CSS repetidos inline em quase todas as páginas — usar `views/partials/header.php` e `footer.php`.
-- [ ] Páginas de erro de acesso duplicadas em `config/valida.php`, `adm/valida_adm.php` e `public/vendedor/valida_vendedor.php`.
-- [ ] Números mágicos de `tipo_user` (0, 1 = bloqueado, 2 = vendedor, 3, 4 = admin) — definir constantes em `config/config.php`.
+- [x] Página de acesso negado única (`config/acesso.php`), usada pelos três validadores, com HTTP 403.
+- [x] Constantes `TIPO_CLIENTE`, `TIPO_BLOQUEADO`, `TIPO_VENDEDOR`, `TIPO_VENDEDOR_PENDENTE`, `TIPO_ADMIN` (`config/acesso.php`).
+- [x] Reativar um vendedor bloqueado tornava-o cliente — o tipo anterior fica em `tipo_antes_bloqueio` (migração 006);
+      administradores já não podem ser bloqueados; "aprovar vendedor" só afeta registos pendentes.
 - [ ] Ficheiros com nomes "2" (`chat2`, `registro2`, `login2`, `vender_tours2`, `configuracoes2`, `pesquisa2_tours`) — renomear pelo que fazem.
 - [ ] Testes: o CI só faz lint. Adicionar pelo menos testes de fumo (login, registo, reservar).
