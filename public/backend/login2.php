@@ -1,4 +1,8 @@
-<?php require_once __DIR__ . '/../../config/config.php'; ?>
+<?php
+require_once __DIR__ . '/../../config/config.php';
+require_once __DIR__ . '/../../config/csrf.php'; // inicia a sessão
+csrf_verificar(); // só aceita o formulário de login.php (impede logins forçados por outros sites)
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -83,8 +87,6 @@
 <body>
     <div class="message-container">
         <?php
-        session_start(); // inicia a sessão
-
         $nick = $_POST['nick'] ?? '';
         $pass = $_POST['pass'] ?? '';
 
@@ -113,6 +115,9 @@
                     header("refresh:2;url=../login.php");
                 } else {
                     echo "<h2>Bem vindo(a), " . htmlspecialchars($linha['nome']) .  "!</h2>";
+                    // Novo ID de sessão a cada login, para que um ID conhecido antes do login não sirva depois
+                    session_regenerate_id(true);
+                    unset($_SESSION['csrf_token']);
                     $_SESSION['id'] = $linha['id'];
                     $_SESSION['nick'] = $linha['nick'];
                     $_SESSION['logged_in'] = true; // Define a variável de sessão logged_in como true

@@ -1,3 +1,10 @@
+<?php
+require_once __DIR__ . '/../../config/csrf.php'; // inicia a sessão para o token do formulário
+// Rejeita registos enviados sem o token (formulários de outros sites)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verificar();
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -55,6 +62,7 @@
                 } else {
                     ?>
                     <form action="registro_vendedor.php" method="post" enctype="multipart/form-data">
+                        <?= csrf_campo() ?>
                         <div class="input-group">
                             <label for="nick">Nick:</label>
                             <input type="text" id="nick" name="nick" class="form-control" required>

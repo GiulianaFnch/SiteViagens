@@ -1,9 +1,5 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// URL base do site (definida em config/config.php)
+// Inicia a sessão (config/csrf.php) e carrega a URL base do site (config/config.php)
 require_once __DIR__ . '/../../config/config.php';
 require_once __DIR__ . '/../../config/csrf.php';
 

@@ -1,4 +1,6 @@
 <?php
+require_once '../config/csrf.php';
+csrf_verificar(); // só aceita o formulário de registro.php
 include '../config/liga_bd.php';
 include '../config/valida_foto.php';
 
