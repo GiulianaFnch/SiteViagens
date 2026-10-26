@@ -1,4 +1,4 @@
-name: PHP lint
+name: CI
 
 on:
   push:
@@ -14,3 +14,43 @@ jobs:
           php-version: '8.3'
       - name: Verificar sintaxe de todos os ficheiros PHP
         run: find . -name '*.php' -print0 | xargs -0 -n1 php -l
+
+  testes:
+    # Sobe o site com uma base de dados MariaDB e corre os testes de fumo (tests/smoke_test.sh)
+    runs-on: ubuntu-latest
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    env:
+      DB_HOST: 127.0.0.1
+      DB_USER: root
+      DB_PASS: root
+      DB_NAME: site_viagens
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mysqli
+      - name: Importar a base de dados
+        run: mysql -h 127.0.0.1 -uroot -proot < database/site_viagens.sql
+      - name: Iniciar o servidor PHP
+        run: |
+          php -d output_buffering=4096 -d display_errors=0 -d log_errors=1 -d error_reporting=E_ALL \
+              -S 127.0.0.1:8080 -t . > php.log 2>&1 &
+          sleep 2
+      - name: Testes de fumo
+        run: tests/smoke_test.sh http://127.0.0.1:8080
+        env:
+          MYSQL: mysql -h 127.0.0.1 -uroot -proot site_viagens
+          PHP_LOG: php.log
+      - name: Log do servidor PHP (se falhar)
+        if: failure()
+        run: tail -100 php.log

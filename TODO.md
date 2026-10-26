@@ -54,4 +54,4 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 - [x] Reativar um vendedor bloqueado tornava-o cliente — o tipo anterior fica em `tipo_antes_bloqueio` (migração 006);
       administradores já não podem ser bloqueados; "aprovar vendedor" só afeta registos pendentes.
 - [ ] Ficheiros com nomes "2" (`chat2`, `registro2`, `login2`, `vender_tours2`, `configuracoes2`, `pesquisa2_tours`) — renomear pelo que fazem.
-- [ ] Testes: o CI só faz lint. Adicionar pelo menos testes de fumo (login, registo, reservar).
+- [x] Testes de fumo (`tests/smoke_test.sh`, 36 verificações) correm no CI com PHP 8.3 + MariaDB a cada push.

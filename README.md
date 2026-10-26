@@ -58,6 +58,21 @@ O PHP 8.1 é o mínimo porque é a partir dele que `htmlspecialchars` também es
 2. No phpMyAdmin, crie a base de dados `site_viagens` e importe `database/site_viagens.sql`.
 3. Inicie o Apache e o MySQL e abra <http://localhost/SiteViagens/>.
 
+## Testes
+
+`tests/smoke_test.sh` abre o site a correr e verifica os fluxos principais (login, registo, reservas, avaliações,
+permissões, XSS, newsletter e logout). Corre automaticamente no GitHub a cada push (`.github/workflows/php-lint.yml`).
+
+Para correr localmente, **numa base de dados de teste** (o script altera senhas e reservas dos dados de exemplo):
+
+```bash
+php -S 127.0.0.1:8080 -t .            # noutro terminal
+tests/smoke_test.sh http://127.0.0.1:8080
+```
+
+Com o XAMPP, use o endereço do site (ex.: `http://localhost/SiteViagens`) e, se precisar, o comando do MySQL em
+`MYSQL` (ex.: `MYSQL="C:/xampp/mysql/bin/mysql -uroot site_viagens"`).
+
 ## Configuração
 
 Toda a configuração fica em `config/config.php`. Para alterar credenciais da base de dados,
