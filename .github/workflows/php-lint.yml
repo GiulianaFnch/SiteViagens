@@ -33,14 +33,17 @@ jobs:
       DB_USER: root
       DB_PASS: root
       DB_NAME: site_viagens
+      MYSQL_PWD: root   # senha para o cliente mysql, sem o aviso de "-p" na linha de comando
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
           extensions: mysqli
+          # sem xdebug/pcov: senão o PHP avisa no arranque que o JIT ficou desligado
+          coverage: none
       - name: Importar a base de dados
-        run: mysql -h 127.0.0.1 -uroot -proot < database/site_viagens.sql
+        run: mysql -h 127.0.0.1 -uroot < database/site_viagens.sql
       - name: Iniciar o servidor PHP
         run: |
           php -d output_buffering=4096 -d display_errors=0 -d log_errors=1 -d error_reporting=E_ALL \
@@ -49,7 +52,7 @@ jobs:
       - name: Testes de fumo
         run: tests/smoke_test.sh http://127.0.0.1:8080
         env:
-          MYSQL: mysql -h 127.0.0.1 -uroot -proot site_viagens
+          MYSQL: mysql -h 127.0.0.1 -uroot site_viagens
           PHP_LOG: php.log
       - name: Log do servidor PHP (se falhar)
         if: failure()
