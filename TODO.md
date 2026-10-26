@@ -10,11 +10,8 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
       `public/vendedor/registro_vendedor.php`) — exige primeiro mover o `session_start()` para antes do HTML.
 - [ ] Logout por GET (`public/backend/logout.php`) — qualquer página pode terminar a sessão do utilizador.
       Passar a POST com token (os links estão também em páginas estáticas como `index.html`).
-- [ ] **XSS** — cerca de 30 `echo` de dados da BD sem `htmlspecialchars`. Os piores:
-      `public/tours/detalhes_tours.php` (11), `public/tours/historico_tours.php` (7),
-      `public/vendedor/gerir_hospedagem.php`, `public/vendedor/gerenciar_reservas.php`,
-      `public/tours/listar_tours.php`, `public/hotels/detalhes_hospedagem.php`.
-      Títulos e descrições são escritos por vendedores, logo um vendedor pode injetar script nas páginas dos clientes.
+- [x] **XSS** — os textos vindos da BD (títulos, descrições, nomes, nicks, fotos, categorias) passam por
+      `htmlspecialchars` em todas as páginas. Testado com títulos/nomes contendo `<script>` em 19 páginas.
 - [ ] **Preço do voo vem do cliente** — `public/carrinho/adicionar_ao_carrinho.php` grava em `t_voos` o
       `price` enviado no POST. Recalcular/validar no servidor (ou guardar o resultado da SerpAPI na sessão).
 - [x] **`total` vem do cliente** no mesmo ficheiro — o preço passa a ser calculado no servidor (`config/reservas.php`).

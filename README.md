@@ -51,7 +51,8 @@ Para recomeçar com a base de dados limpa: `docker compose down -v`.
 
 ### Opção 2 — XAMPP / WAMP
 
-Requisitos: PHP 7.4+ (testado em 8.3) e MySQL 5.7+ / MariaDB 10+.
+Requisitos: PHP 8.1+ (testado em 8.3) e MySQL 5.7+ / MariaDB 10+.
+O PHP 8.1 é o mínimo porque é a partir dele que `htmlspecialchars` também escapa aspas simples por omissão (proteção contra XSS).
 
 1. Clone o repositório para a pasta `htdocs` do XAMPP (ex.: `C:\xampp\htdocs\SiteViagens`).
 2. No phpMyAdmin, crie a base de dados `site_viagens` e importe `database/site_viagens.sql`.

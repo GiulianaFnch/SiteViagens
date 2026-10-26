@@ -215,20 +215,20 @@ $data_max = (string) $linha['data_fim'];
     <main>
         <div class="carousel-container">
             <div class="artigo-carousel">
-                <div><img src="imagens/<?php echo $linha['foto1']; ?>" class="artigo-img" alt="Imagem 1"></div>
+                <div><img src="imagens/<?php echo htmlspecialchars($linha['foto1']); ?>" class="artigo-img" alt="Imagem 1"></div>
 
                 <?php if ($linha['foto2'] != NULL) { ?>
-                    <div><img src="imagens/<?php echo $linha['foto2']; ?>" class="artigo-img" alt="Imagem 2"></div>
+                    <div><img src="imagens/<?php echo htmlspecialchars($linha['foto2']); ?>" class="artigo-img" alt="Imagem 2"></div>
                 <?php } ?>
 
                 <?php if ($linha['foto3'] != NULL) { ?>
-                    <div><img src="imagens/<?php echo $linha['foto3']; ?>" class="artigo-img" alt="Imagem 3"></div>
+                    <div><img src="imagens/<?php echo htmlspecialchars($linha['foto3']); ?>" class="artigo-img" alt="Imagem 3"></div>
                 <?php } ?>
             </div>
         </div>
 
         <div class="info-container">
-            <h2><?php echo $linha['titulo']; ?></h2>
+            <h2><?php echo htmlspecialchars($linha['titulo']); ?></h2>
 
             <!-- Avaliações -->
             <div class="rating">
@@ -237,7 +237,7 @@ $data_max = (string) $linha['data_fim'];
             </div>
 
             <!-- Descrição -->
-            <div class="info-item"><?php echo $linha['descricao']; ?></div>
+            <div class="info-item"><?php echo htmlspecialchars($linha['descricao']); ?></div>
 
             <!-- Preço -->
             <div class="price-container"> € <?php echo number_format($linha['preco'], 2, ',', '.'); ?></div>
@@ -255,7 +255,7 @@ $data_max = (string) $linha['data_fim'];
 
             <div class="info-item">
                 <i class='bx bx-map'></i>
-                <strong>Localização:</strong> <?php echo $linha['localizacao']; ?>
+                <strong>Localização:</strong> <?php echo htmlspecialchars($linha['localizacao'] ?? ''); ?>
             </div>
 
             <!-- Botões de Comprar, Voltar e Favoritos-->

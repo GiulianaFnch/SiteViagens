@@ -240,9 +240,9 @@ form {
             while ($linha = mysqli_fetch_array($resultado)) {
                 // Verifica se a categoria selecionada é a atual
                 if (isset($_POST['categoria']) && $_POST['categoria'] == $linha['id'])
-                    echo "<option value='" . $linha['id'] . "' selected>" . $linha['categoria'] . "</option>";
+                    echo "<option value='" . (int) $linha['id'] . "' selected>" . htmlspecialchars($linha['categoria']) . "</option>";
                 else
-                    echo "<option value='" . $linha['id'] . "'>" . $linha['categoria'] . "</option>";
+                    echo "<option value='" . (int) $linha['id'] . "'>" . htmlspecialchars($linha['categoria']) . "</option>";
             }
             ?>
         </select></center>

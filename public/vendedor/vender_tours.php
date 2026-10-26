@@ -272,7 +272,7 @@ include '../../config/liga_bd.php';
                             $resultado = mysqli_query($ligacao, $sql);
                             while ($linha = mysqli_fetch_assoc($resultado)) {
                                 $selected = ($categoria == $linha['id']) ? 'selected' : '';
-                                echo "<option value='" . $linha['id'] . "' $selected>" . $linha['categoria'] . "</option>";
+                                echo "<option value='" . (int) $linha['id'] . "' $selected>" . htmlspecialchars($linha['categoria']) . "</option>";
                             }
                             ?>
                         </select>
@@ -282,7 +282,7 @@ include '../../config/liga_bd.php';
                             $sql2 = "SELECT * FROM t_subcat WHERE categoria = " . $categoria;
                             $resultado2 = mysqli_query($ligacao, $sql2);
                             while ($linha2 = mysqli_fetch_assoc($resultado2)) {
-                                echo "<option value='" . $linha2['id'] . "'>" . $linha2['subcat'] . "</option>";
+                                echo "<option value='" . (int) $linha2['id'] . "'>" . htmlspecialchars($linha2['subcat']) . "</option>";
                             }
                             ?>
                         </select>

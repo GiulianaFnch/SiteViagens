@@ -330,8 +330,8 @@ header{
             <h2>Conversas</h2>
             <?php foreach ($usuarios as $usuario): ?>
                 <div class="user-item" onclick="loadChat(<?php echo $usuario['id']; ?>)">
-                    <img src="../../assets/images/pics/<?php echo $usuario['foto']; ?>" alt="Foto de <?php echo $usuario['nick']; ?>" class="user-icon">
-                    <span><?php echo $usuario['nick']; ?></span>
+                    <img src="../../assets/images/pics/<?php echo htmlspecialchars($usuario['foto'] ?? ''); ?>" alt="Foto de <?php echo htmlspecialchars($usuario['nick']); ?>" class="user-icon">
+                    <span><?php echo htmlspecialchars($usuario['nick']); ?></span>
                 </div>
             <?php endforeach; ?>
         </div>

@@ -112,7 +112,7 @@
                     <?php
                     header("refresh:2;url=../login.php");
                 } else {
-                    echo "<h2>Bem vindo(a), " . $linha['nome'] .  "!</h2>";
+                    echo "<h2>Bem vindo(a), " . htmlspecialchars($linha['nome']) .  "!</h2>";
                     $_SESSION['id'] = $linha['id'];
                     $_SESSION['nick'] = $linha['nick'];
                     $_SESSION['logged_in'] = true; // Define a variável de sessão logged_in como true

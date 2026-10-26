@@ -58,11 +58,11 @@ $tipo = 0;
         while ($linha = mysqli_fetch_assoc($resultado)) {
             echo "<tr>";
             echo "<td>" . $linha['id'] . "</td>";
-            echo "<td>" . $linha['titulo'] . "</td>";
-            echo "<td>" . $linha['descricao'] . "</td>";
-            echo "<td>" . $linha['preco'] . "€</td>";
-            echo "<td>" . $linha['estado'] . " estrelas</td>";
-            echo "<td><img src='imagens/" . $linha['foto1'] . "' width='50px'></td><td>";
+            echo "<td>" . htmlspecialchars($linha['titulo']) . "</td>";
+            echo "<td>" . htmlspecialchars($linha['descricao']) . "</td>";
+            echo "<td>" . htmlspecialchars($linha['preco']) . "€</td>";
+            echo "<td>" . (int) $linha['estado'] . " estrelas</td>";
+            echo "<td><img src='imagens/" . htmlspecialchars($linha['foto1']) . "' width='50px'></td><td>";
             ?>
             <form action="historico2.php" id="f1" method="post">
                 <input type="hidden" name="id" value="<?php echo $linha['id']; ?>">

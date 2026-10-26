@@ -405,7 +405,7 @@ images.forEach((item, i) => {
 const updateImage = (i) => {
     let path = images[i].src;
     largeImage.src = path;
-    imageName.innerHTML = path.split('/').pop();
+    imageName.textContent = path.split('/').pop();
     // Remova ou comente esta linha para não exibir o número da imagem:
     // imageIndex.innerHTML = `0${i + 1}`;
     index = i;
