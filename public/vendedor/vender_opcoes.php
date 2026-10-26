@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel do Vendedor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/styleperfil.css">
+    <link rel="stylesheet" href="../../assets/css/styleperfil.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -159,9 +159,9 @@
 
 <ul class="navbar">
     <li><a href="#home" style="color: black;">Hospedagem</a></li>
-    <li><a href="#package" style="color: black;">Passagens</a></li>
+    <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;">Passagens</a></li>
     <li><a href="#destination" style="color: black; ">Tours</a></li>
-    <li><a href="#contact" style="color: black;">Pacotes</a></li>
+    <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
 </ul>
 </header>
 

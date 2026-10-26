@@ -16,7 +16,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <meta name="generator" content="Hugo 0.122.0">
     <title>Painel Administrativo</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/dashboard/">
 
 
 
@@ -178,7 +177,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </svg>
 
     <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
-        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="/siteviagens/">Best Way</a>
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="<?= BASE_URL ?>">Best Way</a>
         <ul class="navbar-nav flex-row d-md-none">
             <li class="nav-item text-nowrap">
                 <button class="nav-link px-3 text-white" type="button" data-bs-toggle="collapse"
@@ -218,7 +217,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="/siteviagens/adm/">
+                                <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="<?= BASE_URL ?>adm/">
                                     <svg class="bi">
                                         <use xlink:href="#house-fill" />
                                     </svg>
@@ -286,7 +285,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         
                         <ul class="nav flex-column mb-auto">
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center gap-2" href="/siteviagens/adm/verifica_vendedores.php">
+                                <a class="nav-link d-flex align-items-center gap-2" href="<?= BASE_URL ?>adm/verifica_vendedores.php">
                                     <svg class="bi">
                                         <use xlink:href="#file-earmark-text" />
                                     </svg>

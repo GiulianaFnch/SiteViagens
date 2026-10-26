@@ -330,8 +330,8 @@ form {
 
 
         <div class="send">
-            <form>
-                <input type text="email" placeholder="Insira seu e-mail aqui" required>
+            <form action="<?= BASE_URL ?>public/backend/newsletter.php" method="post">
+                <input type="email" name="email" placeholder="Insira seu e-mail aqui" required>
                 <input type="submit" value="Quero recebê-las!">
             </form>
         </div>
@@ -346,7 +346,7 @@ form {
                     <h4> Minha Conta</h4>
                     <ul>
                         <li><a href="#">Minhas Viagens</a></li>
-                        <li><a href="public/perfil.php">Meu Perfil</a></li>
+                        <li><a href="<?= BASE_URL ?>public/perfil.php">Meu Perfil</a></li>
                         <li><a href="#">Deletar minha conta</a></li>
 
                     </ul>
@@ -365,8 +365,8 @@ form {
                 <div class="list">
                     <h4>Trabalhe conosco</h4>
                     <ul>
-                        <li><a href="public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
-                        <li><a href="public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
                     </ul>
                 </div>
 

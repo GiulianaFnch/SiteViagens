@@ -232,7 +232,6 @@ require_once __DIR__ . '/../../config/csrf.php'; // inicia a sessão para o toke
                         echo csrf_campo();
                         echo '<input type="hidden" name="voo_ref" value="' . $ref . '">';
                         echo '<input type="hidden" name="tipo_item" value="voo">';
-                        echo '<input type="hidden" name="return_url" value="' . htmlspecialchars($_SERVER['REQUEST_URI']) . '">';
                         echo '<button type="submit" class="home-btn">Adicionar ao Carrinho</button>';
                         echo '</form>';
                         echo '</div>';
@@ -253,7 +252,7 @@ require_once __DIR__ . '/../../config/csrf.php'; // inicia a sessão para o toke
             <p>Você receberá e-mails promocionais da BestWay. Para mais informações, consulte as <a href="#">Políticas de privacidade.</a>.</p>
         </div>
         <div class="send">
-            <form action="subscribe.php" method="post">
+            <form action="<?= BASE_URL ?>public/backend/newsletter.php" method="post">
                 <input type="email" name="email" placeholder="Insira seu e-mail aqui" required>
                 <input type="submit" value="Quero recebê-las!">
             </form>

@@ -154,9 +154,9 @@ include '../../config/avaliacoes.php';
 
         <ul class="navbar">
             <li><a href="<?= BASE_URL ?>public/hotels/hotels.php">Hospedagem</a></li>
-            <li><a href="#package">Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php">Passagens</a></li>
             <li><a href="<?= BASE_URL ?>public/tours/tours.php">Passeios</a></li>
-            <li><a href="#contact">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php">Pacotes</a></li>
             <li><a href="<?= BASE_URL ?>public/perfil.php"><i class='bx bx-user'></i></a></li>
             <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php"><i class='bx bx-cart'></i></a></li>
         </ul>
@@ -225,13 +225,6 @@ include '../../config/avaliacoes.php';
                     echo '        </div>';
                     echo '        <div class="btn-container">';
 
-                    /* Botão "Reservar" que redireciona para a página carrinho.php
-                    echo '            <form action="carrinho.php" method="post">';
-                    echo '                <input type="hidden" name="id_hospedagem" value="' . htmlspecialchars($linha['id']) . '">';
-                    echo '                <input type="submit" value="Reservar" class="btn-comprar">';
-                    echo '            </form>';
-                    */
-
                     // Botão "Ver mais" que redireciona para a página detalhes_hospedagem.php
                     echo '            <form action="detalhes_hospedagem.php" method="post">';
                     echo '                <input type="hidden" name="id_hospedagem" value="' . htmlspecialchars($linha['id']) . '">';
@@ -260,8 +253,8 @@ include '../../config/avaliacoes.php';
         </div>
 
         <div class="send">
-            <form>
-                <input type="email" placeholder="Insira seu e-mail aqui" required>
+            <form action="<?= BASE_URL ?>public/backend/newsletter.php" method="post">
+                <input type="email" name="email" placeholder="Insira seu e-mail aqui" required>
                 <input type="submit" value="Quero recebê-las!">
             </form>
         </div>
@@ -275,7 +268,7 @@ include '../../config/avaliacoes.php';
                     <h4> Minha Conta</h4>
                     <ul>
                         <li><a href="#">Minhas Viagens</a></li>
-                        <li><a href="public/perfil.php">Meu Perfil</a></li>
+                        <li><a href="<?= BASE_URL ?>public/perfil.php">Meu Perfil</a></li>
                         <li><a href="#">Deletar minha conta</a></li>
                     </ul>
                 </div>
@@ -292,8 +285,8 @@ include '../../config/avaliacoes.php';
                 <div class="list">
                     <h4>Trabalhe conosco</h4>
                     <ul>
-                        <li><a href="public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
-                        <li><a href="public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
                     </ul>
                 </div>
 
@@ -313,7 +306,7 @@ include '../../config/avaliacoes.php';
     </section>
 
     <!--link to js-->
-    <script type="text/javascript" src="assets/js/script.js"></script>
+    <script type="text/javascript" src="<?= BASE_URL ?>assets/js/script.js"></script>
 
     <!-- Script para mudar a cor do header ao rolar a página -->
     <script>

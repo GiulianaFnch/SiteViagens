@@ -239,7 +239,7 @@
             <!-- Package 6 -->
             <div class="box">
                 <div class="thum">
-                    <img src="imagens/Marrakech.jpg" alt="Pestana CR7 ">
+                    <img src="imagens/marrakech.jpg" alt="Pestana CR7 ">
                 </div>
                 <div class="dest-content">
                     <div class="calendar">
@@ -355,8 +355,8 @@
 
 
         <div class="send">
-            <form>
-                <input type text="email" placeholder="Insira seu e-mail aqui" required>
+            <form action="<?= BASE_URL ?>public/backend/newsletter.php" method="post">
+                <input type="email" name="email" placeholder="Insira seu e-mail aqui" required>
                 <input type="submit" value="Quero recebê-las!">
             </form>
         </div>

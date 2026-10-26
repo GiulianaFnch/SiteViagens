@@ -107,6 +107,12 @@ As regras ficam em `config/reservas.php` e são usadas no carrinho, no checkout 
 - A média aparece nos detalhes e nas listagens. Para bases de dados existentes, aplique
   `database/migrations/004_avaliacoes.sql`.
 
+## Newsletter
+
+O formulário "Inscreva-se para receber nossas ofertas" grava o e-mail em `t_newsletter`
+(`public/backend/newsletter.php`). Para bases de dados existentes, aplique `database/migrations/005_newsletter.sql`.
+O envio dos e-mails ainda não está implementado.
+
 ## Tipos de utilizador (`t_user.tipo_user`)
 
 | Valor | Tipo |

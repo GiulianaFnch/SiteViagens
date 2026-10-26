@@ -616,6 +616,18 @@ CREATE TABLE IF NOT EXISTS `t_avaliacoes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Estrutura da tabela `t_newsletter`
+--
+
+CREATE TABLE IF NOT EXISTS `t_newsletter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(254) NOT NULL,
+  `data_inscricao` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
 -- Dados de exemplo: prolonga a disponibilidade dos passeios e hospedagens
 -- (ver database/migrations/003_atualizar_datas_exemplo.sql)
 --

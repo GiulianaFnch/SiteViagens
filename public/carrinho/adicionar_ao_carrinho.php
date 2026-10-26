@@ -69,11 +69,11 @@
     <a href="<?= BASE_URL ?>index.html"
         style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
     <ul class="navbar">
-        <li><a href="<?= BASE_URL ?>index.html#home" style="color: black;">Hospedagem</a></li>
-        <li><a href="#package" style="color: black;">Passagens</a></li>
+        <li><a href="<?= BASE_URL ?>public/hotels/hotels.php" style="color: black;">Hospedagem</a></li>
+        <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;">Passagens</a></li>
         <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black;">Passeios</a></li>
-        <li><a href="#contact" style="color: black;">Pacotes</a></li>
-        <li><a href="public/login.php" style="color: black;"><i class='bx bx-user'></i></a></li>
+        <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
+        <li><a href="<?= BASE_URL ?>public/login.php" style="color: black;"><i class='bx bx-user'></i></a></li>
         <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a>
         </li>
     </ul>

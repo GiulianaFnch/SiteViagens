@@ -6,8 +6,8 @@ include "../../config/liga_bd.php";
 
 // Evitar a injeção de SQL
 $stmt = $ligacao->prepare("SELECT * FROM t_artigo WHERE localizacao LIKE ? AND data_inicio <= ? AND data_fim >= ? AND vendido = 0");
-$localizacao = "%" . $_GET['localizacao'] . "%";
-$data = $_GET['data'];
+$localizacao = "%" . ($_GET['localizacao'] ?? '') . "%";
+$data = $_GET['data'] ?? '';
 $stmt->bind_param("sss", $localizacao, $data, $data);
 $stmt->execute();
 $resultado = $stmt->get_result();
@@ -153,10 +153,10 @@ $resultado = $stmt->get_result();
 
         <ul class="navbar">
             <li><a href="<?= BASE_URL ?>public/hotels/hotels.php" style="color: black;">Hospedagem</a></li>
-            <li><a href="#package" style="color: black;">Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;">Passagens</a></li>
             <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black;">Passeios</a></li>
-            <li><a href="#contact" style="color: black;">Pacotes</a></li>
-            <li><a href="public/perfil.php" style="color: black;"><i class='bx bx-user'></i></a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/perfil.php" style="color: black;"><i class='bx bx-user'></i></a></li>
             <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a></li>
         </ul>
     </header>

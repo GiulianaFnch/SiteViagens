@@ -173,7 +173,7 @@ include '../../config/liga_bd.php';
 
             <div class="box">
                 <div class="thum">
-                    <a href="detalhes_tours.php?id=31"><img src="imagens/Antalya.jpg" alt="Antalya: Safári de Buggy no Deserto"></a>
+                    <a href="detalhes_tours.php?id=31"><img src="imagens/antalya.jpg" alt="Antalya: Safári de Buggy no Deserto"></a>
                 </div>
 
                 <div class="dest-content">
@@ -323,8 +323,8 @@ include '../../config/liga_bd.php';
 
 
         <div class="send">
-            <form>
-                <input type text="email" placeholder="Insira seu e-mail aqui" required>
+            <form action="<?= BASE_URL ?>public/backend/newsletter.php" method="post">
+                <input type="email" name="email" placeholder="Insira seu e-mail aqui" required>
                 <input type="submit" value="Quero recebê-las!">
             </form>
         </div>

@@ -223,8 +223,8 @@
 
 
         <div class="send">
-            <form>
-                <input type text="email" placeholder="Insira seu e-mail aqui" required>
+            <form action="<?= BASE_URL ?>public/backend/newsletter.php" method="post">
+                <input type="email" name="email" placeholder="Insira seu e-mail aqui" required>
                 <input type="submit" value="Quero recebê-las!">
             </form>
         </div>
@@ -285,8 +285,8 @@
 
 
     <!--link to js-->
-    <script type="text/javascript" src="assets/js/script.js"></script>
-    <script type="text/javascript" src="assests/js/scriptpacotes.js"></script>
+    <script type="text/javascript" src="<?= BASE_URL ?>assets/js/script.js"></script>
+    <script type="text/javascript" src="<?= BASE_URL ?>assets/js/scriptpacotes.js"></script>
     <script>
         const header = document.querySelector("header");
 

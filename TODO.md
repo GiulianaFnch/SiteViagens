@@ -27,13 +27,14 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 - [x] Reserva guarda o preço pago (`preco_unitario`, `preco_total`).
 - [ ] Passeios não têm lotação máxima (só se limita a 20 pessoas por reserva). Falta uma coluna de vagas em `t_artigo`.
 - [x] N+1 queries em `listar_tours.php` e `listar_hospedagem.php` — agora uma só consulta com `JOIN`.
-- [ ] `adicionar_ao_carrinho.php` lê `return_url` mas convém garantir que só redireciona para caminhos internos.
-- [ ] Formulários que apontam para ficheiros inexistentes:
-      `public/hotels/listar_hospedagem.php` (`carrinho.php`), `public/voos/voos.php` (`subscribe.php`).
-- [ ] O "serviço de localização" em `configuracoes.php`/`configuracoes2.php` envia `toggle_location_service`, mas o servidor não trata esse campo.
+- [x] `return_url` removido dos formulários (o servidor já não o usava).
+- [x] Formulários e links para ficheiros inexistentes — a newsletter passa a funcionar (`public/backend/newsletter.php`,
+      tabela `t_newsletter`) nas 12 páginas; links "Passagens"/"Pacotes" do menu, links `public/...` relativos, scripts,
+      CSS e imagens com caminho ou maiúsculas erradas corrigidos (verificado com um rastreio de links em 39 páginas).
+- [x] Removido o botão "serviço de localização" das configurações (não fazia nada no servidor).
 - [ ] `config/valida.php` (e `valida_adm`/`valida_vendedor`) imprime a página de erro antes do `header("refresh")`, por isso o
       redirecionamento para o login falha em páginas que já tinham começado a escrever HTML. Enviar o header antes.
-- [ ] Links quebrados no cabeçalho de `efetuar_reserva.php` (`#package`, `#contact`, `public/login.php` relativo).
+- [x] Links quebrados no cabeçalho de `efetuar_reserva.php` e de ~25 outras páginas.
 
 ## Funcionalidades em falta
 
@@ -44,7 +45,7 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 - [x] Avaliações dos passeios e hospedagens (`config/avaliacoes.php`, `views/partials/avaliacoes.php`) — só quem já usou a reserva avalia.
 - [ ] Resposta do vendedor às avaliações.
 - [ ] Paginação nas listagens e no painel de administração.
-- [ ] Notificações de ofertas (`notificacoes_ofertas` existe na BD mas nada envia e-mails).
+- [ ] Envio de e-mails de ofertas (para `t_newsletter` e utilizadores com `notificacoes_ofertas`) — falta um serviço de e-mail.
 
 ## Organização do código
 
