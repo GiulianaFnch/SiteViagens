@@ -67,6 +67,18 @@ function reserva_quartos_ocupados($ligacao, $id_hospedagem, $inicio, $fim, $igno
     return $maximo;
 }
 
+// Pessoas com reserva confirmada num passeio, num dado dia
+function reserva_pessoas_no_dia($ligacao, $id_artigo, $dia, $ignorar_reserva = 0)
+{
+    $stmt = $ligacao->prepare("SELECT COALESCE(SUM(quantidade), 0) FROM t_reservas
+        WHERE tipo_reserva = 'atividade' AND item_id = ? AND estado = 'confirmada' AND data_inicio = ? AND id <> ?");
+    $stmt->bind_param("isi", $id_artigo, $dia, $ignorar_reserva);
+    $stmt->execute();
+    $total = (int) $stmt->get_result()->fetch_row()[0];
+    $stmt->close();
+    return $total;
+}
+
 /**
  * Valida um item e calcula o seu preço com os valores atuais da BD.
  *
@@ -131,7 +143,7 @@ function reserva_preparar_item($ligacao, $tipo, $id_item, $quantidade, $data_ini
     }
 
     if ($tipo === 'atividade') {
-        $stmt = $ligacao->prepare("SELECT titulo, preco, data_inicio, data_fim, vendido FROM t_artigo WHERE id = ?");
+        $stmt = $ligacao->prepare("SELECT titulo, preco, data_inicio, data_fim, vendido, vagas FROM t_artigo WHERE id = ?");
         $stmt->bind_param("i", $id_item);
         $stmt->execute();
         $a = $stmt->get_result()->fetch_assoc();
@@ -155,6 +167,14 @@ function reserva_preparar_item($ligacao, $tipo, $id_item, $quantidade, $data_ini
         }
         if ($item['quantidade'] < 1 || $item['quantidade'] > RESERVA_MAX_PESSOAS) {
             return ['erro' => 'Escolha entre 1 e ' . RESERVA_MAX_PESSOAS . ' pessoas.'] + $item;
+        }
+        if ($a['vagas'] !== null) {
+            $livres = (int) $a['vagas'] - reserva_pessoas_no_dia($ligacao, $id_item, $item['data_inicio'], $ignorar_reserva);
+            if ($item['quantidade'] > $livres) {
+                return ['erro' => $livres > 0
+                    ? "Só há $livres vaga(s) nesse dia."
+                    : 'Não há vagas nesse dia.'] + $item;
+            }
         }
         $item['preco_unitario'] = (float) $a['preco'];
         $item['preco_total'] = round($item['preco_unitario'] * $item['quantidade'], 2);

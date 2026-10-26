@@ -260,6 +260,13 @@ $data_max = (string) $linha['data_fim'];
                 <strong>Localização:</strong> <?php echo htmlspecialchars($linha['localizacao'] ?? ''); ?>
             </div>
 
+            <?php if ($linha['vagas'] !== null): ?>
+            <div class="info-item">
+                <i class='bx bx-group'></i>
+                <strong>Vagas por dia:</strong> <?= (int) $linha['vagas'] ?>
+            </div>
+            <?php endif; ?>
+
             <!-- Botões de Comprar, Voltar e Favoritos-->
             <div class="button-container">
                 <form action="../backend/adicionar_favoritos.php" method="post">

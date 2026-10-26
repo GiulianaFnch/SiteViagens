@@ -14,11 +14,12 @@ if (isset($_POST['edit'])) {
     $local = $_POST['local'];
     $data_inicio = $_POST['data_inicio'];
     $data_fim = $_POST['data_fim'];
+    $vagas = isset($_POST['vagas']) && $_POST['vagas'] !== '' ? max(1, (int) $_POST['vagas']) : null; // vazio = sem limite
 
     // Atualizar o passeio no banco de dados
-    $sql = "UPDATE t_artigo SET titulo = ?, descricao = ?, preco = ?, localizacao = ?, data_inicio = ?, data_fim = ? WHERE id = ? AND id_user = ?";
+    $sql = "UPDATE t_artigo SET titulo = ?, descricao = ?, preco = ?, localizacao = ?, data_inicio = ?, data_fim = ?, vagas = ? WHERE id = ? AND id_user = ?";
     $stmt = $ligacao->prepare($sql);
-    $stmt->bind_param("ssssssii", $titulo, $descricao, $preco, $local, $data_inicio, $data_fim, $id, $_SESSION['id']);
+    $stmt->bind_param("ssssssiii", $titulo, $descricao, $preco, $local, $data_inicio, $data_fim, $vagas, $id, $_SESSION['id']);
     
     if ($stmt->execute()) {
         // Redirecionar após a atualização

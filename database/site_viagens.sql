@@ -69,7 +69,8 @@ CREATE TABLE `t_artigo` (
   `foto1` varchar(50) NOT NULL,
   `foto2` varchar(50) DEFAULT NULL,
   `foto3` varchar(50) DEFAULT NULL,
-  `vendido` int(11) NOT NULL DEFAULT 0
+  `vendido` int(11) NOT NULL DEFAULT 0,
+  `vagas` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --

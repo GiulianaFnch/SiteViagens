@@ -99,6 +99,20 @@ R=$(post jujuba public/carrinho/efetuar_reserva.php | txt)
 verifica "quartos libertados: agora a jujuba reserva" '[[ "$R" == *"Reserva efetuada com sucesso"* ]]'
 verifica "o preço pago fica gravado"                '[ "$(q "SELECT preco_total FROM t_reservas WHERE user_id=6 AND tipo_reserva='"'hospedagem'"' AND data_inicio IS NOT NULL")" = 6000.00 ]'
 
+echo "== Lotação dos passeios"
+TOK=$(token vendedor public/vendedor/gestao_tours.php)
+TID=$(q "SELECT id FROM t_artigo WHERE id_user=9 LIMIT 1")
+curl -s -o /dev/null -b "$T/vendedor" -d "csrf_token=$TOK&edit=1&reserva_id=$TID&titulo=Passeio&descricao=d&preco=10&local=Porto&data_inicio=$(d 0)&data_fim=$(d 60)&vagas=3" "$B/public/vendedor/editar_tour.php"
+verifica "vendedor define 3 vagas por dia"          '[ "$(q "SELECT vagas FROM t_artigo WHERE id=$TID")" = 3 ]'
+post jujuba public/carrinho/adicionar_ao_carrinho.php -d tipo_item=atividade -d id_artigo=$TID -d data_inicio=$(d 20) -d quantidade=2 >/dev/null
+R=$(post jujuba public/carrinho/efetuar_reserva.php | txt)
+verifica "reserva de 2 pessoas"                     '[[ "$R" == *"Reserva efetuada com sucesso"* ]]'
+R=$(post Karol public/carrinho/adicionar_ao_carrinho.php -d tipo_item=atividade -d id_artigo=$TID -d data_inicio=$(d 20) -d quantidade=2 | txt)
+verifica "mais 2 pessoas no mesmo dia são recusadas" '[[ "$R" == *"Só há 1 vaga(s) nesse dia"* ]]'
+R=$(post Karol public/carrinho/adicionar_ao_carrinho.php -d tipo_item=atividade -d id_artigo=$TID -d data_inicio=$(d 21) -d quantidade=2 | txt)
+verifica "noutro dia há vagas"                      '[[ "$R" == *"adicionado ao carrinho"* ]]'
+q "DELETE FROM t_carrinho"
+
 echo "== Avaliações"
 q "INSERT INTO t_reservas (item_id,user_id,tipo_reserva,data_reserva,quantidade,data_inicio,data_fim,estado)
    VALUES (4,6,'hospedagem',CURDATE(),1,'$(d -10)','$(d -8)','confirmada')"

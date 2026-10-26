@@ -106,7 +106,8 @@ As regras ficam em `config/reservas.php` e são usadas no carrinho, no checkout 
   `diária × noites × quartos`, e a reserva só é aceite se houver quartos livres em todas as noites
   (contando apenas reservas confirmadas) e se as datas estiverem dentro do período de disponibilidade.
 - **Passeio** — o cliente escolhe o dia (dentro do período do passeio) e o nº de pessoas (1 a 20).
-  O preço é `preço × pessoas`.
+  O preço é `preço × pessoas`. Se o vendedor definir **vagas por dia**, a reserva só é aceite enquanto houver vagas nesse dia
+  (migração `007_vagas_passeios.sql`).
 - O preço é sempre calculado no servidor; o valor pago fica gravado na reserva e não muda se o
   vendedor alterar o preço depois.
 - Finalizar a reserva é uma transação: se algum item deixou de estar disponível, nada é reservado.

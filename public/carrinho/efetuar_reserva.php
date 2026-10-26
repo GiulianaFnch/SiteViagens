@@ -104,8 +104,9 @@ try {
         $erro = "O seu carrinho está vazio.";
     }
 
-    // Bloqueia as hospedagens do carrinho para que duas pessoas não fiquem com o último quarto
+    // Bloqueia as hospedagens e passeios do carrinho para que duas pessoas não fiquem com o último quarto/vaga
     $bloquear = $ligacao->prepare("SELECT id FROM t_hospedagem WHERE id = ? FOR UPDATE");
+    $bloquear_passeio = $ligacao->prepare("SELECT id FROM t_artigo WHERE id = ? FOR UPDATE");
     $inserir = $ligacao->prepare("INSERT INTO t_reservas
         (item_id, user_id, tipo_reserva, data_reserva, quantidade, data_inicio, data_fim, preco_unitario, preco_total, estado)
         VALUES (?, ?, ?, CURDATE(), ?, ?, ?, ?, ?, 'confirmada')");
@@ -118,6 +119,10 @@ try {
             $bloquear->bind_param("i", $linha['id_artigo']);
             $bloquear->execute();
             $bloquear->get_result();
+        } elseif ($linha['tipo_item'] == 'atividade') {
+            $bloquear_passeio->bind_param("i", $linha['id_artigo']);
+            $bloquear_passeio->execute();
+            $bloquear_passeio->get_result();
         }
         // Valida de novo: entretanto o preço ou a disponibilidade podem ter mudado
         $item = reserva_preparar_item($ligacao, $linha['tipo_item'], $linha['id_artigo'], $linha['quantidade'],

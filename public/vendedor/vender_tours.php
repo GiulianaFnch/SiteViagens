@@ -324,6 +324,9 @@ include '../../config/liga_bd.php';
                         <label for="data_fim">Data de Fim:</label>
                         <input type="date" id="data_fim" name="data_fim" required>
 
+                        <label for="vagas">Vagas por dia (deixe vazio para não limitar):</label>
+                        <input type="number" id="vagas" name="vagas" min="1">
+
                         <label for="ficheiro1">Foto 1:</label>
                         <input type="file" id="ficheiro1" name="ficheiro1">
 

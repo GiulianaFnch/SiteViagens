@@ -25,7 +25,7 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 
 - [x] Reserva verifica datas e quartos livres, e `efetuar_reserva.php` usa uma transação.
 - [x] Reserva guarda o preço pago (`preco_unitario`, `preco_total`).
-- [ ] Passeios não têm lotação máxima (só se limita a 20 pessoas por reserva). Falta uma coluna de vagas em `t_artigo`.
+- [x] Lotação dos passeios: `t_artigo.vagas` (pessoas por dia, vazio = sem limite), definida pelo vendedor (migração 007).
 - [x] N+1 queries em `listar_tours.php` e `listar_hospedagem.php` — agora uma só consulta com `JOIN`.
 - [x] `return_url` removido dos formulários (o servidor já não o usava).
 - [x] Formulários e links para ficheiros inexistentes — a newsletter passa a funcionar (`public/backend/newsletter.php`,
