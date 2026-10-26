@@ -104,17 +104,16 @@
             $data_fim = $_POST['data_checkout'] ?? '';
             $quantidade = (int) ($_POST['n_quartos'] ?? 0);
         } else if ($tipo_item == 'voo') {
-            $flight_number = $_POST['flight_number'];
-            $airline = $_POST['airline'];
-            $price = $_POST['price'];
-            $arrival = $_POST['arrival'];
-
-            // Insert into t_voos and get the inserted ID
-            $stmt = $ligacao->prepare("INSERT INTO t_voos (id_user, flight_number, airline, price, arrival) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param("issss", $id_user, $flight_number, $airline, $price, $arrival);
-            $stmt->execute();
-            $id_artigo = $stmt->insert_id; // Get the inserted ID
-            $stmt->close();
+            // Os dados do voo vêm da pesquisa guardada na sessão (voos.php), nunca do formulário
+            $voo = $_SESSION['voos_pesquisados'][$_POST['voo_ref'] ?? ''] ?? null;
+            $id_artigo = 0;
+            if ($voo) {
+                $stmt = $ligacao->prepare("INSERT INTO t_voos (id_user, flight_number, airline, price, arrival) VALUES (?, ?, ?, ?, ?)");
+                $stmt->bind_param("issds", $id_user, $voo['flight_number'], $voo['airline'], $voo['price'], $voo['arrival']);
+                $stmt->execute();
+                $id_artigo = $stmt->insert_id; // Get the inserted ID
+                $stmt->close();
+            }
             $quantidade = 1;
         } else {
             $tipo_item = 'atividade';

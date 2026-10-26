@@ -200,6 +200,8 @@ require_once __DIR__ . '/../../config/csrf.php'; // inicia a sessão para o toke
                 // sem chave configurada: a mensagem já foi exibida
             } elseif (isset($result->best_flights) || isset($result->other_flights)) {
                 $flights = $result->best_flights ?? $result->other_flights;
+                // Guarda só os resultados das últimas pesquisas (várias abas continuam a funcionar)
+                $_SESSION['voos_pesquisados'] = array_slice($_SESSION['voos_pesquisados'] ?? [], -100, null, true);
                 echo '<div class="flight-results">';
                 echo '<h2>Melhores opções</h2>';
                 echo '<p>Ordenado por preço</p>';
@@ -217,12 +219,18 @@ require_once __DIR__ . '/../../config/csrf.php'; // inicia a sessão para o toke
                         echo htmlspecialchars($flight->price) . '€';
                         echo '<span> round trip</span>';
                         echo '</div>';
+                        // Os dados do voo (incluindo o preço) ficam na sessão; o formulário só envia uma
+                        // referência, para que o preço não possa ser alterado no navegador
+                        $ref = bin2hex(random_bytes(8));
+                        $_SESSION['voos_pesquisados'][$ref] = [
+                            'flight_number' => (string) $leg->flight_number,
+                            'airline' => (string) $leg->airline,
+                            'price' => (float) $flight->price,
+                            'arrival' => (string) $leg->arrival_airport->name,
+                        ];
                         echo '<form action="../carrinho/adicionar_ao_carrinho.php" method="post">';
                         echo csrf_campo();
-                        echo '<input type="hidden" name="flight_number" value="' . htmlspecialchars($leg->flight_number) . '">';
-                        echo '<input type="hidden" name="airline" value="' . htmlspecialchars($leg->airline) . '">';
-                        echo '<input type="hidden" name="price" value="' . htmlspecialchars($flight->price) . '">';
-                        echo '<input type="hidden" name="arrival" value="' . htmlspecialchars($leg->arrival_airport->name) . '">';
+                        echo '<input type="hidden" name="voo_ref" value="' . $ref . '">';
                         echo '<input type="hidden" name="tipo_item" value="voo">';
                         echo '<input type="hidden" name="return_url" value="' . htmlspecialchars($_SERVER['REQUEST_URI']) . '">';
                         echo '<button type="submit" class="home-btn">Adicionar ao Carrinho</button>';
