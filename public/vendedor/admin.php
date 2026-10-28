@@ -34,8 +34,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Atualizar dados no banco de dados
-    $stmt = $ligacao->prepare("UPDATE t_user SET nick = ?, nome = ?, email = ?, biografia = ?, data_nasc = ?, foto = ? WHERE id = ?");
-    $stmt->bind_param("ssssssi", $nick, $nome, $email, $biografia, $data_nasc, $fotoNova, $id);
+    // Um e-mail novo tem de ser confirmado (config/contas.php)
+    require_once __DIR__ . '/../../config/contas.php';
+    $erro_email = conta_mudar_email($ligacao, $id, $email);
+    if ($erro_email !== null) {
+        echo htmlspecialchars($erro_email);
+        exit;
+    }
+
+    $stmt = $ligacao->prepare("UPDATE t_user SET nick = ?, nome = ?, biografia = ?, data_nasc = ?, foto = ? WHERE id = ?");
+    $stmt->bind_param("sssssi", $nick, $nome, $biografia, $data_nasc, $fotoNova, $id);
     if ($stmt->execute()) {
         header('Location: admin.php');
         exit;
@@ -337,6 +345,9 @@ mysqli_close($ligacao);
                                     <label for="email" class="form-label">E-mail</label>
                                     <input type="email" id="email" class="form-control rounded-pill" name="email"
                                         value="<?php echo htmlspecialchars($linha['email']); ?>" required>
+                                    <?php if (!$linha['email_confirmado']): ?>
+                                        <small class="text-danger">E-mail por confirmar: abra o link que lhe enviámos.</small>
+                                    <?php endif; ?>
                                 </div>
 
                                 <div class="form-group">

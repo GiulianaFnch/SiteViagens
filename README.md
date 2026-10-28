@@ -10,6 +10,7 @@ Este projeto é uma aplicação web para gerenciar reservas de viagens, hospedag
 - **Passagens Aéreas**: Pesquisa e reserva de passagens aéreas.
 - **Passeios Turísticos**: Pesquisa e reserva de passeios turísticos.
 - **Carrinho de Compras**: Adição de itens ao carrinho e cálculo do total.
+- **Contas**: Registo com confirmação do e-mail e recuperação da palavra-passe por e-mail.
 - **Perfil**: Configurações de conta do usuário.
 - **Perfil do Vendedor**: Visualização do perfil do vendedor.
 - **Chat**: Comunicação entre usuários e vendedores.
@@ -60,8 +61,8 @@ O PHP 8.1 é o mínimo porque é a partir dele que `htmlspecialchars` também es
 
 ## Testes
 
-`tests/smoke_test.sh` abre o site a correr e verifica os fluxos principais (login, registo, reservas, avaliações,
-permissões, XSS, newsletter e logout). Corre automaticamente no GitHub a cada push (`.github/workflows/php-lint.yml`).
+`tests/smoke_test.sh` abre o site a correr e verifica os fluxos principais (login, registo, confirmação do e-mail,
+recuperação da palavra-passe, reservas, avaliações, permissões, XSS, newsletter e logout). Corre automaticamente no GitHub a cada push (`.github/workflows/php-lint.yml`).
 
 Para correr localmente, **numa base de dados de teste** (o script altera senhas e reservas dos dados de exemplo):
 
@@ -89,6 +90,17 @@ Também é possível usar variáveis de ambiente: `DB_HOST`, `DB_USER`, `DB_PASS
 - **SERPAPI_KEY** — necessária para a pesquisa de voos (`public/voos/voos.php`). Crie uma chave gratuita em <https://serpapi.com>.
 - **debug** (`APP_DEBUG`) — `false` por omissão: erros inesperados mostram só uma mensagem genérica e os detalhes vão
   para o log do servidor (no XAMPP, `xampp/apache/logs/error.log`). Ponha `true` no seu computador para ver os erros na página.
+
+### E-mails
+
+O site envia e-mails para confirmar o endereço no registo e para recuperar a palavra-passe (`config/email.php`).
+
+- **email_modo** (`EMAIL_MODO`) — `ficheiro` por omissão: os e-mails **não são enviados**, ficam gravados em
+  `storage/emails/` como páginas HTML (abra-as no navegador para clicar nos links). Bom para desenvolvimento.
+  Em produção use `smtp` e preencha `smtp_host`, `smtp_porta`, `smtp_seguranca` (`tls` ou `ssl`), `smtp_utilizador`,
+  `smtp_senha` e `email_remetente` em `config/config.local.php` (há um exemplo para o Gmail em `config.local.example.php`).
+- **url_site** (`SITE_URL`) — endereço público do site (ex.: `https://bestway.pt`), usado nos links dos e-mails.
+  Nunca é tirado do pedido, para que ninguém consiga gerar links que apontem para outro site.
 
 ### Atualizar uma base de dados existente
 
@@ -129,6 +141,20 @@ As regras ficam em `config/reservas.php` e são usadas no carrinho, no checkout 
 O formulário "Inscreva-se para receber nossas ofertas" grava o e-mail em `t_newsletter`
 (`public/backend/newsletter.php`). Para bases de dados existentes, aplique `database/migrations/005_newsletter.sql`.
 O envio dos e-mails ainda não está implementado.
+
+## Contas e palavras-passe
+
+As regras ficam em `config/contas.php`:
+
+- **Registo** (clientes e vendedores) — nick único, e-mail válido e palavra-passe com pelo menos 8 caracteres, escrita
+  duas vezes. Se algo falhar, o formulário volta preenchido com o aviso.
+- **Confirmação do e-mail** — depois do registo é enviado um link (válido 48 horas). Enquanto o e-mail não for confirmado
+  não é possível entrar: o login mostra uma página para pedir outro link ou corrigir o endereço. Mudar o e-mail no perfil
+  obriga a confirmar o novo. As contas que já existiam ficam confirmadas (migração `009_confirmacao_email_tokens.sql`).
+- **Recuperação da palavra-passe** — "Esqueceu a palavra-passe?" no login envia um link (válido 1 hora, só serve uma vez)
+  para cada conta com esse e-mail. A resposta é sempre a mesma, exista ou não o e-mail.
+- Os links usam tokens aleatórios de 256 bits; na base de dados (`t_tokens`) fica só o hash SHA-256. No máximo 3 e-mails
+  de cada tipo por conta e por hora.
 
 ## Tipos de utilizador (`t_user.tipo_user`)
 

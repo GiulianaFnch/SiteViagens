@@ -40,16 +40,18 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 - [ ] **Pacotes** (`public/pacotes/pacotes.php`) é só HTML estático — não há tabela nem gestão de pacotes.
 - [ ] Pagamento (atualmente "reservar" não cobra nada).
 - [x] Cancelamento de reserva pelo cliente (antes do início), vendedor e admin — a reserva fica com `estado = 'cancelada'`.
-- [ ] Recuperação de palavra-passe / confirmação de e-mail.
+- [x] Recuperação de palavra-passe e confirmação de e-mail (`config/contas.php`, `config/email.php`, migração 009).
 - [x] Avaliações dos passeios e hospedagens (`config/avaliacoes.php`, `views/partials/avaliacoes.php`) — só quem já usou a reserva avalia.
 - [x] Resposta do vendedor às avaliações (só o vendedor dono do item; migração 008).
 - [x] Paginação (`config/paginacao.php`): 12 por página nas listagens de passeios e hospedagens, 25 nos painéis do admin.
-- [ ] Envio de e-mails de ofertas (para `t_newsletter` e utilizadores com `notificacoes_ofertas`) — falta um serviço de e-mail.
+- [ ] Envio de e-mails de ofertas (para `t_newsletter` e utilizadores com `notificacoes_ofertas`) — já há envio de e-mails (`config/email.php`), falta a página para o admin escrever e enviar as ofertas.
 
 ## Organização do código
 
 - [x] Cabeçalho e rodapé comuns (`views/partials/header.php` e `footer.php`) em todas as páginas PHP; CSS das páginas de
       mensagem em `assets/css/mensagem.css`. Ficam de fora as páginas estáticas (`index.html`, `public/contatos/*.html`).
+- [x] Páginas de conta (login, registo de cliente e de vendedor, confirmar e-mail, recuperar palavra-passe) com um layout
+      comum (`views/partials/conta_inicio.php` e `conta_fim.php`); erros voltam ao formulário com um aviso.
 - [ ] O CSS específico de cada página continua dentro de `<style>` na própria página.
 - [x] Página de acesso negado única (`config/acesso.php`), usada pelos três validadores, com HTTP 403.
 - [x] Constantes `TIPO_CLIENTE`, `TIPO_BLOQUEADO`, `TIPO_VENDEDOR`, `TIPO_VENDEDOR_PENDENTE`, `TIPO_ADMIN` (`config/acesso.php`).
@@ -57,4 +59,4 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
       administradores já não podem ser bloqueados; "aprovar vendedor" só afeta registos pendentes.
 - [x] Ficheiros com nomes "2" renomeados pelo que fazem (`backend/autenticar.php`, `backend/criar_conta.php`, `chat.php`,
       `chat_mensagens.php`, `chat_enviar.php`, `vendedor/guardar_tour.php`, `vendedor/configuracoes.php`, `tours/pesquisa_tours.php`).
-- [x] Testes de fumo (`tests/smoke_test.sh`, 36 verificações) correm no CI com PHP 8.3 + MariaDB a cada push.
+- [x] Testes de fumo (`tests/smoke_test.sh`, 64 verificações) correm no CI com PHP 8.3 + MariaDB a cada push.

@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 # Testes de fumo do BestWay: abrem o site real (servidor PHP + base de dados) e verificam os
-# fluxos principais — login, registo, reservas, avaliações, permissões e proteção contra XSS.
+# fluxos principais — login, registo e recuperação de palavra-passe, reservas, avaliações, permissões e proteção contra XSS.
 #
 # Uso:  tests/smoke_test.sh [URL_BASE]
 #   URL_BASE  endereço do site (por omissão http://127.0.0.1:8080)
 # Variáveis de ambiente:
 #   MYSQL    comando para a base de dados de teste (por omissão: mysql -uroot site_viagens)
 #   PHP_LOG  ficheiro de log do servidor PHP; se existir, falha se aparecerem erros/avisos do PHP
+#   EMAILS   pasta onde o site grava os e-mails (modo 'ficheiro'; por omissão storage/emails)
 #
 # ATENÇÃO: altera dados (senhas dos utilizadores de exemplo, reservas, avaliações). Use só numa
 # base de dados de teste, importada de database/site_viagens.sql.
@@ -16,6 +17,7 @@ cd "$(dirname "$0")/.."   # caminhos relativos à raiz do projeto
 B="${1:-http://127.0.0.1:8080}"
 B="${B%/}"
 MYSQL="${MYSQL:-mysql -uroot site_viagens}"
+EMAILS="${EMAILS:-storage/emails}"
 T=$(mktemp -d)
 trap 'rm -rf "$T"' EXIT
 
@@ -72,14 +74,47 @@ verifica "vendedor entra no seu painel"             '[ "$(status vendedor public
 verifica "admin entra no painel"                    '[ "$(status admin adm/index.php)" = 200 ]'
 verifica "POST sem token CSRF é recusado"           '[[ "$(curl -s -b $T/jujuba -d cancelar=1\&reserva_id=1 $B/public/reservas.php)" == *"token de segurança"* ]]'
 
-echo "== Registo"
-NICK="teste$RANDOM"
-curl -s -b "$T/novo" -c "$T/novo" -o /dev/null "$B/public/registro.php"
-R=$(curl -s -b "$T/novo" -c "$T/novo" -F "csrf_token=$(token novo public/registro.php)" -F nick=$NICK -F nome=Teste \
-    -F email=$NICK@exemplo.com -F data_nasc=2000-01-01 -F pass=segredo -F "ficheiro=@public/hotels/imagens/hotel.jpg" "$B/public/backend/criar_conta.php")
-verifica "registo de cliente com foto"              '[[ "$R" == *"registado com sucesso"* ]]'
-verifica "registo grava o utilizador"               '[ "$(q "SELECT COUNT(*) FROM t_user WHERE nick='"'$NICK'"'")" = 1 ]'
+echo "== Registo e confirmação do e-mail"
+NICK="teste$RANDOM"; EMAIL="$NICK@exemplo.com"
+# último link de um tipo enviado para um e-mail (no modo 'ficheiro' os e-mails ficam em storage/emails)
+link() { local f; f=$(grep -l "$1" "$EMAILS"/*.html 2>/dev/null | xargs -r ls -t | head -1)
+         [ -n "$f" ] && grep -o "public/$2?token=[0-9a-f]*" "$f" | head -1; }
+registo() { curl -s -L -b "$T/novo" -c "$T/novo" -F "csrf_token=$(token novo public/registro.php)" -F nick=$NICK -F nome=Teste \
+    -F email=$EMAIL -F data_nasc=2000-01-01 "$@" -F "ficheiro=@public/hotels/imagens/hotel.jpg" "$B/public/backend/criar_conta.php" | txt; }
+entrar() { curl -s -L -b "$T/novo" -c "$T/novo" -d "csrf_token=$(token novo public/login.php)" -d nick=$NICK --data-urlencode "pass=$1" \
+    "$B/public/backend/autenticar.php" | txt; }
+verifica "palavra-passe curta é recusada"           '[[ "$(registo -F pass=curta -F pass2=curta)" == *"pelo menos 8 caracteres"* ]]'
+verifica "palavras-passe diferentes são recusadas"  '[[ "$(registo -F pass=segredo123 -F pass2=segredo124)" == *"não coincidem"* ]]'
+verifica "registo de cliente com foto"              '[[ "$(registo -F pass=segredo123 -F pass2=segredo123)" == *"Conta criada"* ]]'
+verifica "registo grava o utilizador por confirmar" '[ "$(q "SELECT email_confirmado FROM t_user WHERE nick='"'$NICK'"'")" = 0 ]'
+verifica "nick repetido é recusado"                 '[[ "$(registo -F pass=segredo123 -F pass2=segredo123)" == *"nick já está a ser usado"* ]]'
+verifica "nick ou senha errados: mensagem genérica" '[[ "$(entrar errada123)" == *"Nick ou palavra-passe errados"* ]]'
+verifica "sem confirmar o e-mail não entra"         '[[ "$(entrar segredo123)" == *"Confirme o seu e-mail"* && "$(status novo public/reservas.php)" = 403 ]]'
+L=$(link "$EMAIL" confirmar_email.php)
+verifica "e-mail de confirmação enviado"            '[ -n "$L" ]'
+verifica "link de confirmação falso é recusado"     '[[ "$(curl -s -L -b $T/novo -c $T/novo "$B/public/confirmar_email.php?token=$(printf %064d 0)" | txt)" == *"inválido"* ]]'
+verifica "link de confirmação ativa a conta"        '[[ "$(curl -s -L -b $T/novo -c $T/novo "$B/$L" | txt)" == *"E-mail confirmado"* ]]'
+verifica "o link de confirmação só serve uma vez"   '[[ "$(curl -s -L -b $T/novo -c $T/novo "$B/$L" | txt)" == *"inválido"* ]]'
+verifica "depois de confirmar já entra"             '[[ "$(entrar segredo123)" == *"Bem vindo"* ]]'
+
+echo "== Recuperação da palavra-passe"
+esqueci() { curl -s -L -b "$T/anon" -c "$T/anon" -d "csrf_token=$(token anon public/esqueci_senha.php)" -d "email=$1" "$B/public/esqueci_senha.php" | txt; }
+verifica "pedido com e-mail registado"              '[[ "$(esqueci $EMAIL)" == *"Se existir uma conta"* ]]'
+verifica "e-mail desconhecido: a mesma resposta"    '[[ "$(esqueci ninguem$RANDOM@exemplo.com)" == *"Se existir uma conta"* ]]'
+L=$(link "$EMAIL" redefinir_senha.php)
+verifica "e-mail de recuperação enviado"            '[ -n "$L" ]'
+verifica "o link abre o formulário"                 '[[ "$(curl -s -b $T/anon -c $T/anon "$B/$L" | txt)" == *"Nova palavra-passe"* ]]'
+redefinir() { curl -s -L -b "$T/anon" -c "$T/anon" -d "csrf_token=$(token anon "$L")" -d "token=${L##*=}" -d "pass=$1" -d "pass2=$2" "$B/public/redefinir_senha.php" | txt; }
+verifica "nova senha tem de ser repetida igual"     '[[ "$(redefinir novasenha1 outrasenha)" == *"não coincidem"* ]]'
+verifica "nova palavra-passe guardada"              '[[ "$(redefinir novasenha1 novasenha1)" == *"Palavra-passe alterada"* ]]'
+verifica "o link de recuperação só serve uma vez"   '[[ "$(redefinir outrasenha2 outrasenha2)" == *"inválido, já foi usado"* ]]'
+verifica "a senha antiga deixa de servir"           '[[ "$(entrar segredo123)" == *"Nick ou palavra-passe errados"* ]]'
+verifica "entra com a senha nova"                   '[[ "$(entrar novasenha1)" == *"Bem vindo"* ]]'
+for i in 1 2 3; do esqueci $EMAIL >/dev/null; done
+verifica "no máximo 3 e-mails de recuperação por hora" '[ "$(q "SELECT COUNT(*) FROM t_tokens t JOIN t_user u ON u.id=t.id_user
+    WHERE u.nick='"'$NICK'"' AND t.tipo='"'recuperar_senha'"'")" = 3 ]'
 rm -f assets/images/pics/"$(q "SELECT foto FROM t_user WHERE nick='$NICK'")" 2>/dev/null
+grep -l "$EMAIL" "$EMAILS"/*.html 2>/dev/null | xargs -r rm -f
 q "DELETE FROM t_user WHERE nick='$NICK'"
 
 echo "== Reservas"

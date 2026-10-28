@@ -384,7 +384,8 @@ CREATE TABLE `t_user` (
   `foto` varchar(50) DEFAULT NULL,
   `tipo_user` int(11) NOT NULL DEFAULT 0,
   `notificacoes_ofertas` tinyint(1) NOT NULL DEFAULT 1,
-  `tipo_antes_bloqueio` int(11) DEFAULT NULL
+  `tipo_antes_bloqueio` int(11) DEFAULT NULL,
+  `email_confirmado` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -630,6 +631,28 @@ CREATE TABLE IF NOT EXISTS `t_newsletter` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Estrutura da tabela `t_tokens` (links de confirmação de e-mail e recuperação de palavra-passe)
+--
+
+CREATE TABLE IF NOT EXISTS `t_tokens` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) NOT NULL,
+  `tipo` enum('confirmar_email','recuperar_senha') NOT NULL,
+  `token_hash` char(64) NOT NULL,
+  `expira` datetime NOT NULL,
+  `data_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `token_hash` (`token_hash`),
+  KEY `utilizador` (`id_user`, `tipo`),
+  CONSTRAINT `t_tokens_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `t_user` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Os utilizadores de exemplo já têm o e-mail confirmado
+--
+UPDATE `t_user` SET `email_confirmado` = 1;
 
 --
 -- Dados de exemplo: prolonga a disponibilidade dos passeios e hospedagens

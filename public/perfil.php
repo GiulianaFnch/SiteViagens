@@ -97,8 +97,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['id_solicitacao'])) {
     }
 
     // Atualizar dados no banco de dados usando prepared statements
-    $stmt = $ligacao->prepare("UPDATE t_user SET nick = ?, nome = ?, email = ?, data_nasc = ?, foto = ? WHERE id = ?");
-    $stmt->bind_param("sssssi", $nick, $nome, $email, $data_nasc, $fotoNova, $id);
+    // Um e-mail novo tem de ser confirmado (config/contas.php)
+    require_once __DIR__ . '/../config/contas.php';
+    $erro_email = conta_mudar_email($ligacao, $id, $email);
+    if ($erro_email !== null) {
+        echo htmlspecialchars($erro_email);
+        exit;
+    }
+
+    $stmt = $ligacao->prepare("UPDATE t_user SET nick = ?, nome = ?, data_nasc = ?, foto = ? WHERE id = ?");
+    $stmt->bind_param("ssssi", $nick, $nome, $data_nasc, $fotoNova, $id);
 
     if ($stmt->execute()) {
         // Redirecionar após o sucesso
@@ -484,6 +492,9 @@ mysqli_close($ligacao);
                                     <label for="email" class="form-label">E-mail</label>
                                     <input type="email" id="email" class="form-control rounded-pill" name="email"
                                         value="<?php echo htmlspecialchars($linha['email']); ?>" required>
+                                    <?php if (!$linha['email_confirmado']): ?>
+                                        <small class="text-danger">E-mail por confirmar: abra o link que lhe enviámos.</small>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="form-group">
                                     <label for="data_nasc" class="form-label">Data de Nascimento</label>
