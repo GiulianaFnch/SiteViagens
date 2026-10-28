@@ -2,6 +2,8 @@
 require_once __DIR__ . '/../../config/config.php';
 /*include '../../config/valida.php';*/
 include '../../config/liga_bd.php';
+include '../../config/avaliacoes.php';
+include '../../config/paginacao.php';
 ?>
 
 <!DOCTYPE html>
@@ -225,13 +227,14 @@ form {
     </section>
 <br><br>
     <!-- Formulário de seleção de categorias -->
-    <center><form action="" method="post"><h1>
+    <?php $categoria = (int) ($_GET['categoria'] ?? $_POST['categoria'] ?? 0); ?>
+    <center><form action="" method="get"><h1>
         Encontre seu destino por categorias:</h1>
        <center> <select name="categoria" id="categoria" onchange="this.form.submit();">
             <?php
             // Conecte-se ao banco de dados e busque as categorias
             $sql = "SELECT * FROM t_categoria";
-            $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
+            $resultado = mysqli_query($ligacao, $sql);
 
             // Adiciona a opção "Todos" com valor 0
             echo "<option value='0'>Todos</option>";
@@ -239,10 +242,10 @@ form {
             // Preenche as opções do select com as categorias vindas do banco de dados
             while ($linha = mysqli_fetch_array($resultado)) {
                 // Verifica se a categoria selecionada é a atual
-                if (isset($_POST['categoria']) && $_POST['categoria'] == $linha['id'])
-                    echo "<option value='" . $linha['id'] . "' selected>" . $linha['categoria'] . "</option>";
+                if ($categoria == $linha['id'])
+                    echo "<option value='" . (int) $linha['id'] . "' selected>" . htmlspecialchars($linha['categoria']) . "</option>";
                 else
-                    echo "<option value='" . $linha['id'] . "'>" . $linha['categoria'] . "</option>";
+                    echo "<option value='" . (int) $linha['id'] . "'>" . htmlspecialchars($linha['categoria']) . "</option>";
             }
             ?>
         </select></center>
@@ -251,28 +254,35 @@ form {
     <!-- Lista de passeios -->
     <div class="passeios-grid">
         <?php
-        // Verifica se uma categoria foi selecionada no formulário
-        $categoria = isset($_POST['categoria']) ? (int) $_POST['categoria'] : 0;
+        // Paginação (?pagina=N); a categoria 0 ("Todos") mostra todas
+        $por_pagina = 12;
+        $pagina = pagina_atual();
+        $offset = ($pagina - 1) * $por_pagina;
 
-        // Define o SQL de acordo com a categoria selecionada
-        if ($categoria == 0) {
-            // Se "Todos" for selecionado, exibe todos os artigos não vendidos
-            $sql = "SELECT * FROM t_artigo WHERE vendido = 0";
-        } else {
-            // Caso contrário, exibe apenas os artigos da categoria selecionada
-            $sql = "SELECT * FROM t_artigo WHERE vendido = 0 AND cat = " . $categoria;
-        }
+        $stmt = $ligacao->prepare("SELECT COUNT(*) FROM t_artigo a JOIN t_user u ON u.id = a.id_user
+                                   WHERE a.vendido = 0 AND (? = 0 OR a.cat = ?)");
+        $stmt->bind_param("ii", $categoria, $categoria);
+        $stmt->execute();
+        $total = (int) $stmt->get_result()->fetch_row()[0];
 
-        // Executa a consulta
-        $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
+        // Artigos não vendidos com o nick e email do vendedor e a média das avaliações, numa só consulta
+        $stmt = $ligacao->prepare("SELECT a.*, u.nick, u.email, av.media_avaliacoes, COALESCE(av.total_avaliacoes, 0) AS total_avaliacoes
+                                   FROM t_artigo a
+                                   JOIN t_user u ON u.id = a.id_user
+                                   LEFT JOIN (SELECT item_id, AVG(nota) AS media_avaliacoes, COUNT(*) AS total_avaliacoes
+                                              FROM t_avaliacoes WHERE tipo_item = 'atividade' GROUP BY item_id) av ON av.item_id = a.id
+                                   WHERE a.vendido = 0 AND (? = 0 OR a.cat = ?)
+                                   ORDER BY a.id
+                                   LIMIT ? OFFSET ?");
+        $stmt->bind_param("iiii", $categoria, $categoria, $por_pagina, $offset);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
 
         // Verifica se existem passeios disponíveis
         if (mysqli_num_rows($resultado) > 0) {
             // Itera sobre os resultados e exibe cada passeio
             while ($linha = mysqli_fetch_array($resultado)) {
-                $sql_user = "SELECT nick, email FROM t_user WHERE id = " . $linha['id_user'];
-                $res_user = mysqli_query($ligacao, $sql_user) or die(mysqli_error($ligacao));
-                $linha_user = mysqli_fetch_assoc($res_user);
+                $linha_user = $linha; // nick e email do vendedor já vêm na consulta
 
                 if ($linha_user) {
                     echo '<div class="box">';
@@ -285,21 +295,14 @@ form {
                     echo "            <h5>" . htmlspecialchars($linha['descricao']) . "</h5>";
                     echo '        </div>';
                     echo '        <div class="stars">';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
+                    echo '            <span style="color: #f5a623;">' . avaliacao_texto($linha['media_avaliacoes'] === null ? null : (float) $linha['media_avaliacoes'], (int) $linha['total_avaliacoes']) . '</span>';
                     echo "            <h4>A partir de " . htmlspecialchars($linha['preco']) . " € por pessoa</h4>";
                     echo '        </div>';
                     echo '        <div class="btn-container">';
 
-                    // Botão "Comprar" que redireciona para a página carrinho.php
-                    echo '    <form action="../carrinho/adicionar_ao_carrinho.php" id="f2" method="post">
-';
-                    echo csrf_campo();
+                    // Botão "Comprar": abre os detalhes, onde se escolhe a data e o nº de pessoas
+                    echo '            <form action="detalhes_tours.php" method="post">';
                     echo '                <input type="hidden" name="id_artigo" value="' . htmlspecialchars($linha['id']) . '">';
-                    echo '<input type="hidden" name="tipo_item" value="atividade">';
-                    echo '<input type="hidden" name="return_url" value="' . htmlspecialchars($_SERVER['REQUEST_URI']) . '">';
                     echo '                <input type="submit" value="Comprar" class="btn-comprar">';
                     echo '            </form>';
 
@@ -321,6 +324,7 @@ form {
         }
         ?>
     </div>
+    <?= paginacao_html($total, $por_pagina, $pagina) ?>
 
     </div>
 
@@ -335,8 +339,8 @@ form {
 
 
         <div class="send">
-            <form>
-                <input type text="email" placeholder="Insira seu e-mail aqui" required>
+            <form action="<?= BASE_URL ?>public/backend/newsletter.php" method="post">
+                <input type="email" name="email" placeholder="Insira seu e-mail aqui" required>
                 <input type="submit" value="Quero recebê-las!">
             </form>
         </div>
@@ -351,7 +355,7 @@ form {
                     <h4> Minha Conta</h4>
                     <ul>
                         <li><a href="#">Minhas Viagens</a></li>
-                        <li><a href="public/perfil.php">Meu Perfil</a></li>
+                        <li><a href="<?= BASE_URL ?>public/perfil.php">Meu Perfil</a></li>
                         <li><a href="#">Deletar minha conta</a></li>
 
                     </ul>
@@ -370,8 +374,8 @@ form {
                 <div class="list">
                     <h4>Trabalhe conosco</h4>
                     <ul>
-                        <li><a href="public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
-                        <li><a href="public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
                     </ul>
                 </div>
 

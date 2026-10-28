@@ -69,7 +69,8 @@ CREATE TABLE `t_artigo` (
   `foto1` varchar(50) NOT NULL,
   `foto2` varchar(50) DEFAULT NULL,
   `foto3` varchar(50) DEFAULT NULL,
-  `vendido` int(11) NOT NULL DEFAULT 0
+  `vendido` int(11) NOT NULL DEFAULT 0,
+  `vagas` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -152,7 +153,9 @@ CREATE TABLE `t_carrinho` (
   `id_artigo` int(11) NOT NULL,
   `quantidade` int(11) DEFAULT 1,
   `data_adicao` timestamp NOT NULL DEFAULT current_timestamp(),
-  `tipo_item` enum('atividade','hospedagem','voo','pacote') NOT NULL
+  `tipo_item` enum('atividade','hospedagem','voo','pacote') NOT NULL,
+  `data_inicio` date DEFAULT NULL,
+  `data_fim` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -277,7 +280,12 @@ CREATE TABLE `t_reservas` (
   `user_id` int(11) NOT NULL,
   `tipo_reserva` enum('atividade','voo','hospedagem','pacote') NOT NULL,
   `data_reserva` date NOT NULL,
-  `quantidade` int(11) NOT NULL
+  `quantidade` int(11) NOT NULL,
+  `data_inicio` date DEFAULT NULL,
+  `data_fim` date DEFAULT NULL,
+  `preco_unitario` decimal(10,2) DEFAULT NULL,
+  `preco_total` decimal(10,2) DEFAULT NULL,
+  `estado` enum('confirmada','cancelada') NOT NULL DEFAULT 'confirmada'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -375,7 +383,8 @@ CREATE TABLE `t_user` (
   `pass` varchar(255) NOT NULL,
   `foto` varchar(50) DEFAULT NULL,
   `tipo_user` int(11) NOT NULL DEFAULT 0,
-  `notificacoes_ofertas` tinyint(1) NOT NULL DEFAULT 1
+  `notificacoes_ofertas` tinyint(1) NOT NULL DEFAULT 1,
+  `tipo_antes_bloqueio` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -479,7 +488,8 @@ ALTER TABLE `t_hospedagem`
 --
 ALTER TABLE `t_reservas`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `item` (`tipo_reserva`, `item_id`);
 
 --
 -- Indexes for table `t_subcat`
@@ -587,6 +597,46 @@ ALTER TABLE `t_carrinho`
 --
 ALTER TABLE `t_reservas`
   ADD CONSTRAINT `t_reservas_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `t_user` (`id`);
+
+--
+-- Estrutura da tabela `t_avaliacoes`
+--
+
+CREATE TABLE IF NOT EXISTS `t_avaliacoes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) NOT NULL,
+  `tipo_item` enum('atividade','hospedagem') NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `nota` tinyint(1) NOT NULL,
+  `comentario` text DEFAULT NULL,
+  `data_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `data_atualizacao` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `resposta` text DEFAULT NULL,
+  `data_resposta` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uma_por_utilizador` (`id_user`, `tipo_item`, `item_id`),
+  KEY `item` (`tipo_item`, `item_id`),
+  CONSTRAINT `t_avaliacoes_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `t_user` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Estrutura da tabela `t_newsletter`
+--
+
+CREATE TABLE IF NOT EXISTS `t_newsletter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(254) NOT NULL,
+  `data_inscricao` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dados de exemplo: prolonga a disponibilidade dos passeios e hospedagens
+-- (ver database/migrations/003_atualizar_datas_exemplo.sql)
+--
+UPDATE `t_artigo`     SET `data_fim` = '2027-12-31' WHERE `data_fim` < '2027-12-31';
+UPDATE `t_hospedagem` SET `data_fim` = '2027-12-31' WHERE `data_fim` IS NULL OR `data_fim` < '2027-12-31';
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

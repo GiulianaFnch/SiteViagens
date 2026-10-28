@@ -40,15 +40,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: admin.php');
         exit;
     } else {
-        echo "Erro ao atualizar os dados: " . $stmt->error;
+        error_log("vendedor/admin: " . $stmt->error);
+        echo "Erro ao atualizar os dados. Tente novamente.";
         exit;
     }
 }
 
 $id = $_SESSION['id'];
-$sql = "SELECT * FROM t_user WHERE id=$id";
-$resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
-$linha = mysqli_fetch_array($resultado);
+$stmt = $ligacao->prepare("SELECT * FROM t_user WHERE id = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$linha = $stmt->get_result()->fetch_array();
 mysqli_close($ligacao);
 ?>
 
@@ -60,7 +62,7 @@ mysqli_close($ligacao);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel do Vendedor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/styleperfil.css">
+    <link rel="stylesheet" href="../../assets/css/styleperfil.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -405,7 +407,7 @@ images.forEach((item, i) => {
 const updateImage = (i) => {
     let path = images[i].src;
     largeImage.src = path;
-    imageName.innerHTML = path.split('/').pop();
+    imageName.textContent = path.split('/').pop();
     // Remova ou comente esta linha para não exibir o número da imagem:
     // imageIndex.innerHTML = `0${i + 1}`;
     index = i;

@@ -1,3 +1,10 @@
+<?php
+require_once __DIR__ . '/../../config/acesso.php'; // inicia a sessão (token do formulário) e define os tipos de utilizador
+// Rejeita registos enviados sem o token (formulários de outros sites)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verificar();
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -12,7 +19,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <link rel="stylesheet" href="../../assets/css/style.css">
-    <!--<link rel="stylesheet" href="../assets/css/styleperfil.css"> -->
+    <!--<link rel="stylesheet" href="../../assets/css/styleperfil.css"> -->
 
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
@@ -35,8 +42,8 @@
                 if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     include '../../config/liga_bd.php';
 
-                    // Definir tipo_user como 3 por padrão (vendedor não validado)
-                    $tipo_user = 3;
+                    // Novo vendedor fica a aguardar aprovação do administrador
+                    $tipo_user = TIPO_VENDEDOR_PENDENTE;
 
                     $tmp = password_hash($_POST['pass'], PASSWORD_DEFAULT);
                     $sql = "INSERT INTO t_user (nick, nome, email, nome_marca, pass, tipo_user) VALUES (?, ?, ?, ?, ?, ?)";
@@ -55,6 +62,7 @@
                 } else {
                     ?>
                     <form action="registro_vendedor.php" method="post" enctype="multipart/form-data">
+                        <?= csrf_campo() ?>
                         <div class="input-group">
                             <label for="nick">Nick:</label>
                             <input type="text" id="nick" name="nick" class="form-control" required>

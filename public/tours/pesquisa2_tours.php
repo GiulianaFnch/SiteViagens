@@ -6,8 +6,8 @@ include "../../config/liga_bd.php";
 
 // Evitar a injeção de SQL
 $stmt = $ligacao->prepare("SELECT * FROM t_artigo WHERE localizacao LIKE ? AND data_inicio <= ? AND data_fim >= ? AND vendido = 0");
-$localizacao = "%" . $_GET['localizacao'] . "%";
-$data = $_GET['data'];
+$localizacao = "%" . ($_GET['localizacao'] ?? '') . "%";
+$data = $_GET['data'] ?? '';
 $stmt->bind_param("sss", $localizacao, $data, $data);
 $stmt->execute();
 $resultado = $stmt->get_result();
@@ -153,10 +153,10 @@ $resultado = $stmt->get_result();
 
         <ul class="navbar">
             <li><a href="<?= BASE_URL ?>public/hotels/hotels.php" style="color: black;">Hospedagem</a></li>
-            <li><a href="#package" style="color: black;">Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;">Passagens</a></li>
             <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black;">Passeios</a></li>
-            <li><a href="#contact" style="color: black;">Pacotes</a></li>
-            <li><a href="public/perfil.php" style="color: black;"><i class='bx bx-user'></i></a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/perfil.php" style="color: black;"><i class='bx bx-user'></i></a></li>
             <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a></li>
         </ul>
     </header>
@@ -209,12 +209,10 @@ $resultado = $stmt->get_result();
             echo '                <input type="submit" value="Ver Detalhes" class="btn-ver-mais">';
             echo '            </form>';
 
-            echo '            <form action="../carrinho/adicionar_ao_carrinho.php" method="post">';
-            echo csrf_campo();
+            // Abre os detalhes, onde se escolhe a data e o nº de pessoas
+            echo '            <form action="detalhes_tours.php" method="post">';
             echo '                <input type="hidden" name="id_artigo" value="' . htmlspecialchars($linha['id']) . '">';
-            echo '                <input type="hidden" name="tipo_item" value="atividade">';
-            echo '                <input type="hidden" name="return_url" value="' . htmlspecialchars($_SERVER['REQUEST_URI']) . '">';
-            echo '                <input type="submit" value="Adicionar ao Carrinho" class="btn-comprar">';
+            echo '                <input type="submit" value="Reservar" class="btn-comprar">';
             echo '            </form>';
             echo '        </div>';
             echo '    </div>';

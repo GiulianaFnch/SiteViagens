@@ -23,9 +23,13 @@ $sql = "SELECT f.tipo_reserva,
         FROM t_favoritos f
         LEFT JOIN t_artigo a ON f.id_artigo = a.id AND f.tipo_reserva = 'atividade'
         LEFT JOIN t_hospedagem h ON f.id_artigo = h.id AND f.tipo_reserva = 'hospedagem'
-        WHERE f.id_user = '$user_id'";
+        WHERE f.id_user = ?
+          AND (a.id IS NOT NULL OR h.id IS NOT NULL)"; // ignora favoritos de itens que já foram apagados
 
-$resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
+$stmt = $ligacao->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
 
 mysqli_close($ligacao);
 ?>
@@ -179,9 +183,9 @@ mysqli_close($ligacao);
 
         <ul class="navbar">
             <li><a href="<?= BASE_URL ?>public/hotels/hotels.php" style="color: black;">Hospedagem</a></li>
-            <li><a href="#package" style="color: black;">Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;">Passagens</a></li>
             <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black;">Tours</a></li>
-            <li><a href="#contact" style="color: black;">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
             <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
         </ul>
     </header>

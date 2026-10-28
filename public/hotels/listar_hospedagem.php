@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
 include '../../config/liga_bd.php';
+include '../../config/avaliacoes.php';
+include '../../config/paginacao.php';
 ?>
 
 <!DOCTYPE html>
@@ -153,9 +155,9 @@ include '../../config/liga_bd.php';
 
         <ul class="navbar">
             <li><a href="<?= BASE_URL ?>public/hotels/hotels.php">Hospedagem</a></li>
-            <li><a href="#package">Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php">Passagens</a></li>
             <li><a href="<?= BASE_URL ?>public/tours/tours.php">Passeios</a></li>
-            <li><a href="#contact">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php">Pacotes</a></li>
             <li><a href="<?= BASE_URL ?>public/perfil.php"><i class='bx bx-user'></i></a></li>
             <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php"><i class='bx bx-cart'></i></a></li>
         </ul>
@@ -180,25 +182,36 @@ include '../../config/liga_bd.php';
     <!-- Lista de hospedagens -->
     <div class="hospedagens-grid">
         <?php
-        // Verifica se o parâmetro tipo_hospedagem está presente no método GET
-        if (isset($_GET['tipo_hospedagem'])) {
-            $tipo_hospedagem = mysqli_real_escape_string($ligacao, $_GET['tipo_hospedagem']);
-            // Define o SQL para buscar hospedagens do tipo especificado
-            $sql = "SELECT * FROM t_hospedagem WHERE tipo_hospedagem = '$tipo_hospedagem'";
-        } else {
-            // Define o SQL para buscar todas as hospedagens disponíveis
-            $sql = "SELECT * FROM t_hospedagem";
-        }
-        // Executa a consulta
-        $resultado = mysqli_query($ligacao, $sql) or die(mysqli_error($ligacao));
+        // Filtro opcional por tipo (?tipo_hospedagem=hotel) e paginação (?pagina=N)
+        $tipo_hospedagem = $_GET['tipo_hospedagem'] ?? '';
+        $por_pagina = 12;
+        $pagina = pagina_atual();
+        $offset = ($pagina - 1) * $por_pagina;
+
+        $stmt = $ligacao->prepare("SELECT COUNT(*) FROM t_hospedagem h JOIN t_user u ON u.id = h.id_user
+                                   WHERE (? = '' OR h.tipo_hospedagem = ?)");
+        $stmt->bind_param("ss", $tipo_hospedagem, $tipo_hospedagem);
+        $stmt->execute();
+        $total = (int) $stmt->get_result()->fetch_row()[0];
+
+        // Hospedagens com o nick e email do vendedor e a média das avaliações, numa só consulta
+        $stmt = $ligacao->prepare("SELECT h.*, u.nick, u.email, av.media_avaliacoes, COALESCE(av.total_avaliacoes, 0) AS total_avaliacoes
+                                   FROM t_hospedagem h
+                                   JOIN t_user u ON u.id = h.id_user
+                                   LEFT JOIN (SELECT item_id, AVG(nota) AS media_avaliacoes, COUNT(*) AS total_avaliacoes
+                                              FROM t_avaliacoes WHERE tipo_item = 'hospedagem' GROUP BY item_id) av ON av.item_id = h.id
+                                   WHERE (? = '' OR h.tipo_hospedagem = ?)
+                                   ORDER BY h.id
+                                   LIMIT ? OFFSET ?");
+        $stmt->bind_param("ssii", $tipo_hospedagem, $tipo_hospedagem, $por_pagina, $offset);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
 
         // Verifica se existem hospedagens disponíveis
         if (mysqli_num_rows($resultado) > 0) {
             // Itera sobre os resultados e exibe cada hospedagem
             while ($linha = mysqli_fetch_array($resultado)) {
-                $sql_user = "SELECT nick, email FROM t_user WHERE id = " . $linha['id_user'];
-                $res_user = mysqli_query($ligacao, $sql_user) or die(mysqli_error($ligacao));
-                $linha_user = mysqli_fetch_assoc($res_user);
+                $linha_user = $linha; // nick e email do vendedor já vêm na consulta
 
                 if ($linha_user) {
                     echo '<div class="box">';
@@ -211,20 +224,10 @@ include '../../config/liga_bd.php';
                     echo "            <h5>" . htmlspecialchars($linha['descricao']) . "</h5>";
                     echo '        </div>';
                     echo '        <div class="stars">';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
-                    echo '            <a href="#"><i class="bx bxs-star"></i></a>';
+                    echo '            <span style="color: #f5a623;">' . avaliacao_texto($linha['media_avaliacoes'] === null ? null : (float) $linha['media_avaliacoes'], (int) $linha['total_avaliacoes']) . '</span>';
                     echo "            <h4>A partir de " . htmlspecialchars($linha['preco_diaria']) . " € por noite</h4>";
                     echo '        </div>';
                     echo '        <div class="btn-container">';
-
-                    /* Botão "Reservar" que redireciona para a página carrinho.php
-                    echo '            <form action="carrinho.php" method="post">';
-                    echo '                <input type="hidden" name="id_hospedagem" value="' . htmlspecialchars($linha['id']) . '">';
-                    echo '                <input type="submit" value="Reservar" class="btn-comprar">';
-                    echo '            </form>';
-                    */
 
                     // Botão "Ver mais" que redireciona para a página detalhes_hospedagem.php
                     echo '            <form action="detalhes_hospedagem.php" method="post">';
@@ -244,6 +247,7 @@ include '../../config/liga_bd.php';
         }
         ?>
     </div>
+    <?= paginacao_html($total, $por_pagina, $pagina) ?>
 
     <section class="newsletter">
         <div class="news-text">
@@ -254,8 +258,8 @@ include '../../config/liga_bd.php';
         </div>
 
         <div class="send">
-            <form>
-                <input type="email" placeholder="Insira seu e-mail aqui" required>
+            <form action="<?= BASE_URL ?>public/backend/newsletter.php" method="post">
+                <input type="email" name="email" placeholder="Insira seu e-mail aqui" required>
                 <input type="submit" value="Quero recebê-las!">
             </form>
         </div>
@@ -269,7 +273,7 @@ include '../../config/liga_bd.php';
                     <h4> Minha Conta</h4>
                     <ul>
                         <li><a href="#">Minhas Viagens</a></li>
-                        <li><a href="public/perfil.php">Meu Perfil</a></li>
+                        <li><a href="<?= BASE_URL ?>public/perfil.php">Meu Perfil</a></li>
                         <li><a href="#">Deletar minha conta</a></li>
                     </ul>
                 </div>
@@ -286,8 +290,8 @@ include '../../config/liga_bd.php';
                 <div class="list">
                     <h4>Trabalhe conosco</h4>
                     <ul>
-                        <li><a href="public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
-                        <li><a href="public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
                     </ul>
                 </div>
 
@@ -307,7 +311,7 @@ include '../../config/liga_bd.php';
     </section>
 
     <!--link to js-->
-    <script type="text/javascript" src="assets/js/script.js"></script>
+    <script type="text/javascript" src="<?= BASE_URL ?>assets/js/script.js"></script>
 
     <!-- Script para mudar a cor do header ao rolar a página -->
     <script>

@@ -39,10 +39,12 @@ $estado = $_POST['estado'];
 $localizacao = isset($_POST['localizacao']) ? $_POST['localizacao'] : '';
 $data_inicio = isset($_POST['data_inicio']) ? $_POST['data_inicio'] : '';
 $data_fim = isset($_POST['data_fim']) ? $_POST['data_fim'] : '';
+// Lotação por dia: vazio = sem limite
+$vagas = isset($_POST['vagas']) && $_POST['vagas'] !== '' ? max(1, (int) $_POST['vagas']) : null;
 
-$stmt = $ligacao->prepare("INSERT INTO t_artigo (id_user, cat, subcat, titulo, descricao, preco, estado, localizacao, data_inicio, data_fim, foto1)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '')");
-$stmt->bind_param("iiissdisss", $id_user, $valor_cat, $valor_subcat, $titulo, $descricao, $preco, $estado, $localizacao, $data_inicio, $data_fim);
+$stmt = $ligacao->prepare("INSERT INTO t_artigo (id_user, cat, subcat, titulo, descricao, preco, estado, localizacao, data_inicio, data_fim, vagas, foto1)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '')");
+$stmt->bind_param("iiissdisssi", $id_user, $valor_cat, $valor_subcat, $titulo, $descricao, $preco, $estado, $localizacao, $data_inicio, $data_fim, $vagas);
 
 if ($stmt->execute()) {
     $id_artigo = $stmt->insert_id;
@@ -61,7 +63,8 @@ if ($stmt->execute()) {
         processar_foto($_FILES["ficheiro"], $id_artigo, 3);
     }
 } else {
-    echo "Erro: " . $stmt->error;
+    error_log("vender_tours2: " . $stmt->error);
+    echo "Erro ao registar o passeio.";
 }
 
 mysqli_close($ligacao);

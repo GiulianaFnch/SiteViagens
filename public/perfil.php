@@ -105,7 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['id_solicitacao'])) {
         header('Location: perfil.php?msg=perfil_atualizado');
         exit;
     } else {
-        echo "Erro ao atualizar os dados: " . $stmt->error;
+        error_log("perfil: " . $stmt->error);
+        echo "Erro ao atualizar os dados. Tente novamente.";
         exit;
     }
 }
@@ -385,9 +386,9 @@ mysqli_close($ligacao);
 
         <ul class="navbar">
             <li><a href="<?= BASE_URL ?>public/hotels/hotels.php" style="color: black;" >Hospedagem</a></li>
-            <li><a href="#package" style="color: black;" >Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;" >Passagens</a></li>
             <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black; ">Tours</a></li>
-            <li><a href="#contact" style="color: black;">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
             <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
 
         </ul>
@@ -540,7 +541,7 @@ images.forEach((item, i) => {
 const updateImage = (i) => {
     let path = images[i].src;
     largeImage.src = path;
-    imageName.innerHTML = path.split('/').pop();
+    imageName.textContent = path.split('/').pop();
     // Remova ou comente esta linha para não exibir o número da imagem:
     // imageIndex.innerHTML = `0${i + 1}`;
     index = i;

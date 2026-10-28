@@ -316,9 +316,9 @@ header{
 
         <ul class="navbar">
         <li><a href="<?= BASE_URL ?>public/hotels/hotels.php" style="color: black;" >Hospedagem</a></li>
-            <li><a href="#package" style="color: black;" >Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;" >Passagens</a></li>
             <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black; ">Tours</a></li>
-            <li><a href="#contact" style="color: black;">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
             <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
         </ul>
         </header>
@@ -345,18 +345,6 @@ header{
                         </div>
 
                         
-                        <div class="settings-section">
-                            <div class="settings-item" id="location-toggle" onclick="toggleLocationService()">
-                                <div class="item-left">
-                                    <i class="bi bi-geo-alt"></i>
-                                    <span class="item-label">Serviços de Localização</span>
-                                </div>
-                                <div class="item-right">
-                                    <!-- Ícone de Toggle Inicial -->
-                                    <i id="location-icon" class="bi bi-toggle-off"></i>
-                                </div>
-                            </div>
-                        </div>
 
                        
 
@@ -463,38 +451,6 @@ header{
 
 
 
-                                <script>
-
-                            function toggleLocationService() {
-                                var icon = document.getElementById('location-icon');
-                                var isEnabled = icon.classList.contains('bi-toggle-on');
-
-                                // Alterna o ícone
-                                if (isEnabled) {
-                                    icon.classList.remove('bi-toggle-on');
-                                    icon.classList.add('bi-toggle-off');
-                                } else {
-                                    icon.classList.remove('bi-toggle-off');
-                                    icon.classList.add('bi-toggle-on');
-                                }
-
-                                // Envia uma solicitação AJAX para atualizar o estado no servidor
-                                var xhr = new XMLHttpRequest();
-                                xhr.open('POST', 'configuracoes.php', true);
-                                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                                xhr.onreadystatechange = function () {
-                                    if (xhr.readyState === 4) {
-                                        if (xhr.status === 200) {
-                                            console.log('Serviço de localização atualizado.');
-                                            console.log(xhr.responseText); // Para depuração
-                                        } else {
-                                            console.error('Erro na solicitação AJAX:', xhr.statusText);
-                                        }
-                                    }
-                                };
-                                xhr.send('toggle_location_service=1&location_service=' + (isEnabled ? 0 : 1) + '&csrf_token=<?= csrf_token() ?>');
-                            }
-                        </script>
 
     <script>
 function toggleNotification() {
@@ -516,8 +472,8 @@ function toggleNotification() {
     xhr.send('toggle_notificacoes_ofertas=1&notificacoes_ofertas=' + newStatus + '&csrf_token=<?= csrf_token() ?>');
 }
 </script>
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
 </body>

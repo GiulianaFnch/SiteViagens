@@ -67,7 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             processar_foto($_FILES["ficheiro"], $id_hospedagem, 3);
         }
     } else {
-        echo "Erro: " . $stmt->error;
+        error_log("vender_hospedagem: " . $stmt->error);
+        echo "Erro ao registar a hospedagem.";
     }
 
     mysqli_close($ligacao);
@@ -295,9 +296,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="bx bx-menu" id="menu-icon"></div>
         <ul class="navbar">
             <li><a href="#home">Hospedagem</a></li>
-            <li><a href="#package">Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php">Passagens</a></li>
             <li><a href="#destination">Tours</a></li>
-            <li><a href="#contact">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php">Pacotes</a></li>
         </ul>
     </header>
 

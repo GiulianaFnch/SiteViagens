@@ -6,7 +6,7 @@ include '../../config/liga_bd.php';
 $id_user_logado = $_SESSION['id'];
 
 // Consulta para obter os artigos do usuário logado
-$sql = "SELECT id, titulo, descricao, preco, localizacao, data_inicio, data_fim, foto1, foto2, foto3 
+$sql = "SELECT id, titulo, descricao, preco, localizacao, data_inicio, data_fim, vagas, foto1, foto2, foto3 
         FROM t_artigo 
         WHERE id_user = ?";
 $stmt = $ligacao->prepare($sql);
@@ -22,7 +22,7 @@ $stmt->close();
 <head>
     <meta charset="utf-8">
     <title>Gestão Passeios</title>
-    <link rel="stylesheet" href="../assets/css/styleperfil.css">
+    <link rel="stylesheet" href="../../assets/css/styleperfil.css">
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -149,9 +149,9 @@ $stmt->close();
         <a href="../../index.html" style="font-size: 35px; font-weight: 600; color: black;">BestWay</a>
         <ul class="navbar">
             <li><a href="#home">Hospedagem</a></li>
-            <li><a href="#package">Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php">Passagens</a></li>
             <li><a href="#destination">Tours</a></li>
-            <li><a href="#contact">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php">Pacotes</a></li>
         </ul>
     </header>
 
@@ -196,7 +196,7 @@ $stmt->close();
                                     <td><?php echo htmlspecialchars($row['data_inicio']); ?></td>
                                     <td><?php echo htmlspecialchars($row['data_fim']); ?></td>
                                     <td class="action-btns">
-                                        <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#editModal" data-reserva-id="<?php echo $row['id']; ?>" data-titulo="<?php echo htmlspecialchars($row['titulo']); ?>" data-descricao="<?php echo htmlspecialchars($row['descricao']); ?>" data-preco="<?php echo htmlspecialchars($row['preco']); ?>" data-localizacao="<?php echo htmlspecialchars($row['localizacao']); ?>" data-data_inicio="<?php echo htmlspecialchars($row['data_inicio']); ?>" data-data_fim="<?php echo htmlspecialchars($row['data_fim']); ?>">
+                                        <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#editModal" data-reserva-id="<?php echo $row['id']; ?>" data-titulo="<?php echo htmlspecialchars($row['titulo']); ?>" data-descricao="<?php echo htmlspecialchars($row['descricao']); ?>" data-preco="<?php echo htmlspecialchars($row['preco']); ?>" data-localizacao="<?php echo htmlspecialchars($row['localizacao']); ?>" data-data_inicio="<?php echo htmlspecialchars($row['data_inicio']); ?>" data-data_fim="<?php echo htmlspecialchars($row['data_fim']); ?>" data-vagas="<?php echo htmlspecialchars($row['vagas'] ?? ''); ?>">
                                             <i class="bi bi-pencil"></i> Editar
                                         </button>
                                         <button type="button" class="btn btn-delete" data-toggle="modal" data-target="#confirmDeleteModal" data-reserva-id="<?php echo $row['id']; ?>">
@@ -275,6 +275,10 @@ $stmt->close();
                             <label for="data_fim">Data Fim</label>
                             <input type="date" class="form-control" name="data_fim" id="editDataFim" required>
                         </div>
+                        <div class="form-group">
+                            <label for="editVagas">Vagas por dia (vazio = sem limite)</label>
+                            <input type="number" class="form-control" name="vagas" id="editVagas" min="1">
+                        </div>
                         <button type="submit" name="edit" class="btn btn-success">Salvar Alterações</button>
                     </form>
                 </div>
@@ -316,6 +320,7 @@ $stmt->close();
             modal.find('#editLocal').val(localizacao);
             modal.find('#editDataInicio').val(dataInicio);
             modal.find('#editDataFim').val(dataFim);
+            modal.find('#editVagas').val(button.data('vagas'));
         });
     </script>
 

@@ -237,9 +237,9 @@ include '../../config/liga_bd.php';
         <div class="bx bx-menu" id="menu-icon"></div>
         <ul class="navbar">
             <li><a href="#home">Hospedagem</a></li>
-            <li><a href="#package">Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php">Passagens</a></li>
             <li><a href="#destination">Tours</a></li>
-            <li><a href="#contact">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php">Pacotes</a></li>
         </ul>
     </header>
 
@@ -272,17 +272,19 @@ include '../../config/liga_bd.php';
                             $resultado = mysqli_query($ligacao, $sql);
                             while ($linha = mysqli_fetch_assoc($resultado)) {
                                 $selected = ($categoria == $linha['id']) ? 'selected' : '';
-                                echo "<option value='" . $linha['id'] . "' $selected>" . $linha['categoria'] . "</option>";
+                                echo "<option value='" . (int) $linha['id'] . "' $selected>" . htmlspecialchars($linha['categoria']) . "</option>";
                             }
                             ?>
                         </select>
                         <br>Subcategoria:
                         <select name="subcategoria" id="subcategoria" onchange="atualiza();">
                             <?php
-                            $sql2 = "SELECT * FROM t_subcat WHERE categoria = " . $categoria;
-                            $resultado2 = mysqli_query($ligacao, $sql2);
+                            $stmt2 = $ligacao->prepare("SELECT * FROM t_subcat WHERE categoria = ?");
+                            $stmt2->bind_param("i", $categoria);
+                            $stmt2->execute();
+                            $resultado2 = $stmt2->get_result();
                             while ($linha2 = mysqli_fetch_assoc($resultado2)) {
-                                echo "<option value='" . $linha2['id'] . "'>" . $linha2['subcat'] . "</option>";
+                                echo "<option value='" . (int) $linha2['id'] . "'>" . htmlspecialchars($linha2['subcat']) . "</option>";
                             }
                             ?>
                         </select>
@@ -321,6 +323,9 @@ include '../../config/liga_bd.php';
 
                         <label for="data_fim">Data de Fim:</label>
                         <input type="date" id="data_fim" name="data_fim" required>
+
+                        <label for="vagas">Vagas por dia (deixe vazio para não limitar):</label>
+                        <input type="number" id="vagas" name="vagas" min="1">
 
                         <label for="ficheiro1">Foto 1:</label>
                         <input type="file" id="ficheiro1" name="ficheiro1">

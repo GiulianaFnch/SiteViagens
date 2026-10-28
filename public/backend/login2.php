@@ -1,4 +1,8 @@
-<?php require_once __DIR__ . '/../../config/config.php'; ?>
+<?php
+require_once __DIR__ . '/../../config/config.php';
+require_once __DIR__ . '/../../config/acesso.php'; // inicia a sessão e define os tipos de utilizador
+csrf_verificar(); // só aceita o formulário de login.php (impede logins forçados por outros sites)
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -83,8 +87,6 @@
 <body>
     <div class="message-container">
         <?php
-        session_start(); // inicia a sessão
-
         $nick = $_POST['nick'] ?? '';
         $pass = $_POST['pass'] ?? '';
 
@@ -104,7 +106,7 @@
             // caso a senha esteja correta
             if (password_verify($pass, $linha['pass'])) {
                 // caso o utilizador tenha sido bloqueado pelo admin
-                if ($linha['tipo_user'] == 1) {
+                if ($linha['tipo_user'] == TIPO_BLOQUEADO) {
                     echo '<h2>Utilizador bloqueado</h2>';
                     ?>
                     <br>
@@ -112,7 +114,10 @@
                     <?php
                     header("refresh:2;url=../login.php");
                 } else {
-                    echo "<h2>Bem vindo(a), " . $linha['nome'] .  "!</h2>";
+                    echo "<h2>Bem vindo(a), " . htmlspecialchars($linha['nome']) .  "!</h2>";
+                    // Novo ID de sessão a cada login, para que um ID conhecido antes do login não sirva depois
+                    session_regenerate_id(true);
+                    unset($_SESSION['csrf_token']);
                     $_SESSION['id'] = $linha['id'];
                     $_SESSION['nick'] = $linha['nick'];
                     $_SESSION['logged_in'] = true; // Define a variável de sessão logged_in como true

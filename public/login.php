@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../config/csrf.php'; // inicia a sessão para o token do formulário ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -29,6 +30,7 @@
                     <p class="lead">Preencha esse formulário para registrar um novo usuário no banco de dados</p>
                 </div>
                 <form action="backend/login2.php" method="post" enctype="multipart/form-data">
+                    <?= csrf_campo() ?>
                     <div class="input-group">
                         <label for="nick">Nick:</label>
                         <input type="text" id="nick" name="nick" class="form-control" required>

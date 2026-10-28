@@ -1,10 +1,17 @@
 <?php
 include 'valida_adm.php';
 include '../config/liga_bd.php';
+include '../config/paginacao.php';
 
-// Consulta para obter todos os usuários
-$sql = "SELECT id, nick, nome, email, data_nasc, nome_marca, foto, tipo_user FROM t_user";
-$result = $ligacao->query($sql);
+// Utilizadores, 25 por página
+$por_pagina = 25;
+$pagina = pagina_atual();
+$total = (int) $ligacao->query("SELECT COUNT(*) FROM t_user")->fetch_row()[0];
+$stmt = $ligacao->prepare("SELECT id, nick, nome, email, data_nasc, nome_marca, foto, tipo_user FROM t_user ORDER BY id LIMIT ? OFFSET ?");
+$offset = ($pagina - 1) * $por_pagina;
+$stmt->bind_param("ii", $por_pagina, $offset);
+$stmt->execute();
+$result = $stmt->get_result();
 
 include 'views/header.php';
 ?>
@@ -51,22 +58,29 @@ include 'views/header.php';
                         <td><?php echo htmlspecialchars($row['nick']); ?></td>
                         <td><?php echo htmlspecialchars($row['nome']); ?></td>
                         <td><?php echo htmlspecialchars($row['email']); ?></td>
-                        <td><?php echo htmlspecialchars($row['data_nasc']); ?></td>
+                        <td><?php echo htmlspecialchars($row['data_nasc'] ?? ''); ?></td>
                         <td><?php echo htmlspecialchars($row['nome_marca']); ?></td>
                         <td><img src="../assets/images/pics/<?php echo htmlspecialchars($row['foto']); ?>" alt="Foto"
                                 width="50"></td>
-                        <td class="text-center"><?php echo htmlspecialchars($row['tipo_user']); ?></td>
+                        <td class="text-center"><?php echo htmlspecialchars(tipo_utilizador_nome($row['tipo_user'])); ?></td>
                         <td>
+                            <?php if ((int) $row['tipo_user'] !== TIPO_ADMIN): ?>
                             <form action="desativar_usuario.php" method="post" style="display:inline;">
                                 <?= csrf_campo() ?>
                                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
-                                <button type="submit" class="btn btn-warning btn-sm">Desativar</button>
+                                <?php if ((int) $row['tipo_user'] === TIPO_BLOQUEADO): ?>
+                                    <button type="submit" class="btn btn-success btn-sm">Reativar</button>
+                                <?php else: ?>
+                                    <button type="submit" class="btn btn-warning btn-sm">Desativar</button>
+                                <?php endif; ?>
                             </form>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
+        <?= paginacao_html($total, $por_pagina, $pagina) ?>
     </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

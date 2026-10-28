@@ -69,11 +69,11 @@
     <a href="<?= BASE_URL ?>index.html"
         style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
     <ul class="navbar">
-        <li><a href="<?= BASE_URL ?>index.html#home" style="color: black;">Hospedagem</a></li>
-        <li><a href="#package" style="color: black;">Passagens</a></li>
+        <li><a href="<?= BASE_URL ?>public/hotels/hotels.php" style="color: black;">Hospedagem</a></li>
+        <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;">Passagens</a></li>
         <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black;">Passeios</a></li>
-        <li><a href="#contact" style="color: black;">Pacotes</a></li>
-        <li><a href="public/login.php" style="color: black;"><i class='bx bx-user'></i></a></li>
+        <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
+        <li><a href="<?= BASE_URL ?>public/login.php" style="color: black;"><i class='bx bx-user'></i></a></li>
         <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a>
         </li>
     </ul>
@@ -89,82 +89,78 @@
     }
     include "../../config/liga_bd.php";
 
+    include "../../config/reservas.php";
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $id_user = $_SESSION['id'];
-        $tipo_item = isset($_POST['tipo_item']) ? $_POST['tipo_item'] : 'atividade'; // Verifica se o tipo_item está definido
-        if("hospedagem" == $tipo_item){
-            $quantidade = $_POST['dias_quartos']; 
-        } else{
-            $quantidade = 1;
-        }
-        $return_url = isset($_POST['return_url']) ? $_POST['return_url'] : BASE_URL . 'index.html'; // URL da página anterior
-        $total = isset($_POST['total']) ? $_POST['total'] : 0; // Valor total calculado
-    
-        // Verifica se o tipo_item é hospedagem ou atividade e define o id_artigo correspondente
+        $tipo_item = $_POST['tipo_item'] ?? 'atividade';
+        $quantidade = (int) ($_POST['quantidade'] ?? 1);
+        $data_inicio = null;
+        $data_fim = null; // só as hospedagens têm data de fim (check-out)
+
         if ($tipo_item == 'hospedagem') {
-            if (isset($_POST['id_artigo'])) {
-                $id_artigo = $_POST['id_artigo'];
-            } else {
-                die("Erro: id_hospedagem não definido.");
-            }
+            $id_artigo = (int) ($_POST['id_artigo'] ?? 0);
+            $data_inicio = $_POST['data_checkin'] ?? '';
+            $data_fim = $_POST['data_checkout'] ?? '';
+            $quantidade = (int) ($_POST['n_quartos'] ?? 0);
         } else if ($tipo_item == 'voo') {
-            $flight_number = $_POST['flight_number'];
-            $airline = $_POST['airline'];
-            $price = $_POST['price'];
-            $arrival = $_POST['arrival'];
-
-            // Insert into t_voos and get the inserted ID
-            $stmt = $ligacao->prepare("INSERT INTO t_voos (id_user, flight_number, airline, price, arrival) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param("issss", $id_user, $flight_number, $airline, $price, $arrival);
-            $stmt->execute();
-            $id_artigo = $stmt->insert_id; // Get the inserted ID
-            $stmt->close();
-        } else {
-            if (isset($_POST['id_artigo'])) {
-                $id_artigo = $_POST['id_artigo'];
-            } else {
-                die("Erro: id_artigo não definido.");
+            // Os dados do voo vêm da pesquisa guardada na sessão (voos.php), nunca do formulário
+            $voo = $_SESSION['voos_pesquisados'][$_POST['voo_ref'] ?? ''] ?? null;
+            $id_artigo = 0;
+            if ($voo) {
+                $stmt = $ligacao->prepare("INSERT INTO t_voos (id_user, flight_number, airline, price, arrival) VALUES (?, ?, ?, ?, ?)");
+                $stmt->bind_param("issds", $id_user, $voo['flight_number'], $voo['airline'], $voo['price'], $voo['arrival']);
+                $stmt->execute();
+                $id_artigo = $stmt->insert_id; // Get the inserted ID
+                $stmt->close();
             }
+            $quantidade = 1;
+        } else {
+            $tipo_item = 'atividade';
+            $id_artigo = (int) ($_POST['id_artigo'] ?? 0);
+            $data_inicio = $_POST['data_inicio'] ?? '';
         }
 
-        // Verifica se o item já está no carrinho
-        $stmt = $ligacao->prepare("SELECT * FROM t_carrinho WHERE id_user = ? AND id_artigo = ? AND tipo_item = ?");
-        $stmt->bind_param("iis", $id_user, $id_artigo, $tipo_item);
+        // Se o mesmo item (com as mesmas datas) já está no carrinho, soma a quantidade
+        $stmt = $ligacao->prepare("SELECT id, quantidade FROM t_carrinho
+            WHERE id_user = ? AND id_artigo = ? AND tipo_item = ? AND data_inicio <=> ? AND data_fim <=> ?");
+        $stmt->bind_param("iisss", $id_user, $id_artigo, $tipo_item, $data_inicio, $data_fim);
         $stmt->execute();
-        $resultado = $stmt->get_result();
-
-        if ($resultado->num_rows > 0) {
-            // Atualiza a quantidade se o item já está no carrinho
-            $stmt = $ligacao->prepare("UPDATE t_carrinho SET quantidade = quantidade + ? WHERE id_user = ? AND id_artigo = ? AND tipo_item = ?");
-            $stmt->bind_param("iiis", $quantidade, $id_user, $id_artigo, $tipo_item);
-        } else {
-            // Insere um novo registro se o item não está no carrinho
-            $stmt = $ligacao->prepare("INSERT INTO t_carrinho (id_user, id_artigo, tipo_item, quantidade) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("iisi", $id_user, $id_artigo, $tipo_item, $quantidade);
-        }
-
-        if ($stmt->execute()) {
-            // Atualiza o total do carrinho na sessão
-            
-            if (isset($_SESSION['total_carrinho'])) {
-            if($tipo_item == 'hospedagem'){
-                //$_SESSION['total_carrinho'] = $total;
-            } else{
-                $_SESSION['total_carrinho'] += $total;
-            }
-            }
-            //echo $_SESSION['total_carrinho'];
-
-            // Exibe a mensagem de sucesso e redireciona
-            echo "<div class='message-container'>
-                  <input type='button' value='Ir para o Carrinho' onclick='window.location.href=\"carrinho.php\"'>
-                <input type='button' value='Continuar Comprando' onclick='window.history.go(-2)'>
-              </div>";
-        } else {
-            echo "<h2>Erro ao adicionar item ao carrinho: " . $stmt->error . "</h2>";
-        }
-
+        $existente = $stmt->get_result()->fetch_assoc();
         $stmt->close();
+        if ($existente && $tipo_item != 'voo') {
+            $quantidade += (int) $existente['quantidade'];
+        }
+
+        // Valida datas, quantidade e disponibilidade (o preço é sempre calculado no servidor)
+        $item = reserva_preparar_item($ligacao, $tipo_item, $id_artigo, $quantidade, $data_inicio, $data_fim, $id_user);
+
+        if ($item['erro'] !== null) {
+            echo "<div class='message-container'>
+                  <h2>" . htmlspecialchars($item['erro']) . "</h2>
+                  <input type='button' value='Voltar' onclick='window.history.back()'>
+                  </div>";
+        } else {
+            if ($existente) {
+                $stmt = $ligacao->prepare("UPDATE t_carrinho SET quantidade = ? WHERE id = ?");
+                $stmt->bind_param("ii", $item['quantidade'], $existente['id']);
+            } else {
+                $stmt = $ligacao->prepare("INSERT INTO t_carrinho (id_user, id_artigo, tipo_item, quantidade, data_inicio, data_fim) VALUES (?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("iisiss", $id_user, $id_artigo, $tipo_item, $item['quantidade'], $item['data_inicio'], $data_fim);
+            }
+
+            if ($stmt->execute()) {
+                echo "<div class='message-container'>
+                      <h2>" . htmlspecialchars($item['titulo']) . " adicionado ao carrinho</h2>
+                      <p>Total: " . reserva_formatar_preco($item['preco_total']) . "</p>
+                      <input type='button' value='Ir para o Carrinho' onclick='window.location.href=\"carrinho.php\"'>
+                      <input type='button' value='Continuar Comprando' onclick='window.history.go(-2)'>
+                      </div>";
+            } else {
+                echo "<h2>Erro ao adicionar item ao carrinho.</h2>";
+            }
+            $stmt->close();
+        }
         $ligacao->close();
     }
     ?>

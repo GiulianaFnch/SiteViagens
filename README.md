@@ -51,11 +51,27 @@ Para recomeçar com a base de dados limpa: `docker compose down -v`.
 
 ### Opção 2 — XAMPP / WAMP
 
-Requisitos: PHP 7.4+ (testado em 8.3) e MySQL 5.7+ / MariaDB 10+.
+Requisitos: PHP 8.1+ (testado em 8.3) e MySQL 5.7+ / MariaDB 10+.
+O PHP 8.1 é o mínimo porque é a partir dele que `htmlspecialchars` também escapa aspas simples por omissão (proteção contra XSS).
 
 1. Clone o repositório para a pasta `htdocs` do XAMPP (ex.: `C:\xampp\htdocs\SiteViagens`).
 2. No phpMyAdmin, crie a base de dados `site_viagens` e importe `database/site_viagens.sql`.
 3. Inicie o Apache e o MySQL e abra <http://localhost/SiteViagens/>.
+
+## Testes
+
+`tests/smoke_test.sh` abre o site a correr e verifica os fluxos principais (login, registo, reservas, avaliações,
+permissões, XSS, newsletter e logout). Corre automaticamente no GitHub a cada push (`.github/workflows/php-lint.yml`).
+
+Para correr localmente, **numa base de dados de teste** (o script altera senhas e reservas dos dados de exemplo):
+
+```bash
+php -S 127.0.0.1:8080 -t .            # noutro terminal
+tests/smoke_test.sh http://127.0.0.1:8080
+```
+
+Com o XAMPP, use o endereço do site (ex.: `http://localhost/SiteViagens`) e, se precisar, o comando do MySQL em
+`MYSQL` (ex.: `MYSQL="C:/xampp/mysql/bin/mysql -uroot site_viagens"`).
 
 ## Configuração
 
@@ -71,11 +87,48 @@ Também é possível usar variáveis de ambiente: `DB_HOST`, `DB_USER`, `DB_PASS
 
 - **BASE_URL** — é detetado automaticamente (ex.: `/SiteViagens/` no XAMPP, `/` no Docker).
 - **SERPAPI_KEY** — necessária para a pesquisa de voos (`public/voos/voos.php`). Crie uma chave gratuita em <https://serpapi.com>.
+- **debug** (`APP_DEBUG`) — `false` por omissão: erros inesperados mostram só uma mensagem genérica e os detalhes vão
+  para o log do servidor (no XAMPP, `xampp/apache/logs/error.log`). Ponha `true` no seu computador para ver os erros na página.
 
 ### Atualizar uma base de dados existente
 
 Se já tinha a base de dados importada antes, aplique os scripts de `database/migrations/` por ordem
 (no phpMyAdmin → separador SQL, ou `mysql site_viagens < database/migrations/001_correcoes_t_user.sql`).
+
+O `003_atualizar_datas_exemplo.sql` é opcional: prolonga a disponibilidade dos passeios e hospedagens
+**de exemplo** (que terminava em 2024/2025) para que possam ser reservados. Não o use com dados reais.
+
+## Reservas
+
+As regras ficam em `config/reservas.php` e são usadas no carrinho, no checkout e nos painéis:
+
+- **Hospedagem** — o cliente escolhe check-in, check-out e nº de quartos. O preço é
+  `diária × noites × quartos`, e a reserva só é aceite se houver quartos livres em todas as noites
+  (contando apenas reservas confirmadas) e se as datas estiverem dentro do período de disponibilidade.
+- **Passeio** — o cliente escolhe o dia (dentro do período do passeio) e o nº de pessoas (1 a 20).
+  O preço é `preço × pessoas`. Se o vendedor definir **vagas por dia**, a reserva só é aceite enquanto houver vagas nesse dia
+  (migração `007_vagas_passeios.sql`).
+- O preço é sempre calculado no servidor; o valor pago fica gravado na reserva e não muda se o
+  vendedor alterar o preço depois.
+- Finalizar a reserva é uma transação: se algum item deixou de estar disponível, nada é reservado.
+- O cliente pode cancelar uma reserva até à data de início; o vendedor e o administrador também.
+  Reservas canceladas ficam no histórico e libertam os quartos.
+
+## Avaliações
+
+- Nota de 1 a 5 estrelas e comentário opcional, em passeios e hospedagens.
+- Só avalia quem tem uma reserva confirmada desse item que já terminou (check-out ou dia do passeio no passado).
+- Uma avaliação por utilizador e item: avaliar de novo edita a anterior. Cada um pode apagar a sua; o administrador
+  pode apagar qualquer uma.
+- O vendedor dono do passeio ou da hospedagem pode responder a cada avaliação (e editar ou apagar a resposta).
+- A média aparece nos detalhes e nas listagens. Para bases de dados existentes, aplique
+  `database/migrations/004_avaliacoes.sql` e `008_resposta_avaliacoes.sql`.
+
+## Newsletter
+
+O formulário "Inscreva-se para receber nossas ofertas" grava o e-mail em `t_newsletter`
+(`public/backend/newsletter.php`). Para bases de dados existentes, aplique `database/migrations/005_newsletter.sql`.
+O envio dos e-mails ainda não está implementado.
 
 ## Tipos de utilizador (`t_user.tipo_user`)
 
@@ -86,6 +139,9 @@ Se já tinha a base de dados importada antes, aplique os scripts de `database/mi
 | 2 | Vendedor (parceiro) |
 | 3 | Vendedor a aguardar aprovação |
 | 4 | Administrador (painel em `/adm`) |
+
+As constantes correspondentes (`TIPO_CLIENTE`, `TIPO_ADMIN`, ...) estão em `config/acesso.php`. Ao bloquear um utilizador, o tipo
+anterior fica guardado em `tipo_antes_bloqueio` e é reposto quando ele é reativado (migração `006_tipo_antes_bloqueio.sql`).
 
 ## Uso
 

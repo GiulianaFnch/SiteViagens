@@ -10,4 +10,6 @@ return [
     'base_url'    => null,
     // Chave da SerpAPI (https://serpapi.com) usada na pesquisa de voos.
     'serpapi_key' => '',
+    // true mostra os detalhes dos erros na página. Use só no seu computador, nunca num servidor público.
+    'debug'       => false,
 ];

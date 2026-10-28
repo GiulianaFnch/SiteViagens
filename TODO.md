@@ -6,55 +6,52 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 
 - [x] **Proteção CSRF** nas ações de utilizadores autenticados — `config/csrf.php` (`csrf_campo()` nos
       formulários, `csrf_verificar()` nos ficheiros que alteram dados, token também nos pedidos AJAX do chat e das definições).
-- [ ] CSRF no login e nos registos (`public/backend/login2.php`, `public/registro2.php`,
-      `public/vendedor/registro_vendedor.php`) — exige primeiro mover o `session_start()` para antes do HTML.
-- [ ] Logout por GET (`public/backend/logout.php`) — qualquer página pode terminar a sessão do utilizador.
-      Passar a POST com token (os links estão também em páginas estáticas como `index.html`).
-- [ ] **XSS** — cerca de 30 `echo` de dados da BD sem `htmlspecialchars`. Os piores:
-      `public/tours/detalhes_tours.php` (11), `public/tours/historico_tours.php` (7),
-      `public/vendedor/gerir_hospedagem.php`, `public/vendedor/gerenciar_reservas.php`,
-      `public/tours/listar_tours.php`, `public/hotels/detalhes_hospedagem.php`.
-      Títulos e descrições são escritos por vendedores, logo um vendedor pode injetar script nas páginas dos clientes.
-- [ ] **Preço do voo vem do cliente** — `public/carrinho/adicionar_ao_carrinho.php` grava em `t_voos` o
-      `price` enviado no POST. Recalcular/validar no servidor (ou guardar o resultado da SerpAPI na sessão).
-- [ ] **`total` vem do cliente** no mesmo ficheiro — não confiar nele; calcular a partir dos preços na BD.
-- [ ] **Login sem `session_regenerate_id(true)`** em `public/backend/login2.php` (fixação de sessão).
-- [ ] **Quantidade sem validação** — `dias_quartos` (carrinho) e `quantidade` (`editar_reserva.php`)
-      aceitam 0 ou negativos. Forçar `(int)` e `>= 1`.
-- [ ] Mensagens de erro expõem detalhes da BD (`or die(mysqli_error(...))` em vários ficheiros). Trocar por
-      mensagem genérica + `error_log`.
-- [ ] Consultas ainda montadas com concatenação (hoje seguras porque os valores são `int`/sessão, mas frágeis):
-      `public/tours/historico_tours.php`, `public/tours/listar_tours.php`, `public/hotels/listar_hospedagem.php`
-      (usa `real_escape_string`), `public/vendedor/admin.php`, `public/vendedor/vender_tours.php`. Passar a prepared statements.
-- [ ] `public/vendedor/gestao_opcoes.php` e `vender_opcoes.php` não exigem login de vendedor
-      (só mostram menus, mas devem incluir `valida_vendedor.php`).
+- [x] CSRF no login e nos registos (`login.php`/`login2.php`, `registro.php`/`registro2.php`, `registro_vendedor.php`).
+- [x] Logout só por POST com token — os links "Logout" abrem uma página de confirmação.
+- [x] **XSS** — os textos vindos da BD (títulos, descrições, nomes, nicks, fotos, categorias) passam por
+      `htmlspecialchars` em todas as páginas. Testado com títulos/nomes contendo `<script>` em 19 páginas.
+- [x] **Preço do voo vem do cliente** — os resultados da SerpAPI ficam na sessão; o formulário só envia uma referência.
+- [x] **`total` vem do cliente** no mesmo ficheiro — o preço passa a ser calculado no servidor (`config/reservas.php`).
+- [x] **Fixação de sessão** — novo ID de sessão a cada login; cookie de sessão `HttpOnly`, `SameSite=Lax` e
+      `use_strict_mode` (`config/csrf.php`).
+- [x] **Quantidade sem validação** — carrinho e `editar_reserva.php` validam quartos (1 a `n_quartos`) e pessoas (1 a 20).
+- [x] Mensagens de erro já não expõem detalhes da BD — tratador de exceções em `config/config.php` (mensagem genérica
+      + `error_log`; `'debug' => true` em `config.local.php` mostra os detalhes).
+- [x] Consultas com concatenação passaram a prepared statements (`historico_tours`, `listar_tours`, `listar_hospedagem`,
+      `favoritos`, `vendedor/admin`, `vender_tours`).
+- [x] `gestao_opcoes.php`, `vender_opcoes.php` e `gerir_hospedagem.php` exigem login de vendedor.
 
 ## Bugs / lógica
 
-- [ ] Reserva não verifica disponibilidade nem datas — `efetuar_reserva.php` só copia o carrinho para `t_reservas`.
-      Não há transação: se uma inserção falhar, o carrinho é apagado na mesma.
-- [ ] Reserva não guarda o preço pago (se o vendedor mudar o preço, o histórico muda).
-- [ ] N+1 queries em `listar_tours.php` e `listar_hospedagem.php` (uma consulta de utilizador por item) — usar `JOIN`.
-- [ ] `adicionar_ao_carrinho.php` lê `return_url` mas convém garantir que só redireciona para caminhos internos.
-- [ ] Formulários que apontam para ficheiros inexistentes: `adm/reservas.php` (`editar_reserva.php`, `excluir_reserva.php`),
-      `public/hotels/listar_hospedagem.php` (`carrinho.php`), `public/voos/voos.php` (`subscribe.php`).
-- [ ] O "serviço de localização" em `configuracoes.php`/`configuracoes2.php` envia `toggle_location_service`, mas o servidor não trata esse campo.
-- [ ] Links quebrados no cabeçalho de `efetuar_reserva.php` (`#package`, `#contact`, `public/login.php` relativo).
+- [x] Reserva verifica datas e quartos livres, e `efetuar_reserva.php` usa uma transação.
+- [x] Reserva guarda o preço pago (`preco_unitario`, `preco_total`).
+- [x] Lotação dos passeios: `t_artigo.vagas` (pessoas por dia, vazio = sem limite), definida pelo vendedor (migração 007).
+- [x] N+1 queries em `listar_tours.php` e `listar_hospedagem.php` — agora uma só consulta com `JOIN`.
+- [x] `return_url` removido dos formulários (o servidor já não o usava).
+- [x] Formulários e links para ficheiros inexistentes — a newsletter passa a funcionar (`public/backend/newsletter.php`,
+      tabela `t_newsletter`) nas 12 páginas; links "Passagens"/"Pacotes" do menu, links `public/...` relativos, scripts,
+      CSS e imagens com caminho ou maiúsculas erradas corrigidos (verificado com um rastreio de links em 39 páginas).
+- [x] Removido o botão "serviço de localização" das configurações (não fazia nada no servidor).
+- [x] Redirecionamento para o login falhava em páginas que já tinham começado a escrever HTML — agora o header é enviado antes.
+- [x] Links quebrados no cabeçalho de `efetuar_reserva.php` e de ~25 outras páginas.
 
 ## Funcionalidades em falta
 
 - [ ] **Pacotes** (`public/pacotes/pacotes.php`) é só HTML estático — não há tabela nem gestão de pacotes.
 - [ ] Pagamento (atualmente "reservar" não cobra nada).
-- [ ] Cancelamento de reserva pelo cliente.
+- [x] Cancelamento de reserva pelo cliente (antes do início), vendedor e admin — a reserva fica com `estado = 'cancelada'`.
 - [ ] Recuperação de palavra-passe / confirmação de e-mail.
-- [ ] Avaliações/comentários dos passeios e hospedagens.
-- [ ] Paginação nas listagens e no painel de administração.
-- [ ] Notificações de ofertas (`notificacoes_ofertas` existe na BD mas nada envia e-mails).
+- [x] Avaliações dos passeios e hospedagens (`config/avaliacoes.php`, `views/partials/avaliacoes.php`) — só quem já usou a reserva avalia.
+- [x] Resposta do vendedor às avaliações (só o vendedor dono do item; migração 008).
+- [x] Paginação (`config/paginacao.php`): 12 por página nas listagens de passeios e hospedagens, 25 nos painéis do admin.
+- [ ] Envio de e-mails de ofertas (para `t_newsletter` e utilizadores com `notificacoes_ofertas`) — falta um serviço de e-mail.
 
 ## Organização do código
 
 - [ ] Cabeçalho, rodapé e CSS repetidos inline em quase todas as páginas — usar `views/partials/header.php` e `footer.php`.
-- [ ] Páginas de erro de acesso duplicadas em `config/valida.php`, `adm/valida_adm.php` e `public/vendedor/valida_vendedor.php`.
-- [ ] Números mágicos de `tipo_user` (0, 1 = bloqueado, 2 = vendedor, 3, 4 = admin) — definir constantes em `config/config.php`.
+- [x] Página de acesso negado única (`config/acesso.php`), usada pelos três validadores, com HTTP 403.
+- [x] Constantes `TIPO_CLIENTE`, `TIPO_BLOQUEADO`, `TIPO_VENDEDOR`, `TIPO_VENDEDOR_PENDENTE`, `TIPO_ADMIN` (`config/acesso.php`).
+- [x] Reativar um vendedor bloqueado tornava-o cliente — o tipo anterior fica em `tipo_antes_bloqueio` (migração 006);
+      administradores já não podem ser bloqueados; "aprovar vendedor" só afeta registos pendentes.
 - [ ] Ficheiros com nomes "2" (`chat2`, `registro2`, `login2`, `vender_tours2`, `configuracoes2`, `pesquisa2_tours`) — renomear pelo que fazem.
-- [ ] Testes: o CI só faz lint. Adicionar pelo menos testes de fumo (login, registo, reservar).
+- [x] Testes de fumo (`tests/smoke_test.sh`, 36 verificações) correm no CI com PHP 8.3 + MariaDB a cada push.

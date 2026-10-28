@@ -1,19 +1,22 @@
 <?php
 include 'valida_vendedor.php';
 include '../../config/liga_bd.php';
+include '../../config/reservas.php';
 
 $vendedor_id = $_SESSION['id'];
 
-$sql = "SELECT r.id, r.item_id, r.tipo_reserva, r.data_reserva, r.quantidade, u.nome AS user_nome,
-        CASE 
-            WHEN r.tipo_reserva = 'atividade' THEN (SELECT titulo FROM t_artigo WHERE id = r.item_id)
-            WHEN r.tipo_reserva = 'hospedagem' THEN (SELECT nome FROM t_hospedagem WHERE id = r.item_id)
-        END AS titulo
-        FROM t_reservas r 
+// Reservas de passeios e de hospedagens do vendedor logado
+$sql = "SELECT r.id, r.item_id, r.tipo_reserva, r.data_reserva, r.quantidade,
+               r.data_inicio, r.data_fim, r.preco_total, r.estado, u.nome AS user_nome,
+               COALESCE(a.titulo, h.nome) AS titulo
+        FROM t_reservas r
         JOIN t_user u ON r.user_id = u.id
-        WHERE r.tipo_reserva = 'atividade' AND r.item_id IN (SELECT id FROM t_artigo WHERE id_user = ?)";
+        LEFT JOIN t_artigo a ON r.tipo_reserva = 'atividade' AND a.id = r.item_id
+        LEFT JOIN t_hospedagem h ON r.tipo_reserva = 'hospedagem' AND h.id = r.item_id
+        WHERE a.id_user = ? OR h.id_user = ?
+        ORDER BY (r.data_inicio IS NULL), r.data_inicio DESC, r.id DESC";
 $stmt = $ligacao->prepare($sql);
-$stmt->bind_param("i", $vendedor_id);
+$stmt->bind_param("ii", $vendedor_id, $vendedor_id);
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
@@ -26,7 +29,7 @@ $result = $stmt->get_result();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel do Vendedor</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/styleperfil.css">
+    <link rel="stylesheet" href="../../assets/css/styleperfil.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -115,9 +118,9 @@ $result = $stmt->get_result();
         <a href="../../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
         <ul class="navbar">
             <li><a href="#home" style="color: black;">Hospedagem</a></li>
-            <li><a href="#package" style="color: black;">Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;">Passagens</a></li>
             <li><a href="#destination" style="color: black;">Tours</a></li>
-            <li><a href="#contact" style="color: black;">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
         </ul>
     </header>
 
@@ -140,14 +143,24 @@ $result = $stmt->get_result();
 
                 <div class="col-md-9 p-4">
                     <h2>Gerenciar Reservas</h2>
+                    <?php $mensagens = [
+                        'edited' => ['success', 'Reserva atualizada.'],
+                        'cancelled' => ['success', 'Reserva cancelada.'],
+                        'error' => ['danger', $_GET['erro'] ?? 'Não foi possível alterar a reserva.'],
+                    ]; ?>
+                    <?php if (isset($mensagens[$_GET['status'] ?? ''])): [$classe, $texto] = $mensagens[$_GET['status']]; ?>
+                        <div class="alert alert-<?= $classe ?>"><?= htmlspecialchars($texto) ?></div>
+                    <?php endif; ?>
                     <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th>Título</th>
                                 <th>Usuário</th>
                                 <th>Tipo de Reserva</th>
-                                <th>Data da Reserva</th>
+                                <th>Datas</th>
                                 <th>Quantidade</th>
+                                <th>Valor</th>
+                                <th>Estado</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
@@ -157,18 +170,29 @@ $result = $stmt->get_result();
                                 <td><?php echo htmlspecialchars($row['titulo']); ?></td>
                                 <td><?php echo htmlspecialchars($row['user_nome']); ?></td>
                                 <td><?php echo htmlspecialchars($row['tipo_reserva']); ?></td>
-                                <td><?php echo htmlspecialchars($row['data_reserva']); ?></td>
+                                <td>
+                                    <?php if ($row['tipo_reserva'] == 'hospedagem' && $row['data_inicio']): ?>
+                                        <?= reserva_formatar_data($row['data_inicio']) ?> a <?= reserva_formatar_data($row['data_fim']) ?>
+                                    <?php else: ?>
+                                        <?= reserva_formatar_data($row['data_inicio']) ?>
+                                    <?php endif; ?>
+                                    <br><small class="text-muted">reservado em <?= reserva_formatar_data($row['data_reserva']) ?></small>
+                                </td>
                                 <td><?php echo htmlspecialchars($row['quantidade']); ?></td>
+                                <td><?= reserva_formatar_preco($row['preco_total']) ?></td>
+                                <td><?= $row['estado'] == 'cancelada' ? '<span class="badge badge-secondary">Cancelada</span>' : '<span class="badge badge-success">Confirmada</span>' ?></td>
                             <td class="action-btns">
+                                <?php if ($row['estado'] == 'confirmada'): ?>
                                 <!-- Botão de Editar -->
-                                <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#editModal" data-reserva-id="<?php echo $row['id']; ?>">
+                                <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#editModal" data-reserva-id="<?php echo $row['id']; ?>" data-quantidade="<?= (int) $row['quantidade'] ?>">
                                         <i class="bi bi-pencil-square"></i> Editar
                                     </button>
 
-                                    <!-- Botão de Excluir -->
+                                    <!-- Botão de Cancelar -->
                                     <button type="button" class="btn btn-delete" data-toggle="modal" data-target="#confirmDeleteModal" data-reserva-id="<?php echo $row['id']; ?>">
-                                        <i class="bi bi-trash"></i> Excluir
+                                        <i class="bi bi-x-circle"></i> Cancelar
                                     </button>
+                                <?php endif; ?>
                                 </td>
                             </tr>
                             <?php endwhile; ?>
@@ -185,20 +209,20 @@ $result = $stmt->get_result();
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmação de Exclusão</h5>
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Cancelar reserva</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Você tem certeza que deseja excluir esta reserva?
+                    Você tem certeza que deseja cancelar esta reserva? O cliente verá a reserva como cancelada.
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Voltar</button>
                     <form id="deleteForm" method="post" action="reservas.php">
                         <?= csrf_campo() ?>
                         <input type="hidden" name="reserva_id" id="reservaId">
-                        <button type="submit" name="delete" class="btn btn-danger">Excluir</button>
+                        <button type="submit" name="cancelar" class="btn btn-danger">Cancelar reserva</button>
                     </form>
                 </div>
             </div>
@@ -222,12 +246,9 @@ $result = $stmt->get_result();
                         <input type="hidden" name="reserva_id" id="editReservaId">
 
                         <div class="form-group">
-
-
-
-
-                            <label for="quantidade">Quantidade</label>
-                            <input type="number" class="form-control" name="quantidade" id="quantidade" required>
+                            <label for="quantidade">Quantidade (quartos ou pessoas)</label>
+                            <input type="number" class="form-control" name="quantidade" id="quantidade" min="1" required>
+                            <small class="form-text text-muted">O valor da reserva é recalculado com o preço pago originalmente.</small>
                         </div>
 
                         <button type="submit" name="edit" class="btn btn-success">Salvar Alterações</button>
@@ -257,6 +278,7 @@ $result = $stmt->get_result();
             var reservaId = button.data('reserva-id');
             var modal = $(this);
             modal.find('#editReservaId').val(reservaId);
+            modal.find('#quantidade').val(button.data('quantidade'));
         });
     </script>
 

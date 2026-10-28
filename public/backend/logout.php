@@ -1,10 +1,21 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
-session_start();
-// Apaga todas as variáveis da sessão
-$_SESSION = array();
-// Finalmente, destroi a sessão
-session_destroy();
+require_once __DIR__ . '/../../config/csrf.php'; // inicia a sessão
+
+// O logout só acontece com um POST com token: assim outro site (ou uma imagem
+// apontada para este endereço) não consegue terminar a sessão do utilizador.
+// Os links "Logout" (incluindo os de páginas estáticas) abrem esta página, que pede confirmação.
+$terminou = false;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verificar();
+    // Apaga todas as variáveis da sessão e o cookie
+    $_SESSION = array();
+    $cookie = session_get_cookie_params();
+    setcookie(session_name(), '', time() - 3600, $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly']);
+    // Finalmente, destroi a sessão
+    session_destroy();
+    $terminou = true;
+}
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +61,8 @@ session_destroy();
             font-weight: 400;
         }
 
-        input[type="button"] {
+        input[type="button"],
+        input[type="submit"] {
             padding: 10px 20px;
             background-color: #6495ed;
             color: white;
@@ -59,7 +71,8 @@ session_destroy();
             cursor: pointer;
         }
 
-        input[type="button"]:hover {
+        input[type="button"]:hover,
+        input[type="submit"]:hover {
             background-color: #0056b3;
         }
 
@@ -85,22 +98,32 @@ session_destroy();
     <header>
         <a href="<?= BASE_URL ?>index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
         <ul class="navbar">
-            <li><a href="<?= BASE_URL ?>index.html#home" style="color: black;">Hospedagem</a></li>
-            <li><a href="#package" style="color: black;">Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/hotels/hotels.php" style="color: black;">Hospedagem</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;">Passagens</a></li>
             <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black;">Passeios</a></li>
-            <li><a href="#contact" style="color: black;">Pacotes</a></li>
-            <li><a href="public/login.php" style="color: black;"><i class='bx bx-user'></i></a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/login.php" style="color: black;"><i class='bx bx-user'></i></a></li>
             <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a></li>
         </ul>
     </header>
 
     <div class="message-container">
-        
-        <h2>Sessão terminada com sucesso! Até à próxima</h2>
-        <input type="button" value="Voltar ao início" onclick="window.open('../../index.html','_self')">
+        <?php if ($terminou): ?>
+            <h2>Sessão terminada com sucesso! Até à próxima</h2>
+            <input type="button" value="Voltar ao início" onclick="window.open('../../index.html','_self')">
+            <?php header("refresh:10;url=" . BASE_URL . "index.html"); ?>
+        <?php elseif (isset($_SESSION['id'])): ?>
+            <h2>Deseja terminar a sessão?</h2>
+            <form method="post">
+                <?= csrf_campo() ?>
+                <input type="submit" value="Sair">
+                <input type="button" value="Voltar" onclick="window.history.back()">
+            </form>
+        <?php else: ?>
+            <h2>Não tem nenhuma sessão iniciada.</h2>
+            <input type="button" value="Voltar ao início" onclick="window.open('../../index.html','_self')">
+        <?php endif; ?>
     </div>
-
-    <?php header("refresh:10;url=" . BASE_URL . "index.html"); ?>
 
     <footer>
         <p>© 2024 BestWay. Todos os direitos reservados.</p>

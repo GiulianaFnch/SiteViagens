@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../config/config.php';
 include_once "../../config/valida.php";
 include_once "../../config/liga_bd.php";
+include_once "../../config/avaliacoes.php";
 
 // Verificar se o id_artigo foi passado por POST ou GET
 if (isset($_POST['id_artigo'])) {
@@ -23,6 +24,10 @@ $linha = $stmt->get_result()->fetch_array();
 if (!$linha) {
     die("Passeio não encontrado.");
 }
+
+// Datas que o calendário deixa escolher: de hoje (ou do início do passeio) até ao fim
+$data_min = max(date('Y-m-d'), (string) $linha['data_inicio']);
+$data_max = (string) $linha['data_fim'];
 ?>
 
 <!DOCTYPE html>
@@ -49,11 +54,11 @@ if (!$linha) {
         <a href="<?= BASE_URL ?>index.html"
             style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
         <ul class="navbar">
-            <li><a href="<?= BASE_URL ?>index.html#home">Hospedagem</a></li>
-            <li><a href="#package">Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/hotels/hotels.php">Hospedagem</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php">Passagens</a></li>
             <li><a href="<?= BASE_URL ?>public/tours/tours.php">Passeios</a></li>
-            <li><a href="#contact">Pacotes</a></li>
-            <li><a href="public/login.php"><i class='bx bx-user'></i></a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/login.php"><i class='bx bx-user'></i></a></li>
             <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a>
             </li>
         </ul>
@@ -211,29 +216,30 @@ if (!$linha) {
     <main>
         <div class="carousel-container">
             <div class="artigo-carousel">
-                <div><img src="imagens/<?php echo $linha['foto1']; ?>" class="artigo-img" alt="Imagem 1"></div>
+                <div><img src="imagens/<?php echo htmlspecialchars($linha['foto1']); ?>" class="artigo-img" alt="Imagem 1"></div>
 
                 <?php if ($linha['foto2'] != NULL) { ?>
-                    <div><img src="imagens/<?php echo $linha['foto2']; ?>" class="artigo-img" alt="Imagem 2"></div>
+                    <div><img src="imagens/<?php echo htmlspecialchars($linha['foto2']); ?>" class="artigo-img" alt="Imagem 2"></div>
                 <?php } ?>
 
                 <?php if ($linha['foto3'] != NULL) { ?>
-                    <div><img src="imagens/<?php echo $linha['foto3']; ?>" class="artigo-img" alt="Imagem 3"></div>
+                    <div><img src="imagens/<?php echo htmlspecialchars($linha['foto3']); ?>" class="artigo-img" alt="Imagem 3"></div>
                 <?php } ?>
             </div>
         </div>
 
         <div class="info-container">
-            <h2><?php echo $linha['titulo']; ?></h2>
+            <h2><?php echo htmlspecialchars($linha['titulo']); ?></h2>
 
-            <!-- Avaliações -->
-            <div class="rating">
-                <span>&#9733;&#9733;&#9733;&#9733;&#9734;</span>
-                <span>4.5 / 5</span>
-            </div>
+            <!-- Avaliações (média real; a lista fica na secção #avaliacoes) -->
+            <?php $resumo = avaliacao_resumo($ligacao, 'atividade', $id_artigo); ?>
+            <a class="rating" href="#avaliacoes" style="color: inherit; text-decoration: none;">
+                <span style="color: #f5a623;"><?= avaliacao_estrelas($resumo['media']) ?></span>
+                <span><?= $resumo['total'] ? number_format($resumo['media'], 1, ',', '') . ' / 5 (' . $resumo['total'] . ')' : 'Sem avaliações' ?></span>
+            </a>
 
             <!-- Descrição -->
-            <div class="info-item"><?php echo $linha['descricao']; ?></div>
+            <div class="info-item"><?php echo htmlspecialchars($linha['descricao']); ?></div>
 
             <!-- Preço -->
             <div class="price-container"> € <?php echo number_format($linha['preco'], 2, ',', '.'); ?></div>
@@ -251,8 +257,15 @@ if (!$linha) {
 
             <div class="info-item">
                 <i class='bx bx-map'></i>
-                <strong>Localização:</strong> <?php echo $linha['localizacao']; ?>
+                <strong>Localização:</strong> <?php echo htmlspecialchars($linha['localizacao'] ?? ''); ?>
             </div>
+
+            <?php if ($linha['vagas'] !== null): ?>
+            <div class="info-item">
+                <i class='bx bx-group'></i>
+                <strong>Vagas por dia:</strong> <?= (int) $linha['vagas'] ?>
+            </div>
+            <?php endif; ?>
 
             <!-- Botões de Comprar, Voltar e Favoritos-->
             <div class="button-container">
@@ -270,8 +283,17 @@ if (!$linha) {
                     <?= csrf_campo() ?>
                     <input type="hidden" name="id_artigo" value="<?php echo $linha['id']; ?>">
                     <input type="hidden" name="tipo_item" value="atividade">
-                    <input type="hidden" name="return_url" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                    <input type="submit" class="buy-button" value="Adicionar ao carrinho">
+                    <?php if ($data_min <= $data_max): ?>
+                        <div class="info-item">
+                            <label for="data_passeio"><strong>Data:</strong></label>
+                            <input type="date" id="data_passeio" name="data_inicio" min="<?= $data_min ?>" max="<?= $data_max ?>" value="<?= $data_min ?>" required>
+                            <label for="pessoas"><strong>Pessoas:</strong></label>
+                            <input type="number" id="pessoas" name="quantidade" min="1" max="20" value="1" required style="width: 70px;">
+                        </div>
+                        <input type="submit" class="buy-button" value="Adicionar ao carrinho">
+                    <?php else: ?>
+                        <p>Este passeio já não tem datas disponíveis.</p>
+                    <?php endif; ?>
                 </form>
             </div>
             <br>
@@ -279,6 +301,12 @@ if (!$linha) {
         </div>
         </div>
     </main>
+
+    <?php
+    $avaliacao_tipo = 'atividade';
+    $avaliacao_item_id = $id_artigo;
+    include '../../views/partials/avaliacoes.php';
+    ?>
     <!--Package section-->
     <section class="package" id="package">
         <div class="title">
@@ -335,7 +363,7 @@ if (!$linha) {
             </div>
             <div class="box">
                 <div class="thum">
-                    <img src="imagens/Antalya.jpg">
+                    <img src="imagens/antalya.jpg">
 
                 </div>
 
@@ -393,8 +421,8 @@ if (!$linha) {
 
 
         <div class="send">
-            <form>
-                <input type text="email" placeholder="Insira seu e-mail aqui" required>
+            <form action="<?= BASE_URL ?>public/backend/newsletter.php" method="post">
+                <input type="email" name="email" placeholder="Insira seu e-mail aqui" required>
                 <input type="submit" value="Quero recebê-las!">
             </form>
         </div>
@@ -409,7 +437,7 @@ if (!$linha) {
                     <h4> Minha Conta</h4>
                     <ul>
                         <li><a href="#">Minhas Viagens</a></li>
-                        <li><a href="public/perfil.php">Meu Perfil</a></li>
+                        <li><a href="<?= BASE_URL ?>public/perfil.php">Meu Perfil</a></li>
                         <li><a href="#">Deletar minha conta</a></li>
 
                     </ul>
@@ -428,8 +456,8 @@ if (!$linha) {
                 <div class="list">
                     <h4>Trabalhe conosco</h4>
                     <ul>
-                        <li><a href="public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
-                        <li><a href="public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
                     </ul>
                 </div>
 
@@ -451,7 +479,7 @@ if (!$linha) {
     </section>
 
     <!--link to js-->
-    <script type="text/javascript" src="assets/js/script.js"></script>
+    <script type="text/javascript" src="<?= BASE_URL ?>assets/js/script.js"></script>
     <!-- Script para mudar a cor do header ao rolar a página -->
     <script>
         window.addEventListener('scroll', function () {

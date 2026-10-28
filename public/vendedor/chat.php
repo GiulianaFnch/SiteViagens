@@ -24,7 +24,7 @@ while ($linha = mysqli_fetch_assoc($resultado)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Chat</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/styleperfil.css">
+    <link rel="stylesheet" href="../../assets/css/styleperfil.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -301,9 +301,9 @@ header{
     <a href="../../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
     <ul class="navbar">
         <li><a href="#home" style="color: black;" >Hospedagem</a></li>
-        <li><a href="#package" style="color: black;" >Passagens</a></li>
+        <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;" >Passagens</a></li>
         <li><a href="#destination" style="color: black; ">Tours</a></li>
-        <li><a href="#contact" style="color: black;">Pacotes</a></li>
+        <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
     </ul>
 </header>
 
@@ -330,8 +330,8 @@ header{
             <h2>Conversas</h2>
             <?php foreach ($usuarios as $usuario): ?>
                 <div class="user-item" onclick="loadChat(<?php echo $usuario['id']; ?>)">
-                    <img src="../../assets/images/pics/<?php echo $usuario['foto']; ?>" alt="Foto de <?php echo $usuario['nick']; ?>" class="user-icon">
-                    <span><?php echo $usuario['nick']; ?></span>
+                    <img src="../../assets/images/pics/<?php echo htmlspecialchars($usuario['foto'] ?? ''); ?>" alt="Foto de <?php echo htmlspecialchars($usuario['nick']); ?>" class="user-icon">
+                    <span><?php echo htmlspecialchars($usuario['nick']); ?></span>
                 </div>
             <?php endforeach; ?>
         </div>

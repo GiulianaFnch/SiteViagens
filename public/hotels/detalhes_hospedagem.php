@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../config/config.php';
 include_once "../../config/valida.php";
 include_once "../../config/liga_bd.php";
+include_once "../../config/avaliacoes.php";
 
 $id_hospedagem = (int) ($_POST['id_hospedagem'] ?? $_GET['id'] ?? 0);
 $stmt = $ligacao->prepare("SELECT * FROM t_hospedagem WHERE id = ?");
@@ -13,6 +14,10 @@ $linha = $stmt->get_result()->fetch_array();
 if (!$linha) {
     die("Hospedagem não encontrada.");
 }
+
+// Datas que o calendário deixa escolher: de hoje (ou do início da disponibilidade) até ao fim dela
+$data_min = max(date('Y-m-d'), (string) $linha['data_inicio']);
+$data_max = (string) $linha['data_fim'];
 ?>
 
 <!DOCTYPE html>
@@ -177,10 +182,10 @@ if (!$linha) {
         <a href="<?= BASE_URL ?>index.html"
             style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
         <ul class="navbar">
-            <li><a href="<?= BASE_URL ?>index.html#home">Hospedagem</a></li>
-            <li><a href="#package">Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/hotels/hotels.php">Hospedagem</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php">Passagens</a></li>
             <li><a href="<?= BASE_URL ?>public/tours/tours.php">Passeios</a></li>
-            <li><a href="#contact">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php">Pacotes</a></li>
         </ul>
     </header>
     <br><br><br><br><br>
@@ -202,6 +207,11 @@ if (!$linha) {
 
         <div class="details-container">
             <h2><?php echo htmlspecialchars($linha['nome']); ?></h2>
+            <?php $resumo = avaliacao_resumo($ligacao, 'hospedagem', $id_hospedagem); ?>
+            <a href="#avaliacoes" style="color: inherit; text-decoration: none;">
+                <span style="color: #f5a623;"><?= avaliacao_estrelas($resumo['media']) ?></span>
+                <?= $resumo['total'] ? number_format($resumo['media'], 1, ',', '') . ' / 5 (' . $resumo['total'] . ($resumo['total'] == 1 ? ' avaliação' : ' avaliações') . ' dos hóspedes)' : 'Sem avaliações' ?>
+            </a>
             <div class="price-container">A partir de <?php echo htmlspecialchars($linha['preco_diaria']); ?> € por noite
             </div>
             <div class="description"><?php echo htmlspecialchars($linha['descricao']); ?></div>
@@ -209,7 +219,10 @@ if (!$linha) {
             <div class="description">Classificação: <?php echo htmlspecialchars($linha['classificacao']); ?> estrelas
             </div>
             <br>
-            <div class="description">Quartos disponíveis: <?php echo htmlspecialchars($linha['n_quartos']); ?></div>
+            <div class="description">Quartos: <?php echo htmlspecialchars($linha['n_quartos']); ?></div>
+            <?php if ($data_max): ?>
+            <div class="description">Disponível até: <?php echo date('d/m/Y', strtotime($data_max)); ?></div>
+            <?php endif; ?>
             <br>
             <div class="description">Localização: <?php echo htmlspecialchars($linha['localizacao']); ?></div>
             <br>
@@ -222,19 +235,16 @@ if (!$linha) {
                 <?= csrf_campo() ?>
                 <input type="hidden" name="id_artigo" value="<?php echo htmlspecialchars($linha['id']); ?>">
                 <input type="hidden" name="tipo_item" value="hospedagem">
-                <input type="hidden" name="return_url" value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
-                <input type="hidden" name="total" id="total" value="">
-                <input type="hidden" name="dias_quartos" id="dias_quartos" value="">
 
                 <div class="form-group-container">
                     <div class="form-group">
                         <label for="data-checkin">Check-in:</label>
-                        <input type="date" id="data-checkin" name="data_checkin" required>
+                        <input type="date" id="data-checkin" name="data_checkin" min="<?= $data_min ?>" max="<?= $data_max ?>" required>
                     </div>
 
                     <div class="form-group">
                         <label for="data-checkout">Check-out:</label>
-                        <input type="date" id="data-checkout" name="data_checkout" required>
+                        <input type="date" id="data-checkout" name="data_checkout" min="<?= $data_min ?>" max="<?= $data_max ?>" required>
                     </div>
 
                     <div class="form-group">
@@ -263,14 +273,11 @@ if (!$linha) {
             </div>
         </div>
     </main>
-    <main>
-
-        <!-- Novo contêiner para data e número de quartos -->
-        <div class="booking-container">
-           
-
-        </div>
-    </main>
+    <?php
+    $avaliacao_tipo = 'hospedagem';
+    $avaliacao_item_id = $id_hospedagem;
+    include '../../views/partials/avaliacoes.php';
+    ?>
 
 
 
@@ -305,17 +312,11 @@ if (!$linha) {
                 return;
             }
 
+            // Só uma estimativa para o cliente confirmar: o preço final é calculado no servidor
             const total = dailyRate * days * numQuartos;
-            const dias_quartos = days * numQuartos;
-
-            // Definir o valor do campo oculto 'total'
-            document.getElementById('total').value = total;
-
-            // Definir o valor do campo oculto 'dias_quartos'
-            document.getElementById('dias_quartos').value = dias_quartos;
 
             // Confirmação para o usuário
-            const confirmMessage = `Você está prestes a adicionar ao carrinho:\n${days} dias de hospedagem, com ${numQuartos} quarto(s).\nTotal: €${total.toFixed(2)}.`;
+            const confirmMessage = `Você está prestes a adicionar ao carrinho:\n${days} noite(s) de hospedagem, com ${numQuartos} quarto(s).\nTotal: €${total.toFixed(2)}.`;
             if (!confirm(confirmMessage)) {
                 e.preventDefault();
             }
@@ -438,8 +439,8 @@ if (!$linha) {
 
 
         <div class="send">
-            <form>
-                <input type text="email" placeholder="Insira seu e-mail aqui" required>
+            <form action="<?= BASE_URL ?>public/backend/newsletter.php" method="post">
+                <input type="email" name="email" placeholder="Insira seu e-mail aqui" required>
                 <input type="submit" value="Quero recebê-las!">
             </form>
         </div>
@@ -454,7 +455,7 @@ if (!$linha) {
                     <h4> Minha Conta</h4>
                     <ul>
                         <li><a href="#">Minhas Viagens</a></li>
-                        <li><a href="public/perfil.php">Meu Perfil</a></li>
+                        <li><a href="<?= BASE_URL ?>public/perfil.php">Meu Perfil</a></li>
                         <li><a href="#">Deletar minha conta</a></li>
 
                     </ul>
@@ -473,8 +474,8 @@ if (!$linha) {
                 <div class="list">
                     <h4>Trabalhe conosco</h4>
                     <ul>
-                        <li><a href="public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
-                        <li><a href="public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
                     </ul>
                 </div>
 
@@ -496,7 +497,7 @@ if (!$linha) {
     </section>
 
     <!--link to js-->
-    <script type="text/javascript" src="assets/js/script.js"></script>
+    <script type="text/javascript" src="<?= BASE_URL ?>assets/js/script.js"></script>
     <!-- Script para mudar a cor do header ao rolar a página -->
     <script>
         window.addEventListener('scroll', function () {

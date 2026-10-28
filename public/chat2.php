@@ -313,9 +313,9 @@ header{
     <a href="../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
     <ul class="navbar">
     <li><a href="<?= BASE_URL ?>public/hotels/hotels.php" style="color: black;" >Hospedagem</a></li>
-            <li><a href="#package" style="color: black;" >Passagens</a></li>
+            <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;" >Passagens</a></li>
             <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black; ">Tours</a></li>
-            <li><a href="#contact" style="color: black;">Pacotes</a></li>
+            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
             <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
     </ul>
 </header>
@@ -342,8 +342,8 @@ header{
     <h2>Conversas</h2>
     <?php foreach ($usuarios as $usuario): ?>
         <div class="user-item" onclick="loadChat(<?php echo $usuario['id']; ?>)">
-            <img src="../assets/images/pics/<?php echo $usuario['foto']; ?>" alt="Foto de <?php echo $usuario['nick']; ?>" class="user-icon">
-            <span><?php echo $usuario['nick']; ?></span>
+            <img src="../assets/images/pics/<?php echo htmlspecialchars($usuario['foto'] ?? ''); ?>" alt="Foto de <?php echo htmlspecialchars($usuario['nick']); ?>" class="user-icon">
+            <span><?php echo htmlspecialchars($usuario['nick']); ?></span>
         </div>
     <?php endforeach; ?>
 </div>

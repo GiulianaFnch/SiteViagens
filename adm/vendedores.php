@@ -4,7 +4,7 @@ include 'valida_adm.php';
 include '../config/liga_bd.php';
 
 // Corrigir a consulta SQL
-$sql = "SELECT id, nick, nome, email, data_nasc, nome_marca, biografia, foto, tipo_user FROM t_user WHERE tipo_user = '2'";
+$sql = "SELECT id, nick, nome, email, data_nasc, nome_marca, biografia, foto, tipo_user FROM t_user WHERE tipo_user = " . TIPO_VENDEDOR;
 $result = $ligacao->query($sql);
 
 include 'views/header.php';
@@ -54,7 +54,7 @@ include 'views/header.php';
                         <td><?php echo htmlspecialchars($row['nome_marca']); ?></td>
                         <td><img src="../assets/images/pics/<?php echo htmlspecialchars($row['foto']); ?>" alt="Foto"
                                 width="50"></td>
-                        <td class="text"><?php echo htmlspecialchars($row['biografia']); ?></td>
+                        <td class="text"><?php echo htmlspecialchars($row['biografia'] ?? ''); ?></td>
                         <td>
                             <form action="verifica_vendedores.php" method="post" style="display:inline;">
                                 <?= csrf_campo() ?>
