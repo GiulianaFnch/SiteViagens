@@ -114,15 +114,7 @@ $result = $stmt->get_result();
 </head>
 
 <body>
-    <header>
-        <a href="../../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
-        <ul class="navbar">
-            <li><a href="#home" style="color: black;">Hospedagem</a></li>
-            <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;">Passagens</a></li>
-            <li><a href="#destination" style="color: black;">Tours</a></li>
-            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
-        </ul>
-    </header>
+    <?php $cabecalho_escuro = true; include __DIR__ . '/../../views/partials/header.php'; ?>
 
     <br><br><br><br><br><br><br>
 

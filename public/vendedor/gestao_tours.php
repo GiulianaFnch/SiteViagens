@@ -145,15 +145,7 @@ $stmt->close();
 </style>
 
 <body>
-    <header>
-        <a href="../../index.html" style="font-size: 35px; font-weight: 600; color: black;">BestWay</a>
-        <ul class="navbar">
-            <li><a href="#home">Hospedagem</a></li>
-            <li><a href="<?= BASE_URL ?>public/voos/voos.php">Passagens</a></li>
-            <li><a href="#destination">Tours</a></li>
-            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php">Pacotes</a></li>
-        </ul>
-    </header>
+    <?php $cabecalho_escuro = true; include __DIR__ . '/../../views/partials/header.php'; ?>
 
     <div class="container light-style flex-grow-1 container-p-y">
         <div class="card shadow-sm rounded-lg">

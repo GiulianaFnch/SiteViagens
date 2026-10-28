@@ -17,8 +17,8 @@
                     <h4>Suporte</h4>
                     <ul>
                         <li><a href="<?= BASE_URL ?>public/contatos/Contatos.html">Contatos</a></li>
-                        <li><a href="#">Termos & Condições</a></li>
-                        <li><a href="#">Politica de privacidade</a></li>
+                        <li><a href="<?= BASE_URL ?>public/contatos/termos.html">Termos & Condições</a></li>
+                        <li><a href="<?= BASE_URL ?>public/contatos/privacidade.html">Politica de privacidade</a></li>
 
                     </ul>
                 </div>
@@ -26,7 +26,7 @@
                 <div class="list">
                     <h4>Trabalhe conosco</h4>
                     <ul>
-                        <li><a href="<?= BASE_URL ?>public/vendedor/registro_vendedor.php">Como Parceiro Fornecedor</a></li>
+                        <li><a href="<?= BASE_URL ?>public/vendedor/registro_vendedor.php">Registrar como parceiro</a></li>
                         <li><a href="<?= BASE_URL ?>public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
                     </ul>
                 </div>
@@ -49,5 +49,3 @@
             <p>© 2024 BestWay. Todos os direitos reservados.</p>
         </div>
     </section>
-<!--link to js-->
-<script type="text/javascript" src="<?= BASE_URL ?>assets/js/script.js"></script>

@@ -1168,3 +1168,14 @@ body {
     grid-template-columns: 1fr; /* 1 card por linha */
   }
 }
+
+/* Cabeçalho comum (views/partials/header.php) */
+.cabecalho-padrao .logo,
+.cabecalho-escuro .logo {
+  color: #000;
+}
+
+.cabecalho-escuro .navbar a,
+.cabecalho-escuro #menu-icon {
+  color: #000;
+}

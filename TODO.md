@@ -48,7 +48,9 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 
 ## Organização do código
 
-- [ ] Cabeçalho, rodapé e CSS repetidos inline em quase todas as páginas — usar `views/partials/header.php` e `footer.php`.
+- [x] Cabeçalho e rodapé comuns (`views/partials/header.php` e `footer.php`) em todas as páginas PHP; CSS das páginas de
+      mensagem em `assets/css/mensagem.css`. Ficam de fora as páginas estáticas (`index.html`, `public/contatos/*.html`).
+- [ ] O CSS específico de cada página continua dentro de `<style>` na própria página.
 - [x] Página de acesso negado única (`config/acesso.php`), usada pelos três validadores, com HTTP 403.
 - [x] Constantes `TIPO_CLIENTE`, `TIPO_BLOQUEADO`, `TIPO_VENDEDOR`, `TIPO_VENDEDOR_PENDENTE`, `TIPO_ADMIN` (`config/acesso.php`).
 - [x] Reativar um vendedor bloqueado tornava-o cliente — o tipo anterior fica em `tipo_antes_bloqueio` (migração 006);
