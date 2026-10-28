@@ -17,6 +17,17 @@ $config = [
     'serpapi_key' => getenv('SERPAPI_KEY') ?: '',
     // true mostra os detalhes dos erros na página (só para desenvolvimento)
     'debug'       => filter_var(getenv('APP_DEBUG'), FILTER_VALIDATE_BOOLEAN),
+    // Protocolo, servidor e porta do site (ex.: http://localhost, https://bestway.pt), usados com BASE_URL nos links dos e-mails.
+    // Nunca é deduzido do pedido: um cabeçalho Host falso poria links para outro site nos e-mails.
+    'url_site'    => getenv('SITE_URL') ?: 'http://localhost',
+    // E-mails: 'ficheiro' grava cada e-mail em storage/emails/ (desenvolvimento), 'smtp' envia mesmo
+    'email_modo'      => getenv('EMAIL_MODO') ?: 'ficheiro',
+    'email_remetente' => getenv('EMAIL_REMETENTE') ?: 'nao-responder@bestway.local',
+    'smtp_host'       => getenv('SMTP_HOST') ?: '',
+    'smtp_porta'      => (int) (getenv('SMTP_PORTA') ?: 587),
+    'smtp_seguranca'  => getenv('SMTP_SEGURANCA') ?: 'tls', // 'tls' (STARTTLS, porta 587), 'ssl' (porta 465) ou 'nenhuma'
+    'smtp_utilizador' => getenv('SMTP_UTILIZADOR') ?: '',
+    'smtp_senha'      => getenv('SMTP_SENHA') ?: '',
 ];
 
 if (file_exists(__DIR__ . '/config.local.php')) {
@@ -40,6 +51,13 @@ $config['base_url'] = preg_replace('#^/+#', '/', $config['base_url']);
 define('BASE_URL', $config['base_url']);
 define('SERPAPI_KEY', $config['serpapi_key']);
 define('APP_DEBUG', (bool) $config['debug']);
+
+// Endereço absoluto de uma página do site (para links em e-mails), ex.: url_absoluta('public/login.php')
+function url_absoluta($caminho)
+{
+    global $config;
+    return rtrim($config['url_site'], '/') . BASE_URL . ltrim($caminho, '/');
+}
 
 // Erros não tratados (ex.: falha numa consulta à BD): os detalhes vão para o log do servidor
 // e o visitante vê só uma mensagem genérica, sem SQL, nomes de tabelas ou caminhos de ficheiros.

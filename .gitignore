@@ -1,5 +1,8 @@
 # Configuração local (credenciais, chaves de API)
 config/config.local.php
+
+# E-mails gravados em modo de desenvolvimento
+storage/emails/
 .env
 
 # Sistema / editores
