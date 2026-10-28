@@ -180,13 +180,13 @@ Usado em páginas que **mostram** algo no GET e **alteram** algo no POST:
 |---|---|
 | Cliente | `perfil.php`, `perfil_vendedor.php`, `reservas.php`, `configuracoes.php` |
 | Carrinho / favoritos | `carrinho/adicionar_ao_carrinho.php`, `carrinho/remover_do_carrinho.php`, `backend/adicionar_favoritos.php`, `backend/remover_favorito.php` |
-| Vendedor | `excluir_tour.php`, `editar_tour.php`, `editar_reserva.php`, `reservas.php`, `vender_hospedagem.php`, `admin.php`, `configuracoes2.php`, `gerir_hospedagem.php` |
+| Vendedor | `excluir_tour.php`, `editar_tour.php`, `editar_reserva.php`, `reservas.php`, `vender_hospedagem.php`, `admin.php`, `configuracoes.php`, `gerir_hospedagem.php` |
 | Admin | `adm/desativar_usuario.php`, `adm/verifica_vendedores.php` |
 
 Já estes arquivos **só servem para executar uma ação**, então chamam `csrf_verificar();` **sem o `if`** (o que também os obriga a ser POST):
 
-- `public/send_message2.php` e `public/vendedor/send_message.php` (chat)
-- `public/vendedor/vender_tours2.php` (cadastrar passeio)
+- `public/chat_enviar.php` e `public/vendedor/send_message.php` (chat)
+- `public/vendedor/guardar_tour.php` (cadastrar passeio)
 - `public/carrinho/efetuar_reserva.php` (finalizar reserva)
 
 > **Caso especial:** `efetuar_reserva.php` antes rodava com **qualquer** requisição. Bastava abrir a URL para reservar tudo do carrinho. Agora só funciona com POST + token.
@@ -215,15 +215,15 @@ echo csrf_campo();
 Duas páginas públicas não abriam sessão e precisaram incluir o helper no topo, **antes de qualquer HTML** (sessão não pode ser iniciada depois que a saída começou):
 
 - `public/voos/voos.php`
-- `public/tours/pesquisa2_tours.php`
+- `public/tours/pesquisa_tours.php`
 
 ### Parte D: requisições AJAX também enviam o token
 
 Requisições feitas por JavaScript não passam por um `<form>`, então o token vai no corpo:
 
-**Chat** (`chat2.php`, `vendedor/chat.php`):
+**Chat** (`chat.php`, `vendedor/chat.php`):
 ```js
-fetch('send_message2.php', {
+fetch('chat_enviar.php', {
     method: 'POST',
     body: new URLSearchParams({
         'user_id': selectedUserId,
@@ -233,7 +233,7 @@ fetch('send_message2.php', {
 })
 ```
 
-**Configurações** (`configuracoes.php`, `configuracoes2.php`):
+**Configurações** (`configuracoes.php`, `configuracoes.php`):
 ```js
 xhr.send('toggle_notificacoes_ofertas=1&notificacoes_ofertas=' + newStatus
          + '&csrf_token=<?= csrf_token() ?>');   // ← novo
@@ -258,7 +258,7 @@ O PHP roda **antes** do JavaScript chegar ao navegador, então `<?= csrf_token()
 
 ## 7. Bug corrigido de brinde
 
-Em `public/vendedor/configuracoes2.php`, os botões de notificação enviavam para `configuracoes.php`. Mas esse arquivo **não existe dentro de `vendedor/`**, então a configuração do vendedor nunca era salva. Agora aponta para `configuracoes2.php`.
+Em `public/vendedor/configuracoes.php`, os botões de notificação enviavam para `configuracoes.php`. Mas esse arquivo **não existe dentro de `vendedor/`**, então a configuração do vendedor nunca era salva. Agora aponta para `configuracoes.php`.
 
 ---
 

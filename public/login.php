@@ -29,7 +29,7 @@
                     <h2>Login de Usuário</h2>
                     <p class="lead">Preencha esse formulário para registrar um novo usuário no banco de dados</p>
                 </div>
-                <form action="backend/login2.php" method="post" enctype="multipart/form-data">
+                <form action="backend/autenticar.php" method="post" enctype="multipart/form-data">
                     <?= csrf_campo() ?>
                     <div class="input-group">
                         <label for="nick">Nick:</label>

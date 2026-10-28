@@ -134,7 +134,7 @@ if (isset($_POST['logout'])) {
             icon.classList.toggle('bi-file-earmark-check-fill');
 
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'configuracoes2.php', true);
+            xhr.open('POST', 'configuracoes.php', true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
@@ -333,7 +333,7 @@ header{
                         <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Reservas</a>
                         <a class="menu-item" href="gestao_opcoes.php"><i class="bi bi-train-freight-front"></i> Gestão</a>
                         <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
-                        <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
+                        <a class="menu-item" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
                 </div>
 
@@ -411,7 +411,7 @@ header{
                      
 
                     <div id="form-atualizar-senha">
-                        <form method="post" action="configuracoes2.php">
+                        <form method="post" action="configuracoes.php">
                             <?= csrf_campo() ?>
                             <div class="form-group">
                                 <label for="senha_atual">Senha Atual</label>
@@ -463,7 +463,7 @@ header{
                             icon.classList.toggle('bi-file-earmark-check-fill');
 
                             var xhr = new XMLHttpRequest();
-                            xhr.open('POST', 'configuracoes2.php', true);
+                            xhr.open('POST', 'configuracoes.php', true);
                             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                             xhr.onreadystatechange = function () {
                                 if (xhr.readyState === 4 && xhr.status === 200) {

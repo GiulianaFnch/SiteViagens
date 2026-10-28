@@ -6,7 +6,7 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 
 - [x] **Proteção CSRF** nas ações de utilizadores autenticados — `config/csrf.php` (`csrf_campo()` nos
       formulários, `csrf_verificar()` nos ficheiros que alteram dados, token também nos pedidos AJAX do chat e das definições).
-- [x] CSRF no login e nos registos (`login.php`/`login2.php`, `registro.php`/`registro2.php`, `registro_vendedor.php`).
+- [x] CSRF no login e nos registos (`login.php`/`login2.php`, `registro.php`/`backend/criar_conta.php`, `registro_vendedor.php`).
 - [x] Logout só por POST com token — os links "Logout" abrem uma página de confirmação.
 - [x] **XSS** — os textos vindos da BD (títulos, descrições, nomes, nicks, fotos, categorias) passam por
       `htmlspecialchars` em todas as páginas. Testado com títulos/nomes contendo `<script>` em 19 páginas.
@@ -53,5 +53,6 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 - [x] Constantes `TIPO_CLIENTE`, `TIPO_BLOQUEADO`, `TIPO_VENDEDOR`, `TIPO_VENDEDOR_PENDENTE`, `TIPO_ADMIN` (`config/acesso.php`).
 - [x] Reativar um vendedor bloqueado tornava-o cliente — o tipo anterior fica em `tipo_antes_bloqueio` (migração 006);
       administradores já não podem ser bloqueados; "aprovar vendedor" só afeta registos pendentes.
-- [ ] Ficheiros com nomes "2" (`chat2`, `registro2`, `login2`, `vender_tours2`, `configuracoes2`, `pesquisa2_tours`) — renomear pelo que fazem.
+- [x] Ficheiros com nomes "2" renomeados pelo que fazem (`backend/autenticar.php`, `backend/criar_conta.php`, `chat.php`,
+      `chat_mensagens.php`, `chat_enviar.php`, `vendedor/guardar_tour.php`, `vendedor/configuracoes.php`, `tours/pesquisa_tours.php`).
 - [x] Testes de fumo (`tests/smoke_test.sh`, 36 verificações) correm no CI com PHP 8.3 + MariaDB a cada push.

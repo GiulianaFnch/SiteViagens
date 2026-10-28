@@ -163,7 +163,7 @@ $resultado = $stmt->get_result();
 <br><br><br><br><br><br>
     <!--container-->
         <section class="search-bar">
-            <form action="pesquisa2_tours.php" method="get">
+            <form action="pesquisa_tours.php" method="get">
                 <!-- Preserva os valores de localização e data nos campos de pesquisa -->
                 <input type="text" placeholder="Para onde?" name="localizacao" value="<?php echo htmlspecialchars($_GET['localizacao'] ?? ''); ?>" required>
                 <input type="date" placeholder="Selecione as datas" name="data" value="<?php echo htmlspecialchars($_GET['data'] ?? ''); ?>" required>

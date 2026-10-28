@@ -1,8 +1,8 @@
 <?php
-require_once '../config/csrf.php';
+require_once __DIR__ . '/../../config/csrf.php';
 csrf_verificar(); // só aceita o formulário de registro.php
-include '../config/liga_bd.php';
-include '../config/valida_foto.php';
+include __DIR__ . '/../../config/liga_bd.php';
+include __DIR__ . '/../../config/valida_foto.php';
 
 if ($uploadOk == 0) {
     ?>
@@ -170,7 +170,7 @@ if ($uploadOk == 0) {
                 <div class="message-container">
                     <h1>Registro Bem Sucedido</h1>
                     <h2>Utilizador registado com sucesso!</h2>
-                    <input type="button" value="Ir para o perfil" onclick="window.location.href='perfil.php';">
+                    <input type="button" value="Ir para o perfil" onclick="window.location.href='../perfil.php';">
                 </div>
                 <footer>
                     <p>© 2024 BestWay. Todos os direitos reservados.</p>
@@ -178,7 +178,7 @@ if ($uploadOk == 0) {
             </body>
             </html>
             <?php
-            header("refresh:2;url=perfil.php");
+            header("refresh:2;url=../perfil.php");
             mysqli_close($ligacao);
         }
     }

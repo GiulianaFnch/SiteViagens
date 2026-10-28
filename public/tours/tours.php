@@ -49,7 +49,7 @@ include '../../config/liga_bd.php';
             <!-- Search Section botão pesquisar  -->
 
             <section class="search-bar">
-                <form action="pesquisa2_tours.php" method="get">
+                <form action="pesquisa_tours.php" method="get">
                     <input type="text" placeholder="Para onde?" name="localizacao" required>
                     <input type="date" placeholder="Selecione as datas " name="data" required>
                     <button style="color: grey;" type="submit">Pesquisar</button>

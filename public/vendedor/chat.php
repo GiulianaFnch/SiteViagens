@@ -320,7 +320,7 @@ header{
                         <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Reservas</a>
                         <a class="menu-item" href="gestao_opcoes.php"><i class="bi bi-train-freight-front"></i> Gestão</a>
                         <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
-                        <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
+                        <a class="menu-item" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
             </div>
 
@@ -376,7 +376,7 @@ header{
         document.getElementById('chat-box').style.display = 'block';
 
         // Carregar mensagens do banco de dados
-        fetch('get_chat.php?user_id=' + userId)
+        fetch('chat_mensagens.php?user_id=' + userId)
             .then(response => response.text())
             .then(data => {
                 document.getElementById('messages').innerHTML = data;
@@ -385,7 +385,7 @@ header{
 
         // Atualizar as mensagens a cada 3 segundos
         refreshInterval = setInterval(function () {
-            fetch('get_chat.php?user_id=' + userId)
+            fetch('chat_mensagens.php?user_id=' + userId)
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById('messages').innerHTML = data;
@@ -399,7 +399,7 @@ header{
         const message = document.getElementById('message').value;
 
         if (message.trim() !== '') {
-            fetch('send_message.php', {
+            fetch('chat_enviar.php', {
                 method: 'POST',
                 body: new URLSearchParams({
                     'user_id': selectedUserId,
@@ -455,7 +455,7 @@ header{
 
     // Atualiza o chat automaticamente a cada 3 segundos e rola para o final
     refreshInterval = setInterval(function () {
-        fetch('get_chat.php?user_id=' + selectedUserId)
+        fetch('chat_mensagens.php?user_id=' + selectedUserId)
             .then(response => response.text())
             .then(data => {
                 document.getElementById('messages').innerHTML = data;

@@ -33,7 +33,7 @@ require_once __DIR__ . '/../config/csrf.php'; // inicia a sessão para o token d
                 <p class="lead">Preencha esse formulário para registrar um novo usuário no banco de dados</p>
             </div>
 
-            <form action="registro2.php" method="post" enctype="multipart/form-data">
+            <form action="backend/criar_conta.php" method="post" enctype="multipart/form-data">
                 <?= csrf_campo() ?>
                 <div class="input-group">
                     <label for="nick">Nick:</label>

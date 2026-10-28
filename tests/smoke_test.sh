@@ -30,7 +30,7 @@ txt() { sed 's/<[^>]*>//g' | tr -s ' \t\n' ' '; }
 # token CSRF de uma página (a sessão fica no ficheiro de cookies do utilizador)
 token() { curl -s -b "$T/$1" -c "$T/$1" "$B/$2" | grep -o 'name="csrf_token" value="[^"]*"' | head -1 | sed 's/.*value="//;s/"//'; }
 post()  { local u=$1 url=$2; shift 2; curl -s -b "$T/$u" -c "$T/$u" -d "csrf_token=$(token "$u" public/hotels/detalhes_hospedagem.php?id=2)" "$@" "$B/$url"; }
-login() { curl -s -b "$T/$1" -c "$T/$1" -d "csrf_token=$(token "$1" public/login.php)&nick=$1&pass=teste123" "$B/public/backend/login2.php"; }
+login() { curl -s -b "$T/$1" -c "$T/$1" -d "csrf_token=$(token "$1" public/login.php)&nick=$1&pass=teste123" "$B/public/backend/autenticar.php"; }
 status(){ curl -s -o /dev/null -w '%{http_code}' -b "$T/$1" "$B/$2"; }
 
 echo "== Preparação"
@@ -45,7 +45,7 @@ done
 echo "== Páginas abrem para cada tipo de utilizador"
 PAGINAS="index.html public/login.php public/registro.php public/hotels/hotels.php public/hotels/listar_hospedagem.php
 public/hotels/detalhes_hospedagem.php?id=2 public/tours/tours.php public/tours/listar_tours.php public/tours/detalhes_tours.php?id=1
-public/voos/voos.php public/pacotes/pacotes.php public/perfil.php public/reservas.php public/favoritos.php public/chat2.php
+public/voos/voos.php public/pacotes/pacotes.php public/perfil.php public/reservas.php public/favoritos.php public/chat.php
 public/configuracoes.php public/carrinho/carrinho.php public/vendedor/admin.php public/vendedor/gerenciar_reservas.php
 public/vendedor/gestao_tours.php public/vendedor/gerir_hospedagem.php adm/index.php adm/reservas.php adm/vendedores.php"
 for u in anon jujuba vendedor admin; do
@@ -76,7 +76,7 @@ echo "== Registo"
 NICK="teste$RANDOM"
 curl -s -b "$T/novo" -c "$T/novo" -o /dev/null "$B/public/registro.php"
 R=$(curl -s -b "$T/novo" -c "$T/novo" -F "csrf_token=$(token novo public/registro.php)" -F nick=$NICK -F nome=Teste \
-    -F email=$NICK@exemplo.com -F data_nasc=2000-01-01 -F pass=segredo -F "ficheiro=@public/hotels/imagens/hotel.jpg" "$B/public/registro2.php")
+    -F email=$NICK@exemplo.com -F data_nasc=2000-01-01 -F pass=segredo -F "ficheiro=@public/hotels/imagens/hotel.jpg" "$B/public/backend/criar_conta.php")
 verifica "registo de cliente com foto"              '[[ "$R" == *"registado com sucesso"* ]]'
 verifica "registo grava o utilizador"               '[ "$(q "SELECT COUNT(*) FROM t_user WHERE nick='"'$NICK'"'")" = 1 ]'
 rm -f assets/images/pics/"$(q "SELECT foto FROM t_user WHERE nick='$NICK'")" 2>/dev/null

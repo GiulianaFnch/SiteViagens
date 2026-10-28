@@ -14,9 +14,9 @@ if ($id_destinatario > 0 && $message !== '') {
     $stmt->execute();
 }
 
-// get_chat lê o destinatário de $_GET
+// chat_mensagens.php lê o destinatário de $_GET
 $_GET['user_id'] = $id_destinatario;
 
 // Exibindo as mensagens atualizadas
-include 'get_chat2.php';
+include 'chat_mensagens.php';
 ?>
