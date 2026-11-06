@@ -28,6 +28,8 @@ $config = [
     'smtp_seguranca'  => getenv('SMTP_SEGURANCA') ?: 'tls', // 'tls' (STARTTLS, porta 587), 'ssl' (porta 465) ou 'nenhuma'
     'smtp_utilizador' => getenv('SMTP_UTILIZADOR') ?: '',
     'smtp_senha'      => getenv('SMTP_SENHA') ?: '',
+    // Chave secreta para assinar links (ex.: cancelar as ofertas). Vazia: é gerada em storage/chave_app.txt
+    'chave_app'       => getenv('APP_KEY') ?: '',
 ];
 
 if (file_exists(__DIR__ . '/config.local.php')) {
@@ -70,4 +72,22 @@ if (!APP_DEBUG) {
         echo '<p style="font-family: sans-serif; text-align: center; margin: 40px;">'
             . 'Ocorreu um erro inesperado. Tente novamente mais tarde.</p>';
     });
+}
+
+// Chave secreta da aplicação: a da configuração ou, se não houver, uma gerada na primeira utilização
+function chave_app()
+{
+    global $config;
+    if ($config['chave_app'] === '') {
+        $ficheiro = __DIR__ . '/../storage/chave_app.txt';
+        if (!is_file($ficheiro)) {
+            if (!is_dir(dirname($ficheiro))) {
+                mkdir(dirname($ficheiro), 0775, true);
+            }
+            file_put_contents($ficheiro, bin2hex(random_bytes(32)), LOCK_EX);
+            chmod($ficheiro, 0600);
+        }
+        $config['chave_app'] = trim(file_get_contents($ficheiro));
+    }
+    return $config['chave_app'];
 }

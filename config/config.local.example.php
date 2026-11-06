@@ -26,4 +26,8 @@ return [
     'smtp_seguranca'  => 'tls',
     'smtp_utilizador' => '',
     'smtp_senha'      => '',
+
+    // Chave secreta para assinar links (ex.: cancelar as ofertas). Gere uma com: php -r "echo bin2hex(random_bytes(32));"
+    // Vazia: é gerada automaticamente em storage/chave_app.txt.
+    'chave_app'       => '',
 ];

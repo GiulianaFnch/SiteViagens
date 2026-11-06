@@ -49,7 +49,7 @@ PAGINAS="index.html public/login.php public/registro.php public/hotels/hotels.ph
 public/hotels/detalhes_hospedagem.php?id=2 public/tours/tours.php public/tours/listar_tours.php public/tours/detalhes_tours.php?id=1
 public/voos/voos.php public/pacotes/pacotes.php public/perfil.php public/reservas.php public/favoritos.php public/chat.php
 public/configuracoes.php public/carrinho/carrinho.php public/vendedor/admin.php public/vendedor/gerenciar_reservas.php
-public/vendedor/gestao_tours.php public/vendedor/gerir_hospedagem.php adm/index.php adm/reservas.php adm/vendedores.php"
+public/vendedor/gestao_tours.php public/vendedor/gerir_hospedagem.php adm/index.php adm/reservas.php adm/vendedores.php adm/ofertas.php"
 for u in anon jujuba vendedor admin; do
     erros=""
     for p in $PAGINAS; do
@@ -172,6 +172,29 @@ post vendedor public/backend/avaliar.php -d tipo_item=hospedagem -d item_id=4 -d
 verifica "vendedor dono responde à avaliação"       '[[ "$(curl -s -b $T/jujuba $B/public/hotels/detalhes_hospedagem.php?id=4 | txt)" == *"Resposta do vendedor"*"Obrigado pela visita"* ]]'
 post Karol public/backend/avaliar.php -d tipo_item=hospedagem -d item_id=4 -d id_avaliacao=$AID -d responder=1 -d resposta=spam >/dev/null
 verifica "quem não é o vendedor não responde"       '[ "$(q "SELECT resposta FROM t_avaliacoes WHERE id=$AID")" = "Obrigado pela visita" ]'
+
+echo "== Ofertas por e-mail"
+ASSUNTO="Oferta smoke $RANDOM"; INSCRITO="ofertas$RANDOM@exemplo.com"
+curl -s -o /dev/null -d email=$INSCRITO "$B/public/backend/newsletter.php"
+oferta() { post admin adm/ofertas.php -L --data-urlencode "assunto=$1" --data-urlencode "mensagem=Primeiro parágrafo.
+
+Segundo <b>parágrafo</b>." -d link=https://exemplo.com/promo -d texto_botao=Ver "${@:2}" | txt; }
+emails_com() { grep -l "$1" "$EMAILS"/*.html 2>/dev/null | wc -l; }
+verifica "cliente não abre a página das ofertas"    '[ "$(status jujuba adm/ofertas.php)" = 403 ]'
+verifica "oferta sem assunto é recusada"            '[[ "$(oferta "" -d teste=1)" == *"assunto é obrigatório"* ]]'
+verifica "envio de teste só para o admin"           '[[ "$(oferta "$ASSUNTO" -d teste=1)" == *"teste enviado para adm.bestway@bestway.com"* && $(emails_com "\[Teste\] $ASSUNTO") = 1 ]]'
+N=$(q "SELECT COUNT(*) FROM (SELECT LOWER(email) FROM t_newsletter UNION SELECT LOWER(email) FROM t_user
+       WHERE notificacoes_ofertas=1 AND email_confirmado=1 AND tipo_user<>1) d")
+verifica "oferta enviada a todos os destinatários ($N)" '[[ "$(oferta "$ASSUNTO" -d enviar=1)" == *"Oferta enviada para $N pessoas"* && $(emails_com "Assunto: $ASSUNTO") = $N ]]'
+verifica "envio fica no histórico"                  '[ "$(q "SELECT enviados FROM t_ofertas WHERE assunto='"'$ASSUNTO'"'")" = "$N" ]'
+F=$(grep -l "$INSCRITO" $(grep -l "Assunto: $ASSUNTO" "$EMAILS"/*.html) | head -1)
+verifica "mensagem com HTML sai escapada"           '[[ "$(cat "$F")" == *"Segundo &lt;b&gt;parágrafo"* ]]'
+L=$(grep -o 'public/cancelar_ofertas.php?[^"]*' "$F" | head -1 | sed 's/&amp;/\&/g')
+verifica "link de cancelar com assinatura falsa é recusado" '[[ "$(curl -s -L -b $T/anon -c $T/anon "$B/${L%=*}=$(printf %064d 0)" | txt)" == *"inválido"* ]]'
+verifica "abrir o link só pergunta"                 '[[ "$(curl -s -b $T/anon -c $T/anon "$B/$L" | txt)" == *"Deixar de receber"* && "$(q "SELECT COUNT(*) FROM t_newsletter WHERE email='"'$INSCRITO'"'")" = 1 ]]'
+verifica "confirmar cancela a subscrição"           '[[ "$(curl -s -b $T/anon -c $T/anon -d "csrf_token=$(token anon "$L")" -d "email=$INSCRITO" -d "assinatura=${L##*=}" "$B/public/cancelar_ofertas.php" | txt)" == *"deixa de receber"* && "$(q "SELECT COUNT(*) FROM t_newsletter WHERE email='"'$INSCRITO'"'")" = 0 ]]'
+grep -l "$ASSUNTO" "$EMAILS"/*.html 2>/dev/null | xargs -r rm -f
+q "DELETE FROM t_ofertas WHERE assunto='$ASSUNTO'"
 
 echo "== Newsletter e logout"
 verifica "inscrição na newsletter"                  '[[ "$(curl -s -d email=smoke@exemplo.com $B/public/backend/newsletter.php)" == *"Inscrição feita"* ]]'

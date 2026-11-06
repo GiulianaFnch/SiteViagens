@@ -241,6 +241,14 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2" href="<?= BASE_URL ?>adm/ofertas.php">
+                                    <svg class="bi">
+                                        <use xlink:href="#file-earmark-text" />
+                                    </svg>
+                                    Ofertas
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center gap-2" href="#">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-suitcase-lg" viewBox="0 0 16 16">

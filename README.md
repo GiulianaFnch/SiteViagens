@@ -62,7 +62,7 @@ O PHP 8.1 é o mínimo porque é a partir dele que `htmlspecialchars` também es
 ## Testes
 
 `tests/smoke_test.sh` abre o site a correr e verifica os fluxos principais (login, registo, confirmação do e-mail,
-recuperação da palavra-passe, reservas, avaliações, permissões, XSS, newsletter e logout). Corre automaticamente no GitHub a cada push (`.github/workflows/php-lint.yml`).
+recuperação da palavra-passe, reservas, avaliações, permissões, XSS, newsletter, ofertas por e-mail e logout). Corre automaticamente no GitHub a cada push (`.github/workflows/php-lint.yml`).
 
 Para correr localmente, **numa base de dados de teste** (o script altera senhas e reservas dos dados de exemplo):
 
@@ -140,7 +140,20 @@ As regras ficam em `config/reservas.php` e são usadas no carrinho, no checkout 
 
 O formulário "Inscreva-se para receber nossas ofertas" grava o e-mail em `t_newsletter`
 (`public/backend/newsletter.php`). Para bases de dados existentes, aplique `database/migrations/005_newsletter.sql`.
-O envio dos e-mails ainda não está implementado.
+
+### Ofertas por e-mail
+
+No painel do administrador, **Ofertas** (`adm/ofertas.php`) permite escrever uma oferta (assunto, mensagem e um link
+opcional com botão), enviar um teste para o próprio e-mail e depois enviá-la a todos. Regras em `config/ofertas.php`:
+
+- Recebem a oferta os inscritos na newsletter e os utilizadores que aceitam ofertas nas configurações, com o e-mail
+  confirmado e a conta ativa — sem e-mails repetidos.
+- Cada e-mail traz um link para deixar de receber ofertas (`public/cancelar_ofertas.php`), assinado com HMAC para que
+  ninguém cancele os e-mails de outra pessoa; abrir o link só pergunta, cancelar exige carregar no botão. Também vai no
+  cabeçalho `List-Unsubscribe`, que o Gmail e outros mostram como "Cancelar subscrição".
+- A chave das assinaturas é `chave_app` (`APP_KEY`); se estiver vazia, é gerada em `storage/chave_app.txt`.
+- Os envios ficam no histórico (`t_ofertas`, migração `010_ofertas.sql`). O envio é feito no próprio pedido, um e-mail
+  de cada vez: serve para listas de algumas centenas de pessoas; para mais, seria preciso uma fila de envio.
 
 ## Contas e palavras-passe
 

@@ -7,9 +7,10 @@ require_once __DIR__ . '/config.php';
 
 /**
  * Envia um e-mail em HTML. Devolve true se foi enviado (ou gravado, no modo 'ficheiro').
+ * $cabecalhos: cabeçalhos extra, ex. ['List-Unsubscribe' => '<https://...>'].
  * Os erros vão para o log do servidor; quem chama mostra uma mensagem genérica.
  */
-function enviar_email($para, $assunto, $html)
+function enviar_email($para, $assunto, $html, $cabecalhos = [])
 {
     global $config;
     if (!filter_var($para, FILTER_VALIDATE_EMAIL)) {
@@ -17,7 +18,7 @@ function enviar_email($para, $assunto, $html)
     }
     try {
         if ($config['email_modo'] === 'smtp') {
-            email_smtp($para, $assunto, $html);
+            email_smtp($para, $assunto, $html, $cabecalhos);
         } else {
             email_ficheiro($para, $assunto, $html);
         }
@@ -28,8 +29,9 @@ function enviar_email($para, $assunto, $html)
     }
 }
 
-// Página HTML simples com o aspeto do site, para o corpo dos e-mails
-function email_modelo($titulo, $paragrafos, $texto_botao = null, $link = null)
+// Página HTML simples com o aspeto do site, para o corpo dos e-mails.
+// $rodape_html substitui a nota final (já tem de vir escapado).
+function email_modelo($titulo, $paragrafos, $texto_botao = null, $link = null, $rodape_html = null)
 {
     $html = '<div style="font-family: Arial, sans-serif; max-width: 520px; margin: auto; color: #221314;">'
         . '<h2 style="color: #6495ed;">BestWay</h2>'
@@ -44,7 +46,8 @@ function email_modelo($titulo, $paragrafos, $texto_botao = null, $link = null)
             . '<p style="font-size: 12px; color: #777;">Se o botão não funcionar, copie este endereço: '
             . htmlspecialchars($link) . '</p>';
     }
-    return $html . '<p style="font-size: 12px; color: #777;">Se não foi você, ignore este e-mail.</p></div>';
+    return $html . '<p style="font-size: 12px; color: #777;">'
+        . ($rodape_html ?? 'Se não foi você, ignore este e-mail.') . '</p></div>';
 }
 
 function email_ficheiro($para, $assunto, $html)
@@ -61,7 +64,7 @@ function email_ficheiro($para, $assunto, $html)
     }
 }
 
-function email_smtp($para, $assunto, $html)
+function email_smtp($para, $assunto, $html, $cabecalhos = [])
 {
     global $config;
     $host = $config['smtp_host'];
@@ -117,6 +120,8 @@ function email_smtp($para, $assunto, $html)
         . 'Subject: =?UTF-8?B?' . base64_encode($assunto) . "?=\r\n"
         . 'Date: ' . date('r') . "\r\n"
         . 'Message-ID: <' . bin2hex(random_bytes(12)) . "@$dominio>\r\n"
+        . implode('', array_map(fn($nome, $valor) => "$nome: " . str_replace(["\r", "\n"], '', $valor) . "\r\n",
+            array_keys($cabecalhos), $cabecalhos))
         . "MIME-Version: 1.0\r\n"
         . "Content-Type: text/html; charset=UTF-8\r\n"
         . "Content-Transfer-Encoding: base64\r\n\r\n"

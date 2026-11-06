@@ -3,6 +3,7 @@ config/config.local.php
 
 # E-mails gravados em modo de desenvolvimento
 storage/emails/
+storage/chave_app.txt
 .env
 
 # Sistema / editores

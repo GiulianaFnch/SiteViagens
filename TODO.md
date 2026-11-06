@@ -44,7 +44,7 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 - [x] Avaliações dos passeios e hospedagens (`config/avaliacoes.php`, `views/partials/avaliacoes.php`) — só quem já usou a reserva avalia.
 - [x] Resposta do vendedor às avaliações (só o vendedor dono do item; migração 008).
 - [x] Paginação (`config/paginacao.php`): 12 por página nas listagens de passeios e hospedagens, 25 nos painéis do admin.
-- [ ] Envio de e-mails de ofertas (para `t_newsletter` e utilizadores com `notificacoes_ofertas`) — já há envio de e-mails (`config/email.php`), falta a página para o admin escrever e enviar as ofertas.
+- [x] Envio de e-mails de ofertas pelo administrador (`adm/ofertas.php`, `config/ofertas.php`), com link para cancelar a subscrição.
 
 ## Organização do código
 
@@ -59,4 +59,4 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
       administradores já não podem ser bloqueados; "aprovar vendedor" só afeta registos pendentes.
 - [x] Ficheiros com nomes "2" renomeados pelo que fazem (`backend/autenticar.php`, `backend/criar_conta.php`, `chat.php`,
       `chat_mensagens.php`, `chat_enviar.php`, `vendedor/guardar_tour.php`, `vendedor/configuracoes.php`, `tours/pesquisa_tours.php`).
-- [x] Testes de fumo (`tests/smoke_test.sh`, 64 verificações) correm no CI com PHP 8.3 + MariaDB a cada push.
+- [x] Testes de fumo (`tests/smoke_test.sh`, 73 verificações) correm no CI com PHP 8.3 + MariaDB a cada push.
