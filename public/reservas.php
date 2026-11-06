@@ -37,16 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancelar'])) {
 $sql = "SELECT r.id, r.item_id, r.tipo_reserva, r.data_reserva, r.quantidade,
         r.data_inicio, r.data_fim, r.preco_total, r.estado,
         (r.estado = 'confirmada' AND (r.data_inicio IS NULL OR r.data_inicio > CURDATE())) AS pode_cancelar, 
-        CASE 
-            WHEN r.tipo_reserva = 'atividade' THEN (SELECT id_user FROM t_artigo WHERE id = r.item_id)
-            WHEN r.tipo_reserva = 'hospedagem' THEN (SELECT id_user FROM t_hospedagem WHERE id = r.item_id)
-            WHEN r.tipo_reserva = 'voo' THEN (SELECT id_user FROM t_voos WHERE id = r.item_id)
-        END AS vendedor_id,
-        CASE 
-            WHEN r.tipo_reserva = 'atividade' THEN (SELECT titulo FROM t_artigo WHERE id = r.item_id)
-            WHEN r.tipo_reserva = 'hospedagem' THEN (SELECT nome FROM t_hospedagem WHERE id = r.item_id)
-            WHEN r.tipo_reserva = 'voo' THEN (SELECT flight_number FROM t_voos WHERE id = r.item_id)
-        END AS titulo
+        " . reserva_sql_vendedor('r') . " AS vendedor_id,
+        " . reserva_sql_titulo('r') . " AS titulo
         FROM t_reservas r 
         WHERE r.user_id = ?
         ORDER BY r.data_reserva DESC, r.id DESC";
@@ -217,15 +209,9 @@ $result = $stmt->get_result();
                             <?php while ($row = $result->fetch_assoc()): ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($row['titulo'] ?? '(item removido)'); ?></td>
-                                    <td><?php echo htmlspecialchars($row['tipo_reserva']); ?></td>
+                                    <td><?= htmlspecialchars(reserva_tipo_nome($row['tipo_reserva'])) ?></td>
                                     <td>
-                                        <?php if ($row['tipo_reserva'] == 'hospedagem' && $row['data_inicio']): ?>
-                                            <?= reserva_formatar_data($row['data_inicio']) ?> a <?= reserva_formatar_data($row['data_fim']) ?>
-                                        <?php elseif ($row['data_inicio']): ?>
-                                            <?= reserva_formatar_data($row['data_inicio']) ?>
-                                        <?php else: ?>
-                                            —
-                                        <?php endif; ?>
+                                        <?= reserva_formatar_periodo($row['data_inicio'], $row['data_fim']) ?>
                                         <br><small class="text-muted">reservado em <?= reserva_formatar_data($row['data_reserva']) ?></small>
                                     </td>
                                     <td><?php echo htmlspecialchars($row['quantidade']); ?></td>

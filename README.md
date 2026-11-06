@@ -9,6 +9,7 @@ Este projeto é uma aplicação web para gerenciar reservas de viagens, hospedag
 - **Hospedagem**: Pesquisa e reserva de hospedagens.
 - **Passagens Aéreas**: Pesquisa e reserva de passagens aéreas.
 - **Passeios Turísticos**: Pesquisa e reserva de passeios turísticos.
+- **Pacotes**: Pacotes de viagem dos vendedores, com pesquisa por destino, data e pessoas, e reserva por pessoa.
 - **Carrinho de Compras**: Adição de itens ao carrinho e cálculo do total.
 - **Contas**: Registo com confirmação do e-mail e recuperação da palavra-passe por e-mail.
 - **Perfil**: Configurações de conta do usuário.
@@ -62,7 +63,7 @@ O PHP 8.1 é o mínimo porque é a partir dele que `htmlspecialchars` também es
 ## Testes
 
 `tests/smoke_test.sh` abre o site a correr e verifica os fluxos principais (login, registo, confirmação do e-mail,
-recuperação da palavra-passe, reservas, avaliações, permissões, XSS, newsletter, ofertas por e-mail e logout). Corre automaticamente no GitHub a cada push (`.github/workflows/php-lint.yml`).
+recuperação da palavra-passe, reservas, pacotes, avaliações, permissões, XSS, newsletter, ofertas por e-mail e logout). Corre automaticamente no GitHub a cada push (`.github/workflows/php-lint.yml`).
 
 Para correr localmente, **numa base de dados de teste** (o script altera senhas e reservas dos dados de exemplo):
 
@@ -125,6 +126,21 @@ As regras ficam em `config/reservas.php` e são usadas no carrinho, no checkout 
 - Finalizar a reserva é uma transação: se algum item deixou de estar disponível, nada é reservado.
 - O cliente pode cancelar uma reserva até à data de início; o vendedor e o administrador também.
   Reservas canceladas ficam no histórico e libertam os quartos.
+
+## Pacotes
+
+Regras em `config/pacotes.php` e, para a reserva, em `config/reservas.php`:
+
+- O vendedor cria os seus pacotes em **Vender → Vender Pacotes** ou **Gestão → Gestão de Pacotes**
+  (`public/vendedor/pacotes.php`): título, destino, descrição, o que inclui (um item por linha), foto, preço por pessoa,
+  duração em dias, período em que há partidas e vagas por partida (em branco = sem limite).
+- A página **Pacotes** (`public/pacotes/pacotes.php`) lista os pacotes ativos e pesquisa por destino, data de partida e
+  nº de pessoas. Nos detalhes (`detalhes_pacote.php`) o cliente escolhe a partida e as pessoas e adiciona ao carrinho.
+- Preço = `preço por pessoa × pessoas`. A reserva guarda a partida e o último dia (partida + duração − 1) e só é aceite
+  se houver vagas nessa partida.
+- Um pacote com reservas não pode ser apagado (as reservas ficariam sem nome): o vendedor desativa-o, e deixa de
+  aparecer e de poder ser reservado. Para bases de dados existentes, aplique `database/migrations/011_pacotes.sql`
+  (traz também 6 pacotes de exemplo no dump).
 
 ## Avaliações
 

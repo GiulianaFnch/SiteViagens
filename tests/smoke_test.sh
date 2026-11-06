@@ -49,7 +49,8 @@ PAGINAS="index.html public/login.php public/registro.php public/hotels/hotels.ph
 public/hotels/detalhes_hospedagem.php?id=2 public/tours/tours.php public/tours/listar_tours.php public/tours/detalhes_tours.php?id=1
 public/voos/voos.php public/pacotes/pacotes.php public/perfil.php public/reservas.php public/favoritos.php public/chat.php
 public/configuracoes.php public/carrinho/carrinho.php public/vendedor/admin.php public/vendedor/gerenciar_reservas.php
-public/vendedor/gestao_tours.php public/vendedor/gerir_hospedagem.php adm/index.php adm/reservas.php adm/vendedores.php adm/ofertas.php"
+public/vendedor/gestao_tours.php public/vendedor/gerir_hospedagem.php public/vendedor/pacotes.php
+public/vendedor/vender_opcoes.php public/vendedor/gestao_opcoes.php public/pacotes/detalhes_pacote.php?id=1 adm/index.php adm/reservas.php adm/vendedores.php adm/ofertas.php"
 for u in anon jujuba vendedor admin; do
     erros=""
     for p in $PAGINAS; do
@@ -153,6 +154,36 @@ R=$(post Karol public/carrinho/adicionar_ao_carrinho.php -d tipo_item=atividade 
 verifica "mais 2 pessoas no mesmo dia são recusadas" '[[ "$R" == *"Só há 1 vaga(s) nesse dia"* ]]'
 R=$(post Karol public/carrinho/adicionar_ao_carrinho.php -d tipo_item=atividade -d id_artigo=$TID -d data_inicio=$(d 21) -d quantidade=2 | txt)
 verifica "noutro dia há vagas"                      '[[ "$R" == *"adicionado ao carrinho"* ]]'
+q "DELETE FROM t_carrinho"
+
+echo "== Pacotes"
+verifica "a página lista os pacotes de exemplo"     '[ "$(curl -s $B/public/pacotes/pacotes.php | grep -c "class=\"pacote-card\"")" -ge 6 ]'
+verifica "pesquisa por destino"                     '[[ "$(curl -s "$B/public/pacotes/pacotes.php?destino=It%C3%A1lia" | txt)" == *"1 pacote(s) encontrado(s)"*"Costa Amalfitana"* ]]'
+PTIT="Pacote smoke $RANDOM"
+pacote_form() { curl -s -L -b "$T/vendedor" -c "$T/vendedor" -F "csrf_token=$(token vendedor public/vendedor/pacotes.php)" -F "titulo=$PTIT" \
+    -F destino=Açores -F "descricao=Ilhas e vulcões" -F "inclui=Voo
+Hotel" -F preco=100 -F data_inicio=$(d 1) -F data_fim=$(d 90) -F vagas=3 "$@" "$B/public/vendedor/pacotes.php" | txt; }
+verifica "duração inválida é recusada"              '[[ "$(pacote_form -F duracao_dias=0)" == *"duração tem de ser entre 1 e"* ]]'
+verifica "vendedor cria um pacote com foto"         '[[ "$(pacote_form -F duracao_dias=5 -F "foto=@public/hotels/imagens/hotel.jpg")" == *"Pacote criado"* ]]'
+PID=$(q "SELECT id FROM t_pacotes WHERE titulo='$PTIT' AND id_user=9")
+verifica "pacote aparece na pesquisa"               '[[ "$(curl -s "$B/public/pacotes/pacotes.php?destino=A%C3%A7ores" | txt)" == *"$PTIT"* ]]'
+verifica "cliente não entra na gestão de pacotes"   '[ "$(status jujuba public/vendedor/pacotes.php)" = 403 ]'
+R=$(post jujuba public/carrinho/adicionar_ao_carrinho.php -d tipo_item=pacote -d id_artigo=$PID -d data_inicio=$(d 30) -d quantidade=2 | txt)
+verifica "pacote para 2 pessoas (2 × 100 €)"        '[[ "$R" == *"Total: 200,00 €"* ]]'
+verifica "carrinho mostra a partida e o regresso"   '[[ "$(curl -s -b $T/jujuba $B/public/carrinho/carrinho.php | txt)" == *"$(date -d +30day +%d/%m/%Y) a $(date -d +34day +%d/%m/%Y)"* ]]'
+R=$(post jujuba public/carrinho/efetuar_reserva.php | txt)
+verifica "reserva do pacote"                        '[[ "$R" == *"Reserva efetuada com sucesso"* && "$(q "SELECT data_fim FROM t_reservas WHERE tipo_reserva='"'pacote'"' AND item_id=$PID")" = "$(d 34)" ]]'
+R=$(post Karol public/carrinho/adicionar_ao_carrinho.php -d tipo_item=pacote -d id_artigo=$PID -d data_inicio=$(d 30) -d quantidade=2 | txt)
+verifica "sem vagas para mais 2 na mesma partida"   '[[ "$R" == *"Só há 1 vaga(s) nessa partida"* ]]'
+verifica "a reserva aparece ao vendedor"            '[[ "$(curl -s -b $T/vendedor $B/public/vendedor/gerenciar_reservas.php | txt)" == *"$PTIT"*"Pacote"* ]]'
+verifica "a reserva aparece ao cliente"             '[[ "$(curl -s -b $T/jujuba $B/public/reservas.php | txt)" == *"$PTIT"* ]]'
+gerir() { curl -s -L -b "$T/vendedor" -c "$T/vendedor" -d "csrf_token=$(token vendedor public/vendedor/pacotes.php)" -d id=$PID -d "$1=1" "$B/public/vendedor/pacotes.php" | txt; }
+verifica "com reservas não se apaga"                '[[ "$(gerir apagar)" == *"não pode ser apagado"* ]]'
+verifica "desativar esconde o pacote"               '[[ "$(gerir desativar)" == *"Pacote desativado"* && "$(status anon "public/pacotes/detalhes_pacote.php?id=$PID")" = 404 ]]'
+R=$(post Karol public/carrinho/adicionar_ao_carrinho.php -d tipo_item=pacote -d id_artigo=$PID -d data_inicio=$(d 40) -d quantidade=1 | txt)
+verifica "pacote desativado não se reserva"         '[[ "$R" == *"já não está disponível"* ]]'
+q "DELETE FROM t_reservas WHERE tipo_reserva='pacote' AND item_id=$PID"
+verifica "sem reservas, o vendedor apaga o pacote"  '[[ "$(gerir apagar)" == *"Pacote apagado"* && "$(q "SELECT COUNT(*) FROM t_pacotes WHERE id=$PID")" = 0 ]]'
 q "DELETE FROM t_carrinho"
 
 echo "== Avaliações"

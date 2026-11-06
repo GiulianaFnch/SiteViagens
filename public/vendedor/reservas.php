@@ -9,15 +9,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['cancelar'])) {
         // Lógica para cancelar a reserva (fica no histórico e deixa de ocupar vagas)
         include '../../config/liga_bd.php';
+        include '../../config/reservas.php';
         
         $reserva_id = $_POST['reserva_id'];
         
         // Só cancela reservas de itens do vendedor logado
-        $sql = "UPDATE t_reservas SET estado = 'cancelada' WHERE id = ? AND (
-                (tipo_reserva = 'atividade' AND item_id IN (SELECT id FROM t_artigo WHERE id_user = ?))
-             OR (tipo_reserva = 'hospedagem' AND item_id IN (SELECT id FROM t_hospedagem WHERE id_user = ?)))";
+        $sql = "UPDATE t_reservas r SET estado = 'cancelada' WHERE id = ? AND " . reserva_sql_vendedor('r') . " = ?";
         $stmt = $ligacao->prepare($sql);
-        $stmt->bind_param("iii", $reserva_id, $_SESSION['id'], $_SESSION['id']);
+        $stmt->bind_param("ii", $reserva_id, $_SESSION['id']);
         if ($stmt->execute()) {
             // Redireciona de volta para a página de gerenciamento com sucesso
             header("Location: gerenciar_reservas.php?status=cancelled");

@@ -1,0 +1,80 @@
+/* Painel do vendedor: menu lateral e cartões de opções (views/partials/vendedor_inicio.php) */
+.painel-vendedor {
+    margin-top: 130px;
+    margin-bottom: 60px;
+}
+
+.painel-vendedor .card {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.menu-container {
+    background-color: #f8f9fa;
+    border-right: 1px solid #e0e0e0;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-item {
+    color: #007AFF;
+    padding: 10px;
+    margin: 5px 0;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+}
+
+.menu-item:hover {
+    background-color: #f0f0f0;
+    transform: translateX(8px);
+}
+
+.menu-item.ativo {
+    background-color: #e8f0fe;
+}
+
+.menu-item i {
+    margin-right: 8px;
+    font-size: 20px;
+}
+
+.option-card {
+    display: block;
+    margin: 20px 10px;
+    padding: 30px 20px;
+    text-align: center;
+    border-radius: 12px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    color: inherit;
+}
+
+.option-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+    color: inherit;
+}
+
+.option-card h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #004AAD;
+    margin-top: 15px;
+}
+
+.option-card i {
+    font-size: 48px;
+    color: #004AAD;
+}
+
+.option-card p {
+    font-size: 16px;
+    color: #6c757d;
+}

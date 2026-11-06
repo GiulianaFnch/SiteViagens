@@ -6,10 +6,38 @@
 // Significado das colunas em t_carrinho / t_reservas:
 //   hospedagem: data_inicio = check-in, data_fim = check-out, quantidade = nº de quartos
 //   atividade:  data_inicio = dia do passeio (data_fim igual), quantidade = nº de pessoas
+//   pacote:     data_inicio = dia de partida, data_fim = último dia, quantidade = nº de pessoas
 //   voo:        sem datas, quantidade = 1
 
 const RESERVA_MAX_NOITES = 60;
 const RESERVA_MAX_PESSOAS = 20;
+
+// Expressões SQL para uma reserva com o alias $r (ex.: 'r'), usadas nas listagens de reservas:
+// o vendedor dono do item e o nome do item, seja qual for o tipo
+function reserva_sql_vendedor($r)
+{
+    return "CASE $r.tipo_reserva
+        WHEN 'atividade' THEN (SELECT id_user FROM t_artigo WHERE id = $r.item_id)
+        WHEN 'hospedagem' THEN (SELECT id_user FROM t_hospedagem WHERE id = $r.item_id)
+        WHEN 'pacote' THEN (SELECT id_user FROM t_pacotes WHERE id = $r.item_id)
+    END";
+}
+
+function reserva_sql_titulo($r)
+{
+    return "CASE $r.tipo_reserva
+        WHEN 'atividade' THEN (SELECT titulo FROM t_artigo WHERE id = $r.item_id)
+        WHEN 'hospedagem' THEN (SELECT nome FROM t_hospedagem WHERE id = $r.item_id)
+        WHEN 'pacote' THEN (SELECT titulo FROM t_pacotes WHERE id = $r.item_id)
+        WHEN 'voo' THEN (SELECT CONCAT(airline, ' ', flight_number) FROM t_voos WHERE id = $r.item_id)
+    END";
+}
+
+// Nome do tipo de reserva para mostrar
+function reserva_tipo_nome($tipo)
+{
+    return ['atividade' => 'Passeio', 'hospedagem' => 'Hospedagem', 'pacote' => 'Pacote', 'voo' => 'Voo'][$tipo] ?? $tipo;
+}
 
 // Converte "AAAA-MM-DD" numa data; devolve null se for inválida
 function reserva_data($texto)
@@ -31,6 +59,17 @@ function reserva_formatar_data($texto)
 {
     $data = reserva_data($texto);
     return $data ? $data->format('d/m/Y') : '—';
+}
+
+// Datas de uma reserva: "10/05/2026 a 14/05/2026" (hospedagem, pacote) ou só o dia (passeio)
+function reserva_formatar_periodo($inicio, $fim)
+{
+    if (!$inicio) {
+        return '—';
+    }
+    return $fim && $fim !== $inicio
+        ? reserva_formatar_data($inicio) . ' a ' . reserva_formatar_data($fim)
+        : reserva_formatar_data($inicio);
 }
 
 function reserva_formatar_preco($valor)
@@ -67,12 +106,12 @@ function reserva_quartos_ocupados($ligacao, $id_hospedagem, $inicio, $fim, $igno
     return $maximo;
 }
 
-// Pessoas com reserva confirmada num passeio, num dado dia
-function reserva_pessoas_no_dia($ligacao, $id_artigo, $dia, $ignorar_reserva = 0)
+// Pessoas com reserva confirmada num passeio (ou num pacote, com $tipo = 'pacote') num dado dia de início
+function reserva_pessoas_no_dia($ligacao, $id_artigo, $dia, $ignorar_reserva = 0, $tipo = 'atividade')
 {
     $stmt = $ligacao->prepare("SELECT COALESCE(SUM(quantidade), 0) FROM t_reservas
-        WHERE tipo_reserva = 'atividade' AND item_id = ? AND estado = 'confirmada' AND data_inicio = ? AND id <> ?");
-    $stmt->bind_param("isi", $id_artigo, $dia, $ignorar_reserva);
+        WHERE tipo_reserva = ? AND item_id = ? AND estado = 'confirmada' AND data_inicio = ? AND id <> ?");
+    $stmt->bind_param("sisi", $tipo, $id_artigo, $dia, $ignorar_reserva);
     $stmt->execute();
     $total = (int) $stmt->get_result()->fetch_row()[0];
     $stmt->close();
@@ -177,6 +216,46 @@ function reserva_preparar_item($ligacao, $tipo, $id_item, $quantidade, $data_ini
             }
         }
         $item['preco_unitario'] = (float) $a['preco'];
+        $item['preco_total'] = round($item['preco_unitario'] * $item['quantidade'], 2);
+        return $item;
+    }
+
+    if ($tipo === 'pacote') {
+        $stmt = $ligacao->prepare("SELECT titulo, preco, duracao_dias, data_inicio, data_fim, vagas, ativo FROM t_pacotes WHERE id = ?");
+        $stmt->bind_param("i", $id_item);
+        $stmt->execute();
+        $p = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+        if (!$p || !$p['ativo']) {
+            return ['erro' => 'Este pacote já não está disponível.'] + $item;
+        }
+        $item['titulo'] = $p['titulo'];
+
+        $partida = reserva_data($data_inicio);
+        if (!$partida) {
+            return ['erro' => 'Escolha a data de partida.'] + $item;
+        }
+        $item['data_inicio'] = $partida->format('Y-m-d');
+        $item['data_fim'] = $partida->modify('+' . ((int) $p['duracao_dias'] - 1) . ' days')->format('Y-m-d');
+        if ($partida <= $hoje) {
+            return ['erro' => 'A data de partida tem de ser depois de hoje.'] + $item;
+        }
+        if ($item['data_inicio'] < $p['data_inicio'] || $item['data_inicio'] > $p['data_fim']) {
+            return ['erro' => 'Há partidas de ' . reserva_formatar_data($p['data_inicio'])
+                . ' a ' . reserva_formatar_data($p['data_fim']) . '.'] + $item;
+        }
+        if ($item['quantidade'] < 1 || $item['quantidade'] > RESERVA_MAX_PESSOAS) {
+            return ['erro' => 'Escolha entre 1 e ' . RESERVA_MAX_PESSOAS . ' pessoas.'] + $item;
+        }
+        if ($p['vagas'] !== null) {
+            $livres = (int) $p['vagas'] - reserva_pessoas_no_dia($ligacao, $id_item, $item['data_inicio'], $ignorar_reserva, 'pacote');
+            if ($item['quantidade'] > $livres) {
+                return ['erro' => $livres > 0
+                    ? "Só há $livres vaga(s) nessa partida."
+                    : 'Não há vagas nessa partida.'] + $item;
+            }
+        }
+        $item['preco_unitario'] = (float) $p['preco'];
         $item['preco_total'] = round($item['preco_unitario'] * $item['quantidade'], 2);
         return $item;
     }

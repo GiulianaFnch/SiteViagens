@@ -667,6 +667,38 @@ CREATE TABLE IF NOT EXISTS `t_ofertas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Estrutura da tabela `t_pacotes` (pacotes de viagem dos vendedores)
+--
+
+CREATE TABLE IF NOT EXISTS `t_pacotes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) NOT NULL,
+  `titulo` varchar(100) NOT NULL,
+  `destino` varchar(100) NOT NULL,
+  `descricao` text NOT NULL,
+  `inclui` text DEFAULT NULL,
+  `foto` varchar(50) DEFAULT NULL,
+  `preco` decimal(10,2) NOT NULL,
+  `duracao_dias` int(11) NOT NULL,
+  `data_inicio` date NOT NULL,
+  `data_fim` date NOT NULL,
+  `vagas` int(11) DEFAULT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT 1,
+  `data_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `id_user` (`id_user`),
+  CONSTRAINT `t_pacotes_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `t_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `t_pacotes` (`id`, `id_user`, `titulo`, `destino`, `descricao`, `inclui`, `foto`, `preco`, `duracao_dias`, `data_inicio`, `data_fim`, `vagas`) VALUES
+(1, 9, 'Grand Canyon e Las Vegas', 'Estados Unidos', 'Uma semana entre as luzes de Las Vegas e as paisagens do Grand Canyon, com um dia inteiro no parque nacional e tempo livre para explorar a cidade.', 'Voo de ida e volta\nHotel 4* em Las Vegas (6 noites)\nExcursão de um dia ao Grand Canyon\nGuia em português', '13.jpg', 1890.00, 7, '2025-01-01', '2027-12-31', 12),
+(2, 12, 'Costa Amalfitana e Capri', 'Itália', 'Positano, Amalfi e um passeio de barco até Capri e à Gruta Azul. Cinco dias de mar, limoeiros e vilas coloridas penduradas nas falésias.', 'Hotel com vista para o mar (4 noites)\nPequeno-almoço\nPasseio de barco a Capri e à Gruta Azul\nTransferes do aeroporto de Nápoles', '14.jpg', 1290.00, 5, '2025-01-01', '2027-12-31', 10),
+(3, 11, 'Atenas clássica', 'Grécia', 'A Acrópole, o Pártenon, a Plaka e o pôr do sol no Cabo Súnio, com um guia que conta a história de cada pedra.', 'Hotel no centro de Atenas (3 noites)\nVisita guiada à Acrópole e ao museu\nExcursão ao Cabo Súnio', '15.jpg', 790.00, 4, '2025-01-01', '2027-12-31', NULL),
+(4, 9, 'Barcelona de Gaudí', 'Espanha', 'Três dias para conhecer a Sagrada Família, o Parque Güell, a Casa Batlló e os bairros do Gótico e do Born.', 'Hotel 3* (2 noites)\nEntradas sem fila na Sagrada Família e no Parque Güell\nPasseio a pé pelo Bairro Gótico', '16.jpg', 450.00, 3, '2025-01-01', '2027-12-31', 20),
+(5, 11, 'Dubai moderno', 'Emirados Árabes Unidos', 'Do topo do Burj Khalifa a um safari no deserto ao pôr do sol, seis dias entre arranha-céus, mercados e praias.', 'Voo de ida e volta\nHotel 5* (5 noites)\nEntrada no Burj Khalifa (piso 124)\nSafari no deserto com jantar', '18.jpg', 2150.00, 6, '2025-01-01', '2027-12-31', 8),
+(6, 12, 'Amesterdão e os canais', 'Países Baixos', 'Canais, museus e bicicletas: o Rijksmuseum, a casa de Anne Frank e um passeio de barco ao fim da tarde.', 'Hotel junto aos canais (3 noites)\nPasseio de barco pelos canais\nEntrada no Rijksmuseum', '20.jpg', 690.00, 4, '2025-01-01', '2027-12-31', NULL);
+
+--
 -- Os utilizadores de exemplo já têm o e-mail confirmado
 --
 UPDATE `t_user` SET `email_confirmado` = 1;

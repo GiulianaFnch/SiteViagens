@@ -19,16 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancelar'])) {
 $sql = "SELECT r.id, r.item_id, r.user_id, r.tipo_reserva, r.data_reserva, r.quantidade,
                r.data_inicio, r.data_fim, r.preco_total, r.estado,
                u.nome AS user_nome,
-               CASE r.tipo_reserva
-                   WHEN 'atividade' THEN a.titulo
-                   WHEN 'hospedagem' THEN h.nome
-                   WHEN 'voo' THEN CONCAT(v.airline, ' ', v.flight_number)
-               END AS item_nome
+               " . reserva_sql_titulo('r') . " AS item_nome
         FROM t_reservas r
         JOIN t_user u ON r.user_id = u.id
-        LEFT JOIN t_artigo a ON r.tipo_reserva = 'atividade' AND a.id = r.item_id
-        LEFT JOIN t_hospedagem h ON r.tipo_reserva = 'hospedagem' AND h.id = r.item_id
-        LEFT JOIN t_voos v ON r.tipo_reserva = 'voo' AND v.id = r.item_id
         ORDER BY r.id DESC
         LIMIT ? OFFSET ?";
 // Reservas, 25 por página
@@ -83,10 +76,9 @@ include 'views/header.php';
                         <td><?php echo htmlspecialchars($row['id']); ?></td>
                         <td><?php echo htmlspecialchars($row['item_nome'] ?? '(item removido)'); ?></td>
                         <td><?php echo htmlspecialchars($row['user_nome']); ?></td>
-                        <td><?php echo htmlspecialchars($row['tipo_reserva']); ?></td>
+                        <td><?= htmlspecialchars(reserva_tipo_nome($row['tipo_reserva'])) ?></td>
                         <td>
-                            <?= reserva_formatar_data($row['data_inicio']) ?>
-                            <?php if ($row['tipo_reserva'] == 'hospedagem' && $row['data_fim']): ?> a <?= reserva_formatar_data($row['data_fim']) ?><?php endif; ?>
+                            <?= reserva_formatar_periodo($row['data_inicio'], $row['data_fim']) ?>
                             <br><small class="text-muted">reservado em <?= reserva_formatar_data($row['data_reserva']) ?></small>
                         </td>
                         <td><?php echo htmlspecialchars($row['quantidade']); ?></td>

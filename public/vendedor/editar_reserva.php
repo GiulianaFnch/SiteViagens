@@ -15,11 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $quantidade = (int) $_POST['quantidade'];
 
         // Só altera reservas confirmadas de itens do vendedor logado
-        $sql = "SELECT * FROM t_reservas WHERE id = ? AND estado = 'confirmada' AND (
-                (tipo_reserva = 'atividade' AND item_id IN (SELECT id FROM t_artigo WHERE id_user = ?))
-             OR (tipo_reserva = 'hospedagem' AND item_id IN (SELECT id FROM t_hospedagem WHERE id_user = ?)))";
+        $sql = "SELECT * FROM t_reservas r WHERE id = ? AND estado = 'confirmada' AND " . reserva_sql_vendedor('r') . " = ?";
         $stmt = $ligacao->prepare($sql);
-        $stmt->bind_param("iii", $reserva_id, $_SESSION['id'], $_SESSION['id']);
+        $stmt->bind_param("ii", $reserva_id, $_SESSION['id']);
         $stmt->execute();
         $reserva = $stmt->get_result()->fetch_assoc();
         $stmt->close();

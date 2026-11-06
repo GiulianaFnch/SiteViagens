@@ -1199,3 +1199,173 @@ body {
   border-color: #c0392b;
   color: #8e2a1f;
 }
+
+/* Pacotes: listagem (public/pacotes/pacotes.php) */
+.lista-pacotes {
+  padding: 60px 8%;
+}
+
+.lista-pacotes h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.lista-pacotes .sem-pacotes {
+  color: #666;
+  margin: 20px 0;
+}
+
+.grelha-pacotes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.pacote-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  color: inherit;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.pacote-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.pacote-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.pacote-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+}
+
+.pacote-info h3 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.pacote-destino,
+.pacote-duracao {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.pacote-preco {
+  color: #6495ed;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.pacote-preco small {
+  color: #888;
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+/* Pacotes: detalhes (public/pacotes/detalhes_pacote.php) */
+.detalhes-pacote {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 40px;
+  max-width: 1150px;
+  margin: 140px auto 60px;
+  padding: 0 16px;
+}
+
+.detalhes-pacote img.foto-pacote {
+  width: 100%;
+  border-radius: 12px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.detalhes-pacote h1 {
+  font-size: 2.2rem;
+  margin: 16px 0 4px;
+}
+
+.detalhes-pacote .descricao {
+  white-space: pre-line;
+  color: #444;
+  line-height: 1.6;
+}
+
+.detalhes-pacote .inclui li {
+  list-style: none;
+  margin: 6px 0;
+}
+
+.detalhes-pacote .inclui li i {
+  color: #2e9d55;
+  margin-right: 6px;
+}
+
+.reserva-pacote {
+  position: sticky;
+  top: 120px;
+  align-self: start;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
+.reserva-pacote label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+}
+
+.reserva-pacote input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 4px;
+}
+
+.reserva-pacote button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px;
+  background: #6495ed;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.reserva-pacote button:hover {
+  background: #0056b3;
+}
+
+.reserva-pacote .nota {
+  color: #666;
+  font-size: 0.85rem;
+  margin-top: 10px;
+}
+
+@media (max-width: 860px) {
+  .detalhes-pacote {
+    grid-template-columns: 1fr;
+    margin-top: 110px;
+  }
+
+  .reserva-pacote {
+    position: static;
+  }
+}

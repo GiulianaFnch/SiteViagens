@@ -53,6 +53,9 @@
                 $stmt->close();
             }
             $quantidade = 1;
+        } else if ($tipo_item == 'pacote') {
+            $id_artigo = (int) ($_POST['id_artigo'] ?? 0);
+            $data_inicio = $_POST['data_inicio'] ?? ''; // dia de partida; o último dia vem da duração do pacote
         } else {
             $tipo_item = 'atividade';
             $id_artigo = (int) ($_POST['id_artigo'] ?? 0);
