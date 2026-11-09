@@ -1,11 +1,25 @@
-<?php require_once __DIR__ . '/../../config/config.php'; ?>
+<?php
+// Pacotes de viagem dos vendedores, com pesquisa por destino, data de partida e nº de pessoas.
+require_once __DIR__ . '/../../config/pacotes.php';
+require_once __DIR__ . '/../../config/paginacao.php';
+include __DIR__ . '/../../config/liga_bd.php';
+
+$destino = trim($_GET['destino'] ?? '');
+$data = reserva_data($_GET['data'] ?? '') ? $_GET['data'] : null;
+$pessoas = min(RESERVA_MAX_PESSOAS, max(0, (int) ($_GET['pessoas'] ?? 0)));
+$a_pesquisar = $destino !== '' || $data !== null || $pessoas > 0;
+
+$por_pagina = 12;
+$pagina = pagina_atual();
+[$pacotes, $total] = pacotes_pesquisar($ligacao, $destino, $data, $pessoas, $por_pagina, ($pagina - 1) * $por_pagina);
+?>
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewpoert" content="width=device-width, inicial-scale=1">
-    <title>BestWay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pacotes - BestWay</title>
     <link rel="stylesheet" type="text/css" href="../../assets/css/style.css">
 
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
@@ -20,141 +34,57 @@
 
 <body>
     <!--header-->
-    <header>
-        <a href="<?= BASE_URL ?>" class="logo">BestWay</a>
-        <div class="bx bx-menu" id="menu-icon"></div>
-
-        <ul class="navbar">
-            <li><a href="<?= BASE_URL ?>public/hotels/hotels.php">Hospedagem</a></li>
-            <li><a href="<?= BASE_URL ?>public/voos/voos.php">Passagens</a></li>
-            <li><a href="<?= BASE_URL ?>public/tours/tours.php">Passeios</a></li>
-            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php">Pacotes</a></li>
-            <li><a href="<?= BASE_URL ?>public/perfil.php"><i class='bx bx-user'></i></a></li>
-            <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php"><i class='bx bx-cart'></i></a></li>
-        </ul>
-    </header>
+    <?php $cabecalho_sobre_imagem = true; include __DIR__ . '/../../views/partials/header.php'; ?>
 
     <!--Home section-->
     <section class="home-pacotes" id="home">
         <div class="home-text">
             <h1>Os melhores pacotes, estão a um click.</h1>
 
-            <!-- Barra de pesquisa de hotéis -->
-            <form class="hotels-search-bar">
+            <!-- Pesquisa de pacotes -->
+            <form class="hotels-search-bar" method="get" action="pacotes.php#resultados">
                 <div class="hotels-input-container">
-                    <input type="text" placeholder="Para onde vai?" aria-label="Destino" />
+                    <input type="text" name="destino" placeholder="Para onde vai?" aria-label="Destino"
+                        value="<?= htmlspecialchars($destino) ?>">
                 </div>
                 <div class="hotels-input-container">
-                    <input type="text" placeholder="Data de check-in - Data de check-out"
-                        aria-label="Datas de check-in e check-out" />
+                    <input type="date" name="data" aria-label="Data de partida" min="<?= date('Y-m-d', strtotime('+1 day')) ?>"
+                        value="<?= htmlspecialchars($data ?? '') ?>">
                 </div>
                 <div class="hotels-input-container">
-                    <input type="text" placeholder="Quantas Pessoas" aria-label="Pessoas " />
+                    <input type="number" name="pessoas" placeholder="Quantas pessoas" aria-label="Pessoas" min="1"
+                        max="<?= RESERVA_MAX_PESSOAS ?>" value="<?= $pessoas ?: '' ?>">
                 </div>
                 <button class="hotels-search-button" type="submit">Pesquisar</button>
             </form>
         </div>
     </section>
 
-    <!--container-->
-    <section class="container-pacotes">
-        <div class="text">
-            <h2>Confira nossas ofertas! </h2>
+    <!-- Pacotes dos vendedores -->
+    <section class="lista-pacotes" id="resultados">
+        <h2><?= $a_pesquisar ? "$total pacote(s) encontrado(s)" : 'Confira nossas ofertas!' ?></h2>
+        <?php if ($a_pesquisar): ?>
+            <p><a href="pacotes.php#resultados">Limpar a pesquisa</a></p>
+        <?php endif; ?>
+
+        <?php if (!$pacotes): ?>
+            <p class="sem-pacotes">Não encontrámos pacotes com esses critérios. Experimente outro destino ou outra data.</p>
+        <?php endif; ?>
+
+        <div class="grelha-pacotes">
+            <?php foreach ($pacotes as $p): ?>
+                <a class="pacote-card" href="detalhes_pacote.php?id=<?= (int) $p['id'] ?>">
+                    <img src="<?= pacote_foto_url($p['foto']) ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" loading="lazy">
+                    <div class="pacote-info">
+                        <span class="pacote-destino"><i class='bx bx-map'></i> <?= htmlspecialchars($p['destino']) ?></span>
+                        <h3><?= htmlspecialchars($p['titulo']) ?></h3>
+                        <span class="pacote-duracao"><?= (int) $p['duracao_dias'] ?> dias · <?= htmlspecialchars($p['nome_marca'] ?: $p['nick']) ?></span>
+                        <span class="pacote-preco"><?= reserva_formatar_preco($p['preco']) ?> <small>/pessoa</small></span>
+                    </div>
+                </a>
+            <?php endforeach; ?>
         </div>
-
-        <div class="row-items">
-            <div class="container-box-pacotes">
-                <div class="conteiner-img">
-                    <img src="images/1.png" style="width: 300px; height: auto;">
-                </div>
-
-
-            </div>
-            <div class="container-box-pacotes">
-                <div class="conteiner-img">
-                    <img src="images/2.png" style="width: 300px; height: auto;">
-                </div>
-
-            </div>
-
-            <div class="container-box-pacotes">
-                <div class="conteiner-img">
-                    <img src="images/3.png" style="width: 300px; height: auto;">
-                </div>
-
-
-            </div>
-
-            <div class="container-box-pacotes">
-                <div class="conteiner-img">
-                    <img src="images/4.png" style="width: 300px; height: auto;">
-
-                </div>
-
-
-            </div>
-
-            <div class="container-box-pacotes">
-                <div class="conteiner-img">
-                    <img src="images/5.png" style="width: 300px; height: auto;">
-
-                </div>
-
-
-            </div>
-            <div class="container-box-pacotes">
-                <div class="conteiner-img">
-                    <img src="images/6.png" style="width: 300px; height: auto;">
-
-                </div>
-
-
-            </div>
-            <div class="container-box-pacotes">
-                <div class="conteiner-img">
-                    <img src="images/7.png" style="width: 300px; height: auto;">
-
-                </div>
-
-
-            </div>
-            <div class="container-box-pacotes">
-                <div class="conteiner-img">
-                    <img src="images/8.png" style="width: 300px; height: auto;">
-
-                </div>
-
-            </div>
-            <div class="container-box-pacotes">
-                <div class="conteiner-img">
-                    <img src="images/9.png" style="width: 300px; height: auto;">
-
-                </div>
-
-            </div>
-            <div class="container-box-pacotes">
-                <div class="conteiner-img">
-                    <img src="images/10.png" style="width: 300px; height: auto;">
-
-                </div>
-
-            </div>
-            <div class="container-box-pacotes">
-                <div class="conteiner-img">
-                    <img src="images/11.png" style="width: 300px; height: auto;">
-
-                </div>
-
-            </div>
-            <div class="container-box-pacotes">
-                <div class="conteiner-img">
-                    <img src="images/12.png" style="width: 300px; height: auto;">
-
-                </div>
-
-            </div>
-
-        </div>
+        <?= paginacao_html($total, $por_pagina, $pagina) ?>
     </section>
 
     <section class="travel-suggestions">
@@ -230,125 +160,10 @@
         </div>
     </section>
 
-    <!--footer-->
-    <section id="contact">
-        <div class="footer">
-            <div class="main">
-
-                <div class="list">
-                    <h4> Minha Conta</h4>
-                    <ul>
-                        <li><a href="<?= BASE_URL ?>public/perfil.php">Meu Perfil</a></li>
-                        <li><a href="<?= BASE_URL ?>public/reservas.php">Minhas Viagens</a></li>
-                        <li><a href="<?= BASE_URL ?>public/backend/logout.php">Logout</a></li>
-                    </ul>
-                </div>
-
-                <div class="list">
-                    <h4>Suporte</h4>
-                    <ul>
-                        <li><a href="<?= BASE_URL ?>public/contatos/Contatos.html">Contatos</a></li>
-                        <li><a href="<?= BASE_URL ?>public/contatos/termos.html">Termos & Condições</a></li>
-                        <li><a href="<?= BASE_URL ?>public/contatos/privacidade.html">Politica de privacidade</a></li>
-
-                    </ul>
-                </div>
-
-                <div class="list">
-                    <h4>Trabalhe conosco</h4>
-                    <ul>
-                        <li><a href="<?= BASE_URL ?>public/vendedor/registro_vendedor.php">Registrar como parceiro</a>
-                        </li>
-                        <li><a href="<?= BASE_URL ?>public/vendedor/admin.php">Acessar ao painel de vendedor</a></li>
-                    </ul>
-                </div>
-
-                <div class="list">
-                    <h4>Redes Sociais</h4>
-                    <div class="social">
-                        <ul>
-                            <li><a href="#"><i class='bx bxl-facebook'></i></a></li>
-                            <li><a href="#"><i class='bx bxl-instagram'></i></a></li>
-
-                            <a href="#"></a>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="end-text">
-            <p>© 2024 BestWay. Todos os direitos reservados.</p>
-        </div>
-    </section>
+    <?php include __DIR__ . '/../../views/partials/footer.php'; ?>
 
 
-    <!--link to js-->
-    <script type="text/javascript" src="<?= BASE_URL ?>assets/js/script.js"></script>
     <script type="text/javascript" src="<?= BASE_URL ?>assets/js/scriptpacotes.js"></script>
-    <script>
-        const header = document.querySelector("header");
-
-        window.addEventListener("scroll", function () {
-            header.classList.toggle("sticky", this.window.scrollY > 0);
-        });
-
-        let menu = document.querySelector('#menu-icon');
-        let navbar = document.querySelector('.navbar');
-
-        menu.onclick = () => {
-            menu.classList.toggle('bx-x');
-            navbar.classList.toggle('open');
-        };
-
-        window.onscroll = () => {
-            menu.classList.remove('bx-x');
-            navbar.classList.remove('open');
-        }
-        // Seleciona os elementos dos botões de navegação e o container do carrossel
-        const prevButton = document.querySelector('.prev');
-        const nextButton = document.querySelector('.next');
-        const destinosContainer = document.querySelector('.destinos-container');
-
-        // Função para calcular a largura total de um cartão (incluindo margens)
-        function getCardWidth() {
-            const card = document.querySelector('.destino-card');
-            if (!card) return 0; // Verifica se o cartão existe no DOM
-            const cardStyle = window.getComputedStyle(card);
-            const cardMarginRight = parseInt(cardStyle.marginRight) || 0; // Garante que a margem seja um número
-            return card.offsetWidth + cardMarginRight;
-        }
-
-        // Verifica se os botões existem antes de adicionar os event listeners
-        if (nextButton && prevButton && destinosContainer) {
-
-            // Função para avançar no carrossel
-            nextButton.addEventListener('click', () => {
-                const cardWidth = getCardWidth();  // Recalcula a largura do cartão ao clicar
-                destinosContainer.scrollBy({
-                    top: 0,
-                    left: cardWidth,  // Rola para a direita pela largura de um cartão
-                    behavior: 'smooth'
-                });
-            });
-
-            // Função para retroceder no carrossel
-            prevButton.addEventListener('click', () => {
-                const cardWidth = getCardWidth();  // Recalcula a largura do cartão ao clicar
-                destinosContainer.scrollBy({
-                    top: 0,
-                    left: -cardWidth,  // Rola para a esquerda pela largura de um cartão
-                    behavior: 'smooth'
-                });
-            });
-
-        } else {
-            console.error('Botões ou container do carrossel não encontrados.');
-        }
-    </script>
-
-
 </body>
 
 </html>

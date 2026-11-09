@@ -129,26 +129,20 @@ foreach ($linhas_carrinho as $linha) {
                                     <div class="text-danger small"><?= htmlspecialchars($item['erro']) ?></div>
                                 <?php endif; ?>
                             </td>
-                            <td><?= htmlspecialchars($item['tipo_item']) ?></td>
+                            <td><?= htmlspecialchars(reserva_tipo_nome($item['tipo_item'])) ?></td>
                             <td>
-                                <?php if ($item['tipo_item'] == 'hospedagem'): ?>
-                                    <?= reserva_formatar_data($item['data_inicio']) ?> a <?= reserva_formatar_data($item['data_fim']) ?>
-                                    <?php if ($item['noites']): ?><br><small><?= $item['noites'] ?> noite(s)</small><?php endif; ?>
-                                <?php elseif ($item['tipo_item'] == 'atividade'): ?>
-                                    <?= reserva_formatar_data($item['data_inicio']) ?>
-                                <?php else: ?>
-                                    —
-                                <?php endif; ?>
+                                <?= reserva_formatar_periodo($item['data_inicio'], $item['data_fim']) ?>
+                                <?php if ($item['noites']): ?><br><small><?= $item['noites'] ?> noite(s)</small><?php endif; ?>
                             </td>
                             <td>
                                 <?= reserva_formatar_preco($item['preco_unitario']) ?>
                                 <?php if ($item['tipo_item'] == 'hospedagem'): ?><small>/noite</small><?php endif; ?>
-                                <?php if ($item['tipo_item'] == 'atividade'): ?><small>/pessoa</small><?php endif; ?>
+                                <?php if (in_array($item['tipo_item'], ['atividade', 'pacote'])): ?><small>/pessoa</small><?php endif; ?>
                             </td>
                             <td>
                                 <?= (int) $item['quantidade'] ?>
                                 <?php if ($item['tipo_item'] == 'hospedagem'): ?><small>quarto(s)</small><?php endif; ?>
-                                <?php if ($item['tipo_item'] == 'atividade'): ?><small>pessoa(s)</small><?php endif; ?>
+                                <?php if (in_array($item['tipo_item'], ['atividade', 'pacote'])): ?><small>pessoa(s)</small><?php endif; ?>
                             </td>
                             <td><?= $item['erro'] === null ? reserva_formatar_preco($item['preco_total']) : '—' ?></td>
                             <td>

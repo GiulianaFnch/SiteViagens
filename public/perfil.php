@@ -97,8 +97,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['id_solicitacao'])) {
     }
 
     // Atualizar dados no banco de dados usando prepared statements
-    $stmt = $ligacao->prepare("UPDATE t_user SET nick = ?, nome = ?, email = ?, data_nasc = ?, foto = ? WHERE id = ?");
-    $stmt->bind_param("sssssi", $nick, $nome, $email, $data_nasc, $fotoNova, $id);
+    // Um e-mail novo tem de ser confirmado (config/contas.php)
+    require_once __DIR__ . '/../config/contas.php';
+    $erro_email = conta_mudar_email($ligacao, $id, $email);
+    if ($erro_email !== null) {
+        echo htmlspecialchars($erro_email);
+        exit;
+    }
+
+    $stmt = $ligacao->prepare("UPDATE t_user SET nick = ?, nome = ?, data_nasc = ?, foto = ? WHERE id = ?");
+    $stmt->bind_param("ssssi", $nick, $nome, $data_nasc, $fotoNova, $id);
 
     if ($stmt->execute()) {
         // Redirecionar após o sucesso
@@ -380,19 +388,7 @@ mysqli_close($ligacao);
 <body>
         <!--header-->
     
-        <header>
-        <a href="../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
-        <div class="bx bx-menu" id="menu-icon"></div>
-
-        <ul class="navbar">
-            <li><a href="<?= BASE_URL ?>public/hotels/hotels.php" style="color: black;" >Hospedagem</a></li>
-            <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;" >Passagens</a></li>
-            <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black; ">Tours</a></li>
-            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
-            <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
-
-        </ul>
-        </header>
+        <?php $cabecalho_escuro = true; include __DIR__ . '/../views/partials/header.php'; ?>
 
     <br><br><br><br><br><br>
 
@@ -432,7 +428,7 @@ mysqli_close($ligacao);
                             href="perfil.php#account-general"><i class="bi bi-person-circle"></i> Editar perfil</a>
                         <a class="menu-item" href="reservas.php"><i class="bi bi-clipboard2"></i> Reservas</a>
                         <a class="menu-item" href="favoritos.php"><i class="bi bi-heart"></i> Favoritos</a>
-                        <a class="menu-item" href="chat2.php"><i class="bi bi-chat-dots"></i> Chat</a>
+                        <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
                         <a class="menu-item" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
                 </div>
@@ -496,6 +492,9 @@ mysqli_close($ligacao);
                                     <label for="email" class="form-label">E-mail</label>
                                     <input type="email" id="email" class="form-control rounded-pill" name="email"
                                         value="<?php echo htmlspecialchars($linha['email']); ?>" required>
+                                    <?php if (!$linha['email_confirmado']): ?>
+                                        <small class="text-danger">E-mail por confirmar: abra o link que lhe enviámos.</small>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="form-group">
                                     <label for="data_nasc" class="form-label">Data de Nascimento</label>

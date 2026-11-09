@@ -6,7 +6,7 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 
 - [x] **Proteção CSRF** nas ações de utilizadores autenticados — `config/csrf.php` (`csrf_campo()` nos
       formulários, `csrf_verificar()` nos ficheiros que alteram dados, token também nos pedidos AJAX do chat e das definições).
-- [x] CSRF no login e nos registos (`login.php`/`login2.php`, `registro.php`/`registro2.php`, `registro_vendedor.php`).
+- [x] CSRF no login e nos registos (`login.php`/`login2.php`, `registro.php`/`backend/criar_conta.php`, `registro_vendedor.php`).
 - [x] Logout só por POST com token — os links "Logout" abrem uma página de confirmação.
 - [x] **XSS** — os textos vindos da BD (títulos, descrições, nomes, nicks, fotos, categorias) passam por
       `htmlspecialchars` em todas as páginas. Testado com títulos/nomes contendo `<script>` em 19 páginas.
@@ -37,21 +37,31 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 
 ## Funcionalidades em falta
 
-- [ ] **Pacotes** (`public/pacotes/pacotes.php`) é só HTML estático — não há tabela nem gestão de pacotes.
+- [x] **Pacotes** — tabela `t_pacotes` (migração 011), listagem com pesquisa, detalhes com reserva por pessoa e vagas
+      por partida, gestão pelo vendedor (`public/vendedor/pacotes.php`). Falta: avaliações de pacotes.
 - [ ] Pagamento (atualmente "reservar" não cobra nada).
 - [x] Cancelamento de reserva pelo cliente (antes do início), vendedor e admin — a reserva fica com `estado = 'cancelada'`.
-- [ ] Recuperação de palavra-passe / confirmação de e-mail.
+- [x] Recuperação de palavra-passe e confirmação de e-mail (`config/contas.php`, `config/email.php`, migração 009).
 - [x] Avaliações dos passeios e hospedagens (`config/avaliacoes.php`, `views/partials/avaliacoes.php`) — só quem já usou a reserva avalia.
 - [x] Resposta do vendedor às avaliações (só o vendedor dono do item; migração 008).
 - [x] Paginação (`config/paginacao.php`): 12 por página nas listagens de passeios e hospedagens, 25 nos painéis do admin.
-- [ ] Envio de e-mails de ofertas (para `t_newsletter` e utilizadores com `notificacoes_ofertas`) — falta um serviço de e-mail.
+- [x] Envio de e-mails de ofertas pelo administrador (`adm/ofertas.php`, `config/ofertas.php`), com link para cancelar a subscrição.
 
 ## Organização do código
 
-- [ ] Cabeçalho, rodapé e CSS repetidos inline em quase todas as páginas — usar `views/partials/header.php` e `footer.php`.
+- [x] Cabeçalho e rodapé comuns (`views/partials/header.php` e `footer.php`) em todas as páginas PHP; CSS das páginas de
+      mensagem em `assets/css/mensagem.css`. Ficam de fora as páginas estáticas (`index.html`, `public/contatos/*.html`).
+- [x] Páginas de conta (login, registo de cliente e de vendedor, confirmar e-mail, recuperar palavra-passe) com um layout
+      comum (`views/partials/conta_inicio.php` e `conta_fim.php`); erros voltam ao formulário com um aviso.
+- [x] Painel do vendedor com layout comum (`views/partials/vendedor_inicio.php`/`vendedor_fim.php`, `assets/css/vendedor.css`)
+      nas páginas Vender, Gestão e Pacotes; falta passar as restantes páginas do vendedor.
+- [x] Reservas: título e vendedor de cada tipo de reserva, e o período das datas, numa só função
+      (`reserva_sql_titulo`, `reserva_sql_vendedor`, `reserva_formatar_periodo` em `config/reservas.php`).
+- [ ] O CSS específico de cada página continua dentro de `<style>` na própria página.
 - [x] Página de acesso negado única (`config/acesso.php`), usada pelos três validadores, com HTTP 403.
 - [x] Constantes `TIPO_CLIENTE`, `TIPO_BLOQUEADO`, `TIPO_VENDEDOR`, `TIPO_VENDEDOR_PENDENTE`, `TIPO_ADMIN` (`config/acesso.php`).
 - [x] Reativar um vendedor bloqueado tornava-o cliente — o tipo anterior fica em `tipo_antes_bloqueio` (migração 006);
       administradores já não podem ser bloqueados; "aprovar vendedor" só afeta registos pendentes.
-- [ ] Ficheiros com nomes "2" (`chat2`, `registro2`, `login2`, `vender_tours2`, `configuracoes2`, `pesquisa2_tours`) — renomear pelo que fazem.
-- [x] Testes de fumo (`tests/smoke_test.sh`, 36 verificações) correm no CI com PHP 8.3 + MariaDB a cada push.
+- [x] Ficheiros com nomes "2" renomeados pelo que fazem (`backend/autenticar.php`, `backend/criar_conta.php`, `chat.php`,
+      `chat_mensagens.php`, `chat_enviar.php`, `vendedor/guardar_tour.php`, `vendedor/configuracoes.php`, `tours/pesquisa_tours.php`).
+- [x] Testes de fumo (`tests/smoke_test.sh`, 89 verificações) correm no CI com PHP 8.3 + MariaDB a cada push.

@@ -31,81 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;900&display=swap" rel="stylesheet">
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Poppins', sans-serif;
-            background-color: #f9f9f9;
-        }
-
-        .message-container {
-            text-align: center;
-            flex-grow: 1;
-        }
-
-        h1 {
-            font-size: 36px;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            font-weight: 400;
-        }
-
-        input[type="button"],
-        input[type="submit"] {
-            padding: 10px 20px;
-            background-color: #6495ed;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        input[type="button"]:hover,
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-
-        footer {
-            width: 100%;
-            background-color: #6495ed;
-            color: white;
-            padding: 20px 0;
-            position: fixed;
-            bottom: 0;
-            text-align: center;
-        }
-
-        footer p {
-            margin: 0;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/mensagem.css">
 </head>
 
 <body>
 
-    <header>
-        <a href="<?= BASE_URL ?>index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
-        <ul class="navbar">
-            <li><a href="<?= BASE_URL ?>public/hotels/hotels.php" style="color: black;">Hospedagem</a></li>
-            <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;">Passagens</a></li>
-            <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black;">Passeios</a></li>
-            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
-            <li><a href="<?= BASE_URL ?>public/login.php" style="color: black;"><i class='bx bx-user'></i></a></li>
-            <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black;"><i class='bx bx-cart'></i></a></li>
-        </ul>
-    </header>
+    <?php $cabecalho_escuro = true; include __DIR__ . '/../../views/partials/header.php'; ?>
 
     <div class="message-container">
         <?php if ($terminou): ?>

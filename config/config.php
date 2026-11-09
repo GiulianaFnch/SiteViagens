@@ -17,6 +17,19 @@ $config = [
     'serpapi_key' => getenv('SERPAPI_KEY') ?: '',
     // true mostra os detalhes dos erros na página (só para desenvolvimento)
     'debug'       => filter_var(getenv('APP_DEBUG'), FILTER_VALIDATE_BOOLEAN),
+    // Protocolo, servidor e porta do site (ex.: http://localhost, https://bestway.pt), usados com BASE_URL nos links dos e-mails.
+    // Nunca é deduzido do pedido: um cabeçalho Host falso poria links para outro site nos e-mails.
+    'url_site'    => getenv('SITE_URL') ?: 'http://localhost',
+    // E-mails: 'ficheiro' grava cada e-mail em storage/emails/ (desenvolvimento), 'smtp' envia mesmo
+    'email_modo'      => getenv('EMAIL_MODO') ?: 'ficheiro',
+    'email_remetente' => getenv('EMAIL_REMETENTE') ?: 'nao-responder@bestway.local',
+    'smtp_host'       => getenv('SMTP_HOST') ?: '',
+    'smtp_porta'      => (int) (getenv('SMTP_PORTA') ?: 587),
+    'smtp_seguranca'  => getenv('SMTP_SEGURANCA') ?: 'tls', // 'tls' (STARTTLS, porta 587), 'ssl' (porta 465) ou 'nenhuma'
+    'smtp_utilizador' => getenv('SMTP_UTILIZADOR') ?: '',
+    'smtp_senha'      => getenv('SMTP_SENHA') ?: '',
+    // Chave secreta para assinar links (ex.: cancelar as ofertas). Vazia: é gerada em storage/chave_app.txt
+    'chave_app'       => getenv('APP_KEY') ?: '',
 ];
 
 if (file_exists(__DIR__ . '/config.local.php')) {
@@ -41,6 +54,13 @@ define('BASE_URL', $config['base_url']);
 define('SERPAPI_KEY', $config['serpapi_key']);
 define('APP_DEBUG', (bool) $config['debug']);
 
+// Endereço absoluto de uma página do site (para links em e-mails), ex.: url_absoluta('public/login.php')
+function url_absoluta($caminho)
+{
+    global $config;
+    return rtrim($config['url_site'], '/') . BASE_URL . ltrim($caminho, '/');
+}
+
 // Erros não tratados (ex.: falha numa consulta à BD): os detalhes vão para o log do servidor
 // e o visitante vê só uma mensagem genérica, sem SQL, nomes de tabelas ou caminhos de ficheiros.
 if (!APP_DEBUG) {
@@ -52,4 +72,22 @@ if (!APP_DEBUG) {
         echo '<p style="font-family: sans-serif; text-align: center; margin: 40px;">'
             . 'Ocorreu um erro inesperado. Tente novamente mais tarde.</p>';
     });
+}
+
+// Chave secreta da aplicação: a da configuração ou, se não houver, uma gerada na primeira utilização
+function chave_app()
+{
+    global $config;
+    if ($config['chave_app'] === '') {
+        $ficheiro = __DIR__ . '/../storage/chave_app.txt';
+        if (!is_file($ficheiro)) {
+            if (!is_dir(dirname($ficheiro))) {
+                mkdir(dirname($ficheiro), 0775, true);
+            }
+            file_put_contents($ficheiro, bin2hex(random_bytes(32)), LOCK_EX);
+            chmod($ficheiro, 0600);
+        }
+        $config['chave_app'] = trim(file_get_contents($ficheiro));
+    }
+    return $config['chave_app'];
 }

@@ -34,8 +34,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Atualizar dados no banco de dados
-    $stmt = $ligacao->prepare("UPDATE t_user SET nick = ?, nome = ?, email = ?, biografia = ?, data_nasc = ?, foto = ? WHERE id = ?");
-    $stmt->bind_param("ssssssi", $nick, $nome, $email, $biografia, $data_nasc, $fotoNova, $id);
+    // Um e-mail novo tem de ser confirmado (config/contas.php)
+    require_once __DIR__ . '/../../config/contas.php';
+    $erro_email = conta_mudar_email($ligacao, $id, $email);
+    if ($erro_email !== null) {
+        echo htmlspecialchars($erro_email);
+        exit;
+    }
+
+    $stmt = $ligacao->prepare("UPDATE t_user SET nick = ?, nome = ?, biografia = ?, data_nasc = ?, foto = ? WHERE id = ?");
+    $stmt->bind_param("sssssi", $nick, $nome, $biografia, $data_nasc, $fotoNova, $id);
     if ($stmt->execute()) {
         header('Location: admin.php');
         exit;
@@ -262,20 +270,7 @@ mysqli_close($ligacao);
 
 <body>
     <!--header-->
-    <header>
-
-        <a href="../../index.html"
-            style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
-        <div class="bx bx-menu" id="menu-icon"></div>
-
-        <ul class="navbar">
-            <li><a href="<?= BASE_URL ?>public/hotels/hotels.php">Hospedagem</a></li>
-            <li><a href="<?= BASE_URL ?>public/voos/voos.php">Passagens</a></li>
-            <li><a href="<?= BASE_URL ?>public/tours/tours.php">Passeios</a></li>
-            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php">Pacotes</a></li>
-            <li><a href="<?= BASE_URL ?>public/perfil.php"><i class='bx bx-user'></i></a></li>
-        </ul>
-    </header>
+    <?php $cabecalho_escuro = true; include __DIR__ . '/../../views/partials/header.php'; ?>
 
     <br><br><br><br><br><br>
 
@@ -291,7 +286,7 @@ mysqli_close($ligacao);
                         <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Reservas</a>
                         <a class="menu-item" href="gestao_opcoes.php"><i class="bi bi-train-freight-front"></i> Gestão</a>
                         <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
-                        <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
+                        <a class="menu-item" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
                 </div>
 
@@ -350,6 +345,9 @@ mysqli_close($ligacao);
                                     <label for="email" class="form-label">E-mail</label>
                                     <input type="email" id="email" class="form-control rounded-pill" name="email"
                                         value="<?php echo htmlspecialchars($linha['email']); ?>" required>
+                                    <?php if (!$linha['email_confirmado']): ?>
+                                        <small class="text-danger">E-mail por confirmar: abra o link que lhe enviámos.</small>
+                                    <?php endif; ?>
                                 </div>
 
                                 <div class="form-group">

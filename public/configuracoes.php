@@ -309,19 +309,7 @@ header{
 
 <!--header-->
     
-<header>
- 
-        <a href="../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
-        <div class="bx bx-menu" id="menu-icon"></div>
-
-        <ul class="navbar">
-        <li><a href="<?= BASE_URL ?>public/hotels/hotels.php" style="color: black;" >Hospedagem</a></li>
-            <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;" >Passagens</a></li>
-            <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black; ">Tours</a></li>
-            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
-            <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
-        </ul>
-        </header>
+<?php $cabecalho_escuro = true; include __DIR__ . '/../views/partials/header.php'; ?>
         
     <br><br><br><br><br><br>
 
@@ -333,7 +321,7 @@ header{
                         <a class="menu-item" href="perfil.php"><i class="bi bi-person-circle"></i> Editar perfil</a>
                         <a class="menu-item" href="reservas.php"><i class="bi bi-clipboard2"></i> Reservas</a>
                         <a class="menu-item" href="favoritos.php"><i class="bi bi-heart"></i> Favoritos</a>
-                        <a class="menu-item" href="chat2.php"><i class="bi bi-chat-dots"></i> Chat</a>
+                        <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
                         <a class="menu-item active" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
                 </div>

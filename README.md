@@ -9,7 +9,9 @@ Este projeto é uma aplicação web para gerenciar reservas de viagens, hospedag
 - **Hospedagem**: Pesquisa e reserva de hospedagens.
 - **Passagens Aéreas**: Pesquisa e reserva de passagens aéreas.
 - **Passeios Turísticos**: Pesquisa e reserva de passeios turísticos.
+- **Pacotes**: Pacotes de viagem dos vendedores, com pesquisa por destino, data e pessoas, e reserva por pessoa.
 - **Carrinho de Compras**: Adição de itens ao carrinho e cálculo do total.
+- **Contas**: Registo com confirmação do e-mail e recuperação da palavra-passe por e-mail.
 - **Perfil**: Configurações de conta do usuário.
 - **Perfil do Vendedor**: Visualização do perfil do vendedor.
 - **Chat**: Comunicação entre usuários e vendedores.
@@ -60,8 +62,8 @@ O PHP 8.1 é o mínimo porque é a partir dele que `htmlspecialchars` também es
 
 ## Testes
 
-`tests/smoke_test.sh` abre o site a correr e verifica os fluxos principais (login, registo, reservas, avaliações,
-permissões, XSS, newsletter e logout). Corre automaticamente no GitHub a cada push (`.github/workflows/php-lint.yml`).
+`tests/smoke_test.sh` abre o site a correr e verifica os fluxos principais (login, registo, confirmação do e-mail,
+recuperação da palavra-passe, reservas, pacotes, avaliações, permissões, XSS, newsletter, ofertas por e-mail e logout). Corre automaticamente no GitHub a cada push (`.github/workflows/php-lint.yml`).
 
 Para correr localmente, **numa base de dados de teste** (o script altera senhas e reservas dos dados de exemplo):
 
@@ -90,6 +92,17 @@ Também é possível usar variáveis de ambiente: `DB_HOST`, `DB_USER`, `DB_PASS
 - **debug** (`APP_DEBUG`) — `false` por omissão: erros inesperados mostram só uma mensagem genérica e os detalhes vão
   para o log do servidor (no XAMPP, `xampp/apache/logs/error.log`). Ponha `true` no seu computador para ver os erros na página.
 
+### E-mails
+
+O site envia e-mails para confirmar o endereço no registo e para recuperar a palavra-passe (`config/email.php`).
+
+- **email_modo** (`EMAIL_MODO`) — `ficheiro` por omissão: os e-mails **não são enviados**, ficam gravados em
+  `storage/emails/` como páginas HTML (abra-as no navegador para clicar nos links). Bom para desenvolvimento.
+  Em produção use `smtp` e preencha `smtp_host`, `smtp_porta`, `smtp_seguranca` (`tls` ou `ssl`), `smtp_utilizador`,
+  `smtp_senha` e `email_remetente` em `config/config.local.php` (há um exemplo para o Gmail em `config.local.example.php`).
+- **url_site** (`SITE_URL`) — endereço público do site (ex.: `https://bestway.pt`), usado nos links dos e-mails.
+  Nunca é tirado do pedido, para que ninguém consiga gerar links que apontem para outro site.
+
 ### Atualizar uma base de dados existente
 
 Se já tinha a base de dados importada antes, aplique os scripts de `database/migrations/` por ordem
@@ -114,6 +127,21 @@ As regras ficam em `config/reservas.php` e são usadas no carrinho, no checkout 
 - O cliente pode cancelar uma reserva até à data de início; o vendedor e o administrador também.
   Reservas canceladas ficam no histórico e libertam os quartos.
 
+## Pacotes
+
+Regras em `config/pacotes.php` e, para a reserva, em `config/reservas.php`:
+
+- O vendedor cria os seus pacotes em **Vender → Vender Pacotes** ou **Gestão → Gestão de Pacotes**
+  (`public/vendedor/pacotes.php`): título, destino, descrição, o que inclui (um item por linha), foto, preço por pessoa,
+  duração em dias, período em que há partidas e vagas por partida (em branco = sem limite).
+- A página **Pacotes** (`public/pacotes/pacotes.php`) lista os pacotes ativos e pesquisa por destino, data de partida e
+  nº de pessoas. Nos detalhes (`detalhes_pacote.php`) o cliente escolhe a partida e as pessoas e adiciona ao carrinho.
+- Preço = `preço por pessoa × pessoas`. A reserva guarda a partida e o último dia (partida + duração − 1) e só é aceite
+  se houver vagas nessa partida.
+- Um pacote com reservas não pode ser apagado (as reservas ficariam sem nome): o vendedor desativa-o, e deixa de
+  aparecer e de poder ser reservado. Para bases de dados existentes, aplique `database/migrations/011_pacotes.sql`
+  (traz também 6 pacotes de exemplo no dump).
+
 ## Avaliações
 
 - Nota de 1 a 5 estrelas e comentário opcional, em passeios e hospedagens.
@@ -128,7 +156,34 @@ As regras ficam em `config/reservas.php` e são usadas no carrinho, no checkout 
 
 O formulário "Inscreva-se para receber nossas ofertas" grava o e-mail em `t_newsletter`
 (`public/backend/newsletter.php`). Para bases de dados existentes, aplique `database/migrations/005_newsletter.sql`.
-O envio dos e-mails ainda não está implementado.
+
+### Ofertas por e-mail
+
+No painel do administrador, **Ofertas** (`adm/ofertas.php`) permite escrever uma oferta (assunto, mensagem e um link
+opcional com botão), enviar um teste para o próprio e-mail e depois enviá-la a todos. Regras em `config/ofertas.php`:
+
+- Recebem a oferta os inscritos na newsletter e os utilizadores que aceitam ofertas nas configurações, com o e-mail
+  confirmado e a conta ativa — sem e-mails repetidos.
+- Cada e-mail traz um link para deixar de receber ofertas (`public/cancelar_ofertas.php`), assinado com HMAC para que
+  ninguém cancele os e-mails de outra pessoa; abrir o link só pergunta, cancelar exige carregar no botão. Também vai no
+  cabeçalho `List-Unsubscribe`, que o Gmail e outros mostram como "Cancelar subscrição".
+- A chave das assinaturas é `chave_app` (`APP_KEY`); se estiver vazia, é gerada em `storage/chave_app.txt`.
+- Os envios ficam no histórico (`t_ofertas`, migração `010_ofertas.sql`). O envio é feito no próprio pedido, um e-mail
+  de cada vez: serve para listas de algumas centenas de pessoas; para mais, seria preciso uma fila de envio.
+
+## Contas e palavras-passe
+
+As regras ficam em `config/contas.php`:
+
+- **Registo** (clientes e vendedores) — nick único, e-mail válido e palavra-passe com pelo menos 8 caracteres, escrita
+  duas vezes. Se algo falhar, o formulário volta preenchido com o aviso.
+- **Confirmação do e-mail** — depois do registo é enviado um link (válido 48 horas). Enquanto o e-mail não for confirmado
+  não é possível entrar: o login mostra uma página para pedir outro link ou corrigir o endereço. Mudar o e-mail no perfil
+  obriga a confirmar o novo. As contas que já existiam ficam confirmadas (migração `009_confirmacao_email_tokens.sql`).
+- **Recuperação da palavra-passe** — "Esqueceu a palavra-passe?" no login envia um link (válido 1 hora, só serve uma vez)
+  para cada conta com esse e-mail. A resposta é sempre a mesma, exista ou não o e-mail.
+- Os links usam tokens aleatórios de 256 bits; na base de dados (`t_tokens`) fica só o hash SHA-256. No máximo 3 e-mails
+  de cada tipo por conta e por hora.
 
 ## Tipos de utilizador (`t_user.tipo_user`)
 

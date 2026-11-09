@@ -5,18 +5,16 @@ include '../../config/reservas.php';
 
 $vendedor_id = $_SESSION['id'];
 
-// Reservas de passeios e de hospedagens do vendedor logado
+// Reservas dos passeios, hospedagens e pacotes do vendedor logado
 $sql = "SELECT r.id, r.item_id, r.tipo_reserva, r.data_reserva, r.quantidade,
                r.data_inicio, r.data_fim, r.preco_total, r.estado, u.nome AS user_nome,
-               COALESCE(a.titulo, h.nome) AS titulo
+               " . reserva_sql_titulo('r') . " AS titulo
         FROM t_reservas r
         JOIN t_user u ON r.user_id = u.id
-        LEFT JOIN t_artigo a ON r.tipo_reserva = 'atividade' AND a.id = r.item_id
-        LEFT JOIN t_hospedagem h ON r.tipo_reserva = 'hospedagem' AND h.id = r.item_id
-        WHERE a.id_user = ? OR h.id_user = ?
+        WHERE " . reserva_sql_vendedor('r') . " = ?
         ORDER BY (r.data_inicio IS NULL), r.data_inicio DESC, r.id DESC";
 $stmt = $ligacao->prepare($sql);
-$stmt->bind_param("ii", $vendedor_id, $vendedor_id);
+$stmt->bind_param("i", $vendedor_id);
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
@@ -114,15 +112,7 @@ $result = $stmt->get_result();
 </head>
 
 <body>
-    <header>
-        <a href="../../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
-        <ul class="navbar">
-            <li><a href="#home" style="color: black;">Hospedagem</a></li>
-            <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;">Passagens</a></li>
-            <li><a href="#destination" style="color: black;">Tours</a></li>
-            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
-        </ul>
-    </header>
+    <?php $cabecalho_escuro = true; include __DIR__ . '/../../views/partials/header.php'; ?>
 
     <br><br><br><br><br><br><br>
 
@@ -137,7 +127,7 @@ $result = $stmt->get_result();
                         <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Reservas</a>
                         <a class="menu-item" href="gestao_opcoes.php"><i class="bi bi-train-freight-front"></i> Gestão</a>
                         <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
-                        <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
+                        <a class="menu-item" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
                 </div>
 
@@ -169,13 +159,9 @@ $result = $stmt->get_result();
                             <tr>
                                 <td><?php echo htmlspecialchars($row['titulo']); ?></td>
                                 <td><?php echo htmlspecialchars($row['user_nome']); ?></td>
-                                <td><?php echo htmlspecialchars($row['tipo_reserva']); ?></td>
+                                <td><?= htmlspecialchars(reserva_tipo_nome($row['tipo_reserva'])) ?></td>
                                 <td>
-                                    <?php if ($row['tipo_reserva'] == 'hospedagem' && $row['data_inicio']): ?>
-                                        <?= reserva_formatar_data($row['data_inicio']) ?> a <?= reserva_formatar_data($row['data_fim']) ?>
-                                    <?php else: ?>
-                                        <?= reserva_formatar_data($row['data_inicio']) ?>
-                                    <?php endif; ?>
+                                    <?= reserva_formatar_periodo($row['data_inicio'], $row['data_fim']) ?>
                                     <br><small class="text-muted">reservado em <?= reserva_formatar_data($row['data_reserva']) ?></small>
                                 </td>
                                 <td><?php echo htmlspecialchars($row['quantidade']); ?></td>

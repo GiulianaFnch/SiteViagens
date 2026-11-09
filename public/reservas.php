@@ -37,16 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancelar'])) {
 $sql = "SELECT r.id, r.item_id, r.tipo_reserva, r.data_reserva, r.quantidade,
         r.data_inicio, r.data_fim, r.preco_total, r.estado,
         (r.estado = 'confirmada' AND (r.data_inicio IS NULL OR r.data_inicio > CURDATE())) AS pode_cancelar, 
-        CASE 
-            WHEN r.tipo_reserva = 'atividade' THEN (SELECT id_user FROM t_artigo WHERE id = r.item_id)
-            WHEN r.tipo_reserva = 'hospedagem' THEN (SELECT id_user FROM t_hospedagem WHERE id = r.item_id)
-            WHEN r.tipo_reserva = 'voo' THEN (SELECT id_user FROM t_voos WHERE id = r.item_id)
-        END AS vendedor_id,
-        CASE 
-            WHEN r.tipo_reserva = 'atividade' THEN (SELECT titulo FROM t_artigo WHERE id = r.item_id)
-            WHEN r.tipo_reserva = 'hospedagem' THEN (SELECT nome FROM t_hospedagem WHERE id = r.item_id)
-            WHEN r.tipo_reserva = 'voo' THEN (SELECT flight_number FROM t_voos WHERE id = r.item_id)
-        END AS titulo
+        " . reserva_sql_vendedor('r') . " AS vendedor_id,
+        " . reserva_sql_titulo('r') . " AS titulo
         FROM t_reservas r 
         WHERE r.user_id = ?
         ORDER BY r.data_reserva DESC, r.id DESC";
@@ -172,17 +164,7 @@ $result = $stmt->get_result();
 </head>
 
 <body>
-<header>
-    <a href="../index.html" style="font-size: 35px; font-weight: 600; letter-spacing: 1px; color: black;">BestWay</a>
-    <div class="bx bx-menu" id="menu-icon"></div>
-    <ul class="navbar">
-        <li><a href="<?= BASE_URL ?>public/hotels/hotels.php" style="color: black;">Hospedagem</a></li>
-        <li><a href="<?= BASE_URL ?>public/voos/voos.php" style="color: black;">Passagens</a></li>
-        <li><a href="<?= BASE_URL ?>public/tours/tours.php" style="color: black;">Tours</a></li>
-        <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php" style="color: black;">Pacotes</a></li>
-        <li><a href="<?= BASE_URL ?>public/carrinho/carrinho.php" style="color: black !important;"><i class='bx bx-cart'></i></a></li>
-    </ul>
-</header>
+<?php $cabecalho_escuro = true; include __DIR__ . '/../views/partials/header.php'; ?>
 
 <br><br><br><br><br><br>
 
@@ -195,7 +177,7 @@ $result = $stmt->get_result();
                     <a class="menu-item" href="perfil.php#account-general"><i class="bi bi-person-circle"></i> Editar perfil</a>
                     <a class="menu-item" href="reservas.php"><i class="bi bi-clipboard2"></i> Reservas</a>
                     <a class="menu-item" href="favoritos.php"><i class="bi bi-heart"></i> Favoritos</a>
-                    <a class="menu-item" href="chat2.php"><i class="bi bi-chat-dots"></i> Chat</a>
+                    <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
                     <a class="menu-item" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
                 </nav>
             </div>
@@ -227,15 +209,9 @@ $result = $stmt->get_result();
                             <?php while ($row = $result->fetch_assoc()): ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($row['titulo'] ?? '(item removido)'); ?></td>
-                                    <td><?php echo htmlspecialchars($row['tipo_reserva']); ?></td>
+                                    <td><?= htmlspecialchars(reserva_tipo_nome($row['tipo_reserva'])) ?></td>
                                     <td>
-                                        <?php if ($row['tipo_reserva'] == 'hospedagem' && $row['data_inicio']): ?>
-                                            <?= reserva_formatar_data($row['data_inicio']) ?> a <?= reserva_formatar_data($row['data_fim']) ?>
-                                        <?php elseif ($row['data_inicio']): ?>
-                                            <?= reserva_formatar_data($row['data_inicio']) ?>
-                                        <?php else: ?>
-                                            —
-                                        <?php endif; ?>
+                                        <?= reserva_formatar_periodo($row['data_inicio'], $row['data_fim']) ?>
                                         <br><small class="text-muted">reservado em <?= reserva_formatar_data($row['data_reserva']) ?></small>
                                     </td>
                                     <td><?php echo htmlspecialchars($row['quantidade']); ?></td>

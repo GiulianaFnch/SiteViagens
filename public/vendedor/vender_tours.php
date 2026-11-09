@@ -232,16 +232,7 @@ include '../../config/liga_bd.php';
 </head>
 
 <body>
-    <header>
-        <a href="../../index.html" style="font-size: 35px; font-weight: 600; color: black;">BestWay</a>
-        <div class="bx bx-menu" id="menu-icon"></div>
-        <ul class="navbar">
-            <li><a href="#home">Hospedagem</a></li>
-            <li><a href="<?= BASE_URL ?>public/voos/voos.php">Passagens</a></li>
-            <li><a href="#destination">Tours</a></li>
-            <li><a href="<?= BASE_URL ?>public/pacotes/pacotes.php">Pacotes</a></li>
-        </ul>
-    </header>
+    <?php $cabecalho_escuro = true; include __DIR__ . '/../../views/partials/header.php'; ?>
 
     <div class="container light-style flex-grow-1 container-p-y">
         <div class="card shadow-sm rounded-lg">
@@ -254,7 +245,7 @@ include '../../config/liga_bd.php';
                         <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Reservas</a>
                         <a class="menu-item" href="gestao_opcoes.php"><i class="bi bi-train-freight-front"></i> Gestão</a>
                         <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
-                        <a class="menu-item" href="configuracoes2.php"><i class="bi bi-gear"></i> Configurações</a>
+                        <a class="menu-item" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
                     </nav>
                 </div>
 
@@ -291,7 +282,7 @@ include '../../config/liga_bd.php';
                     </form>
 
 
-                    <form action="vender_tours2.php" id="f2" method="post" enctype="multipart/form-data">
+                    <form action="guardar_tour.php" id="f2" method="post" enctype="multipart/form-data">
                         <?= csrf_campo() ?>
                         <input type="hidden" name="id_user" value="<?php echo $_SESSION['id']; ?>" required>
                         <input type="hidden" name="valor_cat" value="<?php echo $categoria; ?>" id="valor_cat" required>
