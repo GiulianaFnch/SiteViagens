@@ -15,6 +15,8 @@ $config = [
     'db_name'     => getenv('DB_NAME') ?: 'site_viagens',
     'base_url'    => getenv('BASE_URL') ?: null,
     'serpapi_key' => getenv('SERPAPI_KEY') ?: '',
+    // Endereço da API de voos (só se muda nos testes, para um servidor falso: tests/serpapi_falso.php)
+    'serpapi_url' => getenv('SERPAPI_URL') ?: 'https://serpapi.com/search.json',
     // true mostra os detalhes dos erros na página (só para desenvolvimento)
     'debug'       => filter_var(getenv('APP_DEBUG'), FILTER_VALIDATE_BOOLEAN),
     // Protocolo, servidor e porta do site (ex.: http://localhost, https://bestway.pt), usados com BASE_URL nos links dos e-mails.
@@ -51,7 +53,6 @@ $config['base_url'] = '/' . trim($config['base_url'], '/') . '/';
 $config['base_url'] = preg_replace('#^/+#', '/', $config['base_url']);
 
 define('BASE_URL', $config['base_url']);
-define('SERPAPI_KEY', $config['serpapi_key']);
 define('APP_DEBUG', (bool) $config['debug']);
 
 // Endereço absoluto de uma página do site (para links em e-mails), ex.: url_absoluta('public/login.php')

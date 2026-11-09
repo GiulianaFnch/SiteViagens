@@ -262,7 +262,7 @@ function reserva_preparar_item($ligacao, $tipo, $id_item, $quantidade, $data_ini
 
     if ($tipo === 'voo') {
         // Cada voo em t_voos é criado para um utilizador quando o adiciona ao carrinho
-        $stmt = $ligacao->prepare("SELECT flight_number, airline, arrival, price FROM t_voos WHERE id = ? AND id_user = ?");
+        $stmt = $ligacao->prepare("SELECT flight_number, airline, origem, arrival, price, data_ida, data_volta FROM t_voos WHERE id = ? AND id_user = ?");
         $stmt->bind_param("ii", $id_item, $id_user);
         $stmt->execute();
         $v = $stmt->get_result()->fetch_assoc();
@@ -270,8 +270,14 @@ function reserva_preparar_item($ligacao, $tipo, $id_item, $quantidade, $data_ini
         if (!$v) {
             return ['erro' => 'Este voo já não existe.'] + $item;
         }
-        $item['titulo'] = trim($v['airline'] . ' ' . $v['flight_number'] . ' → ' . $v['arrival']);
+        $item['titulo'] = trim($v['airline'] . ' ' . $v['flight_number'] . ' · '
+            . ($v['origem'] ? $v['origem'] . ' → ' : '→ ') . $v['arrival']);
         $item['quantidade'] = 1;
+        $item['data_inicio'] = $v['data_ida'];
+        $item['data_fim'] = $v['data_volta'] ?? $v['data_ida'];
+        if ($v['data_ida'] !== null && $v['data_ida'] < $hoje->format('Y-m-d')) {
+            return ['erro' => 'Este voo já partiu. Pesquise de novo.'] + $item;
+        }
         $item['preco_unitario'] = (float) $v['price'];
         $item['preco_total'] = $item['preco_unitario'];
         return $item;

@@ -422,7 +422,10 @@ CREATE TABLE `t_voos` (
   `flight_number` varchar(255) DEFAULT NULL,
   `airline` varchar(255) DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
+  `origem` varchar(255) DEFAULT NULL,
   `arrival` varchar(255) DEFAULT NULL,
+  `data_ida` date DEFAULT NULL,
+  `data_volta` date DEFAULT NULL,
   `data_adicao` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

@@ -1,6 +1,35 @@
 <?php
-require_once __DIR__ . '/../../config/config.php';
+// Pesquisa de voos (SerpAPI, config/voos.php). Só ida: escolhe-se o voo e vai para o carrinho.
+// Ida e volta: primeiro escolhe-se a ida, depois a volta (o preço mostrado é o da viagem completa).
+require_once __DIR__ . '/../../config/voos.php';
+require_once __DIR__ . '/../../config/reservas.php'; // reserva_formatar_preco
 require_once __DIR__ . '/../../config/csrf.php'; // inicia a sessão para o token do carrinho
+
+$pesquisa = null;
+$erro = null;
+$itinerarios = [];
+$ida_escolhida = null; // na ida e volta, depois de escolher a ida
+if (isset($_GET['origem'])) {
+    [$pesquisa, $erro] = voos_ler_pesquisa($_GET);
+    if ($erro === null && isset($_GET['ida_ref'])) {
+        $ida_escolhida = $_SESSION['voos_idas'][$_GET['ida_ref']] ?? null;
+        if (!$ida_escolhida || $ida_escolhida['pesquisa'] !== $pesquisa) {
+            $erro = 'Esta escolha já expirou. Pesquise de novo.';
+            $ida_escolhida = null;
+        }
+    }
+    if ($erro === null) {
+        try {
+            $itinerarios = voos_pesquisar($pesquisa, $ida_escolhida['token'] ?? null);
+        } catch (VoosErro $e) {
+            $erro = $e->getMessage();
+        }
+    }
+}
+// Guarda só as escolhas das últimas pesquisas (várias abas continuam a funcionar)
+$_SESSION['voos_idas'] = array_slice($_SESSION['voos_idas'] ?? [], -50, null, true);
+$_SESSION['voos_pesquisados'] = array_slice($_SESSION['voos_pesquisados'] ?? [], -100, null, true);
+$valor = fn($campo) => htmlspecialchars($pesquisa[$campo] ?? ($_GET[$campo] ?? ''));
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,125 +39,11 @@ require_once __DIR__ . '/../../config/csrf.php'; // inicia a sessão para o toke
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BestWay</title>
     <link rel="stylesheet" type="text/css" href="../../assets/css/style.css">
-    <link rel="stylesheet" type="text/css" href="backend/css.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/voos.css">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-        }
-
-        .container {
-            width: 90%;
-            margin: 20px auto;
-        }
-
-        .header,
-        .filters,
-        .flight-results,
-        .other-flights {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header select,
-        .header input {
-            margin-right: 10px;
-        }
-
-        .filters {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .filters button {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 10px;
-            cursor: pointer;
-        }
-
-        .filters button:hover {
-            background-color: #f1f1f1;
-        }
-
-        .flight-results h2,
-        .other-flights h2 {
-            margin-top: 0;
-        }
-
-        .flight-item {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .flight-item .details {
-            display: flex;
-            align-items: center;
-        }
-
-        .flight-item .details img {
-            width: 50px;
-            height: 50px;
-            margin-right: 10px;
-        }
-
-        .flight-item .details .info {
-            margin-right: 20px;
-        }
-
-        .flight-item .details .info p {
-            margin: 5px 0;
-        }
-
-        .flight-item .details .info .co2 {
-            color: green;
-        }
-
-        .flight-item .price {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .flight-item .price span {
-            color: #888;
-            font-size: 14px;
-        }
-
-        .flight-item .price .high {
-            color: red;
-        }
-
-        .flight-item .price .low {
-            color: green;
-        }
-
-        .other-flights .flight-item {
-            background-color: #f1f1f1;
-        }
-    </style>
 </head>
 
 <body>
@@ -140,19 +55,22 @@ require_once __DIR__ . '/../../config/csrf.php'; // inicia a sessão para o toke
         <div class="home-text">
             <h1>As melhores ofertas e os menores preços.</h1>
 
-            <!-- Barra de pesquisa de hotéis -->
+            <!-- Pesquisa de voos -->
             <form class="hotels-search-bar" action="voos.php#flights-results" method="get">
                 <div class="hotels-input-container">
-                    <input type="text" placeholder="Partida" name="departure_id" required />
+                    <input type="text" placeholder="De (ex.: LIS)" name="origem" required maxlength="3" pattern="[A-Za-z]{3}"
+                        title="Código do aeroporto, com 3 letras (ex.: LIS)" aria-label="Aeroporto de partida" value="<?= $valor('origem') ?>">
                 </div>
                 <div class="hotels-input-container">
-                    <input type="text" placeholder="Chegada" name="arrival_id" required />
+                    <input type="text" placeholder="Para (ex.: MAD)" name="destino" required maxlength="3" pattern="[A-Za-z]{3}"
+                        title="Código do aeroporto, com 3 letras (ex.: MAD)" aria-label="Aeroporto de chegada" value="<?= $valor('destino') ?>">
                 </div>
                 <div class="hotels-input-container">
-                    <input type="date" name="outbound_date" required>
+                    <input type="date" name="ida" required min="<?= date('Y-m-d') ?>" aria-label="Data de ida" value="<?= $valor('ida') ?>">
                 </div>
                 <div class="hotels-input-container">
-                    <input type="date" name="return_date">
+                    <input type="date" name="volta" min="<?= date('Y-m-d') ?>" aria-label="Data de volta (opcional)" title="Deixe vazio para só ida"
+                        value="<?= $valor('volta') ?>">
                 </div>
                 <button class="hotels-search-button" type="submit">Pesquisar</button>
             </form>
@@ -160,77 +78,86 @@ require_once __DIR__ . '/../../config/csrf.php'; // inicia a sessão para o toke
     </section>
 
     <div class="container" id="flights-results">
-        <?php
-        if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['departure_id']) && isset($_GET['arrival_id']) && isset($_GET['outbound_date'])) {
-            require 'backend/google-search-results.php';
-            require 'backend/restclient.php';
+        <?php if ($erro !== null): ?>
+            <div class="flight-results voos-aviso"><?= htmlspecialchars($erro) ?></div>
+        <?php elseif ($pesquisa !== null): ?>
+            <div class="flight-results">
+                <?php if ($ida_escolhida): ?>
+                    <?php $ida = $ida_escolhida['itinerario']; ?>
+                    <p class="voos-passo">Ida escolhida: <strong><?= htmlspecialchars($ida['companhias']) ?></strong>,
+                        <?= voos_hora($ida['partida']['hora']) ?> → <?= voos_hora($ida['chegada']['hora']) ?>
+                        (<?= htmlspecialchars($ida['partida']['codigo']) ?> → <?= htmlspecialchars($ida['chegada']['codigo']) ?>)
+                        · <a href="?<?= htmlspecialchars(http_build_query(array_diff_key($_GET, ['ida_ref' => 1]))) ?>#flights-results">mudar</a></p>
+                    <h2>Escolha o voo de volta · <?= htmlspecialchars($pesquisa['destino']) ?> → <?= htmlspecialchars($pesquisa['origem']) ?></h2>
+                <?php elseif ($pesquisa['volta'] !== null): ?>
+                    <h2>Escolha o voo de ida · <?= htmlspecialchars($pesquisa['origem']) ?> → <?= htmlspecialchars($pesquisa['destino']) ?></h2>
+                    <p>Preços da viagem de ida e volta, por pessoa. Depois escolhe o voo de volta.</p>
+                <?php else: ?>
+                    <h2>Voos · <?= htmlspecialchars($pesquisa['origem']) ?> → <?= htmlspecialchars($pesquisa['destino']) ?></h2>
+                    <p>Só ida, preço por pessoa, do mais barato para o mais caro.</p>
+                <?php endif; ?>
 
-            $query = [
-                "engine" => "google_flights",
-                "hl" => "pt",
-                "gl" => "pt",
-                "departure_id" => $_GET['departure_id'],
-                "arrival_id" => $_GET['arrival_id'],
-                "outbound_date" => $_GET['outbound_date'],
-                "return_date" => $_GET['return_date'] ?? '',
-                "currency" => "EUR"
-            ];
+                <?php if (!$itinerarios): ?>
+                    <p>Não encontrámos voos para essa pesquisa. Experimente outras datas ou aeroportos.</p>
+                <?php endif; ?>
 
-            $result = null;
-            if (SERPAPI_KEY === '') {
-                echo '<p>A pesquisa de voos não está configurada. Defina a chave da SerpAPI em config/config.local.php.</p>';
-            } else {
-                $search = new GoogleSearch(SERPAPI_KEY);
-                $result = $search->get_json($query);
-            }
-
-            if ($result === null) {
-                // sem chave configurada: a mensagem já foi exibida
-            } elseif (isset($result->best_flights) || isset($result->other_flights)) {
-                $flights = $result->best_flights ?? $result->other_flights;
-                // Guarda só os resultados das últimas pesquisas (várias abas continuam a funcionar)
-                $_SESSION['voos_pesquisados'] = array_slice($_SESSION['voos_pesquisados'] ?? [], -100, null, true);
-                echo '<div class="flight-results">';
-                echo '<h2>Melhores opções</h2>';
-                echo '<p>Ordenado por preço</p>';
-                foreach ($flights as $flight) {
-                    foreach ($flight->flights as $leg) {
-                        echo '<div class="flight-item">';
-                        echo '<div class="details">';
-                        echo '<img src="' . htmlspecialchars($leg->airline_logo) . '" alt="Airline logo" height="50" width="50">';
-                        echo '<div class="info">';
-                        echo '<p>' . htmlspecialchars($leg->departure_airport->time) . ' - ' . htmlspecialchars($leg->arrival_airport->time) . '</p>';
-                        echo '<p>' . htmlspecialchars($leg->duration) . ' min</p>';
-                        echo '</div>';
-                        echo '</div>';
-                        echo '<div class="price">';
-                        echo htmlspecialchars($flight->price) . '€';
-                        echo '<span> round trip</span>';
-                        echo '</div>';
-                        // Os dados do voo (incluindo o preço) ficam na sessão; o formulário só envia uma
-                        // referência, para que o preço não possa ser alterado no navegador
-                        $ref = bin2hex(random_bytes(8));
-                        $_SESSION['voos_pesquisados'][$ref] = [
-                            'flight_number' => (string) $leg->flight_number,
-                            'airline' => (string) $leg->airline,
-                            'price' => (float) $flight->price,
-                            'arrival' => (string) $leg->arrival_airport->name,
-                        ];
-                        echo '<form action="../carrinho/adicionar_ao_carrinho.php" method="post">';
-                        echo csrf_campo();
-                        echo '<input type="hidden" name="voo_ref" value="' . $ref . '">';
-                        echo '<input type="hidden" name="tipo_item" value="voo">';
-                        echo '<button type="submit" class="home-btn">Adicionar ao Carrinho</button>';
-                        echo '</form>';
-                        echo '</div>';
-                    }
-                }
-                echo '</div>';
-            } else {
-                echo '<p>No flights found.</p>';
-            }
-        }
-        ?>
+                <?php foreach ($itinerarios as $voo): ?>
+                    <div class="flight-item">
+                        <div class="details">
+                            <?php if ($voo['logo']): ?>
+                                <img src="<?= htmlspecialchars($voo['logo']) ?>" alt="" height="50" width="50">
+                            <?php endif; ?>
+                            <div class="info">
+                                <p><strong><?= voos_hora($voo['partida']['hora']) ?> → <?= voos_hora($voo['chegada']['hora']) ?></strong>
+                                    <?= htmlspecialchars($voo['partida']['codigo']) ?> → <?= htmlspecialchars($voo['chegada']['codigo']) ?></p>
+                                <p><?= htmlspecialchars($voo['companhias']) ?> · <?= htmlspecialchars($voo['numeros']) ?></p>
+                                <p><?= voos_formatar_duracao($voo['duracao']) ?> ·
+                                    <?= $voo['escalas'] === 0 ? 'direto' : $voo['escalas'] . ($voo['escalas'] === 1 ? ' escala' : ' escalas') ?></p>
+                            </div>
+                        </div>
+                        <div class="price">
+                            <?= reserva_formatar_preco($voo['preco']) ?>
+                            <span><?= $pesquisa['volta'] !== null ? 'ida e volta' : 'só ida' ?></span>
+                        </div>
+                        <?php if ($pesquisa['volta'] !== null && !$ida_escolhida): ?>
+                            <?php
+                            // Guarda a ida escolhível na sessão; o endereço só leva uma referência
+                            $ref = bin2hex(random_bytes(8));
+                            $_SESSION['voos_idas'][$ref] = ['token' => $voo['token'], 'itinerario' => $voo, 'pesquisa' => $pesquisa];
+                            ?>
+                            <?php if ($voo['token']): ?>
+                                <a class="home-btn" href="?<?= htmlspecialchars(http_build_query(['origem' => $pesquisa['origem'],
+                                    'destino' => $pesquisa['destino'], 'ida' => $pesquisa['ida'], 'volta' => $pesquisa['volta'],
+                                    'ida_ref' => $ref])) ?>#flights-results">Escolher esta ida</a>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <?php
+                            // Os dados do voo (incluindo o preço) ficam na sessão; o formulário só envia uma
+                            // referência, para que o preço não possa ser alterado no navegador
+                            $ref = bin2hex(random_bytes(8));
+                            $ida = $ida_escolhida['itinerario'] ?? $voo;
+                            $_SESSION['voos_pesquisados'][$ref] = [
+                                'flight_number' => $ida_escolhida ? $ida['numeros'] . ' / ' . $voo['numeros'] : $voo['numeros'],
+                                'airline' => $ida_escolhida && $ida['companhias'] !== $voo['companhias']
+                                    ? $ida['companhias'] . ' / ' . $voo['companhias'] : $voo['companhias'],
+                                'price' => $voo['preco'],
+                                'origem' => trim($ida['partida']['nome'] . ' (' . $ida['partida']['codigo'] . ')'),
+                                'arrival' => trim($ida['chegada']['nome'] . ' (' . $ida['chegada']['codigo'] . ')'),
+                                'data_ida' => $pesquisa['ida'],
+                                'data_volta' => $pesquisa['volta'],
+                            ];
+                            ?>
+                            <form action="../carrinho/adicionar_ao_carrinho.php" method="post">
+                                <?= csrf_campo() ?>
+                                <input type="hidden" name="voo_ref" value="<?= $ref ?>">
+                                <input type="hidden" name="tipo_item" value="voo">
+                                <button type="submit" class="home-btn">Adicionar ao carrinho</button>
+                            </form>
+                        <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
     </div>
 
     <!--Newsletter-->

@@ -8,7 +8,8 @@ return [
     'db_name'     => 'site_viagens',
     // Caminho do site no servidor. Deixe null para detetar automaticamente.
     'base_url'    => null,
-    // Chave da SerpAPI (https://serpapi.com) usada na pesquisa de voos.
+    // Chave da SerpAPI (https://serpapi.com/manage-api-key) usada na pesquisa de voos.
+    // Este ficheiro (config.local.php) está no .gitignore: a chave fica só no seu computador/servidor.
     'serpapi_key' => '',
     // true mostra os detalhes dos erros na página. Use só no seu computador, nunca num servidor público.
     'debug'       => false,

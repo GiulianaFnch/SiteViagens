@@ -8,6 +8,8 @@
 #   MYSQL    comando para a base de dados de teste (por omissão: mysql -uroot site_viagens)
 #   PHP_LOG  ficheiro de log do servidor PHP; se existir, falha se aparecerem erros/avisos do PHP
 #   EMAILS   pasta onde o site grava os e-mails (modo 'ficheiro'; por omissão storage/emails)
+#   SERPAPI_FALSO  endereço do servidor falso da SerpAPI (tests/serpapi_falso.php) com que o site foi arrancado
+#            (SERPAPI_URL=<este endereço> SERPAPI_KEY=chave-de-teste); sem ele, os testes dos voos são saltados
 #
 # ATENÇÃO: altera dados (senhas dos utilizadores de exemplo, reservas, avaliações). Use só numa
 # base de dados de teste, importada de database/site_viagens.sql.
@@ -185,6 +187,32 @@ verifica "pacote desativado não se reserva"         '[[ "$R" == *"já não est�
 q "DELETE FROM t_reservas WHERE tipo_reserva='pacote' AND item_id=$PID"
 verifica "sem reservas, o vendedor apaga o pacote"  '[[ "$(gerir apagar)" == *"Pacote apagado"* && "$(q "SELECT COUNT(*) FROM t_pacotes WHERE id=$PID")" = 0 ]]'
 q "DELETE FROM t_carrinho"
+
+echo "== Voos"
+if [ -z "${SERPAPI_FALSO:-}" ]; then
+    echo "  (saltado: defina SERPAPI_FALSO — ver o início deste ficheiro)"
+else
+    IDA=$(d 20); VOLTA=$(d 27)
+    voos() { curl -s -b "$T/jujuba" -c "$T/jujuba" "$B/public/voos/voos.php?$1"; }
+    verifica "só ida: um cartão por voo, com escalas"   '[[ "$(voos "origem=lis&destino=mad&ida=$IDA" | txt)" == *"TP 1920 + TP 1980"*"1 escala"*"150,00 €"*"TP 1026"*"direto"*"180,00 €"* ]]'
+    verifica "nomes de cidades pedem o código"          '[[ "$(voos "origem=Lisboa&destino=Madrid&ida=$IDA" | txt)" == *"código de 3 letras"* ]]'
+    verifica "sem voos: mensagem, não erro"             '[[ "$(voos "origem=LIS&destino=ZZZ&ida=$IDA" | txt)" == *"Não encontrámos voos"* ]]'
+    verifica "volta antes da ida é recusada"            '[[ "$(voos "origem=LIS&destino=MAD&ida=$VOLTA&volta=$IDA" | txt)" == *"não pode ser antes da ida"* ]]'
+    H=$(voos "origem=LIS&destino=MAD&ida=$IDA&volta=$VOLTA")
+    verifica "ida e volta: primeiro escolhe-se a ida"   '[[ "$(echo "$H" | txt)" == *"Escolha o voo de ida"*"300,00 €"* ]]'
+    L=$(echo "$H" | grep -o '?origem=[^"]*ida_ref=[0-9a-f]*' | tail -1 | sed 's/&amp;/\&/g')
+    H=$(voos "${L#\?}")
+    verifica "depois a volta, com o preço total"        '[[ "$(echo "$H" | txt)" == *"Escolha o voo de volta"*"TP 1027"*"245,00 €"* ]]'
+    REF=$(echo "$H" | grep -o 'name="voo_ref" value="[0-9a-f]*"' | head -1 | sed 's/.*value="//;s/"//')
+    R=$(post jujuba public/carrinho/adicionar_ao_carrinho.php -d tipo_item=voo -d voo_ref=$REF | txt)
+    verifica "voo de ida e volta vai para o carrinho"   '[[ "$R" == *"TP 1026 / TP 1027"*"LIS) → "*"MAD)"*"Total: 245,00 €"* ]]'
+    verifica "referência inventada não cria voos"       '[[ "$(post jujuba public/carrinho/adicionar_ao_carrinho.php -d tipo_item=voo -d voo_ref=123 | txt)" == *"já não existe"* ]]'
+    R=$(post jujuba public/carrinho/efetuar_reserva.php | txt)
+    verifica "reserva guarda as datas do voo"           '[[ "$R" == *"Reserva efetuada"* && "$(q "SELECT CONCAT(data_inicio,'"' '"',data_fim,'"' '"',preco_total) FROM t_reservas WHERE tipo_reserva='"'voo'"' ORDER BY id DESC LIMIT 1")" = "$IDA $VOLTA 245.00" ]]'
+    erro_api() { SERPAPI_KEY=$1 SERPAPI_URL=$2 php -r 'require "config/voos.php"; try { voos_pesquisar(["origem"=>"LIS","destino"=>"MAD","ida"=>date("Y-m-d"),"volta"=>null]); echo "sem erro"; } catch (VoosErro $e) { echo $e->getMessage(); }' 2>/dev/null; }
+    verifica "chave errada: mensagem clara"             '[[ "$(erro_api errada "$SERPAPI_FALSO")" == *"chave da SerpAPI é inválida"* ]]'
+    verifica "serviço em baixo: mensagem clara"         '[[ "$(erro_api chave-de-teste http://127.0.0.1:9/search.json)" == *"Não foi possível contactar"* ]]'
+fi
 
 echo "== Avaliações"
 q "INSERT INTO t_reservas (item_id,user_id,tipo_reserva,data_reserva,quantidade,data_inicio,data_fim,estado)

@@ -7,7 +7,7 @@ Este projeto é uma aplicação web para gerenciar reservas de viagens, hospedag
 ## Funcionalidades
 
 - **Hospedagem**: Pesquisa e reserva de hospedagens.
-- **Passagens Aéreas**: Pesquisa e reserva de passagens aéreas.
+- **Passagens Aéreas**: Pesquisa de voos (Google Flights, pela SerpAPI), só ida ou ida e volta, e reserva.
 - **Passeios Turísticos**: Pesquisa e reserva de passeios turísticos.
 - **Pacotes**: Pacotes de viagem dos vendedores, com pesquisa por destino, data e pessoas, e reserva por pessoa.
 - **Carrinho de Compras**: Adição de itens ao carrinho e cálculo do total.
@@ -88,7 +88,13 @@ e edite `config/config.local.php` (este ficheiro está no `.gitignore`).
 Também é possível usar variáveis de ambiente: `DB_HOST`, `DB_USER`, `DB_PASS`, `DB_NAME`, `BASE_URL`, `SERPAPI_KEY`.
 
 - **BASE_URL** — é detetado automaticamente (ex.: `/SiteViagens/` no XAMPP, `/` no Docker).
-- **SERPAPI_KEY** — necessária para a pesquisa de voos (`public/voos/voos.php`). Crie uma chave gratuita em <https://serpapi.com>.
+- **SERPAPI_KEY** — necessária para a pesquisa de voos. Crie uma chave gratuita em <https://serpapi.com/manage-api-key>
+  e guarde-a **só** num destes sítios, que estão no `.gitignore` e nunca vão para o GitHub:
+  - XAMPP/servidor: `'serpapi_key' => '...'` em `config/config.local.php`;
+  - Docker: `SERPAPI_KEY=...` num ficheiro `.env` na raiz (copie `.env.example`).
+
+  O CI falha se encontrar uma chave escrita no código ou se `config.local.php`/`.env` forem adicionados ao Git.
+  Se uma chave chegar a ser publicada, gere uma nova em serpapi.com e apague a antiga: o histórico do Git guarda-a.
 - **debug** (`APP_DEBUG`) — `false` por omissão: erros inesperados mostram só uma mensagem genérica e os detalhes vão
   para o log do servidor (no XAMPP, `xampp/apache/logs/error.log`). Ponha `true` no seu computador para ver os erros na página.
 
@@ -126,6 +132,21 @@ As regras ficam em `config/reservas.php` e são usadas no carrinho, no checkout 
 - Finalizar a reserva é uma transação: se algum item deixou de estar disponível, nada é reservado.
 - O cliente pode cancelar uma reserva até à data de início; o vendedor e o administrador também.
   Reservas canceladas ficam no histórico e libertam os quartos.
+
+## Voos
+
+A pesquisa (`public/voos/voos.php`, regras em `config/voos.php`) usa a API Google Flights da SerpAPI:
+
+- Os aeroportos indicam-se pelo código IATA de 3 letras (ex.: `LIS`, `OPO`, `FAO`, `MAD`).
+- **Só ida**: sem data de volta. Mostra um cartão por voo (horas, companhias, nº de escalas, duração, preço).
+- **Ida e volta**: primeiro escolhe-se a ida (o preço é o da viagem completa) e depois a volta, como no Google Flights
+  (segundo pedido com o `departure_token` da ida).
+- O preço e os dados do voo ficam na sessão; o carrinho só recebe uma referência. A reserva guarda as datas da ida e da
+  volta (migração `012_voos_datas.sql`), por isso só pode ser cancelada antes da partida.
+- Erros da API (chave inválida, limite de pesquisas, serviço em baixo) aparecem como mensagem na página e o detalhe vai
+  para o log, sem a chave. A ligação à SerpAPI verifica sempre o certificado HTTPS.
+- Nos testes, o site fala com um servidor falso (`tests/serpapi_falso.php`): `SERPAPI_URL=http://127.0.0.1:8081/search.json`
+  e `SERPAPI_KEY=chave-de-teste`, e `SERPAPI_FALSO` com o mesmo endereço para `tests/smoke_test.sh`.
 
 ## Pacotes
 

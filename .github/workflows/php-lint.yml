@@ -14,6 +14,16 @@ jobs:
           php-version: '8.3'
       - name: Verificar sintaxe de todos os ficheiros PHP
         run: find . -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: Verificar que não há chaves de API no código
+        # As chaves ficam em config/config.local.php ou em variáveis de ambiente, nunca no repositório.
+        # Uma chave da SerpAPI são 64 caracteres hexadecimais entre aspas.
+        run: |
+          if git ls-files | grep -E '(^|/)(config\.local\.php|\.env)$'; then
+            echo "::error::config.local.php/.env não podem estar no repositório (têm credenciais)"; exit 1
+          fi
+          if git grep -nIE "['\"][0-9a-f]{64}['\"]" -- . ':!database/*.sql'; then
+            echo "::error::Parece haver uma chave de API no código. Passe-a para config/config.local.php."; exit 1
+          fi
 
   testes:
     # Sobe o site com uma base de dados MariaDB e corre os testes de fumo (tests/smoke_test.sh)
@@ -45,7 +55,12 @@ jobs:
       - name: Importar a base de dados
         run: mysql -h 127.0.0.1 -uroot < database/site_viagens.sql
       - name: Iniciar o servidor PHP
+        env:
+          # A pesquisa de voos usa o servidor falso da SerpAPI (não gasta pesquisas nem precisa da chave real)
+          SERPAPI_URL: http://127.0.0.1:8081/search.json
+          SERPAPI_KEY: chave-de-teste
         run: |
+          php -S 127.0.0.1:8081 tests/serpapi_falso.php > serpapi.log 2>&1 &
           php -d output_buffering=4096 -d display_errors=0 -d log_errors=1 -d error_reporting=E_ALL \
               -S 127.0.0.1:8080 -t . > php.log 2>&1 &
           sleep 2
@@ -53,6 +68,7 @@ jobs:
         run: tests/smoke_test.sh http://127.0.0.1:8080
         env:
           MYSQL: mysql -h 127.0.0.1 -uroot site_viagens
+          SERPAPI_FALSO: http://127.0.0.1:8081/search.json
           PHP_LOG: php.log
       - name: Log do servidor PHP (se falhar)
         if: failure()

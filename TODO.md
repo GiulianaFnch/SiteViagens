@@ -11,6 +11,11 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 - [x] **XSS** — os textos vindos da BD (títulos, descrições, nomes, nicks, fotos, categorias) passam por
       `htmlspecialchars` em todas as páginas. Testado com títulos/nomes contendo `<script>` em 19 páginas.
 - [x] **Preço do voo vem do cliente** — os resultados da SerpAPI ficam na sessão; o formulário só envia uma referência.
+- [x] **Pesquisa de voos falhava** — sem data de volta (faltava `type`), com nomes de cidades em vez de códigos IATA e em
+      qualquer erro da API (página cortada); a biblioteca desligava a verificação HTTPS. Reescrita em `config/voos.php`,
+      com ida e volta em dois passos e testes contra um servidor SerpAPI falso.
+- [x] **Chave da SerpAPI no histórico do Git** (commit `23a6ca9`, repositório público) — tem de ser trocada em serpapi.com.
+      O CI passa a recusar chaves no código e `config.local.php`/`.env` no repositório.
 - [x] **`total` vem do cliente** no mesmo ficheiro — o preço passa a ser calculado no servidor (`config/reservas.php`).
 - [x] **Fixação de sessão** — novo ID de sessão a cada login; cookie de sessão `HttpOnly`, `SameSite=Lax` e
       `use_strict_mode` (`config/csrf.php`).
@@ -64,4 +69,4 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
       administradores já não podem ser bloqueados; "aprovar vendedor" só afeta registos pendentes.
 - [x] Ficheiros com nomes "2" renomeados pelo que fazem (`backend/autenticar.php`, `backend/criar_conta.php`, `chat.php`,
       `chat_mensagens.php`, `chat_enviar.php`, `vendedor/guardar_tour.php`, `vendedor/configuracoes.php`, `tours/pesquisa_tours.php`).
-- [x] Testes de fumo (`tests/smoke_test.sh`, 89 verificações) correm no CI com PHP 8.3 + MariaDB a cada push.
+- [x] Testes de fumo (`tests/smoke_test.sh`, 100 verificações) correm no CI com PHP 8.3 + MariaDB a cada push.
