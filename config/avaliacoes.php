@@ -1,8 +1,11 @@
 <?php
-// Avaliações de passeios ('atividade') e hospedagens: média, permissões e estrelas.
+// Avaliações de passeios ('atividade'), hospedagens e pacotes: média, permissões e estrelas.
 require_once __DIR__ . '/acesso.php';
 
-const AVALIACAO_TIPOS = ['atividade', 'hospedagem'];
+const AVALIACAO_TIPOS = ['atividade', 'hospedagem', 'pacote'];
+
+// Tabela de cada tipo de item (todas têm id e id_user = vendedor)
+const AVALIACAO_TABELAS = ['atividade' => 't_artigo', 'hospedagem' => 't_hospedagem', 'pacote' => 't_pacotes'];
 const AVALIACAO_MAX_COMENTARIO = 1000;
 
 // Média e número de avaliações de um item
@@ -17,14 +20,14 @@ function avaliacao_resumo($ligacao, $tipo, $item_id)
 }
 
 /**
- * Só avalia quem reservou o item e já o usou: hospedagem com check-out no passado,
- * passeio com data no passado. Reservas antigas, sem datas, também contam.
+ * Só avalia quem reservou o item e já o usou: hospedagem com check-out no passado, pacote com o último
+ * dia no passado, passeio com data no passado. Reservas antigas, sem datas, também contam.
  */
 function avaliacao_pode_avaliar($ligacao, $id_user, $tipo, $item_id)
 {
     $stmt = $ligacao->prepare("SELECT 1 FROM t_reservas
         WHERE user_id = ? AND tipo_reserva = ? AND item_id = ? AND estado = 'confirmada'
-          AND (data_inicio IS NULL OR (CASE WHEN tipo_reserva = 'hospedagem' THEN data_fim ELSE data_inicio END) <= CURDATE())
+          AND (data_inicio IS NULL OR (CASE WHEN tipo_reserva IN ('hospedagem', 'pacote') THEN data_fim ELSE data_inicio END) <= CURDATE())
         LIMIT 1");
     $stmt->bind_param("isi", $id_user, $tipo, $item_id);
     $stmt->execute();
@@ -33,10 +36,10 @@ function avaliacao_pode_avaliar($ligacao, $id_user, $tipo, $item_id)
     return $pode;
 }
 
-// id do vendedor dono do passeio/hospedagem (ou null se o item não existir)
+// id do vendedor dono do passeio/hospedagem/pacote (ou null se o item não existir)
 function avaliacao_dono_item($ligacao, $tipo, $item_id)
 {
-    $tabela = $tipo === 'hospedagem' ? 't_hospedagem' : 't_artigo';
+    $tabela = AVALIACAO_TABELAS[$tipo] ?? 't_artigo';
     $stmt = $ligacao->prepare("SELECT id_user FROM $tabela WHERE id = ?");
     $stmt->bind_param("i", $item_id);
     $stmt->execute();

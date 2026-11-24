@@ -255,6 +255,21 @@ verifica "confirmar cancela a subscrição"           '[[ "$(curl -s -b $T/anon 
 grep -l "$ASSUNTO" "$EMAILS"/*.html 2>/dev/null | xargs -r rm -f
 q "DELETE FROM t_ofertas WHERE assunto='$ASSUNTO'"
 
+echo "== Avaliações de pacotes"
+# Viagem já feita pela jujuba no pacote 1 (do vendedor), para poder avaliar
+q "INSERT INTO t_reservas (item_id, user_id, tipo_reserva, data_reserva, quantidade, data_inicio, data_fim, preco_unitario, preco_total)
+   VALUES (1, (SELECT id FROM t_user WHERE nick='jujuba'), 'pacote', CURDATE(), 2, '$(date -d -10day +%F)', '$(date -d -4day +%F)', 1890, 3780)"
+verifica "quem fez a viagem vê o formulário"        '[[ "$(curl -s -b $T/jujuba "$B/public/pacotes/detalhes_pacote.php?id=1" | txt)" == *"Deixe a sua avaliação"* ]]'
+post jujuba public/backend/avaliar.php -d tipo_item=pacote -d item_id=1 -d nota=5 -d "comentario=Viagem incrível" >/dev/null
+verifica "avaliação do pacote nos detalhes"         '[[ "$(curl -s "$B/public/pacotes/detalhes_pacote.php?id=1" | txt)" == *"5,0 (1 avaliação)"*"Viagem incrível"* ]]'
+verifica "e no cartão da listagem"                  '[[ "$(curl -s "$B/public/pacotes/pacotes.php?destino=Grand" | txt)" == *"5,0 (1 avaliação)"* ]]'
+post Karol public/backend/avaliar.php -d tipo_item=pacote -d item_id=1 -d nota=1 >/dev/null
+verifica "quem não viajou não avalia o pacote"      '[ "$(q "SELECT COUNT(*) FROM t_avaliacoes WHERE tipo_item='"'pacote'"' AND item_id=1")" = 1 ]'
+AID=$(q "SELECT id FROM t_avaliacoes WHERE tipo_item='pacote' AND item_id=1")
+post vendedor public/backend/avaliar.php -d tipo_item=pacote -d item_id=1 -d id_avaliacao=$AID -d responder=1 -d "resposta=Obrigado!" >/dev/null
+verifica "o vendedor do pacote responde"            '[ "$(q "SELECT resposta FROM t_avaliacoes WHERE id=$AID")" = "Obrigado!" ]'
+q "DELETE FROM t_avaliacoes WHERE tipo_item='pacote'; DELETE FROM t_reservas WHERE tipo_reserva='pacote' AND item_id=1"
+
 echo "== Newsletter e logout"
 verifica "inscrição na newsletter"                  '[[ "$(curl -s -d email=smoke@exemplo.com $B/public/backend/newsletter.php)" == *"Inscrição feita"* ]]'
 q "DELETE FROM t_newsletter WHERE email='smoke@exemplo.com'"

@@ -79,6 +79,7 @@ $pagina = pagina_atual();
                         <span class="pacote-destino"><i class='bx bx-map'></i> <?= htmlspecialchars($p['destino']) ?></span>
                         <h3><?= htmlspecialchars($p['titulo']) ?></h3>
                         <span class="pacote-duracao"><?= (int) $p['duracao_dias'] ?> dias · <?= htmlspecialchars($p['nome_marca'] ?: $p['nick']) ?></span>
+                        <span class="pacote-estrelas"><?= avaliacao_texto($p['media_avaliacoes'] === null ? null : (float) $p['media_avaliacoes'], (int) $p['total_avaliacoes']) ?></span>
                         <span class="pacote-preco"><?= reserva_formatar_preco($p['preco']) ?> <small>/pessoa</small></span>
                     </div>
                 </a>

@@ -165,13 +165,13 @@ Regras em `config/pacotes.php` e, para a reserva, em `config/reservas.php`:
 
 ## Avaliações
 
-- Nota de 1 a 5 estrelas e comentário opcional, em passeios e hospedagens.
-- Só avalia quem tem uma reserva confirmada desse item que já terminou (check-out ou dia do passeio no passado).
+- Nota de 1 a 5 estrelas e comentário opcional, em passeios, hospedagens e pacotes.
+- Só avalia quem tem uma reserva confirmada desse item que já terminou (check-out, último dia do pacote ou dia do passeio no passado).
 - Uma avaliação por utilizador e item: avaliar de novo edita a anterior. Cada um pode apagar a sua; o administrador
   pode apagar qualquer uma.
-- O vendedor dono do passeio ou da hospedagem pode responder a cada avaliação (e editar ou apagar a resposta).
+- O vendedor dono do passeio, da hospedagem ou do pacote pode responder a cada avaliação (e editar ou apagar a resposta).
 - A média aparece nos detalhes e nas listagens. Para bases de dados existentes, aplique
-  `database/migrations/004_avaliacoes.sql` e `008_resposta_avaliacoes.sql`.
+  `database/migrations/004_avaliacoes.sql`, `008_resposta_avaliacoes.sql` e `013_avaliacoes_pacotes.sql`.
 
 ## Newsletter
 

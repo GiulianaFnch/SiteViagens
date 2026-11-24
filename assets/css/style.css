@@ -1262,6 +1262,11 @@ body {
   font-size: 0.9rem;
 }
 
+.pacote-estrelas {
+  color: #f5a623;
+  font-size: 0.9rem;
+}
+
 .pacote-preco {
   color: #6495ed;
   font-size: 1.3rem;

@@ -43,7 +43,7 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 ## Funcionalidades em falta
 
 - [x] **Pacotes** — tabela `t_pacotes` (migração 011), listagem com pesquisa, detalhes com reserva por pessoa e vagas
-      por partida, gestão pelo vendedor (`public/vendedor/pacotes.php`). Falta: avaliações de pacotes.
+      por partida, gestão pelo vendedor (`public/vendedor/pacotes.php`) e avaliações (migração 013).
 - [ ] Pagamento (atualmente "reservar" não cobra nada).
 - [x] Cancelamento de reserva pelo cliente (antes do início), vendedor e admin — a reserva fica com `estado = 'cancelada'`.
 - [x] Recuperação de palavra-passe e confirmação de e-mail (`config/contas.php`, `config/email.php`, migração 009).
@@ -69,4 +69,4 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
       administradores já não podem ser bloqueados; "aprovar vendedor" só afeta registos pendentes.
 - [x] Ficheiros com nomes "2" renomeados pelo que fazem (`backend/autenticar.php`, `backend/criar_conta.php`, `chat.php`,
       `chat_mensagens.php`, `chat_enviar.php`, `vendedor/guardar_tour.php`, `vendedor/configuracoes.php`, `tours/pesquisa_tours.php`).
-- [x] Testes de fumo (`tests/smoke_test.sh`, 100 verificações) correm no CI com PHP 8.3 + MariaDB a cada push.
+- [x] Testes de fumo (`tests/smoke_test.sh`, 105 verificações) correm no CI com PHP 8.3 + MariaDB a cada push.

@@ -609,7 +609,7 @@ ALTER TABLE `t_reservas`
 CREATE TABLE IF NOT EXISTS `t_avaliacoes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_user` int(11) NOT NULL,
-  `tipo_item` enum('atividade','hospedagem') NOT NULL,
+  `tipo_item` enum('atividade','hospedagem','pacote') NOT NULL,
   `item_id` int(11) NOT NULL,
   `nota` tinyint(1) NOT NULL,
   `comentario` text DEFAULT NULL,

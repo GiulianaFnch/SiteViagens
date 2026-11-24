@@ -1,6 +1,6 @@
 <?php
 // Secção de avaliações das páginas de detalhes.
-// Antes de incluir, definir: $ligacao, $avaliacao_tipo ('atividade' ou 'hospedagem') e $avaliacao_item_id.
+// Antes de incluir, definir: $ligacao, $avaliacao_tipo ('atividade', 'hospedagem' ou 'pacote') e $avaliacao_item_id.
 if (!isset($ligacao, $avaliacao_tipo, $avaliacao_item_id)) {
     return; // aberto diretamente pelo navegador: não há nada a mostrar
 }

@@ -3,6 +3,7 @@
 // (public/vendedor/pacotes.php) e fotos. As reservas de pacotes estão em config/reservas.php.
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/reservas.php';
+require_once __DIR__ . '/avaliacoes.php';
 
 const PACOTE_PASTA_FOTOS = __DIR__ . '/../public/pacotes/images';
 const PACOTE_MAX_DIAS = 30;
@@ -53,7 +54,11 @@ function pacotes_pesquisar($ligacao, $destino, $data, $pessoas, $limite, $offset
     $stmt->execute();
     $total = (int) $stmt->get_result()->fetch_row()[0];
 
-    $stmt = $ligacao->prepare("SELECT p.*, u.nome_marca, u.nick FROM t_pacotes p JOIN t_user u ON u.id = p.id_user
+    // Com o nome do vendedor e a média das avaliações, numa só consulta
+    $stmt = $ligacao->prepare("SELECT p.*, u.nome_marca, u.nick, av.media AS media_avaliacoes, COALESCE(av.total, 0) AS total_avaliacoes
+        FROM t_pacotes p JOIN t_user u ON u.id = p.id_user
+        LEFT JOIN (SELECT item_id, AVG(nota) AS media, COUNT(*) AS total FROM t_avaliacoes
+                   WHERE tipo_item = 'pacote' GROUP BY item_id) av ON av.item_id = p.id
         WHERE $where ORDER BY p.data_criacao DESC, p.id DESC LIMIT ? OFFSET ?");
     $tipos .= 'ii';
     array_push($valores, $limite, $offset);
