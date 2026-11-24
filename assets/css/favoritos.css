@@ -1,0 +1,19 @@
+/* Favoritos do cliente (public/favoritos.php) */
+.image-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.image-container img {
+    width: 35%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.titulo-pequeno {
+    font-size: 120%;
+    line-height: 1.2;
+}

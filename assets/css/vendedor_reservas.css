@@ -1,0 +1,28 @@
+/* Reservas recebidas pelo vendedor (gerenciar_reservas.php) */
+.pagina-painel {
+    font-family: 'Poppins', sans-serif;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.btn-edit {
+    color: #28a745;
+    border-radius: 50px;
+    margin-right: 5px;
+    background-color: transparent;
+    border: 3px solid #00d7c3;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+    border-radius: 50px;
+    margin-right: 5px;
+}
+
+.action-btns {
+    display: flex;
+    gap: 10px;
+}

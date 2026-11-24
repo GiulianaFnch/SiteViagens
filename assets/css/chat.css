@@ -1,0 +1,163 @@
+/* Chat (views/paginas/chat.php) */
+.pagina-painel {
+    font-family: 'Poppins', sans-serif;
+}
+
+#chat-container {
+    position: relative;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#user-list {
+    width: 30%;
+    border-right: 1px solid #ccc;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.user-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-radius: 10px;
+}
+
+.user-item:hover {
+    background-color: #f1f1f1;
+}
+
+.user-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+#chat-box {
+    width: 100%;
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+#back-arrow {
+    border: none;
+    background: none;
+    font-size: 24px;
+    color: #007AFF;
+    cursor: pointer;
+}
+
+#messages {
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    max-height: 450px;
+    overflow-y: auto;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+}
+
+.message {
+    display: flex;
+    align-items: center;
+    max-width: 60%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.sent-message {
+    background-color: #DCF8C6;
+    align-self: flex-end;
+    border-top-right-radius: 0;
+}
+
+.received-message {
+    background-color: #fff;
+    align-self: flex-start;
+    border-top-left-radius: 0;
+}
+
+.user-icon-message {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+#message-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#message-input input {
+    flex: 1;
+    padding: 12px 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 16px;
+}
+
+#message-input button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+#message-input button i {
+    font-size: 18px;
+}
+
+#message-input button[type="submit"] {
+    width: 36px;
+    height: 36px;
+    background-color: #007AFF;
+    color: #fff;
+    border-radius: 50%;
+}
+
+#emoji-panel {
+    position: absolute;
+    bottom: 70px;
+    left: 20px;
+    display: flex;
+    gap: 6px;
+    padding: 10px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#emoji-panel[hidden] {
+    display: none;
+}
+
+#emoji-panel button {
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    #user-list {
+        width: 100%;
+    }
+
+    .message {
+        max-width: 85%;
+    }
+}

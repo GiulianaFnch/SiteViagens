@@ -17,121 +17,12 @@ $stmt = $ligacao->prepare($sql);
 $stmt->bind_param("i", $vendedor_id);
 $stmt->execute();
 $result = $stmt->get_result();
+$painel = 'vendedor';
+$painel_titulo = 'Reservas';
+$painel_menu = 'reservas';
+$painel_css = ['vendedor_reservas.css'];
+include __DIR__ . '/../../views/partials/painel_inicio.php';
 ?>
-
-<!DOCTYPE html>
-<html lang="pt">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel do Vendedor</title>
-    <link rel="stylesheet" href="../../assets/css/style.css">
-    <link rel="stylesheet" href="../../assets/css/styleperfil.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        header {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 100%;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 30px 18%;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .menu-container {
-            background-color: #f8f9fa;
-            border-right: 1px solid #e0e0e0;
-        }
-        .menu {
-            display: flex;
-            flex-direction: column;
-        }
-        .menu-item {
-            color: #007AFF;
-            padding: 10px;
-            margin: 5px 0;
-            text-decoration: none;
-            font-size: 18px;
-            border-radius: 10px;
-            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
-        }
-        .menu-item:hover {
-            background-color: #f0f0f0;
-            transform: translateX(8px);
-        }
-        .menu-item i {
-            margin-right: 8px;
-            font-size: 20px;
-        }
-        .card {
-            border-radius: 15px;
-            overflow: hidden;
-        }
-        .tab-pane {
-            padding: 20px;
-        }
-        .table {
-            margin-top: 20px;
-        }
-
-        .btn-edit {
-            background-color: transparent;
-            color: #28a745;
-            border-radius: 50px;
-            margin-right: 5px;
-            background-color: transparent;
-            border: 3px solid #00d7c3;
-
-        }
-        .btn-delete {
-            background-color: #dc3545;
-            color: white;
-            border-radius: 50px;
-            margin-right: 5px;
-        }
-        .action-btns {
-            display: flex;
-            gap: 10px;
-        }
-    </style>
-</head>
-
-<body>
-    <?php $cabecalho_escuro = true; include __DIR__ . '/../../views/partials/header.php'; ?>
-
-    <br><br><br><br><br><br><br>
-
-    <div class="container light-style flex-grow-1 container-p-y">
-        <div class="card shadow-sm rounded-lg">
-            <div class="row no-gutters">
-                <div class="col-md-3 p-3 bg-light rounded-left menu-container">
-                    <nav class="menu">
-                        <a class="menu-item" style="color: #3A506B"><strong>Painel de Vendedor</strong></a>
-                        <a class="menu-item" href="admin.php" onclick="showContent('profile');"><i class="bi bi-person-circle"></i> Editar Perfil</a>
-                        <a class="menu-item" href="vender_opcoes.php"><i class="bi bi-bag"></i> Vender</a>
-                        <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Reservas</a>
-                        <a class="menu-item" href="gestao_opcoes.php"><i class="bi bi-train-freight-front"></i> Gestão</a>
-                        <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
-                        <a class="menu-item" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
-                    </nav>
-                </div>
-
-                <div class="col-md-9 p-4">
                     <h2>Gerenciar Reservas</h2>
                     <?php $mensagens = [
                         'edited' => ['success', 'Reserva atualizada.'],
@@ -239,10 +130,10 @@ $result = $stmt->get_result();
 
                         <button type="submit" name="edit" class="btn btn-success">Salvar Alterações</button>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
+                
+            
+        
+    
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
@@ -269,6 +160,4 @@ $result = $stmt->get_result();
     </script>
 
     <br><br>
-    <?php include '../../views/partials/footer.php' ?>
-</body>
-</html>
+<?php include __DIR__ . '/../../views/partials/painel_fim.php'; ?>

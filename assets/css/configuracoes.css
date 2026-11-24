@@ -1,0 +1,86 @@
+/* Configurações (views/paginas/configuracoes.php) */
+.pagina-painel {
+    font-family: 'San Francisco', 'Helvetica Neue', Arial, sans-serif;
+    color: #333;
+}
+
+.settings-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 15px 0;
+    border: none;
+    border-bottom: 1px solid #d1d1d6;
+    background: none;
+    color: #333;
+    text-align: left;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.settings-item:hover {
+    background-color: #f0f0f5;
+}
+
+.settings-item i {
+    font-size: 20px;
+    color: #007AFF;
+    margin-right: 15px;
+}
+
+.settings-item .item-label {
+    font-size: 17px;
+}
+
+.settings-item .item-right {
+    display: flex;
+    align-items: center;
+}
+
+.settings-item .item-right i {
+    color: #c7c7cc;
+}
+
+/* Interruptor estilo iOS */
+.interruptor {
+    position: relative;
+    width: 46px;
+    height: 26px;
+    border-radius: 13px;
+    background: #c7c7cc;
+    transition: background-color 0.2s;
+}
+
+.interruptor::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s;
+}
+
+[aria-checked="true"] .interruptor {
+    background: #34c759;
+}
+
+[aria-checked="true"] .interruptor::after {
+    transform: translateX(20px);
+}
+
+#form-atualizar-senha #voltar {
+    padding-left: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+@media (max-width: 768px) {
+    .settings-container {
+        margin: 10px;
+    }
+}

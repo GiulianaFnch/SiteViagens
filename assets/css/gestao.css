@@ -1,0 +1,46 @@
+/* Gestão de passeios e de hospedagens do vendedor (gestao_tours.php, gerir_hospedagem.php) */
+.pagina-painel {
+    font-family: 'Poppins', sans-serif;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+}
+
+.table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.table th,
+.table td {
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.btn-edit {
+    border: 3px solid #00d7c3;
+    border-radius: 20px;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    border-radius: 20px;
+}
+
+.action-btns {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Coluna dos botões Editar/Excluir */
+.table th:last-child,
+.table td:last-child {
+    width: 120px;
+    overflow: visible;
+}

@@ -1,0 +1,70 @@
+/* Formulários do vendedor para criar passeios e hospedagens (vender_tours.php, vender_hospedagem.php) */
+
+input[type="text"],
+input[type="date"],
+input[type="file"],
+input[type="time"],
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="file"]:focus,
+input[type="time"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #007AFF;
+    box-shadow: 0 0 8px rgba(0, 122, 255, 0.3);
+    outline: none;
+}
+
+textarea {
+    resize: none;
+    height: 100px;
+}
+
+input[type="submit"] {
+    width: auto;
+    background-color: #007AFF;
+    color: white;
+    padding: 10px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s ease-in-out;
+}
+
+input[type="submit"]:hover {
+    background-color: #005bb5;
+}
+
+select option {
+    padding: 10px;
+}
+
+form {
+    margin-top: 20px;
+}
+
+label {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+    color: #333;
+}

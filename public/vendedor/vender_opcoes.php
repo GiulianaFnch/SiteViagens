@@ -1,8 +1,9 @@
 <?php
 include 'valida_vendedor.php'; // só vendedores
-$vendedor_titulo = 'Vender';
-$vendedor_menu = 'vender';
-include __DIR__ . '/../../views/partials/vendedor_inicio.php';
+$painel = 'vendedor';
+$painel_titulo = 'Vender';
+$painel_menu = 'vender';
+include __DIR__ . '/../../views/partials/painel_inicio.php';
 ?>
                     <a class="option-card" href="vender_tours.php">
                         <i class="bi bi-map"></i>
@@ -19,4 +20,4 @@ include __DIR__ . '/../../views/partials/vendedor_inicio.php';
                         <h3>Vender Pacotes</h3>
                         <p>Junte viagem, estadia e passeios num pacote com preço por pessoa.</p>
                     </a>
-<?php include __DIR__ . '/../../views/partials/vendedor_fim.php'; ?>
+<?php include __DIR__ . '/../../views/partials/painel_fim.php'; ?>

@@ -1,13 +1,32 @@
-/* Painel do vendedor: menu lateral e cartões de opções (views/partials/vendedor_inicio.php) */
-.painel-vendedor {
-    margin-top: 130px;
+/* Painéis do cliente e do vendedor (views/partials/painel_inicio.php): cabeçalho, menu lateral e cartões */
+.pagina-painel header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px 18%;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.pagina-painel .navbar a {
+    color: #000;
+}
+
+.painel {
+    margin-top: 160px;
     margin-bottom: 60px;
 }
 
-.painel-vendedor .card {
+.painel > .card {
     border-radius: 15px;
     overflow: hidden;
 }
+
 
 .menu-container {
     background-color: #f8f9fa;
@@ -34,8 +53,17 @@
     transform: translateX(8px);
 }
 
-.menu-item.ativo {
-    background-color: #e8f0fe;
+.menu-item.active {
+    background-color: #dfe4ea;
+    font-weight: bold;
+}
+
+.menu-titulo {
+    color: #3A506B;
+    font-weight: 600;
+    padding: 10px;
+    margin: 5px 0;
+    font-size: 18px;
 }
 
 .menu-item i {
@@ -77,4 +105,15 @@
 .option-card p {
     font-size: 16px;
     color: #6c757d;
+}
+
+.menu-item:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+    .menu-container {
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+    }
 }

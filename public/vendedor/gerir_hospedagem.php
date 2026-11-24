@@ -115,155 +115,12 @@ $stmt->bind_param("i", $vendedor_id);
 $stmt->execute();
 $result = $stmt->get_result(); // O resultado é atribuído à variável $result
 $stmt->close();
+$painel = 'vendedor';
+$painel_titulo = 'Gestão de hospedagens';
+$painel_menu = 'gestao';
+$painel_css = ['gestao.css'];
+include __DIR__ . '/../../views/partials/painel_inicio.php';
 ?>
-
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-    <meta charset="utf-8">
-    <title>Gestão Passeios</title>
-    <link rel="stylesheet" href="../../assets/css/styleperfil.css">
-    <link rel="stylesheet" href="../../assets/css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<br><br><br>
-<style>
-    body {
-        margin-top: 100px;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    header {
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 100%;
-        z-index: 100;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 30px 18%;
-        background-color: white;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .navbar {
-        display: flex;
-    }
-
-    .navbar a {
-        color: black;
-    }
-
-    .card {
-        border-radius: 15px;
-        overflow: hidden;
-        background: #ffffff;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        margin-bottom: 20px;
-    }
-
-    .menu-container {
-        background-color: #f8f9fa;
-        border-right: 1px solid #e0e0e0;
-    }
-
-    .menu {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .menu-item {
-        color: #007AFF;
-        padding: 10px;
-        margin: 5px 0;
-        text-decoration: none;
-        font-size: 18px;
-        border-radius: 10px;
-        transition: background-color 0.3s ease, transform 0.2s ease-in-out;
-    }
-
-    .menu-item:hover {
-        background-color: #f0f0f0;
-        transform: translateX(8px);
-    }
-
-    .menu-item i {
-        margin-right: 8px;
-        font-size: 20px;
-    }
-
-    .menu-item.active {
-        background-color: #dfe4ea;
-        font-weight: bold;
-    }
-
-    .container {
-        overflow: hidden;
-        
-        padding: 0 15px;
-    }
-
-    .table-responsive {
-    overflow-x: auto; 
-    -webkit-overflow-scrolling: touch; 
-    max-width: 100%; 
-}
-
-    .table {
-        width: 100%;
-        table-layout: fixed;
-    }
-
-
-
-    .table th,
-    .table td {
-        word-wrap: break-word;
-        overflow: hidden;
-        text-overflow: ellipsis; 
-        white-space: nowrap;
-    }
-
-    .btn-edit {
-        border: 3px solid #00d7c3;
-        border-radius: 20px;
-    }
-
-    .btn-delete {
-        background-color: #dc3545;
-        border-radius: 20px;
-    }
-
-    .action-btns {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-</style>
-
-<body>
-    <?php $cabecalho_escuro = true; include __DIR__ . '/../../views/partials/header.php'; ?>
-
-    <div class="container light-style flex-grow-1 container-p-y">
-        <div class="card shadow-sm rounded-lg">
-            <div class="row no-gutters">
-                <div class="col-md-3 p-3 bg-light rounded-left menu-container">
-                    <nav class="menu">
-                        <a class="menu-item" style="color: #3A506B"><strong>Painel de Vendedor</strong></a>
-                        <a class="menu-item" href="admin.php" onclick="showContent('profile');"><i class="bi bi-person-circle"></i> Editar Perfil</a>
-                        <a class="menu-item" href="vender_opcoes.php"><i class="bi bi-bag"></i> Vender</a>
-                        <a class="menu-item" href="gerenciar_reservas.php"><i class="bi bi-magic"></i> Reservas</a>
-                        <a class="menu-item" href="gestao_opcoes.php"><i class="bi bi-train-freight-front"></i> Gestão</a>
-                        <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
-                        <a class="menu-item" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
-                    </nav>
-            </div>
-
-            <div class="col-md-9">
                     <div class="tab-content p-4">
                 <h2>Gerenciar Hospedagem</h2>
                 <div class="table-responsive">
@@ -398,10 +255,10 @@ $stmt->close();
                     </form>
                 </div>
             </div>
-        </div>
-    </div>
-        </div>
-    </div>
+        
+    
+        
+    
     
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -439,7 +296,4 @@ $stmt->close();
     </script>
 
     <br><br><br><br>
-    <?php include '../../views/partials/footer.php' ?>
-</body>
-
-</html>
+<?php include __DIR__ . '/../../views/partials/painel_fim.php'; ?>

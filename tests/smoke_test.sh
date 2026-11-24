@@ -270,6 +270,28 @@ post vendedor public/backend/avaliar.php -d tipo_item=pacote -d item_id=1 -d id_
 verifica "o vendedor do pacote responde"            '[ "$(q "SELECT resposta FROM t_avaliacoes WHERE id=$AID")" = "Obrigado!" ]'
 q "DELETE FROM t_avaliacoes WHERE tipo_item='pacote'; DELETE FROM t_reservas WHERE tipo_reserva='pacote' AND item_id=1"
 
+echo "== Painéis do cliente e do vendedor"
+verifica "ofertas desligadas nas configurações"     '[[ "$(post Karol public/configuracoes.php -d notificacoes_ofertas=0)" == *"\"notificacoes_ofertas\":0"* && "$(q "SELECT notificacoes_ofertas FROM t_user WHERE nick='"'Karol'"'")" = 0 ]]'
+post Karol public/configuracoes.php -d notificacoes_ofertas=1 >/dev/null
+verifica "nova senha curta é recusada"              '[[ "$(post Karol public/configuracoes.php -d atualizar_senha=1 -d senha_atual=teste123 -d nova_senha=curta -d confirmar_senha=curta | txt)" == *"pelo menos 8 caracteres"* ]]'
+verifica "senha atual errada é recusada"            '[[ "$(post Karol public/configuracoes.php -d atualizar_senha=1 -d senha_atual=errada -d nova_senha=novasenha1 -d confirmar_senha=novasenha1 | txt)" == *"palavra-passe atual está errada"* ]]'
+verifica "configurações do vendedor"                '[[ "$(curl -s -b $T/vendedor $B/public/vendedor/configuracoes.php | txt)" == *"Painel de Vendedor"*"Receber ofertas por e-mail"* ]]'
+KID=$(q "SELECT id FROM t_user WHERE nick='Karol'"); JID=$(q "SELECT id FROM t_user WHERE nick='jujuba'")
+q "DELETE FROM amizades WHERE $KID IN (id_usuario1, id_usuario2) AND $JID IN (id_usuario1, id_usuario2);
+   INSERT INTO amizades (id_usuario1, id_usuario2, status) VALUES ($KID, $JID, 'pendente')"
+verifica "pedido de amizade aparece no perfil"      '[[ "$(curl -s -b $T/jujuba $B/public/perfil.php | txt)" == *"Karol quer conversar consigo"* ]]'
+post jujuba public/perfil.php -d id_solicitacao=$(q "SELECT id FROM amizades WHERE id_usuario1=$KID AND id_usuario2=$JID") -d aceitar=1 >/dev/null
+verifica "aceite, a Karol aparece no chat"          '[[ "$(curl -s -b $T/jujuba $B/public/chat.php)" == *"<span>Karol</span>"* ]]'
+R=$(post jujuba public/backend/chat_enviar.php -d user_id=$KID --data-urlencode "message=Olá <b>Karol</b>")
+verifica "mensagem enviada, escapada, uma vez"      '[ "$(echo "$R" | grep -o "Olá &lt;b&gt;Karol&lt;/b&gt;" | wc -l)" = 1 ]'
+verifica "a Karol recebe a mensagem"                '[[ "$(curl -s -b $T/Karol "$B/public/backend/chat_mensagens.php?user_id=$JID")" == *"received-message"*"Olá &lt;b&gt;Karol"* ]]'
+q "DELETE FROM t_art_comen WHERE id_remetente=$JID AND id_destinatario=$KID; DELETE FROM amizades WHERE id_usuario1=$KID AND id_usuario2=$JID"
+perfil() { post Karol public/perfil.php -L -d nick=Karol -d nome=Karoline -d data_nasc=2024-09-19 "$@" | txt; }
+verifica "mudar o e-mail pede a palavra-passe"      '[[ "$(perfil -d email=karol.nova@exemplo.com)" == *"indique a sua palavra-passe atual"* ]]'
+verifica "nick de outra pessoa é recusado"          '[[ "$(post Karol public/perfil.php -L -d nick=jujuba -d nome=K -d email=karol@gmail.com | txt)" == *"nick já está a ser usado"* ]]'
+verifica "perfil guardado sem mudar o e-mail"       '[[ "$(perfil -d email=karol@gmail.com)" == *"Perfil atualizado."* ]]'
+verifica "o vendedor guarda o nome da marca"        '[[ "$(post vendedor public/vendedor/admin.php -L -d nick=vendedor -d nome=vendedor1 -d email=vendedor1@gmail.com -d "nome_marca=Venda de Atividades" -d biografia=Bio | txt)" == *"Perfil atualizado."* && "$(q "SELECT biografia FROM t_user WHERE nick='"'vendedor'"'")" = Bio ]]'
+
 echo "== Newsletter e logout"
 verifica "inscrição na newsletter"                  '[[ "$(curl -s -d email=smoke@exemplo.com $B/public/backend/newsletter.php)" == *"Inscrição feita"* ]]'
 q "DELETE FROM t_newsletter WHERE email='smoke@exemplo.com'"

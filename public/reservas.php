@@ -47,142 +47,11 @@ $stmt = $ligacao->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
+$painel = 'cliente';
+$painel_titulo = 'Reservas';
+$painel_menu = 'reservas';
+include __DIR__ . '/../views/partials/painel_inicio.php';
 ?>
-
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/styleperfil.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-     <style>
-         header{
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 100%;
-        z-index:100;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 30px 18%;
-        background-color: white;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar {
-    display: flex;
-}
-
-.navbar a {
-    color: black; 
-}
-
-
-        .menu-container {
-            background-color: #f8f9fa;
-            border-right: 1px solid #e0e0e0;
-        }
-
-        .menu {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .menu-item {
-            color: #007AFF;
-            padding: 10px;
-            margin: 5px 0;
-            text-decoration: none;
-            font-size: 18px;
-            border-radius: 10px;
-            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
-        }
-
-        .menu-item:hover {
-            background-color: #f0f0f0;
-            transform: translateX(8px);
-        }
-
-        .menu-item i {
-            margin-right: 8px;
-            font-size: 20px;
-        }
-
-        .menu-item.active {
-            background-color: #dfe4ea;
-            font-weight: bold;
-        }
-
-        .menu-item:active {
-            transform: scale(0.98);
-       
-        }
-
-        .card {
-            border-radius: 15px;
-            overflow: hidden;
-        }
-
-        .card .tab-content {
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .tab-pane {
-            padding: 20px;
-        }
-
-        /* Header */
-        .navbar {
-            display: flex;
-        }
-
-        .navbar a {
-            color: var(--bg-color);
-            font-size: var(--p-font);
-            font-weight: 500;
-            padding: 10px 22px;
-            border-radius: 4px;
-           
-        }
-
-        .navbar a:hover {
-            background: var(--bg-color);
-            color: var(--text-color);
-            box-shadow: 5px 10px 30px rgb(85 85 85 / 20%);
-            border-radius: 4px;
-        }
-    </style>
-</head>
-
-<body>
-<?php $cabecalho_escuro = true; include __DIR__ . '/../views/partials/header.php'; ?>
-
-<br><br><br><br><br><br>
-
-<div class="container light-style flex-grow-1 container-p-y">
-    <div class="card shadow-sm rounded-lg">
-        <div class="row no-gutters">
-            <div class="col-md-3 p-3 bg-light rounded-left menu-container">
-                <nav class="menu">
-                    <?php echo htmlspecialchars($linha['nome']); ?>
-                    <a class="menu-item" href="perfil.php#account-general"><i class="bi bi-person-circle"></i> Editar perfil</a>
-                    <a class="menu-item" href="reservas.php"><i class="bi bi-clipboard2"></i> Reservas</a>
-                    <a class="menu-item" href="favoritos.php"><i class="bi bi-heart"></i> Favoritos</a>
-                    <a class="menu-item" href="chat.php"><i class="bi bi-chat-dots"></i> Chat</a>
-                    <a class="menu-item" href="configuracoes.php"><i class="bi bi-gear"></i> Configurações</a>
-                </nav>
-            </div>
-
-            <div class="col-md-9 p-4">
                 <div class="container light-style">
                     <h2>Minhas Reservas</h2>
 
@@ -233,12 +102,7 @@ $result = $stmt->get_result();
                         <p>Nenhuma reserva encontrada.</p>
                     <?php endif; ?>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal de Confirmação de Exclusão -->
+            <!-- Modal de Confirmação de Exclusão -->
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -263,6 +127,8 @@ $result = $stmt->get_result();
     </div>
 </div>
 
+        
+    
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -273,5 +139,4 @@ $result = $stmt->get_result();
         modal.find('#reserva_id').val(reservaId);
     });
 </script>
-</body>
-</html>
+<?php include __DIR__ . '/../views/partials/painel_fim.php'; ?>

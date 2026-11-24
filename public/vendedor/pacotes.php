@@ -110,9 +110,10 @@ $stmt->execute();
 $pacotes = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
 $v = fn($campo) => htmlspecialchars((string) ($dados[$campo] ?? ''));
-$vendedor_titulo = 'Pacotes';
-$vendedor_menu = 'gestao';
-include __DIR__ . '/../../views/partials/vendedor_inicio.php';
+$painel = 'vendedor';
+$painel_titulo = 'Pacotes';
+$painel_menu = 'gestao';
+include __DIR__ . '/../../views/partials/painel_inicio.php';
 ?>
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h2 class="h4 mb-0">Os meus pacotes</h2>
@@ -229,4 +230,4 @@ include __DIR__ . '/../../views/partials/vendedor_inicio.php';
                             <a href="pacotes.php" class="btn btn-link">Cancelar</a>
                         </form>
                     <?php endif; ?>
-<?php include __DIR__ . '/../../views/partials/vendedor_fim.php'; ?>
+<?php include __DIR__ . '/../../views/partials/painel_fim.php'; ?>
