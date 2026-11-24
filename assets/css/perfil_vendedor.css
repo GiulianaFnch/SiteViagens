@@ -1,0 +1,78 @@
+/* Perfil público do vendedor (public/perfil_vendedor.php) */
+header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 18%;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            display: flex;
+        }
+
+        .navbar a {
+            color: black; /* Define a cor padrão dos links */
+            padding: 10px 22px;
+        }
+
+        .vendedor-info {
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(1, 1, 1, 1);
+            text-align: center;
+        }
+        .vendedor-info img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+        .info-container {
+            text-align: left;
+        }
+        .info-row {
+            margin-bottom: 10px;
+        }
+        .label {
+            font-weight: 600;
+            font-weight: bold;
+            display: block;
+            font-size: 15px;
+
+        }
+
+        .value {
+            font-size: 14px;
+            color: #555;
+        }
+        .obsession {
+            font-size: 14px;
+            color: #f14668;
+            margin-top: 10px;
+        }
+        .btn-primary {
+    background-color: #4169e1; /* Azul royal */
+    border: none;
+    padding: 12px 20px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    border-radius: 25px; /* Botão com bordas arredondadas */
+    font-size: 14px; /* Ajustar o tamanho da fonte */
+    transition: background-color 0.3s, transform 0.2s; /* Efeitos de transição */
+}
+        .btn-primary:hover {
+            background-color: #4169e1;
+        }

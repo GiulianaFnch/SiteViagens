@@ -1,0 +1,51 @@
+/* Botões da página do carrinho (public/carrinho/carrinho.php); o resto está em carrinho.css */
+/* Estilo global dos botões */
+        .btn {
+            border-radius: 25px; /* Bordas arredondadas */
+            padding: 8px 16px; /* Espaçamento interno reduzido */
+
+        }
+ /* Botão de deslizamento */
+ .slide-button {
+            position: relative;
+            display: inline-flex; /* Muda para inline-flex para melhor alinhamento */
+            justify-content: center;
+            align-items: center;
+            width: 180px; /* Largura do botão reduzida */
+            height: 50px; /* Altura do botão reduzida */
+            gap: 10px; /* Espaço entre os ícones e o texto */
+            border-radius: 25px; /* Bordas arredondadas */
+            background: #006a00; /* Cor de fundo mais suave */
+            color: #ffff; /* Cor do texto */
+            font-family: 'Poppins', sans-serif; /* Fonte */
+            font-size: 16px; /* Tamanho da fonte ajustado */
+            text-decoration: none; /* Remove sublinhado */
+            overflow: hidden; /* Esconde o conteúdo que transborda */
+            transition: background 0.3s; /* Transição suave */
+            cursor: pointer; /* Muda o cursor para indicar que é clicável */
+        }
+
+ /* Pseudo-elemento em estado normal */
+ .slide-button::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: #00ab00;
+            border-radius: 25px; /* Bordas arredondadas */
+            z-index: 1;
+            transition: transform 500ms ease-in-out; /* Transição suave */
+        }
+
+          /* Pseudo-elemento em estado de hover */
+          .slide-button:hover::after {
+            transform: translateX(100%); /* Efeito de deslizamento mais sutil */
+        }
+
+  /* Texto em estado normal */
+  .slide-button span {
+            margin-left: -10px; /* Ajuste da margem */
+            z-index: 2;
+        }

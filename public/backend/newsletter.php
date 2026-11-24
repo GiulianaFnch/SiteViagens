@@ -27,10 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        .message-container { max-width: 600px; margin: 160px auto 80px; padding: 0 16px; text-align: center; font-family: 'Poppins', sans-serif; }
-        .message-container a { display: inline-block; margin-top: 16px; padding: 10px 20px; background: #6495ed; color: #fff; border-radius: 5px; }
-    </style>
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/newsletter.css">
 </head>
 
 <body>

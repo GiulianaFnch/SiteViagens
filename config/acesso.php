@@ -55,17 +55,7 @@ function acesso_negado($titulo, $mensagem, $texto_botao, $destino)
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>BestWay - <?= htmlspecialchars($titulo) ?></title>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-        <style>
-            body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
-                   align-items: center; font-family: 'Poppins', sans-serif; background-color: #f9f9f9; }
-            .message-container { text-align: center; padding: 20px; background-color: white; border-radius: 8px;
-                   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); margin: 20px; max-width: 400px; }
-            h1 { font-size: 32px; margin-bottom: 16px; font-weight: 600; color: #333; }
-            h2 { font-size: 20px; margin-bottom: 20px; font-weight: 400; color: #555; }
-            a.botao { display: inline-block; padding: 10px 20px; background-color: #6495ed; color: white;
-                   border-radius: 5px; text-decoration: none; transition: background-color 0.3s; }
-            a.botao:hover { background-color: #0056b3; }
-        </style>
+        <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/acesso.css">
     </head>
     <body>
         <div class="message-container">

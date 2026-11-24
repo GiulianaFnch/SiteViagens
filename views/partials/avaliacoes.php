@@ -31,31 +31,7 @@ $e_dono = $avaliacao_id_user && avaliacao_dono_item($ligacao, $avaliacao_tipo, $
 $avaliacao_mensagem = $_SESSION['avaliacao_mensagem'] ?? null;
 unset($_SESSION['avaliacao_mensagem']);
 ?>
-<style>
-    .avaliacoes { max-width: 900px; margin: 40px auto; padding: 0 16px; font-family: 'Poppins', sans-serif; }
-    .avaliacoes h2 { font-size: 22px; color: #333; margin-bottom: 4px; }
-    .avaliacoes .resumo { color: #6495ed; font-size: 18px; margin-bottom: 20px; }
-    .avaliacoes .estrelas { color: #f5a623; letter-spacing: 2px; }
-    .avaliacoes .mensagem { background: #eef4ff; border-left: 4px solid #6495ed; padding: 10px 14px; margin-bottom: 16px; }
-    .avaliacoes .formulario, .avaliacoes .avaliacao { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.08); padding: 16px; margin-bottom: 14px; }
-    .avaliacoes .escolher-nota { display: flex; flex-direction: row-reverse; justify-content: flex-end; font-size: 28px; margin: 6px 0; }
-    .avaliacoes .escolher-nota input { display: none; }
-    .avaliacoes .escolher-nota label { color: #ccc; cursor: pointer; padding: 0 2px; }
-    .avaliacoes .escolher-nota input:checked ~ label,
-    .avaliacoes .escolher-nota label:hover,
-    .avaliacoes .escolher-nota label:hover ~ label { color: #f5a623; }
-    .avaliacoes textarea { width: 100%; min-height: 80px; border: 1px solid #ddd; border-radius: 5px; padding: 8px; font-family: inherit; box-sizing: border-box; }
-    .avaliacoes button { width: auto; align-self: flex-start; margin-top: 8px; padding: 8px 18px; background: #6495ed; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
-    .avaliacoes button:hover { background: #0056b3; }
-    .avaliacoes button.apagar { background: none; color: #c0392b; padding: 0; margin-top: 4px; font-size: 14px; }
-    .avaliacoes .cabecalho { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-    .avaliacoes .cabecalho img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
-    .avaliacoes .data { color: #888; font-size: 13px; margin-left: auto; }
-    .avaliacoes .comentario { color: #444; white-space: pre-line; }
-    .avaliacoes .resposta { margin: 10px 0 0 20px; padding: 10px 14px; background: #f4f7fd; border-left: 3px solid #6495ed; border-radius: 4px; }
-    .avaliacoes .resposta strong { color: #3A506B; }
-    .avaliacoes details summary { cursor: pointer; color: #6495ed; margin-top: 8px; font-size: 14px; }
-</style>
+<link rel="stylesheet" href="<?= BASE_URL ?>assets/css/avaliacoes.css">
 
 <section class="avaliacoes" id="avaliacoes">
     <h2>Avaliações</h2>
