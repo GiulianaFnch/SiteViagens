@@ -19,9 +19,10 @@ Este projeto é uma aplicação web para gerenciar reservas de viagens, hospedag
 ## Estrutura do Projeto
 
 
+- **index.php**: Página inicial.
 - **adm/**: Painel de gestão para o administrador/developer.
-- **assets/**: Arquivos de estilo e imagens.
-- **config/**: Arquivos de configuração e validação.
+- **assets/**: CSS (`css/`, um ficheiro por página ou grupo de páginas), JavaScript (`js/`) e imagens.
+- **config/**: Configuração e regras partilhadas (acesso, contas, e-mail, reservas, avaliações, pacotes, voos, ofertas).
 - **database/**: Arquivos da base de dados.
 - **public/**: Arquivos públicos acessíveis via URL.
    - **carrinho/**: Funcionalidades relacionadas ao carrinho de compras.
@@ -31,7 +32,13 @@ Este projeto é uma aplicação web para gerenciar reservas de viagens, hospedag
    - **voos/**: Funcionalidades relacionadas a passagens aéreas.
    - **vendedor/**: Funcionalidades do perfil do vendedor.
    - **reservas.php**: Página de gerenciamento de reservas do usuário normal.
-- **views/**: Partials e templates reutilizáveis.
+- **views/**: Partes reutilizáveis das páginas.
+   - **partials/**: cabeçalho, rodapé, newsletter, avaliações e os layouts comuns — `pagina_inicio/fim` (páginas
+     públicas simples), `conta_inicio/fim` (login, registo, recuperar palavra-passe) e `painel_inicio/fim` (painéis do
+     cliente e do vendedor).
+   - **paginas/**: páginas iguais para cliente e vendedor (perfil, chat, configurações); `public/perfil.php` e
+     `public/vendedor/admin.php`, por exemplo, só escolhem o painel e incluem `views/paginas/perfil.php`.
+- **tests/**: testes de fumo (`smoke_test.sh`) e o servidor falso da SerpAPI.
 
 ## Como executar
 

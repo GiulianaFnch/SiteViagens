@@ -32,7 +32,7 @@ $_SESSION['id'] = $linha['id'];
 $_SESSION['nick'] = $linha['nick'];
 $_SESSION['logged_in'] = true;
 mysqli_close($ligacao);
-header('Refresh: 2; url=' . BASE_URL . 'index.html');
+header('Refresh: 2; url=' . BASE_URL);
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -52,7 +52,7 @@ header('Refresh: 2; url=' . BASE_URL . 'index.html');
     <br><br><br><br><br><br><br><br><br>
     <div class="message-container">
         <h2>Bem vindo(a), <?= htmlspecialchars($linha['nome']) ?>!</h2>
-        <input type="button" value="Continuar" onclick="window.open('<?= BASE_URL ?>index.html','_self')">
+        <input type="button" value="Continuar" onclick="window.open('<?= BASE_URL ?>','_self')">
     </div>
 
     <footer>

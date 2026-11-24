@@ -76,5 +76,5 @@ function acesso_negado_sem_login()
 
 function acesso_negado_sem_permissao()
 {
-    acesso_negado('Acesso Bloqueado', 'Você não tem permissão para acessar esta página.', 'Voltar ao Início', 'index.html');
+    acesso_negado('Acesso Bloqueado', 'Você não tem permissão para acessar esta página.', 'Voltar ao Início', '');
 }

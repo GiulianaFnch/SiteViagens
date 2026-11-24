@@ -1,24 +1,9 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Termos e Condições | Best Way</title>
-    <link rel="stylesheet" href="stylec.css">
-    <!-- Link para ícones (Boxicons) -->
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
-</head>
-<body>
-    <header>
-       
-        
-    </header>
-
+<?php
+$pagina_titulo = 'Termos e Condições | BestWay';
+$pagina_css = ['contatos.css'];
+$cabecalho_escuro = true;
+include __DIR__ . '/../../views/partials/pagina_inicio.php';
+?>
     <main>
         <section class="documentos-header">
             <h1>Termos e Condições</h1>
@@ -47,28 +32,4 @@
         </section>
     </main>
 
-    <footer>
-        <!-- Newsletter -->
-        <section class="newsletter">
-            <div class="news-text">
-                <h2>Inscreva-se para receber nossas ofertas</h2>
-                <p>Você receberá e-mails promocionais da BestWay.</p>
-            </div>
-
-            <div class="send">
-                <form action="../backend/newsletter.php" method="post">
-                    <input type="email" name="email" placeholder="Insira seu e-mail aqui" required>
-                    <input type="submit" value="Quero recebê-las!">
-                </form>
-            </div>
-        </section>
-
-        <div class="end-text">
-            <p>© 2024 BestWay. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-
-    <!-- JavaScript para o menu responsivo -->
-    <script src="script.js"></script>
-</body>
-</html>
+<?php include __DIR__ . '/../../views/partials/pagina_fim.php'; ?>

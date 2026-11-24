@@ -16,9 +16,9 @@
                 <div class="list">
                     <h4>Suporte</h4>
                     <ul>
-                        <li><a href="<?= BASE_URL ?>public/contatos/Contatos.html">Contatos</a></li>
-                        <li><a href="<?= BASE_URL ?>public/contatos/termos.html">Termos & Condições</a></li>
-                        <li><a href="<?= BASE_URL ?>public/contatos/privacidade.html">Politica de privacidade</a></li>
+                        <li><a href="<?= BASE_URL ?>public/contatos/contatos.php">Contatos</a></li>
+                        <li><a href="<?= BASE_URL ?>public/contatos/termos.php">Termos & Condições</a></li>
+                        <li><a href="<?= BASE_URL ?>public/contatos/privacidade.php">Política de privacidade</a></li>
 
                     </ul>
                 </div>

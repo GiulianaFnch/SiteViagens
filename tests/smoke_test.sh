@@ -47,7 +47,7 @@ for u in jujuba Karol vendedor admin; do
 done
 
 echo "== Páginas abrem para cada tipo de utilizador"
-PAGINAS="index.html public/login.php public/registro.php public/hotels/hotels.php public/hotels/listar_hospedagem.php
+PAGINAS="index.php public/contatos/contatos.php public/contatos/termos.php public/contatos/privacidade.php public/login.php public/registro.php public/hotels/hotels.php public/hotels/listar_hospedagem.php
 public/hotels/detalhes_hospedagem.php?id=2 public/tours/tours.php public/tours/listar_tours.php public/tours/detalhes_tours.php?id=1
 public/voos/voos.php public/pacotes/pacotes.php public/perfil.php public/reservas.php public/favoritos.php public/chat.php
 public/configuracoes.php public/carrinho/carrinho.php public/vendedor/admin.php public/vendedor/gerenciar_reservas.php

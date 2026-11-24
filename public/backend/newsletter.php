@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include '../../views/partials/header.php'; ?>
     <div class="message-container">
         <h2><?= htmlspecialchars($mensagem) ?></h2>
-        <a href="<?= BASE_URL ?>index.html">Voltar ao início</a>
+        <a href="<?= BASE_URL ?>">Voltar ao início</a>
     </div>
 </body>
 

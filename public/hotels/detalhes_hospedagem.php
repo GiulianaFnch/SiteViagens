@@ -285,23 +285,7 @@ $data_max = (string) $linha['data_fim'];
         </div>
     </section>
 
-    <!--Newsletter-->
-    <section class="newsletter">
-        <div class="news-text">
-            <h2>Inscreva-se para receber nossas ofertas</h2>
-            <p>
-                Você receberá e-mails promocionais da BestWay. Para mais informações, consulte as <a href="#">Politica
-                    de privacidade.</a>.</p>
-        </div>
-
-
-        <div class="send">
-            <form action="<?= BASE_URL ?>public/backend/newsletter.php" method="post">
-                <input type="email" name="email" placeholder="Insira seu e-mail aqui" required>
-                <input type="submit" value="Quero recebê-las!">
-            </form>
-        </div>
-    </section>
+    <?php include __DIR__ . '/../../views/partials/newsletter.php'; ?>
 
     <?php include __DIR__ . '/../../views/partials/footer.php'; ?>
 

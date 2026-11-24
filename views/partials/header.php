@@ -1,5 +1,5 @@
 <?php
-// Cabeçalho comum a todas as páginas PHP do site (as páginas estáticas .html têm uma cópia).
+// Cabeçalho comum a todas as páginas do site.
 // Antes de incluir, a página pode escolher a aparência:
 //   $cabecalho_sobre_imagem = true;  // logo e menu brancos, para páginas com uma imagem grande no topo
 //   $cabecalho_escuro = true;        // logo e menu pretos, para páginas de fundo claro

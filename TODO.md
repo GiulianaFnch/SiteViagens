@@ -54,19 +54,23 @@ Lista do que ainda falta, por prioridade. Gerada a partir de uma revisão do có
 
 ## Organização do código
 
-- [x] Cabeçalho e rodapé comuns (`views/partials/header.php` e `footer.php`) em todas as páginas PHP; CSS das páginas de
-      mensagem em `assets/css/mensagem.css`. Ficam de fora as páginas estáticas (`index.html`, `public/contatos/*.html`).
-- [x] Páginas de conta (login, registo de cliente e de vendedor, confirmar e-mail, recuperar palavra-passe) com um layout
-      comum (`views/partials/conta_inicio.php` e `conta_fim.php`); erros voltam ao formulário com um aviso.
-- [x] Painel do vendedor com layout comum (`views/partials/vendedor_inicio.php`/`vendedor_fim.php`, `assets/css/vendedor.css`)
-      nas páginas Vender, Gestão e Pacotes; falta passar as restantes páginas do vendedor.
+- [x] Cabeçalho, rodapé e newsletter comuns (`views/partials/header.php`, `footer.php`, `newsletter.php`) em todas as
+      páginas; a página inicial e as de contactos, termos e privacidade deixaram de ser HTML estático (`index.php`,
+      `public/contatos/*.php`) e usam `views/partials/pagina_inicio.php`/`pagina_fim.php`.
+- [x] Layouts comuns: páginas de conta (`conta_inicio/fim`) e painéis do cliente e do vendedor (`painel_inicio/fim`,
+      `assets/css/painel.css`) — menu lateral, cabeçalho e cartão num só sítio.
+- [x] Perfil, chat e configurações do cliente e do vendedor eram cópias quase iguais: uma só implementação em
+      `views/paginas/`. Os ficheiros de mensagens do chat estão em `public/backend/` (um para os dois chats).
+- [x] Sem `<style>` nas páginas: o CSS está em `assets/css/` (um ficheiro por página ou grupo) e o JavaScript do chat,
+      perfil e configurações em `assets/js/`. Mudanças verificadas com capturas de todas as páginas antes e depois.
 - [x] Reservas: título e vendedor de cada tipo de reserva, e o período das datas, numa só função
       (`reserva_sql_titulo`, `reserva_sql_vendedor`, `reserva_formatar_periodo` em `config/reservas.php`).
-- [ ] O CSS específico de cada página continua dentro de `<style>` na própria página.
 - [x] Página de acesso negado única (`config/acesso.php`), usada pelos três validadores, com HTTP 403.
 - [x] Constantes `TIPO_CLIENTE`, `TIPO_BLOQUEADO`, `TIPO_VENDEDOR`, `TIPO_VENDEDOR_PENDENTE`, `TIPO_ADMIN` (`config/acesso.php`).
 - [x] Reativar um vendedor bloqueado tornava-o cliente — o tipo anterior fica em `tipo_antes_bloqueio` (migração 006);
       administradores já não podem ser bloqueados; "aprovar vendedor" só afeta registos pendentes.
 - [x] Ficheiros com nomes "2" renomeados pelo que fazem (`backend/autenticar.php`, `backend/criar_conta.php`, `chat.php`,
-      `chat_mensagens.php`, `chat_enviar.php`, `vendedor/guardar_tour.php`, `vendedor/configuracoes.php`, `tours/pesquisa_tours.php`).
-- [x] Testes de fumo (`tests/smoke_test.sh`, 105 verificações) correm no CI com PHP 8.3 + MariaDB a cada push.
+      `vendedor/guardar_tour.php`, `vendedor/configuracoes.php`, `tours/pesquisa_tours.php`).
+- [x] Testes de fumo (`tests/smoke_test.sh`, 117 verificações) correm no CI com PHP 8.3 + MariaDB a cada push.
+- [ ] As páginas de passeios, hospedagens, voos e pacotes ainda montam o próprio `<head>`; poderiam usar
+      `pagina_inicio.php`. Restam alguns `style="..."` em elementos soltos.

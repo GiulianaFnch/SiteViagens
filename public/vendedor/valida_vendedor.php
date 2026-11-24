@@ -15,7 +15,7 @@ if ($tipo === null) {
     acesso_negado_sem_login();
 }
 if ($tipo === TIPO_VENDEDOR_PENDENTE) {
-    acesso_negado('Registo em análise', 'O seu registo como vendedor ainda aguarda aprovação do administrador.', 'Voltar ao Início', 'index.html');
+    acesso_negado('Registo em análise', 'O seu registo como vendedor ainda aguarda aprovação do administrador.', 'Voltar ao Início', '');
 }
 if ($tipo !== TIPO_VENDEDOR) {
     acesso_negado_sem_permissao();

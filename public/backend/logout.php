@@ -41,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="message-container">
         <?php if ($terminou): ?>
             <h2>Sessão terminada com sucesso! Até à próxima</h2>
-            <input type="button" value="Voltar ao início" onclick="window.open('../../index.html','_self')">
-            <?php header("refresh:10;url=" . BASE_URL . "index.html"); ?>
+            <input type="button" value="Voltar ao início" onclick="window.open('<?= BASE_URL ?>','_self')">
+            <?php header("refresh:10;url=" . BASE_URL); ?>
         <?php elseif (isset($_SESSION['id'])): ?>
             <h2>Deseja terminar a sessão?</h2>
             <form method="post">
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         <?php else: ?>
             <h2>Não tem nenhuma sessão iniciada.</h2>
-            <input type="button" value="Voltar ao início" onclick="window.open('../../index.html','_self')">
+            <input type="button" value="Voltar ao início" onclick="window.open('<?= BASE_URL ?>','_self')">
         <?php endif; ?>
     </div>
 
