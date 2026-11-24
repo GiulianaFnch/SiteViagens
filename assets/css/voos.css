@@ -1,4 +1,4 @@
-
+/* Página de voos (public/voos/voos.php) */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -109,4 +109,20 @@ body {
 
 .other-flights .flight-item {
     background-color: #f1f1f1;
+}
+
+.flight-item {
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.voos-aviso {
+    border-left: 4px solid #c0392b;
+    color: #8e2a1f;
+}
+
+.voos-passo {
+    background: #eef4ff;
+    padding: 10px 14px;
+    border-radius: 6px;
 }

@@ -46,8 +46,10 @@
             $voo = $_SESSION['voos_pesquisados'][$_POST['voo_ref'] ?? ''] ?? null;
             $id_artigo = 0;
             if ($voo) {
-                $stmt = $ligacao->prepare("INSERT INTO t_voos (id_user, flight_number, airline, price, arrival) VALUES (?, ?, ?, ?, ?)");
-                $stmt->bind_param("issds", $id_user, $voo['flight_number'], $voo['airline'], $voo['price'], $voo['arrival']);
+                $stmt = $ligacao->prepare("INSERT INTO t_voos (id_user, flight_number, airline, price, origem, arrival, data_ida, data_volta)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("issdssss", $id_user, $voo['flight_number'], $voo['airline'], $voo['price'], $voo['origem'],
+                    $voo['arrival'], $voo['data_ida'], $voo['data_volta']);
                 $stmt->execute();
                 $id_artigo = $stmt->insert_id; // Get the inserted ID
                 $stmt->close();

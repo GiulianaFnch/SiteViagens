@@ -1,10 +1,13 @@
-# Configuração local (credenciais, chaves de API)
+# Configuração local (credenciais, chaves de API como a da SerpAPI) — nunca no repositório
 config/config.local.php
+*.local.php
+.env
+.env.*
+!.env.example
 
 # E-mails gravados em modo de desenvolvimento
 storage/emails/
 storage/chave_app.txt
-.env
 
 # Sistema / editores
 .DS_Store

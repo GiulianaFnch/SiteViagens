@@ -48,6 +48,8 @@ $primeira = $p ? max(date('Y-m-d', strtotime('+1 day')), $p['data_inicio']) : nu
                     <?= (int) $p['duracao_dias'] ?> dias ·
                     por <a href="<?= BASE_URL ?>public/perfil_vendedor.php?user_id=<?= (int) $p['id_user'] ?>"><?= htmlspecialchars($p['nome_marca'] ?: $p['nick']) ?></a>
                 </p>
+                <?php $resumo = avaliacao_resumo($ligacao, 'pacote', $p['id']); ?>
+                <p><a class="pacote-estrelas" href="#avaliacoes"><?= avaliacao_texto($resumo['media'], $resumo['total']) ?></a></p>
                 <p class="descricao"><?= htmlspecialchars($p['descricao']) ?></p>
 
                 <?php if ($inclui = pacote_inclui($p['inclui'])): ?>
@@ -85,6 +87,11 @@ $primeira = $p ? max(date('Y-m-d', strtotime('+1 day')), $p['data_inicio']) : nu
                 <?php endif; ?>
             </aside>
         </main>
+        <?php
+        $avaliacao_tipo = 'pacote';
+        $avaliacao_item_id = (int) $p['id'];
+        include __DIR__ . '/../../views/partials/avaliacoes.php';
+        ?>
     <?php endif; ?>
 
     <?php include __DIR__ . '/../../views/partials/footer.php'; ?>

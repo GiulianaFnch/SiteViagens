@@ -66,6 +66,10 @@ if (isset($_POST['responder']) || isset($_POST['apagar_resposta'])) {
 }
 
 $_SESSION['avaliacao_mensagem'] = $mensagem;
-$pagina = $tipo === 'hospedagem' ? '../hotels/detalhes_hospedagem.php' : '../tours/detalhes_tours.php';
+$pagina = [
+    'atividade' => '../tours/detalhes_tours.php',
+    'hospedagem' => '../hotels/detalhes_hospedagem.php',
+    'pacote' => '../pacotes/detalhes_pacote.php',
+][$tipo];
 header('Location: ' . $pagina . '?id=' . $item_id . '#avaliacoes');
 exit;
